@@ -911,15 +911,19 @@
       </div>
 
 
-      <!-- ================= PLACEHOLDER MODULES ================= -->
 
-      <div class="module" id="enquiriesPage">
+      <!-- ================= ENQUIRIES ================= -->
+
+<div class="module" id="enquiriesPage">
 
   <div class="module-header">
 
     <div>
       <h2>Enquiries</h2>
-      <p>Manage customer travel enquiries and leads.</p>
+
+      <p>
+        Manage customer enquiries and sales pipeline.
+      </p>
     </div>
 
     <button
@@ -931,37 +935,44 @@
 
   </div>
 
+
   <div class="module-card">
 
     <input
       class="search-box"
       type="text"
       id="enquirySearch"
-      placeholder="Search by customer, destination or enquiry ID..."
+      placeholder="Search by customer, destination or mobile..."
     >
+
 
     <div class="table-wrapper">
 
       <table>
 
         <thead>
+
           <tr>
             <th>Enquiry ID</th>
             <th>Customer</th>
-            <th>Travel Date</th>
             <th>Destination</th>
+            <th>Travel Date</th>
             <th>Pax</th>
             <th>Budget</th>
             <th>Status</th>
-            <th>Follow-up</th>
             <th>Actions</th>
           </tr>
+
         </thead>
+
 
         <tbody id="enquiriesTableBody">
 
           <tr>
-            <td colspan="9" class="empty-table">
+            <td
+              colspan="8"
+              class="empty-table"
+            >
               Loading enquiries...
             </td>
           </tr>
@@ -976,6 +987,363 @@
 
 </div>
 
+      <!-- ================= ENQUIRY MODAL ================= -->
+
+<div
+  class="modal"
+  id="enquiryModal"
+>
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+
+      <h2 id="enquiryModalTitle">
+        Add Enquiry
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeEnquiryModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="enquiryForm">
+
+      <input
+        type="hidden"
+        id="enquiryDocId"
+      >
+
+
+      <div class="form-grid">
+
+
+        <!-- CUSTOMER -->
+
+        <div class="form-group">
+
+          <label>
+            Customer *
+          </label>
+
+          <select
+            id="enquiryCustomer"
+            required
+          >
+
+            <option value="">
+              Select Customer
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- DESTINATION -->
+
+        <div class="form-group">
+
+          <label>
+            Destination *
+          </label>
+
+          <input
+            type="text"
+            id="enquiryDestination"
+            placeholder="e.g. Meghalaya"
+            required
+          >
+
+        </div>
+
+
+        <!-- START DATE -->
+
+        <div class="form-group">
+
+          <label>
+            Travel Start Date *
+          </label>
+
+          <input
+            type="date"
+            id="enquiryStartDate"
+            required
+          >
+
+        </div>
+
+
+        <!-- END DATE -->
+
+        <div class="form-group">
+
+          <label>
+            Travel End Date
+          </label>
+
+          <input
+            type="date"
+            id="enquiryEndDate"
+          >
+
+        </div>
+
+
+        <!-- ADULTS -->
+
+        <div class="form-group">
+
+          <label>
+            Adults
+          </label>
+
+          <input
+            type="number"
+            id="enquiryAdults"
+            value="1"
+            min="0"
+          >
+
+        </div>
+
+
+        <!-- CHILDREN -->
+
+        <div class="form-group">
+
+          <label>
+            Children
+          </label>
+
+          <input
+            type="number"
+            id="enquiryChildren"
+            value="0"
+            min="0"
+          >
+
+        </div>
+
+
+        <!-- INFANTS -->
+
+        <div class="form-group">
+
+          <label>
+            Infants
+          </label>
+
+          <input
+            type="number"
+            id="enquiryInfants"
+            value="0"
+            min="0"
+          >
+
+        </div>
+
+
+        <!-- TRIP TYPE -->
+
+        <div class="form-group">
+
+          <label>
+            Trip Type
+          </label>
+
+          <select id="enquiryTripType">
+
+            <option value="Family">
+              Family
+            </option>
+
+            <option value="Honeymoon">
+              Honeymoon
+            </option>
+
+            <option value="Group">
+              Group
+            </option>
+
+            <option value="Corporate">
+              Corporate
+            </option>
+
+            <option value="Solo">
+              Solo
+            </option>
+
+            <option value="Friends">
+              Friends
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- BUDGET -->
+
+        <div class="form-group">
+
+          <label>
+            Budget
+          </label>
+
+          <input
+            type="number"
+            id="enquiryBudget"
+            placeholder="₹"
+            min="0"
+          >
+
+        </div>
+
+
+        <!-- LEAD SOURCE -->
+
+        <div class="form-group">
+
+          <label>
+            Lead Source
+          </label>
+
+          <select id="enquirySource">
+
+            <option value="Direct">
+              Direct
+            </option>
+
+            <option value="WhatsApp">
+              WhatsApp
+            </option>
+
+            <option value="Website">
+              Website
+            </option>
+
+            <option value="Instagram">
+              Instagram
+            </option>
+
+            <option value="Facebook">
+              Facebook
+            </option>
+
+            <option value="Referral">
+              Referral
+            </option>
+
+            <option value="B2B">
+              B2B
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label>
+            Enquiry Status
+          </label>
+
+          <select id="enquiryStatus">
+
+            <option value="New">
+              New
+            </option>
+
+            <option value="Follow-up">
+              Follow-up
+            </option>
+
+            <option value="Quoted">
+              Quoted
+            </option>
+
+            <option value="Confirmed">
+              Confirmed
+            </option>
+
+            <option value="Lost">
+              Lost
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        <div class="form-group full-width">
+
+          <label>
+            Notes
+          </label>
+
+          <textarea
+            id="enquiryNotes"
+            placeholder="Enquiry details, requirements, special requests..."
+          ></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        class="status-message"
+        id="enquiryFormMessage"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelEnquiryBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Enquiry
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>
+      
       <div class="module" id="followupsPage">
         <div class="module-card">
           <h2>Follow-ups</h2>
