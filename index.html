@@ -1772,7 +1772,22 @@
 
   const customerSearch =
     document.getElementById("customerSearch");
+  // ================= ENQUIRY ELEMENTS =================
 
+  const enquiryModal =
+    document.getElementById("enquiryModal");
+
+  const enquiryForm =
+    document.getElementById("enquiryForm");
+
+  const enquiriesTableBody =
+    document.getElementById("enquiriesTableBody");
+
+  const enquirySearch =
+    document.getElementById("enquirySearch");
+
+  const enquiryCustomer =
+    document.getElementById("enquiryCustomer");
 
   /* ================= AUTH STATE ================= */
 
@@ -1976,7 +1991,12 @@
     }
 
   }
+if (page === "enquiries") {
 
+  loadEnquiries();
+  loadCustomerDropdown();
+
+}
 
   /* ================= CUSTOMER MODAL ================= */
 
