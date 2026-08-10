@@ -18,7 +18,12 @@
       color: #1f2937;
     }
 
-    /* LOGIN */
+    button {
+      cursor: pointer;
+      border: none;
+    }
+
+    /* ================= LOGIN ================= */
 
     .login-page {
       min-height: 100vh;
@@ -78,22 +83,27 @@
       font-weight: 600;
     }
 
-    input {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 13px;
       border: 1px solid #d8dee9;
       border-radius: 9px;
-      font-size: 15px;
+      font-size: 14px;
       outline: none;
+      background: white;
     }
 
-    input:focus {
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
       border-color: #1769e0;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
     }
 
     .login-btn {
@@ -117,7 +127,7 @@
       min-height: 20px;
     }
 
-    /* APP */
+    /* ================= APP ================= */
 
     .app {
       display: none;
@@ -211,6 +221,8 @@
       padding: 28px;
     }
 
+    /* ================= DASHBOARD ================= */
+
     .welcome {
       margin-bottom: 25px;
     }
@@ -276,6 +288,180 @@
       text-align: center;
     }
 
+    /* ================= MODULE ================= */
+
+    .module {
+      display: none;
+    }
+
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      gap: 15px;
+    }
+
+    .module-header h2 {
+      font-size: 24px;
+    }
+
+    .module-header p {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .primary-btn {
+      background: #1769e0;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .primary-btn:hover {
+      background: #1258bf;
+    }
+
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #374151;
+      padding: 11px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .danger-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .edit-btn {
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .module-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      text-align: left;
+      padding: 13px;
+      font-size: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #eef2f7;
+      font-size: 13px;
+    }
+
+    tr:hover td {
+      background: #fafcff;
+    }
+
+    .empty-table {
+      text-align: center;
+      padding: 40px;
+      color: #9ca3af;
+    }
+
+    /* ================= MODAL ================= */
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal {
+      background: white;
+      width: 100%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 14px;
+      padding: 25px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+    }
+
+    .close-btn {
+      background: transparent;
+      font-size: 24px;
+      color: #6b7280;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .status-message {
+      margin-top: 12px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
     @media(max-width: 1000px) {
       .cards {
         grid-template-columns: repeat(2, 1fr);
@@ -301,6 +487,14 @@
 
       .topbar {
         padding: 0 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full-width {
+        grid-column: auto;
       }
     }
 
@@ -340,13 +534,18 @@
       .user-info {
         display: none;
       }
+
+      .module-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<!-- LOGIN PAGE -->
+<!-- ================= LOGIN ================= -->
 
 <div class="login-page" id="loginPage">
 
@@ -357,7 +556,9 @@
 
       <h1>My Tour Mitra</h1>
 
-      <p class="subtitle">Travel Agency ERP</p>
+      <p class="subtitle">
+        Travel Agency ERP
+      </p>
     </div>
 
     <form id="loginForm">
@@ -397,9 +598,11 @@
 </div>
 
 
-<!-- ERP APP -->
+<!-- ================= ERP APP ================= -->
 
 <div class="app" id="app">
+
+  <!-- SIDEBAR -->
 
   <aside class="sidebar">
 
@@ -410,37 +613,79 @@
 
     <div class="menu-title">Main</div>
 
-    <button class="menu-item active">📊 Dashboard</button>
+    <button class="menu-item active" data-page="dashboard">
+      📊 Dashboard
+    </button>
 
     <div class="menu-title">CRM</div>
 
-    <button class="menu-item">👥 Customers</button>
-    <button class="menu-item">📥 Enquiries</button>
-    <button class="menu-item">📞 Follow-ups</button>
+    <button class="menu-item" data-page="customers">
+      👥 Customers
+    </button>
+
+    <button class="menu-item" data-page="enquiries">
+      📥 Enquiries
+    </button>
+
+    <button class="menu-item" data-page="followups">
+      📞 Follow-ups
+    </button>
 
     <div class="menu-title">Operations</div>
 
-    <button class="menu-item">📦 Packages</button>
-    <button class="menu-item">🏨 Hotels</button>
-    <button class="menu-item">🚗 Cabs</button>
-    <button class="menu-item">🤝 B2B Agencies</button>
+    <button class="menu-item" data-page="packages">
+      📦 Packages
+    </button>
+
+    <button class="menu-item" data-page="hotels">
+      🏨 Hotels
+    </button>
+
+    <button class="menu-item" data-page="cabs">
+      🚗 Cabs
+    </button>
+
+    <button class="menu-item" data-page="agencies">
+      🤝 B2B Agencies
+    </button>
 
     <div class="menu-title">Documents</div>
 
-    <button class="menu-item">📄 Quotations</button>
-    <button class="menu-item">🧾 Invoices</button>
-    <button class="menu-item">🎫 Vouchers</button>
+    <button class="menu-item" data-page="quotations">
+      📄 Quotations
+    </button>
+
+    <button class="menu-item" data-page="invoices">
+      🧾 Invoices
+    </button>
+
+    <button class="menu-item" data-page="vouchers">
+      🎫 Vouchers
+    </button>
 
     <div class="menu-title">Accounts</div>
 
-    <button class="menu-item">💰 Payments</button>
-    <button class="menu-item">💸 Expenses</button>
-    <button class="menu-item">📈 Profit & Loss</button>
+    <button class="menu-item" data-page="payments">
+      💰 Payments
+    </button>
+
+    <button class="menu-item" data-page="expenses">
+      💸 Expenses
+    </button>
+
+    <button class="menu-item" data-page="profit">
+      📈 Profit & Loss
+    </button>
 
     <div class="menu-title">Administration</div>
 
-    <button class="menu-item">👨‍💼 Team / Users</button>
-    <button class="menu-item">⚙️ Settings</button>
+    <button class="menu-item" data-page="team">
+      👨‍💼 Team / Users
+    </button>
+
+    <button class="menu-item" data-page="settings">
+      ⚙️ Settings
+    </button>
 
     <button class="menu-item logout" id="logoutBtn">
       🚪 Logout
@@ -449,11 +694,15 @@
   </aside>
 
 
+  <!-- MAIN -->
+
   <main class="main">
 
     <header class="topbar">
 
-      <h1>Dashboard</h1>
+      <h1 id="pageTitle">
+        Dashboard
+      </h1>
 
       <div class="user-info" id="userEmail"></div>
 
@@ -462,85 +711,332 @@
 
     <section class="content">
 
-      <div class="welcome">
+      <!-- ================= DASHBOARD ================= -->
 
-        <h2>Welcome back!</h2>
+      <div class="module" id="dashboardPage" style="display:block;">
 
-        <p>
-          Here's what's happening across your travel agency.
-        </p>
+        <div class="welcome">
 
-      </div>
+          <h2>Welcome back!</h2>
 
+          <p>
+            Here's what's happening across your travel agency.
+          </p>
 
-      <div class="cards">
-
-        <div class="card">
-          <div class="card-title">Total Customers</div>
-          <div class="card-value">0</div>
         </div>
 
-        <div class="card">
-          <div class="card-title">Active Enquiries</div>
-          <div class="card-value">0</div>
-        </div>
+        <div class="cards">
 
-        <div class="card">
-          <div class="card-title">Open Quotations</div>
-          <div class="card-value">0</div>
-        </div>
+          <div class="card">
+            <div class="card-title">
+              Total Customers
+            </div>
 
-        <div class="card">
-          <div class="card-title">Confirmed Bookings</div>
-          <div class="card-value">0</div>
-        </div>
+            <div class="card-value" id="totalCustomers">
+              0
+            </div>
+          </div>
 
-        <div class="card">
-          <div class="card-title">Total Revenue</div>
-          <div class="card-value">₹0</div>
-        </div>
+          <div class="card">
+            <div class="card-title">
+              Active Enquiries
+            </div>
 
-        <div class="card">
-          <div class="card-title">Total Cost</div>
-          <div class="card-value">₹0</div>
-        </div>
+            <div class="card-value">
+              0
+            </div>
+          </div>
 
-        <div class="card">
-          <div class="card-title">Gross Profit</div>
-          <div class="card-value">₹0</div>
-        </div>
+          <div class="card">
+            <div class="card-title">
+              Open Quotations
+            </div>
 
-        <div class="card">
-          <div class="card-title">Pending Payments</div>
-          <div class="card-value">₹0</div>
-        </div>
+            <div class="card-value">
+              0
+            </div>
+          </div>
 
-      </div>
+          <div class="card">
+            <div class="card-title">
+              Confirmed Bookings
+            </div>
 
+            <div class="card-value">
+              0
+            </div>
+          </div>
 
-      <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-title">
+              Total Revenue
+            </div>
 
-        <div class="panel">
+            <div class="card-value">
+              ₹0
+            </div>
+          </div>
 
-          <h3>Enquiry Pipeline</h3>
+          <div class="card">
+            <div class="card-title">
+              Total Cost
+            </div>
 
-          <div class="empty">
-            Enquiry data will appear here.
+            <div class="card-value">
+              ₹0
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              Gross Profit
+            </div>
+
+            <div class="card-value">
+              ₹0
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              Pending Payments
+            </div>
+
+            <div class="card-value">
+              ₹0
+            </div>
           </div>
 
         </div>
 
+        <div class="dashboard-grid">
 
-        <div class="panel">
+          <div class="panel">
 
-          <h3>Upcoming Follow-ups</h3>
+            <h3>
+              Enquiry Pipeline
+            </h3>
 
-          <div class="empty">
-            Follow-up data will appear here.
+            <div class="empty">
+              Enquiry data will appear here.
+            </div>
+
+          </div>
+
+          <div class="panel">
+
+            <h3>
+              Upcoming Follow-ups
+            </h3>
+
+            <div class="empty">
+              Follow-up data will appear here.
+            </div>
+
           </div>
 
         </div>
 
+      </div>
+
+
+      <!-- ================= CUSTOMERS ================= -->
+
+      <div class="module" id="customersPage">
+
+        <div class="module-header">
+
+          <div>
+            <h2>Customers</h2>
+
+            <p>
+              Manage all your travel customers.
+            </p>
+          </div>
+
+          <button
+            class="primary-btn"
+            id="addCustomerBtn"
+          >
+            + Add Customer
+          </button>
+
+        </div>
+
+
+        <div class="module-card">
+
+          <input
+            class="search-box"
+            type="text"
+            id="customerSearch"
+            placeholder="Search customer by name, mobile or email..."
+          >
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Name</th>
+                  <th>Mobile</th>
+                  <th>WhatsApp</th>
+                  <th>Email</th>
+                  <th>City</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="customersTableBody">
+
+                <tr>
+                  <td colspan="8" class="empty-table">
+                    Loading customers...
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= PLACEHOLDER MODULES ================= -->
+
+      <div class="module" id="enquiriesPage">
+        <div class="module-card">
+          <h2>Enquiries</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Enquiry management will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="followupsPage">
+        <div class="module-card">
+          <h2>Follow-ups</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Follow-up management will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="packagesPage">
+        <div class="module-card">
+          <h2>Packages</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Package builder will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="hotelsPage">
+        <div class="module-card">
+          <h2>Hotels</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Hotel database will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="cabsPage">
+        <div class="module-card">
+          <h2>Cabs</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Cab database will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="agenciesPage">
+        <div class="module-card">
+          <h2>B2B Agencies</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            B2B agency database will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="quotationsPage">
+        <div class="module-card">
+          <h2>Quotations</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Quotation builder and PDF generation will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="invoicesPage">
+        <div class="module-card">
+          <h2>Invoices</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Invoice system will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="vouchersPage">
+        <div class="module-card">
+          <h2>Vouchers</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Voucher system will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="paymentsPage">
+        <div class="module-card">
+          <h2>Payments</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Payment management will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="expensesPage">
+        <div class="module-card">
+          <h2>Expenses</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Expense management will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="profitPage">
+        <div class="module-card">
+          <h2>Profit & Loss</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Profit & Loss reporting will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="teamPage">
+        <div class="module-card">
+          <h2>Team / Users</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            Team management will be built next.
+          </p>
+        </div>
+      </div>
+
+      <div class="module" id="settingsPage">
+        <div class="module-card">
+          <h2>Settings</h2>
+          <p style="margin-top:10px;color:#6b7280;">
+            ERP settings will be built next.
+          </p>
+        </div>
       </div>
 
     </section>
@@ -550,10 +1046,218 @@
 </div>
 
 
+<!-- ================= CUSTOMER MODAL ================= -->
+
+<div class="modal-overlay" id="customerModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 id="customerModalTitle">
+        Add Customer
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeCustomerModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="customerForm">
+
+      <input
+        type="hidden"
+        id="customerDocId"
+      >
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Customer Name *</label>
+
+          <input
+            type="text"
+            id="customerName"
+            placeholder="Full name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Mobile *</label>
+
+          <input
+            type="tel"
+            id="customerMobile"
+            placeholder="Mobile number"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>WhatsApp</label>
+
+          <input
+            type="tel"
+            id="customerWhatsapp"
+            placeholder="WhatsApp number"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+
+          <input
+            type="email"
+            id="customerEmail"
+            placeholder="Email address"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+
+          <input
+            type="text"
+            id="customerCity"
+            placeholder="City"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Country</label>
+
+          <input
+            type="text"
+            id="customerCountry"
+            value="India"
+            placeholder="Country"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Customer Type</label>
+
+          <select id="customerType">
+
+            <option value="Individual">
+              Individual
+            </option>
+
+            <option value="Corporate">
+              Corporate
+            </option>
+
+            <option value="B2B Agency">
+              B2B Agency
+            </option>
+
+            <option value="Group">
+              Group
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="form-group">
+          <label>Lead Source</label>
+
+          <select id="customerSource">
+
+            <option value="Direct">
+              Direct
+            </option>
+
+            <option value="WhatsApp">
+              WhatsApp
+            </option>
+
+            <option value="Website">
+              Website
+            </option>
+
+            <option value="Instagram">
+              Instagram
+            </option>
+
+            <option value="Facebook">
+              Facebook
+            </option>
+
+            <option value="Referral">
+              Referral
+            </option>
+
+            <option value="B2B">
+              B2B
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="form-group full-width">
+
+          <label>Notes</label>
+
+          <textarea
+            id="customerNotes"
+            placeholder="Customer notes..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="status-message"
+        id="customerFormMessage"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelCustomerBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Customer
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- ================= FIREBASE ================= -->
+
 <script type="module">
 
   import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
   import {
     getAuth,
@@ -561,23 +1265,58 @@
     onAuthStateChanged,
     signOut
   }
-  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    doc,
+    serverTimestamp
+  }
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+  /* ================= FIREBASE CONFIG ================= */
 
   const firebaseConfig = {
+
     apiKey: "AIzaSyA7yV96KZ5w4tjRy2c_bwtFYTu8r-mNzU4",
-    authDomain: "my-tour-mitra-erp.firebaseapp.com",
-    projectId: "my-tour-mitra-erp",
-    storageBucket: "my-tour-mitra-erp.firebasestorage.app",
-    messagingSenderId: "104596097197",
-    appId: "1:104596097197:web:7abcc59c6feee02fe05e24"
+
+    authDomain:
+      "my-tour-mitra-erp.firebaseapp.com",
+
+    projectId:
+      "my-tour-mitra-erp",
+
+    storageBucket:
+      "my-tour-mitra-erp.firebasestorage.app",
+
+    messagingSenderId:
+      "104596097197",
+
+    appId:
+      "1:104596097197:web:7abcc59c6feee02fe05e24"
+
   };
 
 
-  const app = initializeApp(firebaseConfig);
+  /* ================= INITIALIZE ================= */
 
-  const auth = getAuth(app);
+  const app =
+    initializeApp(firebaseConfig);
 
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+  /* ================= ELEMENTS ================= */
 
   const loginPage =
     document.getElementById("loginPage");
@@ -597,22 +1336,41 @@
   const logoutBtn =
     document.getElementById("logoutBtn");
 
+  const totalCustomers =
+    document.getElementById("totalCustomers");
 
-  /* AUTH STATE */
+  const customerModal =
+    document.getElementById("customerModal");
 
-  onAuthStateChanged(auth, (user) => {
+  const customerForm =
+    document.getElementById("customerForm");
+
+  const customersTableBody =
+    document.getElementById("customersTableBody");
+
+  const customerSearch =
+    document.getElementById("customerSearch");
+
+
+  /* ================= AUTH STATE ================= */
+
+  onAuthStateChanged(auth, async (user) => {
 
     if (user) {
 
       loginPage.style.display = "none";
+
       appPage.style.display = "block";
 
       userEmail.textContent =
         user.email;
 
+      await loadCustomers();
+
     } else {
 
       loginPage.style.display = "flex";
+
       appPage.style.display = "none";
 
     }
@@ -620,7 +1378,7 @@
   });
 
 
-  /* LOGIN */
+  /* ================= LOGIN ================= */
 
   loginForm.addEventListener(
     "submit",
@@ -629,13 +1387,21 @@
       event.preventDefault();
 
       const email =
-        document.getElementById("email").value.trim();
+        document
+          .getElementById("email")
+          .value
+          .trim();
 
       const password =
-        document.getElementById("password").value;
+        document
+          .getElementById("password")
+          .value;
 
-      message.style.color = "#1769e0";
-      message.textContent = "Signing in...";
+      message.style.color =
+        "#1769e0";
+
+      message.textContent =
+        "Signing in...";
 
       try {
 
@@ -651,7 +1417,8 @@
 
         console.error(error);
 
-        message.style.color = "#dc2626";
+        message.style.color =
+          "#dc2626";
 
         message.textContent =
           "Invalid email or password.";
@@ -662,7 +1429,7 @@
   );
 
 
-  /* LOGOUT */
+  /* ================= LOGOUT ================= */
 
   logoutBtn.addEventListener(
     "click",
@@ -672,6 +1439,793 @@
 
     }
   );
+
+
+  /* ================= PAGE NAVIGATION ================= */
+
+  const menuItems =
+    document.querySelectorAll(
+      ".menu-item[data-page]"
+    );
+
+  menuItems.forEach((item) => {
+
+    item.addEventListener(
+      "click",
+      () => {
+
+        const page =
+          item.dataset.page;
+
+        showPage(page);
+
+      }
+    );
+
+  });
+
+
+  function showPage(page) {
+
+    document
+      .querySelectorAll(".module")
+      .forEach((module) => {
+
+        module.style.display = "none";
+
+      });
+
+
+    const selectedPage =
+      document.getElementById(
+        page + "Page"
+      );
+
+    if (selectedPage) {
+
+      selectedPage.style.display =
+        "block";
+
+    }
+
+
+    menuItems.forEach((item) => {
+
+      item.classList.remove("active");
+
+      if (
+        item.dataset.page === page
+      ) {
+
+        item.classList.add("active");
+
+      }
+
+    });
+
+
+    const titles = {
+
+      dashboard: "Dashboard",
+
+      customers: "Customers",
+
+      enquiries: "Enquiries",
+
+      followups: "Follow-ups",
+
+      packages: "Packages",
+
+      hotels: "Hotels",
+
+      cabs: "Cabs",
+
+      agencies: "B2B Agencies",
+
+      quotations: "Quotations",
+
+      invoices: "Invoices",
+
+      vouchers: "Vouchers",
+
+      payments: "Payments",
+
+      expenses: "Expenses",
+
+      profit: "Profit & Loss",
+
+      team: "Team / Users",
+
+      settings: "Settings"
+
+    };
+
+
+    document.getElementById(
+      "pageTitle"
+    ).textContent =
+      titles[page] || "Dashboard";
+
+
+    if (page === "customers") {
+
+      loadCustomers();
+
+    }
+
+  }
+
+
+  /* ================= CUSTOMER MODAL ================= */
+
+  document
+    .getElementById("addCustomerBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        openCustomerModal();
+
+      }
+    );
+
+
+  document
+    .getElementById("closeCustomerModal")
+    .addEventListener(
+      "click",
+      closeCustomerModal
+    );
+
+
+  document
+    .getElementById("cancelCustomerBtn")
+    .addEventListener(
+      "click",
+      closeCustomerModal
+    );
+
+
+  function openCustomerModal(customer = null) {
+
+    customerModal.style.display =
+      "flex";
+
+    document.getElementById(
+      "customerFormMessage"
+    ).textContent = "";
+
+
+    if (customer) {
+
+      document.getElementById(
+        "customerModalTitle"
+      ).textContent =
+        "Edit Customer";
+
+      document.getElementById(
+        "customerDocId"
+      ).value =
+        customer.id;
+
+      document.getElementById(
+        "customerName"
+      ).value =
+        customer.name || "";
+
+      document.getElementById(
+        "customerMobile"
+      ).value =
+        customer.mobile || "";
+
+      document.getElementById(
+        "customerWhatsapp"
+      ).value =
+        customer.whatsapp || "";
+
+      document.getElementById(
+        "customerEmail"
+      ).value =
+        customer.email || "";
+
+      document.getElementById(
+        "customerCity"
+      ).value =
+        customer.city || "";
+
+      document.getElementById(
+        "customerCountry"
+      ).value =
+        customer.country || "India";
+
+      document.getElementById(
+        "customerType"
+      ).value =
+        customer.type || "Individual";
+
+      document.getElementById(
+        "customerSource"
+      ).value =
+        customer.source || "Direct";
+
+      document.getElementById(
+        "customerNotes"
+      ).value =
+        customer.notes || "";
+
+    } else {
+
+      document.getElementById(
+        "customerModalTitle"
+      ).textContent =
+        "Add Customer";
+
+      customerForm.reset();
+
+      document.getElementById(
+        "customerCountry"
+      ).value = "India";
+
+      document.getElementById(
+        "customerDocId"
+      ).value = "";
+
+    }
+
+  }
+
+
+  function closeCustomerModal() {
+
+    customerModal.style.display =
+      "none";
+
+    customerForm.reset();
+
+    document.getElementById(
+      "customerCountry"
+    ).value = "India";
+
+    document.getElementById(
+      "customerDocId"
+    ).value = "";
+
+  }
+
+
+  /* ================= SAVE CUSTOMER ================= */
+
+  customerForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      const messageBox =
+        document.getElementById(
+          "customerFormMessage"
+        );
+
+      messageBox.style.color =
+        "#1769e0";
+
+      messageBox.textContent =
+        "Saving customer...";
+
+
+      const data = {
+
+        name:
+          document
+            .getElementById("customerName")
+            .value
+            .trim(),
+
+        mobile:
+          document
+            .getElementById("customerMobile")
+            .value
+            .trim(),
+
+        whatsapp:
+          document
+            .getElementById("customerWhatsapp")
+            .value
+            .trim(),
+
+        email:
+          document
+            .getElementById("customerEmail")
+            .value
+            .trim(),
+
+        city:
+          document
+            .getElementById("customerCity")
+            .value
+            .trim(),
+
+        country:
+          document
+            .getElementById("customerCountry")
+            .value
+            .trim(),
+
+        type:
+          document
+            .getElementById("customerType")
+            .value,
+
+        source:
+          document
+            .getElementById("customerSource")
+            .value,
+
+        notes:
+          document
+            .getElementById("customerNotes")
+            .value
+            .trim(),
+
+        updatedAt:
+          serverTimestamp()
+
+      };
+
+
+      try {
+
+        const existingId =
+          document
+            .getElementById("customerDocId")
+            .value;
+
+
+        /* EDIT */
+
+        if (existingId) {
+
+          await updateDoc(
+            doc(
+              db,
+              "customers",
+              existingId
+            ),
+            data
+          );
+
+          messageBox.style.color =
+            "#15803d";
+
+          messageBox.textContent =
+            "Customer updated successfully.";
+
+        }
+
+        /* NEW */
+
+        else {
+
+          data.createdAt =
+            serverTimestamp();
+
+          data.createdBy =
+            auth.currentUser
+              ? auth.currentUser.email
+              : "";
+
+          const customerRef =
+            await addDoc(
+              collection(
+                db,
+                "customers"
+              ),
+              data
+            );
+
+
+          /* Create readable Customer ID */
+
+          const customerId =
+            "CUS-" +
+            customerRef.id
+              .substring(0, 6)
+              .toUpperCase();
+
+
+          await updateDoc(
+            customerRef,
+            {
+              customerId:
+                customerId
+            }
+          );
+
+
+          messageBox.style.color =
+            "#15803d";
+
+          messageBox.textContent =
+            "Customer saved successfully.";
+
+        }
+
+
+        await loadCustomers();
+
+
+        setTimeout(
+          () => {
+
+            closeCustomerModal();
+
+          },
+          700
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        messageBox.style.color =
+          "#dc2626";
+
+        messageBox.textContent =
+          "Could not save customer. Check Firestore rules.";
+
+      }
+
+    }
+  );
+
+
+  /* ================= LOAD CUSTOMERS ================= */
+
+  let allCustomers = [];
+
+
+  async function loadCustomers() {
+
+    customersTableBody.innerHTML = `
+
+      <tr>
+        <td colspan="8" class="empty-table">
+          Loading customers...
+        </td>
+      </tr>
+
+    `;
+
+
+    try {
+
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            "customers"
+          )
+        );
+
+
+      allCustomers =
+        snapshot.docs.map(
+          (document) => ({
+
+            id:
+              document.id,
+
+            ...document.data()
+
+          })
+        );
+
+
+      renderCustomers(
+        allCustomers
+      );
+
+
+      totalCustomers.textContent =
+        allCustomers.length;
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      customersTableBody.innerHTML = `
+
+        <tr>
+          <td colspan="8" class="empty-table">
+            Unable to load customers.
+            Check Firestore security rules.
+          </td>
+        </tr>
+
+      `;
+
+    }
+
+  }
+
+
+  /* ================= RENDER CUSTOMERS ================= */
+
+  function renderCustomers(customers) {
+
+    if (!customers.length) {
+
+      customersTableBody.innerHTML = `
+
+        <tr>
+          <td colspan="8" class="empty-table">
+            No customers found.
+            Click "+ Add Customer" to create one.
+          </td>
+        </tr>
+
+      `;
+
+      return;
+
+    }
+
+
+    customersTableBody.innerHTML =
+      customers.map(
+        (customer) => `
+
+          <tr>
+
+            <td>
+              ${escapeHtml(
+                customer.customerId || "-"
+              )}
+            </td>
+
+            <td>
+              <strong>
+                ${escapeHtml(
+                  customer.name || "-"
+                )}
+              </strong>
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.mobile || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.whatsapp || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.email || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.city || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.type || "-"
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="edit-btn"
+                data-edit-id="${customer.id}"
+              >
+                Edit
+              </button>
+
+              <button
+                class="danger-btn"
+                data-delete-id="${customer.id}"
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+
+    /* EDIT BUTTONS */
+
+    document
+      .querySelectorAll(
+        "[data-edit-id]"
+      )
+      .forEach((button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const customer =
+              allCustomers.find(
+                (item) =>
+                  item.id ===
+                  button.dataset.editId
+              );
+
+            if (customer) {
+
+              openCustomerModal(
+                customer
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+
+    /* DELETE BUTTONS */
+
+    document
+      .querySelectorAll(
+        "[data-delete-id]"
+      )
+      .forEach((button) => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const id =
+              button.dataset.deleteId;
+
+
+            const customer =
+              allCustomers.find(
+                (item) =>
+                  item.id === id
+              );
+
+
+            const confirmed =
+              confirm(
+                `Delete customer "${customer?.name || ""}"?`
+              );
+
+
+            if (!confirmed) {
+
+              return;
+
+            }
+
+
+            try {
+
+              await deleteDoc(
+                doc(
+                  db,
+                  "customers",
+                  id
+                )
+              );
+
+
+              await loadCustomers();
+
+            } catch (error) {
+
+              console.error(error);
+
+              alert(
+                "Could not delete customer."
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /* ================= CUSTOMER SEARCH ================= */
+
+  customerSearch.addEventListener(
+    "input",
+    () => {
+
+      const search =
+        customerSearch.value
+          .toLowerCase()
+          .trim();
+
+
+      if (!search) {
+
+        renderCustomers(
+          allCustomers
+        );
+
+        return;
+
+      }
+
+
+      const filtered =
+        allCustomers.filter(
+          (customer) => {
+
+            return (
+
+              (customer.name || "")
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              (customer.mobile || "")
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              (customer.email || "")
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              (customer.city || "")
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+          }
+        );
+
+
+      renderCustomers(
+        filtered
+      );
+
+    }
+  );
+
+
+  /* ================= HTML ESCAPE ================= */
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
 
 </script>
 
