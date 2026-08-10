@@ -1,1 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>My Tour Mitra ERP</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f4f7fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 15px;
+      border-radius: 16px;
+      background: #1769e0;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #172033;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #718096;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d8dee9;
+      border-radius: 9px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #1769e0;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 9px;
+      background: #1769e0;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1258bf;
+    }
+
+    #message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      color: #9aa3b2;
+      font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+
+    <div class="login-card">
+
+      <div class="logo-area">
+        <div class="logo">MTM</div>
+
+        <h1>My Tour Mitra</h1>
+
+        <p class="subtitle">
+          Travel Agency ERP
+        </p>
+      </div>
+
+      <form id="loginForm">
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+          >
+        </div>
+
+        <button type="submit">
+          Sign In
+        </button>
+
+      </form>
+
+      <div id="message"></div>
+
+      <div class="footer">
+        My Tour Mitra ERP
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Firebase -->
+  <script type="module">
+
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA7yV96KZ5w4tjRy2c_bwtFYTu8r-mNzU4",
+      authDomain: "my-tour-mitra-erp.firebaseapp.com",
+      projectId: "my-tour-mitra-erp",
+      storageBucket: "my-tour-mitra-erp.firebasestorage.app",
+      messagingSenderId: "104596097197",
+      appId: "1:104596097197:web:7abcc59c6feee02fe05e24"
+    };
+
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+
+    // Login
+    const loginForm = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+
+    loginForm.addEventListener("submit", async (event) => {
+
+      event.preventDefault();
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+
+      message.style.color = "#1769e0";
+      message.textContent = "Signing in...";
+
+
+      try {
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        message.style.color = "green";
+        message.textContent =
+          "Login successful!";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        message.style.color = "#dc2626";
+
+        if (error.code === "auth/invalid-credential") {
+
+          message.textContent =
+            "Invalid email or password.";
+
+        } else if (error.code === "auth/user-not-found") {
+
+          message.textContent =
+            "User account not found.";
+
+        } else if (error.code === "auth/wrong-password") {
+
+          message.textContent =
+            "Incorrect password.";
+
+        } else {
+
+          message.textContent =
+            "Login failed. Please try again.";
+
+        }
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
