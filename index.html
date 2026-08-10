@@ -1803,6 +1803,7 @@
         user.email;
 
       await loadCustomers();
+      await loadEnquiries();
 
     } else {
 
@@ -2655,7 +2656,829 @@ if (page === "enquiries") {
     }
   );
 
+  // ================= ENQUIRIES =================
 
+  let allEnquiries = [];
+
+
+  // ================= CUSTOMER DROPDOWN =================
+
+  async function loadCustomerDropdown() {
+
+    enquiryCustomer.innerHTML = `
+      <option value="">Loading customers...</option>
+    `;
+
+    try {
+
+      const snapshot = await getDocs(
+        collection(db, "customers")
+      );
+
+      enquiryCustomer.innerHTML = `
+        <option value="">Select Customer</option>
+      `;
+
+      snapshot.docs.forEach((document) => {
+
+        const customer = document.data();
+
+        const option =
+          document.createElement("option");
+
+        option.value = document.id;
+
+        option.textContent =
+          `${customer.name || "Unnamed"} - ${customer.mobile || ""}`;
+
+        enquiryCustomer.appendChild(option);
+
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      enquiryCustomer.innerHTML = `
+        <option value="">
+          Unable to load customers
+        </option>
+      `;
+
+    }
+
+  }
+
+
+  // ================= ENQUIRY MODAL =================
+
+  document
+    .getElementById("addEnquiryBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        openEnquiryModal();
+
+      }
+    );
+
+
+  document
+    .getElementById("closeEnquiryModal")
+    .addEventListener(
+      "click",
+      closeEnquiryModal
+    );
+
+
+  document
+    .getElementById("cancelEnquiryBtn")
+    .addEventListener(
+      "click",
+      closeEnquiryModal
+    );
+
+
+  function openEnquiryModal(enquiry = null) {
+
+    enquiryModal.style.display = "flex";
+
+    document.getElementById(
+      "enquiryFormMessage"
+    ).textContent = "";
+
+    loadCustomerDropdown();
+
+
+    if (enquiry) {
+
+      document.getElementById(
+        "enquiryModalTitle"
+      ).textContent = "Edit Enquiry";
+
+      document.getElementById(
+        "enquiryDocId"
+      ).value = enquiry.id;
+
+      document.getElementById(
+        "enquiryCustomer"
+      ).value = enquiry.customerDocId || "";
+
+      document.getElementById(
+        "enquiryDestination"
+      ).value = enquiry.destination || "";
+
+      document.getElementById(
+        "enquiryStartDate"
+      ).value = enquiry.startDate || "";
+
+      document.getElementById(
+        "enquiryEndDate"
+      ).value = enquiry.endDate || "";
+
+      document.getElementById(
+        "enquiryAdults"
+      ).value = enquiry.adults ?? 1;
+
+      document.getElementById(
+        "enquiryChildren"
+      ).value = enquiry.children ?? 0;
+
+      document.getElementById(
+        "enquiryInfants"
+      ).value = enquiry.infants ?? 0;
+
+      document.getElementById(
+        "enquiryTripType"
+      ).value = enquiry.tripType || "Family";
+
+      document.getElementById(
+        "enquiryBudget"
+      ).value = enquiry.budget || "";
+
+      document.getElementById(
+        "enquirySource"
+      ).value = enquiry.source || "Direct";
+
+      document.getElementById(
+        "enquiryStatus"
+      ).value = enquiry.status || "New";
+
+      document.getElementById(
+        "enquiryNotes"
+      ).value = enquiry.notes || "";
+
+    } else {
+
+      document.getElementById(
+        "enquiryModalTitle"
+      ).textContent = "Add Enquiry";
+
+      enquiryForm.reset();
+
+      document.getElementById(
+        "enquiryDocId"
+      ).value = "";
+
+      document.getElementById(
+        "enquiryAdults"
+      ).value = 1;
+
+      document.getElementById(
+        "enquiryChildren"
+      ).value = 0;
+
+      document.getElementById(
+        "enquiryInfants"
+      ).value = 0;
+
+    }
+
+  }
+
+
+  function closeEnquiryModal() {
+
+    enquiryModal.style.display = "none";
+
+    enquiryForm.reset();
+
+    document.getElementById(
+      "enquiryDocId"
+    ).value = "";
+
+  }
+
+
+  // ================= SAVE ENQUIRY =================
+
+  enquiryForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+      const messageBox =
+        document.getElementById(
+          "enquiryFormMessage"
+        );
+
+      messageBox.style.color = "#1769e0";
+
+      messageBox.textContent =
+        "Saving enquiry...";
+
+
+      const customerDocId =
+        document.getElementById(
+          "enquiryCustomer"
+        ).value;
+
+
+      if (!customerDocId) {
+
+        messageBox.style.color = "#dc2626";
+
+        messageBox.textContent =
+          "Please select a customer.";
+
+        return;
+
+      }
+
+
+      const selectedCustomer =
+        allCustomers.find(
+          (customer) =>
+            customer.id === customerDocId
+        );
+
+
+      const data = {
+
+        customerDocId:
+          customerDocId,
+
+        customerName:
+          selectedCustomer?.name || "",
+
+        destination:
+          document
+            .getElementById("enquiryDestination")
+            .value
+            .trim(),
+
+        startDate:
+          document
+            .getElementById("enquiryStartDate")
+            .value,
+
+        endDate:
+          document
+            .getElementById("enquiryEndDate")
+            .value,
+
+        adults:
+          Number(
+            document
+              .getElementById("enquiryAdults")
+              .value || 0
+          ),
+
+        children:
+          Number(
+            document
+              .getElementById("enquiryChildren")
+              .value || 0
+          ),
+
+        infants:
+          Number(
+            document
+              .getElementById("enquiryInfants")
+              .value || 0
+          ),
+
+        tripType:
+          document
+            .getElementById("enquiryTripType")
+            .value,
+
+        budget:
+          Number(
+            document
+              .getElementById("enquiryBudget")
+              .value || 0
+          ),
+
+        source:
+          document
+            .getElementById("enquirySource")
+            .value,
+
+        status:
+          document
+            .getElementById("enquiryStatus")
+            .value,
+
+        notes:
+          document
+            .getElementById("enquiryNotes")
+            .value
+            .trim(),
+
+        updatedAt:
+          serverTimestamp()
+
+      };
+
+
+      try {
+
+        const existingId =
+          document
+            .getElementById("enquiryDocId")
+            .value;
+
+
+        // ================= EDIT =================
+
+        if (existingId) {
+
+          await updateDoc(
+            doc(
+              db,
+              "enquiries",
+              existingId
+            ),
+            data
+          );
+
+          messageBox.style.color =
+            "#15803d";
+
+          messageBox.textContent =
+            "Enquiry updated successfully.";
+
+        }
+
+
+        // ================= NEW =================
+
+        else {
+
+          data.createdAt =
+            serverTimestamp();
+
+          data.createdBy =
+            auth.currentUser
+              ? auth.currentUser.email
+              : "";
+
+          const enquiryRef =
+            await addDoc(
+              collection(
+                db,
+                "enquiries"
+              ),
+              data
+            );
+
+
+          const enquiryId =
+            "ENQ-" +
+            enquiryRef.id
+              .substring(0, 6)
+              .toUpperCase();
+
+
+          await updateDoc(
+            enquiryRef,
+            {
+              enquiryId:
+                enquiryId
+            }
+          );
+
+
+          messageBox.style.color =
+            "#15803d";
+
+          messageBox.textContent =
+            "Enquiry saved successfully.";
+
+        }
+
+
+        await loadEnquiries();
+
+
+        setTimeout(
+          () => {
+
+            closeEnquiryModal();
+
+          },
+          700
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        messageBox.style.color =
+          "#dc2626";
+
+        messageBox.textContent =
+          "Could not save enquiry. Check Firestore rules.";
+
+      }
+
+    }
+  );
+
+
+  // ================= LOAD ENQUIRIES =================
+
+  async function loadEnquiries() {
+
+    enquiriesTableBody.innerHTML = `
+
+      <tr>
+        <td colspan="8" class="empty-table">
+          Loading enquiries...
+        </td>
+      </tr>
+
+    `;
+
+
+    try {
+
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            "enquiries"
+          )
+        );
+
+
+      allEnquiries =
+        snapshot.docs.map(
+          (document) => ({
+
+            id:
+              document.id,
+
+            ...document.data()
+
+          })
+        );
+
+
+      renderEnquiries(
+        allEnquiries
+      );
+
+
+      updateEnquiryDashboard();
+
+    } catch (error) {
+
+      console.error(error);
+
+      enquiriesTableBody.innerHTML = `
+
+        <tr>
+          <td
+            colspan="8"
+            class="empty-table"
+          >
+            Unable to load enquiries.
+            Check Firestore security rules.
+          </td>
+        </tr>
+
+      `;
+
+    }
+
+  }
+
+
+  // ================= RENDER ENQUIRIES =================
+
+  function renderEnquiries(enquiries) {
+
+    if (!enquiries.length) {
+
+      enquiriesTableBody.innerHTML = `
+
+        <tr>
+          <td
+            colspan="8"
+            class="empty-table"
+          >
+            No enquiries found.
+            Click "+ Add Enquiry" to create one.
+          </td>
+        </tr>
+
+      `;
+
+      return;
+
+    }
+
+
+    enquiriesTableBody.innerHTML =
+      enquiries.map(
+        (enquiry) => {
+
+          const totalPax =
+            Number(enquiry.adults || 0) +
+            Number(enquiry.children || 0);
+
+
+          return `
+
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  enquiry.enquiryId || "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    enquiry.customerName || "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  enquiry.destination || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  enquiry.startDate || "-"
+                )}
+              </td>
+
+              <td>
+                ${totalPax}
+              </td>
+
+              <td>
+                ₹${Number(
+                  enquiry.budget || 0
+                ).toLocaleString("en-IN")}
+              </td>
+
+              <td>
+                <span class="status-badge">
+                  ${escapeHtml(
+                    enquiry.status || "New"
+                  )}
+                </span>
+              </td>
+
+              <td>
+
+                <button
+                  class="edit-btn"
+                  data-enquiry-edit-id="${enquiry.id}"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="danger-btn"
+                  data-enquiry-delete-id="${enquiry.id}"
+                >
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+    // ================= EDIT =================
+
+    document
+      .querySelectorAll(
+        "[data-enquiry-edit-id]"
+      )
+      .forEach((button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const enquiry =
+              allEnquiries.find(
+                (item) =>
+                  item.id ===
+                  button.dataset.enquiryEditId
+              );
+
+
+            if (enquiry) {
+
+              openEnquiryModal(
+                enquiry
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+
+    // ================= DELETE =================
+
+    document
+      .querySelectorAll(
+        "[data-enquiry-delete-id]"
+      )
+      .forEach((button) => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const id =
+              button.dataset.enquiryDeleteId;
+
+
+            const enquiry =
+              allEnquiries.find(
+                (item) =>
+                  item.id === id
+              );
+
+
+            const confirmed =
+              confirm(
+                `Delete enquiry "${enquiry?.enquiryId || ""}"?`
+              );
+
+
+            if (!confirmed) {
+
+              return;
+
+            }
+
+
+            try {
+
+              await deleteDoc(
+                doc(
+                  db,
+                  "enquiries",
+                  id
+                )
+              );
+
+
+              await loadEnquiries();
+
+            } catch (error) {
+
+              console.error(error);
+
+              alert(
+                "Could not delete enquiry."
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+  }
+
+
+  // ================= ENQUIRY SEARCH =================
+
+  enquirySearch.addEventListener(
+    "input",
+    () => {
+
+      const search =
+        enquirySearch.value
+          .toLowerCase()
+          .trim();
+
+
+      if (!search) {
+
+        renderEnquiries(
+          allEnquiries
+        );
+
+        return;
+
+      }
+
+
+      const filtered =
+        allEnquiries.filter(
+          (enquiry) => {
+
+            return (
+
+              (enquiry.customerName || "")
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              (enquiry.destination || "")
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              (enquiry.enquiryId || "")
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+          }
+        );
+
+
+      renderEnquiries(
+        filtered
+      );
+
+    }
+  );
+
+
+  // ================= DASHBOARD ENQUIRY COUNT =================
+
+  function updateEnquiryDashboard() {
+
+    const activeStatuses = [
+      "New",
+      "Follow-up",
+      "Quoted"
+    ];
+
+
+    const activeCount =
+      allEnquiries.filter(
+        (enquiry) =>
+          activeStatuses.includes(
+            enquiry.status
+          )
+      ).length;
+
+
+    const enquiryCards =
+      document.querySelectorAll(
+        ".card"
+      );
+
+
+    enquiryCards.forEach((card) => {
+
+      const title =
+        card.querySelector(
+          ".card-title"
+        );
+
+
+      if (
+        title &&
+        title.textContent.trim() ===
+          "Active Enquiries"
+      ) {
+
+        const value =
+          card.querySelector(
+            ".card-value"
+          );
+
+
+        if (value) {
+
+          value.textContent =
+            activeCount;
+
+        }
+
+      }
+
+    });
+
+  }
+  
+
+  
   /* ================= HTML ESCAPE ================= */
 
   function escapeHtml(value) {
