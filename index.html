@@ -914,13 +914,67 @@
       <!-- ================= PLACEHOLDER MODULES ================= -->
 
       <div class="module" id="enquiriesPage">
-        <div class="module-card">
-          <h2>Enquiries</h2>
-          <p style="margin-top:10px;color:#6b7280;">
-            Enquiry management will be built next.
-          </p>
-        </div>
-      </div>
+
+  <div class="module-header">
+
+    <div>
+      <h2>Enquiries</h2>
+      <p>Manage customer travel enquiries and leads.</p>
+    </div>
+
+    <button
+      class="primary-btn"
+      id="addEnquiryBtn"
+    >
+      + Add Enquiry
+    </button>
+
+  </div>
+
+  <div class="module-card">
+
+    <input
+      class="search-box"
+      type="text"
+      id="enquirySearch"
+      placeholder="Search by customer, destination or enquiry ID..."
+    >
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Enquiry ID</th>
+            <th>Customer</th>
+            <th>Travel Date</th>
+            <th>Destination</th>
+            <th>Pax</th>
+            <th>Budget</th>
+            <th>Status</th>
+            <th>Follow-up</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="enquiriesTableBody">
+
+          <tr>
+            <td colspan="9" class="empty-table">
+              Loading enquiries...
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
 
       <div class="module" id="followupsPage">
         <div class="module-card">
