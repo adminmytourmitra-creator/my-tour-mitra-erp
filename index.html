@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>My Tour Mitra ERP</title>
 
   <style>
@@ -15,24 +14,27 @@
     }
 
     body {
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    /* LOGIN */
+
+    .login-page {
       min-height: 100vh;
-      background: #f4f7fb;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .login-container {
-      width: 100%;
-      max-width: 420px;
       padding: 20px;
     }
 
     .login-card {
+      width: 100%;
+      max-width: 420px;
       background: white;
       padding: 35px;
       border-radius: 16px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
     }
 
     .logo-area {
@@ -43,20 +45,20 @@
     .logo {
       width: 70px;
       height: 70px;
-      margin: 0 auto 15px;
+      margin: auto;
+      margin-bottom: 15px;
       border-radius: 16px;
       background: #1769e0;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 25px;
       font-weight: bold;
     }
 
-    h1 {
+    .logo-area h1 {
       font-size: 24px;
-      color: #172033;
       margin-bottom: 6px;
     }
 
@@ -74,12 +76,11 @@
       margin-bottom: 7px;
       font-size: 14px;
       font-weight: 600;
-      color: #374151;
     }
 
     input {
       width: 100%;
-      padding: 13px 14px;
+      padding: 13px;
       border: 1px solid #d8dee9;
       border-radius: 9px;
       font-size: 15px;
@@ -91,18 +92,21 @@
     }
 
     button {
-      width: 100%;
+      cursor: pointer;
       border: none;
+    }
+
+    .login-btn {
+      width: 100%;
       padding: 14px;
       border-radius: 9px;
       background: #1769e0;
       color: white;
       font-size: 15px;
       font-weight: 600;
-      cursor: pointer;
     }
 
-    button:hover {
+    .login-btn:hover {
       background: #1258bf;
     }
 
@@ -113,16 +117,228 @@
       min-height: 20px;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 25px;
-      color: #9aa3b2;
-      font-size: 12px;
+    /* APP */
+
+    .app {
+      display: none;
+      min-height: 100vh;
     }
 
-    @media (max-width: 480px) {
-      .login-card {
-        padding: 25px 20px;
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 250px;
+      background: #111827;
+      color: white;
+      padding: 22px 15px;
+      overflow-y: auto;
+    }
+
+    .brand {
+      padding: 0 10px 25px;
+      border-bottom: 1px solid #374151;
+      margin-bottom: 18px;
+    }
+
+    .brand h2 {
+      font-size: 20px;
+    }
+
+    .brand p {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 5px;
+    }
+
+    .menu-title {
+      font-size: 11px;
+      color: #9ca3af;
+      margin: 18px 10px 8px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .menu-item {
+      width: 100%;
+      padding: 11px 12px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      color: #d1d5db;
+      background: transparent;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .menu-item:hover,
+    .menu-item.active {
+      background: #1769e0;
+      color: white;
+    }
+
+    .logout {
+      margin-top: 20px;
+      background: #dc2626;
+      color: white;
+    }
+
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+
+    .topbar h1 {
+      font-size: 22px;
+    }
+
+    .user-info {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .welcome p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .card-title {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .card-value {
+      font-size: 27px;
+      font-weight: bold;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 250px;
+    }
+
+    .panel h3 {
+      margin-bottom: 18px;
+      font-size: 17px;
+    }
+
+    .empty {
+      color: #9ca3af;
+      font-size: 14px;
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    @media(max-width: 1000px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 700px) {
+      .sidebar {
+        width: 210px;
+      }
+
+      .main {
+        margin-left: 210px;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+    }
+
+    @media(max-width: 560px) {
+      .sidebar {
+        width: 70px;
+        padding: 15px 8px;
+      }
+
+      .brand h2,
+      .brand p,
+      .menu-title {
+        display: none;
+      }
+
+      .menu-item {
+        font-size: 0;
+        text-align: center;
+      }
+
+      .menu-item::first-letter {
+        font-size: 20px;
+      }
+
+      .main {
+        margin-left: 70px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar h1 {
+        font-size: 18px;
+      }
+
+      .user-info {
+        display: none;
       }
     }
   </style>
@@ -130,97 +346,285 @@
 
 <body>
 
-  <div class="login-container">
+<!-- LOGIN PAGE -->
 
-    <div class="login-card">
+<div class="login-page" id="loginPage">
 
-      <div class="logo-area">
-        <div class="logo">MTM</div>
+  <div class="login-card">
 
-        <h1>My Tour Mitra</h1>
+    <div class="logo-area">
+      <div class="logo">MTM</div>
 
-        <p class="subtitle">
-          Travel Agency ERP
-        </p>
-      </div>
+      <h1>My Tour Mitra</h1>
 
-      <form id="loginForm">
-
-        <div class="form-group">
-          <label for="email">Email Address</label>
-
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            required
-          >
-        </div>
-
-        <button type="submit">
-          Sign In
-        </button>
-
-      </form>
-
-      <div id="message"></div>
-
-      <div class="footer">
-        My Tour Mitra ERP
-      </div>
-
+      <p class="subtitle">Travel Agency ERP</p>
     </div>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+        <label>Email Address</label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+        >
+      </div>
+
+      <button class="login-btn" type="submit">
+        Sign In
+      </button>
+
+    </form>
+
+    <div id="message"></div>
 
   </div>
 
-
-  <!-- Firebase -->
-  <script type="module">
-
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-    import {
-      getAuth,
-      signInWithEmailAndPassword
-    } from
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+</div>
 
 
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyA7yV96KZ5w4tjRy2c_bwtFYTu8r-mNzU4",
-      authDomain: "my-tour-mitra-erp.firebaseapp.com",
-      projectId: "my-tour-mitra-erp",
-      storageBucket: "my-tour-mitra-erp.firebasestorage.app",
-      messagingSenderId: "104596097197",
-      appId: "1:104596097197:web:7abcc59c6feee02fe05e24"
-    };
+<!-- ERP APP -->
+
+<div class="app" id="app">
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <h2>My Tour Mitra</h2>
+      <p>Travel Agency ERP</p>
+    </div>
+
+    <div class="menu-title">Main</div>
+
+    <button class="menu-item active">📊 Dashboard</button>
+
+    <div class="menu-title">CRM</div>
+
+    <button class="menu-item">👥 Customers</button>
+    <button class="menu-item">📥 Enquiries</button>
+    <button class="menu-item">📞 Follow-ups</button>
+
+    <div class="menu-title">Operations</div>
+
+    <button class="menu-item">📦 Packages</button>
+    <button class="menu-item">🏨 Hotels</button>
+    <button class="menu-item">🚗 Cabs</button>
+    <button class="menu-item">🤝 B2B Agencies</button>
+
+    <div class="menu-title">Documents</div>
+
+    <button class="menu-item">📄 Quotations</button>
+    <button class="menu-item">🧾 Invoices</button>
+    <button class="menu-item">🎫 Vouchers</button>
+
+    <div class="menu-title">Accounts</div>
+
+    <button class="menu-item">💰 Payments</button>
+    <button class="menu-item">💸 Expenses</button>
+    <button class="menu-item">📈 Profit & Loss</button>
+
+    <div class="menu-title">Administration</div>
+
+    <button class="menu-item">👨‍💼 Team / Users</button>
+    <button class="menu-item">⚙️ Settings</button>
+
+    <button class="menu-item logout" id="logoutBtn">
+      🚪 Logout
+    </button>
+
+  </aside>
 
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
+  <main class="main">
 
-    const auth = getAuth(app);
+    <header class="topbar">
+
+      <h1>Dashboard</h1>
+
+      <div class="user-info" id="userEmail"></div>
+
+    </header>
 
 
-    // Login
-    const loginForm = document.getElementById("loginForm");
-    const message = document.getElementById("message");
+    <section class="content">
+
+      <div class="welcome">
+
+        <h2>Welcome back!</h2>
+
+        <p>
+          Here's what's happening across your travel agency.
+        </p>
+
+      </div>
 
 
-    loginForm.addEventListener("submit", async (event) => {
+      <div class="cards">
+
+        <div class="card">
+          <div class="card-title">Total Customers</div>
+          <div class="card-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Active Enquiries</div>
+          <div class="card-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Open Quotations</div>
+          <div class="card-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Confirmed Bookings</div>
+          <div class="card-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Total Revenue</div>
+          <div class="card-value">₹0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Total Cost</div>
+          <div class="card-value">₹0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Gross Profit</div>
+          <div class="card-value">₹0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Pending Payments</div>
+          <div class="card-value">₹0</div>
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-grid">
+
+        <div class="panel">
+
+          <h3>Enquiry Pipeline</h3>
+
+          <div class="empty">
+            Enquiry data will appear here.
+          </div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <h3>Upcoming Follow-ups</h3>
+
+          <div class="empty">
+            Follow-up data will appear here.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script type="module">
+
+  import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  }
+  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA7yV96KZ5w4tjRy2c_bwtFYTu8r-mNzU4",
+    authDomain: "my-tour-mitra-erp.firebaseapp.com",
+    projectId: "my-tour-mitra-erp",
+    storageBucket: "my-tour-mitra-erp.firebasestorage.app",
+    messagingSenderId: "104596097197",
+    appId: "1:104596097197:web:7abcc59c6feee02fe05e24"
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+
+  const loginPage =
+    document.getElementById("loginPage");
+
+  const appPage =
+    document.getElementById("app");
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const message =
+    document.getElementById("message");
+
+  const userEmail =
+    document.getElementById("userEmail");
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+
+  /* AUTH STATE */
+
+  onAuthStateChanged(auth, (user) => {
+
+    if (user) {
+
+      loginPage.style.display = "none";
+      appPage.style.display = "block";
+
+      userEmail.textContent =
+        user.email;
+
+    } else {
+
+      loginPage.style.display = "flex";
+      appPage.style.display = "none";
+
+    }
+
+  });
+
+
+  /* LOGIN */
+
+  loginForm.addEventListener(
+    "submit",
+    async (event) => {
 
       event.preventDefault();
 
@@ -230,10 +634,8 @@
       const password =
         document.getElementById("password").value;
 
-
       message.style.color = "#1769e0";
       message.textContent = "Signing in...";
-
 
       try {
 
@@ -243,10 +645,7 @@
           password
         );
 
-        message.style.color = "green";
-        message.textContent =
-          "Login successful!";
-
+        message.textContent = "";
 
       } catch (error) {
 
@@ -254,33 +653,27 @@
 
         message.style.color = "#dc2626";
 
-        if (error.code === "auth/invalid-credential") {
-
-          message.textContent =
-            "Invalid email or password.";
-
-        } else if (error.code === "auth/user-not-found") {
-
-          message.textContent =
-            "User account not found.";
-
-        } else if (error.code === "auth/wrong-password") {
-
-          message.textContent =
-            "Incorrect password.";
-
-        } else {
-
-          message.textContent =
-            "Login failed. Please try again.";
-
-        }
+        message.textContent =
+          "Invalid email or password.";
 
       }
 
-    });
+    }
+  );
 
-  </script>
+
+  /* LOGOUT */
+
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+      await signOut(auth);
+
+    }
+  );
+
+</script>
 
 </body>
 </html>
