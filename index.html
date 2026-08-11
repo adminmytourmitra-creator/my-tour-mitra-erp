@@ -2347,44 +2347,150 @@
 
 
       <!-- =================================================
-           ITINERARY
-      ================================================== -->
+     ITINERARY
+================================================== -->
 
-      <div class="package-itinerary-section">
+<div class="package-itinerary-section">
 
-        <div class="itinerary-header">
+  <div class="itinerary-header">
 
-          <div>
+    <div>
+      <h3>Day-wise Itinerary</h3>
 
-            <h3>
-              Day-wise Itinerary
-            </h3>
+      <p>
+        Add your itinerary day by day.
+      </p>
+    </div>
 
-            <p>
-              Create the complete itinerary for this package.
-            </p>
+    <button
+      type="button"
+      class="secondary-btn"
+      id="addItineraryDayBtn"
+    >
+      + Add Day
+    </button>
 
-          </div>
+  </div>
 
-          <button
-            type="button"
-            class="secondary-btn"
-            id="addItineraryDayBtn"
+
+  <!-- DAY 1 WILL APPEAR HERE AUTOMATICALLY -->
+
+  <div
+    id="itineraryDays"
+    class="itinerary-days"
+  >
+
+    <div
+      class="itinerary-day"
+      data-day="1"
+    >
+
+      <div class="itinerary-day-header">
+
+        <h4>
+          Day 1
+        </h4>
+
+      </div>
+
+
+      <div class="form-grid">
+
+        <!-- DAY TITLE -->
+
+        <div class="form-group">
+
+          <label>
+            Day Title
+          </label>
+
+          <input
+            type="text"
+            class="itinerary-title"
+            placeholder="e.g. Guwahati to Shillong"
           >
-            + Add Day
-          </button>
 
         </div>
 
 
-        <!-- ITINERARY DAYS -->
+        <!-- MEALS -->
 
-        <div
-          id="itineraryDays"
-          class="itinerary-days"
-        ></div>
+        <div class="form-group">
+
+          <label>
+            Meals
+          </label>
+
+          <select class="itinerary-meals">
+
+            <option value="None">
+              None
+            </option>
+
+            <option value="Breakfast">
+              Breakfast
+            </option>
+
+            <option value="Lunch">
+              Lunch
+            </option>
+
+            <option value="Dinner">
+              Dinner
+            </option>
+
+            <option value="Breakfast & Dinner">
+              Breakfast &amp; Dinner
+            </option>
+
+            <option value="All Meals">
+              All Meals
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ITINERARY DETAILS -->
+
+        <div class="form-group full-width">
+
+          <label>
+            Itinerary Details
+          </label>
+
+          <textarea
+            class="itinerary-description"
+            placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
+          ></textarea>
+
+        </div>
+
+
+        <!-- OVERNIGHT -->
+
+        <div class="form-group">
+
+          <label>
+            Overnight Stay
+          </label>
+
+          <input
+            type="text"
+            class="itinerary-overnight"
+            placeholder="e.g. Shillong"
+          >
+
+        </div>
 
       </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 
       <!-- =================================================
