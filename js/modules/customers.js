@@ -1,6 +1,4 @@
-// ======================================================
-// CUSTOMERS MODULE
-// ======================================================
+// ================= CUSTOMERS MODULE =================
 
 import {
   collection,
@@ -15,518 +13,234 @@ import {
 import { db, auth } from "../firebase.js";
 
 
-// ======================================================
-// MODULE STATE
-// ======================================================
+// ================= STATE =================
 
 let allCustomers = [];
 
 
-// ======================================================
-// INITIALIZE CUSTOMERS MODULE
-// ======================================================
+// ================= INITIALIZE =================
 
 export function initCustomers() {
 
+  setupCustomerButtons();
+  setupCustomerForm();
+  setupCustomerSearch();
+
+  loadCustomers();
+
+}
+
+
+// ================= ELEMENTS =================
+
+function getElement(id) {
+
+  return document.getElementById(id);
+
+}
+
+
+// ================= CUSTOMER BUTTONS =================
+
+function setupCustomerButtons() {
+
   const addButton =
-    document.getElementById("addCustomerBtn");
+    getElement("addCustomerBtn");
 
   const closeButton =
-    document.getElementById("closeCustomerModal");
+    getElement("closeCustomerModal");
 
   const cancelButton =
-    document.getElementById("cancelCustomerBtn");
-
-  const form =
-    document.getElementById("customerForm");
-
-  const search =
-    document.getElementById("customerSearch");
+    getElement("cancelCustomerBtn");
 
 
   if (addButton) {
+
     addButton.addEventListener(
       "click",
-      openAddCustomer
+      () => openCustomerModal()
     );
+
   }
 
 
   if (closeButton) {
+
     closeButton.addEventListener(
       "click",
       closeCustomerModal
     );
+
   }
 
 
   if (cancelButton) {
+
     cancelButton.addEventListener(
       "click",
       closeCustomerModal
     );
-  }
-
-
-  if (form) {
-    form.addEventListener(
-      "submit",
-      saveCustomer
-    );
-  }
-
-
-  if (search) {
-    search.addEventListener(
-      "input",
-      handleCustomerSearch
-    );
-  }
-
-
-  loadCustomers();
-}
-
-
-// ======================================================
-// LOAD CUSTOMERS
-// ======================================================
-
-export async function loadCustomers() {
-
-  const tableBody =
-    document.getElementById(
-      "customersTableBody"
-    );
-
-  if (!tableBody) {
-    return;
-  }
-
-
-  tableBody.innerHTML = `
-    <tr>
-      <td colspan="8" class="empty-table">
-        Loading customers...
-      </td>
-    </tr>
-  `;
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(db, "customers")
-      );
-
-
-    allCustomers =
-      snapshot.docs.map(
-        (customerDoc) => ({
-          id: customerDoc.id,
-          ...customerDoc.data()
-        })
-      );
-
-
-    renderCustomers(allCustomers);
-
-    updateCustomerCount();
-
-  } catch (error) {
-
-    console.error(
-      "Error loading customers:",
-      error
-    );
-
-
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="8" class="empty-table">
-          Unable to load customers.
-        </td>
-      </tr>
-    `;
 
   }
-}
-
-
-// ======================================================
-// RENDER CUSTOMERS
-// ======================================================
-
-function renderCustomers(customers) {
-
-  const tableBody =
-    document.getElementById(
-      "customersTableBody"
-    );
-
-
-  if (!tableBody) {
-    return;
-  }
-
-
-  if (!customers.length) {
-
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="8" class="empty-table">
-          No customers found.
-          Click "+ Add Customer" to create one.
-        </td>
-      </tr>
-    `;
-
-    return;
-  }
-
-
-  tableBody.innerHTML =
-    customers.map(
-      (customer) => `
-
-        <tr>
-
-          <td>
-            ${escapeHtml(
-              customer.customerId || "-"
-            )}
-          </td>
-
-
-          <td>
-            <strong>
-              ${escapeHtml(
-                customer.name || "-"
-              )}
-            </strong>
-          </td>
-
-
-          <td>
-            ${escapeHtml(
-              customer.mobile || "-"
-            )}
-          </td>
-
-
-          <td>
-            ${escapeHtml(
-              customer.whatsapp || "-"
-            )}
-          </td>
-
-
-          <td>
-            ${escapeHtml(
-              customer.email || "-"
-            )}
-          </td>
-
-
-          <td>
-            ${escapeHtml(
-              customer.city || "-"
-            )}
-          </td>
-
-
-          <td>
-            ${escapeHtml(
-              customer.type || "-"
-            )}
-          </td>
-
-
-          <td>
-
-            <button
-              type="button"
-              class="edit-btn"
-              data-customer-edit="${customer.id}"
-            >
-              Edit
-            </button>
-
-
-            <button
-              type="button"
-              class="danger-btn"
-              data-customer-delete="${customer.id}"
-            >
-              Delete
-            </button>
-
-          </td>
-
-        </tr>
-
-      `
-    ).join("");
-
-
-  attachCustomerActions();
-}
-
-
-// ======================================================
-// CUSTOMER ACTION BUTTONS
-// ======================================================
-
-function attachCustomerActions() {
-
-  document
-    .querySelectorAll(
-      "[data-customer-edit]"
-    )
-    .forEach((button) => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const customer =
-            allCustomers.find(
-              (item) =>
-                item.id ===
-                button.dataset.customerEdit
-            );
-
-
-          if (customer) {
-            openEditCustomer(customer);
-          }
-
-        }
-      );
-
-    });
-
-
-  document
-    .querySelectorAll(
-      "[data-customer-delete]"
-    )
-    .forEach((button) => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          deleteCustomer(
-            button.dataset.customerDelete
-          );
-
-        }
-      );
-
-    });
 
 }
 
 
-// ======================================================
-// OPEN ADD CUSTOMER MODAL
-// ======================================================
+// ================= CUSTOMER FORM =================
 
-function openAddCustomer() {
-
-  const modal =
-    document.getElementById(
-      "customerModal"
-    );
-
+function setupCustomerForm() {
 
   const form =
-    document.getElementById(
-      "customerForm"
-    );
+    getElement("customerForm");
+
+  if (!form) return;
 
 
-  if (!modal || !form) {
-    return;
-  }
+  form.addEventListener(
+    "submit",
+    saveCustomer
+  );
 
-
-  form.reset();
-
-
-  document.getElementById(
-    "customerDocId"
-  ).value = "";
-
-
-  document.getElementById(
-    "customerModalTitle"
-  ).textContent =
-    "Add Customer";
-
-
-  document.getElementById(
-    "customerCountry"
-  ).value =
-    "India";
-
-
-  clearCustomerMessage();
-
-
-  modal.style.display = "flex";
 }
 
 
-// ======================================================
-// OPEN EDIT CUSTOMER MODAL
-// ======================================================
+// ================= OPEN CUSTOMER MODAL =================
 
-function openEditCustomer(customer) {
+function openCustomerModal(customer = null) {
 
   const modal =
-    document.getElementById(
-      "customerModal"
-    );
+    getElement("customerModal");
+
+  const form =
+    getElement("customerForm");
+
+  const title =
+    getElement("customerModalTitle");
+
+  const message =
+    getElement("customerFormMessage");
 
 
-  if (!modal) {
-    return;
-  }
-
-
-  document.getElementById(
-    "customerModalTitle"
-  ).textContent =
-    "Edit Customer";
-
-
-  document.getElementById(
-    "customerDocId"
-  ).value =
-    customer.id || "";
-
-
-  document.getElementById(
-    "customerName"
-  ).value =
-    customer.name || "";
-
-
-  document.getElementById(
-    "customerMobile"
-  ).value =
-    customer.mobile || "";
-
-
-  document.getElementById(
-    "customerWhatsapp"
-  ).value =
-    customer.whatsapp || "";
-
-
-  document.getElementById(
-    "customerEmail"
-  ).value =
-    customer.email || "";
-
-
-  document.getElementById(
-    "customerCity"
-  ).value =
-    customer.city || "";
-
-
-  document.getElementById(
-    "customerCountry"
-  ).value =
-    customer.country || "India";
-
-
-  document.getElementById(
-    "customerType"
-  ).value =
-    customer.type || "Individual";
-
-
-  document.getElementById(
-    "customerSource"
-  ).value =
-    customer.source || "Direct";
-
-
-  document.getElementById(
-    "customerNotes"
-  ).value =
-    customer.notes || "";
-
-
-  clearCustomerMessage();
+  if (!modal || !form) return;
 
 
   modal.style.display = "flex";
+
+
+  if (message) {
+
+    message.textContent = "";
+
+  }
+
+
+  if (customer) {
+
+    title.textContent =
+      "Edit Customer";
+
+
+    getElement("customerDocId").value =
+      customer.id || "";
+
+    getElement("customerName").value =
+      customer.name || "";
+
+    getElement("customerMobile").value =
+      customer.mobile || "";
+
+    getElement("customerWhatsapp").value =
+      customer.whatsapp || "";
+
+    getElement("customerEmail").value =
+      customer.email || "";
+
+    getElement("customerCity").value =
+      customer.city || "";
+
+    getElement("customerCountry").value =
+      customer.country || "India";
+
+    getElement("customerType").value =
+      customer.type || "Individual";
+
+    getElement("customerSource").value =
+      customer.source || "Direct";
+
+    getElement("customerNotes").value =
+      customer.notes || "";
+
+  } else {
+
+    title.textContent =
+      "Add Customer";
+
+
+    form.reset();
+
+
+    getElement("customerDocId").value =
+      "";
+
+    getElement("customerCountry").value =
+      "India";
+
+  }
+
 }
 
 
-// ======================================================
-// CLOSE CUSTOMER MODAL
-// ======================================================
+// ================= CLOSE CUSTOMER MODAL =================
 
 function closeCustomerModal() {
 
   const modal =
-    document.getElementById(
-      "customerModal"
-    );
-
+    getElement("customerModal");
 
   const form =
-    document.getElementById(
-      "customerForm"
-    );
+    getElement("customerForm");
 
 
   if (modal) {
-    modal.style.display = "none";
+
+    modal.style.display =
+      "none";
+
   }
 
 
   if (form) {
+
     form.reset();
-  }
 
-
-  const docId =
-    document.getElementById(
-      "customerDocId"
-    );
-
-
-  if (docId) {
-    docId.value = "";
   }
 
 
   const country =
-    document.getElementById(
-      "customerCountry"
-    );
-
+    getElement("customerCountry");
 
   if (country) {
-    country.value = "India";
+
+    country.value =
+      "India";
+
   }
 
 
-  clearCustomerMessage();
+  const docId =
+    getElement("customerDocId");
+
+  if (docId) {
+
+    docId.value =
+      "";
+
+  }
+
 }
 
 
-// ======================================================
-// SAVE CUSTOMER
-// ======================================================
+// ================= SAVE CUSTOMER =================
 
 async function saveCustomer(event) {
 
@@ -534,9 +248,7 @@ async function saveCustomer(event) {
 
 
   const message =
-    document.getElementById(
-      "customerFormMessage"
-    );
+    getElement("customerFormMessage");
 
 
   if (message) {
@@ -553,31 +265,47 @@ async function saveCustomer(event) {
   const customerData = {
 
     name:
-      getValue("customerName"),
+      getElement("customerName")
+        ?.value
+        .trim() || "",
 
     mobile:
-      getValue("customerMobile"),
+      getElement("customerMobile")
+        ?.value
+        .trim() || "",
 
     whatsapp:
-      getValue("customerWhatsapp"),
+      getElement("customerWhatsapp")
+        ?.value
+        .trim() || "",
 
     email:
-      getValue("customerEmail"),
+      getElement("customerEmail")
+        ?.value
+        .trim() || "",
 
     city:
-      getValue("customerCity"),
+      getElement("customerCity")
+        ?.value
+        .trim() || "",
 
     country:
-      getValue("customerCountry") || "India",
+      getElement("customerCountry")
+        ?.value
+        .trim() || "India",
 
     type:
-      getValue("customerType") || "Individual",
+      getElement("customerType")
+        ?.value || "Individual",
 
     source:
-      getValue("customerSource") || "Direct",
+      getElement("customerSource")
+        ?.value || "Direct",
 
     notes:
-      getValue("customerNotes"),
+      getElement("customerNotes")
+        ?.value
+        .trim() || "",
 
     updatedAt:
       serverTimestamp()
@@ -588,22 +316,24 @@ async function saveCustomer(event) {
   try {
 
     const existingId =
-      getValue("customerDocId");
+      getElement("customerDocId")
+        ?.value;
 
 
-    // ==================================================
-    // UPDATE EXISTING CUSTOMER
-    // ==================================================
+    // ================= EDIT =================
 
     if (existingId) {
 
       await updateDoc(
+
         doc(
           db,
           "customers",
           existingId
         ),
+
         customerData
+
       );
 
 
@@ -615,15 +345,12 @@ async function saveCustomer(event) {
     }
 
 
-    // ==================================================
-    // CREATE NEW CUSTOMER
-    // ==================================================
+    // ================= NEW CUSTOMER =================
 
     else {
 
       customerData.createdAt =
         serverTimestamp();
-
 
       customerData.createdBy =
         auth.currentUser
@@ -633,11 +360,14 @@ async function saveCustomer(event) {
 
       const customerRef =
         await addDoc(
+
           collection(
             db,
             "customers"
           ),
+
           customerData
+
         );
 
 
@@ -649,11 +379,14 @@ async function saveCustomer(event) {
 
 
       await updateDoc(
+
         customerRef,
+
         {
           customerId:
             customerId
         }
+
       );
 
 
@@ -669,9 +402,7 @@ async function saveCustomer(event) {
 
 
     setTimeout(
-      () => {
-        closeCustomerModal();
-      },
+      closeCustomerModal,
       700
     );
 
@@ -679,13 +410,13 @@ async function saveCustomer(event) {
   } catch (error) {
 
     console.error(
-      "Error saving customer:",
+      "Customer save error:",
       error
     );
 
 
     showCustomerMessage(
-      "Could not save customer. Please check Firebase.",
+      "Could not save customer. Check Firestore rules.",
       "#dc2626"
     );
 
@@ -694,32 +425,299 @@ async function saveCustomer(event) {
 }
 
 
-// ======================================================
-// DELETE CUSTOMER
-// ======================================================
+// ================= CUSTOMER MESSAGE =================
 
-async function deleteCustomer(customerId) {
+function showCustomerMessage(
+  text,
+  color
+) {
+
+  const message =
+    getElement("customerFormMessage");
+
+
+  if (!message) return;
+
+
+  message.style.color =
+    color;
+
+  message.textContent =
+    text;
+
+}
+
+
+// ================= LOAD CUSTOMERS =================
+
+async function loadCustomers() {
+
+  const table =
+    getElement("customersTableBody");
+
+
+  if (!table) return;
+
+
+  table.innerHTML = `
+
+    <tr>
+      <td
+        colspan="8"
+        class="empty-table"
+      >
+        Loading customers...
+      </td>
+    </tr>
+
+  `;
+
+
+  try {
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "customers"
+        )
+      );
+
+
+    allCustomers =
+      snapshot.docs.map(
+        (document) => ({
+
+          id:
+            document.id,
+
+          ...document.data()
+
+        })
+      );
+
+
+    renderCustomers(
+      allCustomers
+    );
+
+
+    updateCustomerDashboard();
+
+
+  } catch (error) {
+
+    console.error(
+      "Customer loading error:",
+      error
+    );
+
+
+    table.innerHTML = `
+
+      <tr>
+        <td
+          colspan="8"
+          class="empty-table"
+        >
+          Unable to load customers.
+          Check Firestore security rules.
+        </td>
+      </tr>
+
+    `;
+
+  }
+
+}
+
+
+// ================= RENDER CUSTOMERS =================
+
+function renderCustomers(customers) {
+
+  const table =
+    getElement("customersTableBody");
+
+
+  if (!table) return;
+
+
+  if (!customers.length) {
+
+    table.innerHTML = `
+
+      <tr>
+        <td
+          colspan="8"
+          class="empty-table"
+        >
+          No customers found.
+          Click "+ Add Customer" to create one.
+        </td>
+      </tr>
+
+    `;
+
+    return;
+
+  }
+
+
+  table.innerHTML =
+    customers
+      .map(
+        (customer) => `
+
+          <tr>
+
+            <td>
+              ${escapeHtml(
+                customer.customerId || "-"
+              )}
+            </td>
+
+            <td>
+              <strong>
+                ${escapeHtml(
+                  customer.name || "-"
+                )}
+              </strong>
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.mobile || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.whatsapp || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.email || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.city || "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                customer.type || "-"
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="edit-btn"
+                data-customer-edit-id="${customer.id}"
+              >
+                Edit
+              </button>
+
+              <button
+                class="danger-btn"
+                data-customer-delete-id="${customer.id}"
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+
+  setupCustomerRowActions();
+
+}
+
+
+// ================= ROW ACTIONS =================
+
+function setupCustomerRowActions() {
+
+  document
+    .querySelectorAll(
+      "[data-customer-edit-id]"
+    )
+    .forEach((button) => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const customer =
+            allCustomers.find(
+              (item) =>
+                item.id ===
+                button.dataset.customerEditId
+            );
+
+
+          if (customer) {
+
+            openCustomerModal(
+              customer
+            );
+
+          }
+
+        }
+      );
+
+    });
+
+
+  document
+    .querySelectorAll(
+      "[data-customer-delete-id]"
+    )
+    .forEach((button) => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          deleteCustomer(
+            button.dataset.customerDeleteId
+          )
+      );
+
+    });
+
+}
+
+
+// ================= DELETE CUSTOMER =================
+
+async function deleteCustomer(id) {
 
   const customer =
     allCustomers.find(
       (item) =>
-        item.id === customerId
+        item.id === id
     );
-
-
-  const customerName =
-    customer?.name || "this customer";
 
 
   const confirmed =
     confirm(
-      `Delete customer "${customerName}"?`
+      `Delete customer "${customer?.name || ""}"?`
     );
 
 
-  if (!confirmed) {
-    return;
-  }
+  if (!confirmed) return;
 
 
   try {
@@ -728,7 +726,7 @@ async function deleteCustomer(customerId) {
       doc(
         db,
         "customers",
-        customerId
+        id
       )
     );
 
@@ -739,7 +737,7 @@ async function deleteCustomer(customerId) {
   } catch (error) {
 
     console.error(
-      "Error deleting customer:",
+      "Customer delete error:",
       error
     );
 
@@ -753,169 +751,143 @@ async function deleteCustomer(customerId) {
 }
 
 
-// ======================================================
-// CUSTOMER SEARCH
-// ======================================================
+// ================= SEARCH =================
 
-function handleCustomerSearch(event) {
+function setupCustomerSearch() {
 
-  const search =
-    event.target.value
-      .toLowerCase()
-      .trim();
+  const searchBox =
+    getElement("customerSearch");
 
 
-  if (!search) {
-
-    renderCustomers(
-      allCustomers
-    );
-
-    return;
-  }
+  if (!searchBox) return;
 
 
-  const filtered =
-    allCustomers.filter(
-      (customer) => {
+  searchBox.addEventListener(
+    "input",
+    () => {
 
-        return (
+      const search =
+        searchBox.value
+          .toLowerCase()
+          .trim();
 
-          String(
-            customer.name || ""
-          )
-            .toLowerCase()
-            .includes(search)
 
-          ||
+      if (!search) {
 
-          String(
-            customer.mobile || ""
-          )
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          String(
-            customer.email || ""
-          )
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          String(
-            customer.city || ""
-          )
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          String(
-            customer.customerId || ""
-          )
-            .toLowerCase()
-            .includes(search)
-
+        renderCustomers(
+          allCustomers
         );
 
+        return;
+
       }
+
+
+      const filtered =
+        allCustomers.filter(
+          (customer) => {
+
+            return (
+
+              String(
+                customer.name || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                customer.mobile || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                customer.email || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                customer.city || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                customer.customerId || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+          }
+        );
+
+
+      renderCustomers(
+        filtered
+      );
+
+    }
+  );
+
+}
+
+
+// ================= DASHBOARD =================
+
+function updateCustomerDashboard() {
+
+  const cards =
+    document.querySelectorAll(
+      ".card"
     );
 
 
-  renderCustomers(filtered);
-}
+  cards.forEach((card) => {
+
+    const title =
+      card.querySelector(
+        ".card-title"
+      );
 
 
-// ======================================================
-// UPDATE CUSTOMER COUNT
-// ======================================================
+    if (
+      title &&
+      title.textContent.trim() ===
+        "Total Customers"
+    ) {
 
-function updateCustomerCount() {
-
-  const element =
-    document.getElementById(
-      "totalCustomers"
-    );
-
-
-  if (element) {
-    element.textContent =
-      allCustomers.length;
-  }
-
-}
+      const value =
+        card.querySelector(
+          ".card-value"
+        );
 
 
-// ======================================================
-// SHOW CUSTOMER MESSAGE
-// ======================================================
+      if (value) {
 
-function showCustomerMessage(
-  text,
-  color
-) {
+        value.textContent =
+          allCustomers.length;
 
-  const message =
-    document.getElementById(
-      "customerFormMessage"
-    );
+      }
 
+    }
 
-  if (!message) {
-    return;
-  }
-
-
-  message.style.color =
-    color;
-
-  message.textContent =
-    text;
-}
-
-
-// ======================================================
-// CLEAR CUSTOMER MESSAGE
-// ======================================================
-
-function clearCustomerMessage() {
-
-  const message =
-    document.getElementById(
-      "customerFormMessage"
-    );
-
-
-  if (message) {
-    message.textContent = "";
-  }
+  });
 
 }
 
 
-// ======================================================
-// GET INPUT VALUE
-// ======================================================
-
-function getValue(id) {
-
-  const element =
-    document.getElementById(id);
-
-
-  return element
-    ? element.value.trim()
-    : "";
-
-}
-
-
-// ======================================================
-// HTML ESCAPE
-// ======================================================
+// ================= HTML ESCAPE =================
 
 function escapeHtml(value) {
 
