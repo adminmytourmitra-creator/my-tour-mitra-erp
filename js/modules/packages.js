@@ -14,13 +14,11 @@ import {
 
 import { db, auth } from "../firebase.js";
 
-
 // ======================================================
 // STATE
 // ======================================================
 
 let allPackages = [];
-
 
 // ======================================================
 // INITIALIZE
@@ -29,26 +27,20 @@ let allPackages = [];
 export function initPackages() {
 
   setupPackageButtons();
-
   setupPackageForm();
-
   setupPackageSearch();
 
   loadPackages();
 
 }
 
-
 // ======================================================
 // ELEMENT HELPER
 // ======================================================
 
 function getElement(id) {
-
   return document.getElementById(id);
-
 }
-
 
 // ======================================================
 // BUTTONS
@@ -65,7 +57,6 @@ function setupPackageButtons() {
   const cancelButton =
     getElement("cancelPackageBtn");
 
-
   if (addButton) {
 
     addButton.addEventListener(
@@ -75,7 +66,6 @@ function setupPackageButtons() {
 
   }
 
-
   if (closeButton) {
 
     closeButton.addEventListener(
@@ -84,7 +74,6 @@ function setupPackageButtons() {
     );
 
   }
-
 
   if (cancelButton) {
 
@@ -97,7 +86,6 @@ function setupPackageButtons() {
 
 }
 
-
 // ======================================================
 // FORM
 // ======================================================
@@ -109,7 +97,6 @@ function setupPackageForm() {
 
   if (!form) return;
 
-
   form.addEventListener(
     "submit",
     savePackage
@@ -117,14 +104,11 @@ function setupPackageForm() {
 
 }
 
-
 // ======================================================
 // OPEN MODAL
 // ======================================================
 
-function openPackageModal(
-  packageData = null
-) {
+function openPackageModal(packageData = null) {
 
   const modal =
     getElement("packageModal");
@@ -138,111 +122,85 @@ function openPackageModal(
   const message =
     getElement("packageFormMessage");
 
-
   if (!modal || !form) return;
 
-
-  modal.style.display =
-    "flex";
-
+  modal.style.display = "flex";
 
   if (message) {
-
-    message.textContent =
-      "";
-
+    message.textContent = "";
   }
-
 
   if (packageData) {
 
     if (title) {
-
-      title.textContent =
-        "Edit Package";
-
+      title.textContent = "Edit Package";
     }
 
+    getElement("packageDocId").value =
+      packageData.id || "";
 
-    setValue(
-      "packageDocId",
-      packageData.id
-    );
+    getElement("packageName").value =
+      packageData.name || "";
 
-    setValue(
-      "packageName",
-      packageData.name
-    );
+    getElement("packageDestination").value =
+      packageData.destination || "";
 
-    setValue(
-      "packageDestination",
-      packageData.destination
-    );
+    getElement("packageNights").value =
+      packageData.nights ?? "";
 
-    setValue(
-      "packageCategory",
-      packageData.category ||
-      "Domestic"
-    );
+    getElement("packageDays").value =
+      packageData.days ?? "";
 
-    setValue(
-      "packageDuration",
-      packageData.duration
-    );
+    getElement("packageType").value =
+      packageData.type || "Domestic";
 
-    setValue(
-      "packagePax",
-      packageData.pax
-    );
+    getElement("packagePrice").value =
+      packageData.price ?? "";
 
-    setValue(
-      "packagePrice",
-      packageData.price
-    );
+    getElement("packageMealPlan").value =
+      packageData.mealPlan || "Breakfast";
 
-    setValue(
-      "packageDescription",
-      packageData.description
-    );
+    getElement("packageVehicle").value =
+      packageData.vehicle || "Cab";
 
-    setValue(
-      "packageStatus",
-      packageData.status ||
-      "Active"
-    );
+    getElement("packageStatus").value =
+      packageData.status || "Active";
+
+    getElement("packageDescription").value =
+      packageData.description || "";
 
   } else {
 
     if (title) {
-
-      title.textContent =
-        "Add Package";
-
+      title.textContent = "Add Package";
     }
-
 
     form.reset();
 
+    getElement("packageDocId").value =
+      "";
 
-    setValue(
-      "packageDocId",
-      ""
-    );
+    getElement("packageNights").value =
+      2;
 
-    setValue(
-      "packageCategory",
-      "Domestic"
-    );
+    getElement("packageDays").value =
+      3;
 
-    setValue(
-      "packageStatus",
-      "Active"
-    );
+    getElement("packageType").value =
+      "Domestic";
+
+    getElement("packageMealPlan").value =
+      "Breakfast";
+
+    getElement("packageVehicle").value =
+      "Cab";
+
+    getElement("packageStatus").value =
+      "Active";
 
   }
 
 }
-
 
 // ======================================================
 // CLOSE MODAL
@@ -256,39 +214,22 @@ function closePackageModal() {
   const form =
     getElement("packageForm");
 
-
   if (modal) {
-
-    modal.style.display =
-      "none";
-
+    modal.style.display = "none";
   }
-
 
   if (form) {
-
     form.reset();
-
   }
 
+  const docId =
+    getElement("packageDocId");
 
-  setValue(
-    "packageDocId",
-    ""
-  );
-
-  setValue(
-    "packageCategory",
-    "Domestic"
-  );
-
-  setValue(
-    "packageStatus",
-    "Active"
-  );
+  if (docId) {
+    docId.value = "";
+  }
 
 }
-
 
 // ======================================================
 // SAVE PACKAGE
@@ -298,72 +239,102 @@ async function savePackage(event) {
 
   event.preventDefault();
 
+  const message =
+    getElement("packageFormMessage");
 
-  showPackageMessage(
-    "Saving package...",
-    "#1769e0"
-  );
+  if (message) {
 
+    message.style.color =
+      "#1769e0";
+
+    message.textContent =
+      "Saving package...";
+
+  }
 
   const packageData = {
 
     name:
-      getValue(
-        "packageName"
-      ),
+      getElement("packageName")
+        ?.value
+        .trim() || "",
 
     destination:
-      getValue(
-        "packageDestination"
-      ),
+      getElement("packageDestination")
+        ?.value
+        .trim() || "",
 
-    category:
-      getValue(
-        "packageCategory"
-      ) || "Domestic",
-
-    duration:
-      getValue(
-        "packageDuration"
-      ),
-
-    pax:
+    nights:
       Number(
-        getValue(
-          "packagePax"
-        ) || 0
+        getElement("packageNights")
+          ?.value || 0
       ),
+
+    days:
+      Number(
+        getElement("packageDays")
+          ?.value || 0
+      ),
+
+    type:
+      getElement("packageType")
+        ?.value || "Domestic",
 
     price:
       Number(
-        getValue(
-          "packagePrice"
-        ) || 0
+        getElement("packagePrice")
+          ?.value || 0
       ),
 
-    description:
-      getValue(
-        "packageDescription"
-      ),
+    mealPlan:
+      getElement("packageMealPlan")
+        ?.value || "Breakfast",
+
+    vehicle:
+      getElement("packageVehicle")
+        ?.value || "Cab",
 
     status:
-      getValue(
-        "packageStatus"
-      ) || "Active",
+      getElement("packageStatus")
+        ?.value || "Active",
+
+    description:
+      getElement("packageDescription")
+        ?.value
+        .trim() || "",
 
     updatedAt:
       serverTimestamp()
 
   };
 
+  if (!packageData.name) {
+
+    showPackageMessage(
+      "Please enter package name.",
+      "#dc2626"
+    );
+
+    return;
+
+  }
+
+  if (!packageData.destination) {
+
+    showPackageMessage(
+      "Please enter destination.",
+      "#dc2626"
+    );
+
+    return;
+
+  }
 
   try {
 
     const existingId =
-      getValue(
-        "packageDocId"
-      );
-
+      getElement("packageDocId")
+        ?.value || "";
 
     // ==================================================
     // EDIT
@@ -383,14 +354,12 @@ async function savePackage(event) {
 
       );
 
-
       showPackageMessage(
         "Package updated successfully.",
         "#15803d"
       );
 
     }
-
 
     // ==================================================
     // NEW
@@ -401,12 +370,10 @@ async function savePackage(event) {
       packageData.createdAt =
         serverTimestamp();
 
-
       packageData.createdBy =
         auth.currentUser
           ? auth.currentUser.email
           : "";
-
 
       const packageRef =
         await addDoc(
@@ -420,13 +387,11 @@ async function savePackage(event) {
 
         );
 
-
       const packageId =
         "PKG-" +
         packageRef.id
           .substring(0, 6)
           .toUpperCase();
-
 
       await updateDoc(
 
@@ -439,7 +404,6 @@ async function savePackage(event) {
 
       );
 
-
       showPackageMessage(
         "Package saved successfully.",
         "#15803d"
@@ -447,15 +411,12 @@ async function savePackage(event) {
 
     }
 
-
     await loadPackages();
-
 
     setTimeout(
       closePackageModal,
       700
     );
-
 
   } catch (error) {
 
@@ -463,7 +424,6 @@ async function savePackage(event) {
       "Package save error:",
       error
     );
-
 
     showPackageMessage(
       "Could not save package. Check Firestore rules.",
@@ -474,6 +434,27 @@ async function savePackage(event) {
 
 }
 
+// ======================================================
+// MESSAGE
+// ======================================================
+
+function showPackageMessage(
+  text,
+  color
+) {
+
+  const message =
+    getElement("packageFormMessage");
+
+  if (!message) return;
+
+  message.style.color =
+    color;
+
+  message.textContent =
+    text;
+
+}
 
 // ======================================================
 // LOAD PACKAGES
@@ -482,13 +463,9 @@ async function savePackage(event) {
 async function loadPackages() {
 
   const table =
-    getElement(
-      "packagesTableBody"
-    );
-
+    getElement("packagesTableBody");
 
   if (!table) return;
-
 
   table.innerHTML = `
     <tr>
@@ -501,7 +478,6 @@ async function loadPackages() {
     </tr>
   `;
 
-
   try {
 
     const snapshot =
@@ -511,7 +487,6 @@ async function loadPackages() {
           "packages"
         )
       );
-
 
     allPackages =
       snapshot.docs.map(
@@ -525,11 +500,9 @@ async function loadPackages() {
         })
       );
 
-
     renderPackages(
       allPackages
     );
-
 
   } catch (error) {
 
@@ -537,7 +510,6 @@ async function loadPackages() {
       "Package loading error:",
       error
     );
-
 
     table.innerHTML = `
       <tr>
@@ -555,23 +527,16 @@ async function loadPackages() {
 
 }
 
-
 // ======================================================
-// RENDER PACKAGES
+// RENDER
 // ======================================================
 
-function renderPackages(
-  packages
-) {
+function renderPackages(packages) {
 
   const table =
-    getElement(
-      "packagesTableBody"
-    );
-
+    getElement("packagesTableBody");
 
   if (!table) return;
-
 
   if (!packages.length) {
 
@@ -591,7 +556,6 @@ function renderPackages(
 
   }
 
-
   table.innerHTML =
     packages
       .map(
@@ -601,44 +565,32 @@ function renderPackages(
 
             <td>
               ${escapeHtml(
-                packageData.packageId ||
-                "-"
+                packageData.packageId || "-"
               )}
             </td>
 
             <td>
               <strong>
                 ${escapeHtml(
-                  packageData.name ||
-                  "-"
+                  packageData.name || "-"
                 )}
               </strong>
             </td>
 
             <td>
               ${escapeHtml(
-                packageData.destination ||
-                "-"
+                packageData.destination || "-"
               )}
+            </td>
+
+            <td>
+              ${packageData.nights || 0}N /
+              ${packageData.days || 0}D
             </td>
 
             <td>
               ${escapeHtml(
-                packageData.category ||
-                "-"
-              )}
-            </td>
-
-            <td>
-              ${escapeHtml(
-                packageData.duration ||
-                "-"
-              )}
-            </td>
-
-            <td>
-              ${Number(
-                packageData.pax || 0
+                packageData.type || "-"
               )}
             </td>
 
@@ -651,10 +603,15 @@ function renderPackages(
             </td>
 
             <td>
+              ${escapeHtml(
+                packageData.mealPlan || "-"
+              )}
+            </td>
+
+            <td>
               <span class="status-badge">
                 ${escapeHtml(
-                  packageData.status ||
-                  "Active"
+                  packageData.status || "Active"
                 )}
               </span>
             </td>
@@ -683,11 +640,9 @@ function renderPackages(
       )
       .join("");
 
-
   setupPackageRowActions();
 
 }
-
 
 // ======================================================
 // ROW ACTIONS
@@ -714,7 +669,6 @@ function setupPackageRowActions() {
                     .packageEditId
               );
 
-
             if (packageData) {
 
               openPackageModal(
@@ -728,7 +682,6 @@ function setupPackageRowActions() {
 
       }
     );
-
 
   document
     .querySelectorAll(
@@ -754,14 +707,11 @@ function setupPackageRowActions() {
 
 }
 
-
 // ======================================================
-// DELETE PACKAGE
+// DELETE
 // ======================================================
 
-async function deletePackage(
-  id
-) {
+async function deletePackage(id) {
 
   const packageData =
     allPackages.find(
@@ -769,15 +719,12 @@ async function deletePackage(
         item.id === id
     );
 
-
   const confirmed =
     confirm(
       `Delete package "${packageData?.name || ""}"?`
     );
 
-
   if (!confirmed) return;
-
 
   try {
 
@@ -789,9 +736,7 @@ async function deletePackage(
       )
     );
 
-
     await loadPackages();
-
 
   } catch (error) {
 
@@ -799,7 +744,6 @@ async function deletePackage(
       "Package delete error:",
       error
     );
-
 
     alert(
       "Could not delete package."
@@ -809,7 +753,6 @@ async function deletePackage(
 
 }
 
-
 // ======================================================
 // SEARCH
 // ======================================================
@@ -817,13 +760,9 @@ async function deletePackage(
 function setupPackageSearch() {
 
   const searchBox =
-    getElement(
-      "packageSearch"
-    );
-
+    getElement("packageSearch");
 
   if (!searchBox) return;
-
 
   searchBox.addEventListener(
     "input",
@@ -833,7 +772,6 @@ function setupPackageSearch() {
         searchBox.value
           .toLowerCase()
           .trim();
-
 
       if (!search) {
 
@@ -845,7 +783,6 @@ function setupPackageSearch() {
 
       }
 
-
       const filtered =
         allPackages.filter(
           (packageData) => {
@@ -853,8 +790,7 @@ function setupPackageSearch() {
             return (
 
               String(
-                packageData.packageId ||
-                ""
+                packageData.name || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -862,8 +798,7 @@ function setupPackageSearch() {
               ||
 
               String(
-                packageData.name ||
-                ""
+                packageData.destination || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -871,8 +806,7 @@ function setupPackageSearch() {
               ||
 
               String(
-                packageData.destination ||
-                ""
+                packageData.packageId || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -880,8 +814,15 @@ function setupPackageSearch() {
               ||
 
               String(
-                packageData.category ||
-                ""
+                packageData.type || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                packageData.status || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -891,7 +832,6 @@ function setupPackageSearch() {
           }
         );
 
-
       renderPackages(
         filtered
       );
@@ -900,69 +840,6 @@ function setupPackageSearch() {
   );
 
 }
-
-
-// ======================================================
-// MESSAGE
-// ======================================================
-
-function showPackageMessage(
-  text,
-  color
-) {
-
-  const message =
-    getElement(
-      "packageFormMessage"
-    );
-
-
-  if (!message) return;
-
-
-  message.style.color =
-    color;
-
-
-  message.textContent =
-    text;
-
-}
-
-
-// ======================================================
-// VALUE HELPERS
-// ======================================================
-
-function getValue(id) {
-
-  return (
-    getElement(id)
-      ?.value
-      ?.trim() || ""
-  );
-
-}
-
-
-function setValue(
-  id,
-  value
-) {
-
-  const element =
-    getElement(id);
-
-
-  if (element) {
-
-    element.value =
-      value ?? "";
-
-  }
-
-}
-
 
 // ======================================================
 // HTML ESCAPE
