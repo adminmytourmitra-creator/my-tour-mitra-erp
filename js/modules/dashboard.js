@@ -1,52 +1,120 @@
-// ======================================================
-// DASHBOARD MODULE
-// ======================================================
+// ================= DASHBOARD MODULE =================
+
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+import { db } from "../firebase.js";
+
+
+// ================= INITIALIZE =================
 
 export function initDashboard() {
-  console.log("Dashboard module initialized");
+
+  loadDashboard();
+
 }
 
 
-// ======================================================
-// UPDATE DASHBOARD COUNTERS
-// ======================================================
+// ================= LOAD DASHBOARD =================
 
-export function updateDashboardCounters({
-  customers = 0,
-  enquiries = 0,
-  bookings = 0,
-  revenue = 0
-} = {}) {
+async function loadDashboard() {
 
-  const customerCount =
-    document.getElementById("totalCustomers");
+  try {
 
-  if (customerCount) {
-    customerCount.textContent = customers;
+    const customersSnapshot =
+      await getDocs(
+        collection(db, "customers")
+      );
+
+    const enquiriesSnapshot =
+      await getDocs(
+        collection(db, "enquiries")
+      );
+
+
+    const totalCustomers =
+      customersSnapshot.size;
+
+    const enquiries =
+      enquiriesSnapshot.docs.map(
+        (document) => document.data()
+      );
+
+
+    const activeStatuses = [
+      "New",
+      "Follow-up",
+      "Quoted"
+    ];
+
+
+    const activeEnquiries =
+      enquiries.filter(
+        (enquiry) =>
+          activeStatuses.includes(
+            enquiry.status
+          )
+      ).length;
+
+
+    updateCard(
+      "Total Customers",
+      totalCustomers
+    );
+
+    updateCard(
+      "Active Enquiries",
+      activeEnquiries
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Dashboard loading error:",
+      error
+    );
+
   }
 
-
-  const enquiryCount =
-    document.getElementById("activeEnquiries");
-
-  if (enquiryCount) {
-    enquiryCount.textContent = enquiries;
-  }
+}
 
 
-  const bookingCount =
-    document.getElementById("totalBookings");
+// ================= UPDATE DASHBOARD CARD =================
 
-  if (bookingCount) {
-    bookingCount.textContent = bookings;
-  }
+function updateCard(title, value) {
+
+  const cards =
+    document.querySelectorAll(".card");
 
 
-  const revenueCount =
-    document.getElementById("totalRevenue");
+  cards.forEach((card) => {
 
-  if (revenueCount) {
-    revenueCount.textContent =
-      `₹${Number(revenue).toLocaleString("en-IN")}`;
-  }
+    const cardTitle =
+      card.querySelector(".card-title");
+
+    if (!cardTitle) return;
+
+
+    if (
+      cardTitle.textContent.trim() ===
+      title
+    ) {
+
+      const cardValue =
+        card.querySelector(".card-value");
+
+      if (cardValue) {
+
+        cardValue.textContent =
+          value;
+
+      }
+
+    }
+
+  });
+
 }
