@@ -760,28 +760,123 @@
 
     
       <!-- =================================================
-           PACKAGES
-      ================================================== -->
+     PACKAGES
+================================================== -->
 
-      <div
-        class="module"
-        id="packagesPage"
-        style="display:none;"
-      >
+<div
+  class="module"
+  id="packagesPage"
+  style="display:none;"
+>
 
-        <div class="module-card">
+  <div class="module-header">
 
-          <h2>
-            Packages
-          </h2>
+    <div>
 
-          <p class="module-placeholder">
-            Package builder will be built next.
-          </p>
+      <h2>
+        Packages
+      </h2>
 
-        </div>
+      <p>
+        Manage your tour packages and pricing.
+      </p>
 
-      </div>
+    </div>
+
+    <button
+      class="primary-btn"
+      id="addPackageBtn"
+      type="button"
+    >
+      + Add Package
+    </button>
+
+  </div>
+
+
+  <div class="module-card">
+
+    <input
+      class="search-box"
+      type="text"
+      id="packageSearch"
+      placeholder="Search package by name, destination, package ID or type..."
+    >
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Package ID
+            </th>
+
+            <th>
+              Package Name
+            </th>
+
+            <th>
+              Destination
+            </th>
+
+            <th>
+              Duration
+            </th>
+
+            <th>
+              Type
+            </th>
+
+            <th>
+              Price
+            </th>
+
+            <th>
+              Meal Plan
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="packagesTableBody"
+        >
+
+          <tr>
+
+            <td
+              colspan="9"
+              class="empty-table"
+            >
+              Loading packages...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 
@@ -1935,6 +2030,350 @@
 
 </div>
 
+  <!-- =====================================================
+     PACKAGE MODAL
+====================================================== -->
+
+<div
+  class="modal-overlay"
+  id="packageModal"
+  style="display:none;"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 id="packageModalTitle">
+        Add Package
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closePackageModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="packageForm">
+
+      <input
+        type="hidden"
+        id="packageDocId"
+      >
+
+
+      <div class="form-grid">
+
+
+        <!-- PACKAGE NAME -->
+
+        <div class="form-group">
+
+          <label for="packageName">
+            Package Name *
+          </label>
+
+          <input
+            type="text"
+            id="packageName"
+            placeholder="e.g. Meghalaya 4N 5D"
+            required
+          >
+
+        </div>
+
+
+        <!-- DESTINATION -->
+
+        <div class="form-group">
+
+          <label for="packageDestination">
+            Destination *
+          </label>
+
+          <input
+            type="text"
+            id="packageDestination"
+            placeholder="e.g. Meghalaya"
+            required
+          >
+
+        </div>
+
+
+        <!-- NIGHTS -->
+
+        <div class="form-group">
+
+          <label for="packageNights">
+            Nights
+          </label>
+
+          <input
+            type="number"
+            id="packageNights"
+            value="2"
+            min="0"
+          >
+
+        </div>
+
+
+        <!-- DAYS -->
+
+        <div class="form-group">
+
+          <label for="packageDays">
+            Days
+          </label>
+
+          <input
+            type="number"
+            id="packageDays"
+            value="3"
+            min="1"
+          >
+
+        </div>
+
+
+        <!-- PACKAGE TYPE -->
+
+        <div class="form-group">
+
+          <label for="packageType">
+            Package Type
+          </label>
+
+          <select id="packageType">
+
+            <option value="Domestic">
+              Domestic
+            </option>
+
+            <option value="Northeast">
+              Northeast
+            </option>
+
+            <option value="Honeymoon">
+              Honeymoon
+            </option>
+
+            <option value="Family">
+              Family
+            </option>
+
+            <option value="Adventure">
+              Adventure
+            </option>
+
+            <option value="Religious">
+              Religious
+            </option>
+
+            <option value="Wildlife">
+              Wildlife
+            </option>
+
+            <option value="Heritage">
+              Heritage
+            </option>
+
+            <option value="Offbeat">
+              Offbeat
+            </option>
+
+            <option value="Festival">
+              Festival
+            </option>
+
+            <option value="Student">
+              Student
+            </option>
+
+            <option value="Corporate">
+              Corporate
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="form-group">
+
+          <label for="packagePrice">
+            Starting Price
+          </label>
+
+          <input
+            type="number"
+            id="packagePrice"
+            placeholder="₹"
+            min="0"
+          >
+
+        </div>
+
+
+        <!-- MEAL PLAN -->
+
+        <div class="form-group">
+
+          <label for="packageMealPlan">
+            Meal Plan
+          </label>
+
+          <select id="packageMealPlan">
+
+            <option value="Breakfast">
+              Breakfast
+            </option>
+
+            <option value="Breakfast & Dinner">
+              Breakfast &amp; Dinner
+            </option>
+
+            <option value="All Meals">
+              All Meals
+            </option>
+
+            <option value="No Meals">
+              No Meals
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- VEHICLE -->
+
+        <div class="form-group">
+
+          <label for="packageVehicle">
+            Vehicle
+          </label>
+
+          <select id="packageVehicle">
+
+            <option value="Cab">
+              Cab
+            </option>
+
+            <option value="Sedan">
+              Sedan
+            </option>
+
+            <option value="SUV">
+              SUV
+            </option>
+
+            <option value="Tempo Traveller">
+              Tempo Traveller
+            </option>
+
+            <option value="Bus">
+              Bus
+            </option>
+
+            <option value="Own Vehicle">
+              Own Vehicle
+            </option>
+
+            <option value="Not Included">
+              Not Included
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label for="packageStatus">
+            Package Status
+          </label>
+
+          <select id="packageStatus">
+
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Inactive">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group full-width">
+
+          <label for="packageDescription">
+            Description / Notes
+          </label>
+
+          <textarea
+            id="packageDescription"
+            placeholder="Package details, inclusions, special notes..."
+          ></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        class="status-message"
+        id="packageFormMessage"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelPackageBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Package
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+  
 <!-- =====================================================
      JAVASCRIPT ENTRY POINT
 ====================================================== -->
