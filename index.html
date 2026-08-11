@@ -1,1 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Tour Mitra ERP</title>
+
+  <link
+    rel="stylesheet"
+    href="./css/style.css"
+  >
+</head>
+
+<body>
+
+  <!-- =====================================================
+       LOGIN PAGE
+  ====================================================== -->
+
+  <div id="loginPage" class="login-page">
+
+    <div class="login-card">
+
+      <div class="login-logo">
+        <h1>My Tour Mitra</h1>
+        <p>Travel Management ERP</p>
+      </div>
+
+      <form id="loginForm">
+
+        <div class="form-group">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+          >
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="primary-btn login-btn"
+        >
+          Sign In
+        </button>
+
+
+        <div
+          id="message"
+          class="status-message"
+        ></div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAIN APPLICATION
+  ====================================================== -->
+
+  <div
+    id="app"
+    class="app-layout"
+    style="display:none;"
+  >
+
+
+    <!-- ===================================================
+         SIDEBAR
+    ==================================================== -->
+
+    <aside class="sidebar">
+
+      <div class="sidebar-brand">
+
+        <h2>
+          My Tour Mitra
+        </h2>
+
+        <span>
+          Travel ERP
+        </span>
+
+      </div>
+
+
+      <nav class="sidebar-menu">
+
+
+        <!-- DASHBOARD -->
+
+        <button
+          class="menu-item active"
+          data-page="dashboard"
+          type="button"
+        >
+          <span>Dashboard</span>
+        </button>
+
+
+        <!-- CUSTOMERS -->
+
+        <button
+          class="menu-item"
+          data-page="customers"
+          type="button"
+        >
+          <span>Customers</span>
+        </button>
+
+
+        <!-- ENQUIRIES -->
+
+        <button
+          class="menu-item"
+          data-page="enquiries"
+          type="button"
+        >
+          <span>Enquiries</span>
+        </button>
+
+
+        <!-- FOLLOW UPS -->
+
+        <button
+          class="menu-item"
+          data-page="followups"
+          type="button"
+        >
+          <span>Follow-ups</span>
+        </button>
+
+
+        <!-- PACKAGES -->
+
+        <button
+          class="menu-item"
+          data-page="packages"
+          type="button"
+        >
+          <span>Packages</span>
+        </button>
+
+
+        <!-- HOTELS -->
+
+        <button
+          class="menu-item"
+          data-page="hotels"
+          type="button"
+        >
+          <span>Hotels</span>
+        </button>
+
+
+        <!-- CABS -->
+
+        <button
+          class="menu-item"
+          data-page="cabs"
+          type="button"
+        >
+          <span>Cabs</span>
+        </button>
+
+
+        <!-- B2B AGENCIES -->
+
+        <button
+          class="menu-item"
+          data-page="agencies"
+          type="button"
+        >
+          <span>B2B Agencies</span>
+        </button>
+
+
+        <!-- QUOTATIONS -->
+
+        <button
+          class="menu-item"
+          data-page="quotations"
+          type="button"
+        >
+          <span>Quotations</span>
+        </button>
+
+
+        <!-- BOOKINGS -->
+
+        <button
+          class="menu-item"
+          data-page="bookings"
+          type="button"
+        >
+          <span>Bookings</span>
+        </button>
+
+
+        <!-- INVOICES -->
+
+        <button
+          class="menu-item"
+          data-page="invoices"
+          type="button"
+        >
+          <span>Invoices</span>
+        </button>
+
+
+        <!-- VOUCHERS -->
+
+        <button
+          class="menu-item"
+          data-page="vouchers"
+          type="button"
+        >
+          <span>Vouchers</span>
+        </button>
+
+
+        <!-- PAYMENTS -->
+
+        <button
+          class="menu-item"
+          data-page="payments"
+          type="button"
+        >
+          <span>Payments</span>
+        </button>
+
+
+        <!-- EXPENSES -->
+
+        <button
+          class="menu-item"
+          data-page="expenses"
+          type="button"
+        >
+          <span>Expenses</span>
+        </button>
+
+
+        <!-- PROFIT -->
+
+        <button
+          class="menu-item"
+          data-page="profit"
+          type="button"
+        >
+          <span>Profit &amp; Loss</span>
+        </button>
+
+
+        <!-- TEAM -->
+
+        <button
+          class="menu-item"
+          data-page="team"
+          type="button"
+        >
+          <span>Team / Users</span>
+        </button>
+
+
+        <!-- SETTINGS -->
+
+        <button
+          class="menu-item"
+          data-page="settings"
+          type="button"
+        >
+          <span>Settings</span>
+        </button>
+
+      </nav>
+
+
+      <!-- SIDEBAR USER -->
+
+      <div class="sidebar-user">
+
+        <div
+          id="userEmail"
+          class="user-email"
+        >
+          —
+        </div>
+
+        <button
+          id="logoutBtn"
+          class="logout-btn"
+          type="button"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- ===================================================
+         MAIN CONTENT
+    ==================================================== -->
+
+    <main class="main-content">
+
+
+      <!-- TOP HEADER -->
+
+      <header class="topbar">
+
+        <div>
+
+          <h1 id="pageTitle">
+            Dashboard
+          </h1>
+
+        </div>
+
+      </header>
+
+
+      <!-- =================================================
+           PAGE CONTENT
+      ================================================== -->
+
+      <section class="content-area">
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <div
+          class="module"
+          id="dashboardPage"
+        >
+
+          <div class="module-header">
+
+            <div>
+
+              <h2>
+                Dashboard
+              </h2>
+
+              <p>
+                Welcome to My Tour Mitra ERP.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="dashboard-grid">
+
+
+            <!-- TOTAL CUSTOMERS -->
+
+            <div class="card">
+
+              <div class="card-title">
+                Total Customers
+              </div>
+
+              <div
+                class="card-value"
+                id="totalCustomers"
+              >
+                0
+              </div>
+
+            </div>
+
+
+            <!-- ACTIVE ENQUIRIES -->
+
+            <div class="card">
+
+              <div class="card-title">
+                Active Enquiries
+              </div>
+
+              <div
+                class="card-value"
+                id="activeEnquiries"
+              >
+                0
+              </div>
+
+            </div>
+
+
+            <!-- CONFIRMED BOOKINGS -->
+
+            <div class="card">
+
+              <div class="card-title">
+                Confirmed Bookings
+              </div>
+
+              <div
+                class="card-value"
+                id="confirmedBookings"
+              >
+                0
+              </div>
+
+            </div>
+
+
+            <!-- PENDING PAYMENTS -->
+
+            <div class="card">
+
+              <div class="card-title">
+                Pending Payments
+              </div>
+
+              <div
+                class="card-value"
+                id="pendingPayments"
+              >
+                ₹0
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CUSTOMERS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="customersPage"
+          style="display:none;"
+        >
+
+          <div class="module-header">
+
+            <div>
+
+              <h2>
+                Customers
+              </h2>
+
+              <p>
+                Manage all your travel customers.
+              </p>
+
+            </div>
+
+
+            <button
+              class="primary-btn"
+              id="addCustomerBtn"
+              type="button"
+            >
+              + Add Customer
+            </button>
+
+          </div>
+
+
+          <div class="module-card">
+
+            <input
+              class="search-box"
+              type="text"
+              id="customerSearch"
+              placeholder="Search customer by name, mobile or email..."
+            >
+
+
+            <div class="table-wrapper">
+
+              <table>
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Customer ID
+                    </th>
+
+                    <th>
+                      Name
+                    </th>
+
+                    <th>
+                      Mobile
+                    </th>
+
+                    <th>
+                      WhatsApp
+                    </th>
+
+                    <th>
+                      Email
+                    </th>
+
+                    <th>
+                      City
+                    </th>
+
+                    <th>
+                      Type
+                    </th>
+
+                    <th>
+                      Actions
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                <tbody
+                  id="customersTableBody"
+                >
+
+                  <tr>
+
+                    <td
+                      colspan="8"
+                      class="empty-table"
+                    >
+                      Loading customers...
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ENQUIRIES
+        ================================================== -->
+
+        <div
+          class="module"
+          id="enquiriesPage"
+          style="display:none;"
+        >
+
+          <div class="module-header">
+
+            <div>
+
+              <h2>
+                Enquiries
+              </h2>
+
+              <p>
+                Manage customer enquiries and sales pipeline.
+              </p>
+
+            </div>
+
+
+            <button
+              class="primary-btn"
+              id="addEnquiryBtn"
+              type="button"
+            >
+              + Add Enquiry
+            </button>
+
+          </div>
+
+
+          <div class="module-card">
+
+            <input
+              class="search-box"
+              type="text"
+              id="enquirySearch"
+              placeholder="Search by customer, destination or enquiry ID..."
+            >
+
+
+            <div class="table-wrapper">
+
+              <table>
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Enquiry ID
+                    </th>
+
+                    <th>
+                      Customer
+                    </th>
+
+                    <th>
+                      Destination
+                    </th>
+
+                    <th>
+                      Travel Date
+                    </th>
+
+                    <th>
+                      Pax
+                    </th>
+
+                    <th>
+                      Budget
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                    <th>
+                      Actions
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                <tbody
+                  id="enquiriesTableBody"
+                >
+
+                  <tr>
+
+                    <td
+                      colspan="8"
+                      class="empty-table"
+                    >
+                      Loading enquiries...
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FOLLOW UPS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="followupsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Follow-ups
+            </h2>
+
+            <p class="module-placeholder">
+              Follow-up management will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PACKAGES
+        ================================================== -->
+
+        <div
+          class="module"
+          id="packagesPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Packages
+            </h2>
+
+            <p class="module-placeholder">
+              Package builder will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             HOTELS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="hotelsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Hotels
+            </h2>
+
+            <p class="module-placeholder">
+              Hotel database will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CABS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="cabsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Cabs
+            </h2>
+
+            <p class="module-placeholder">
+              Cab database will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             B2B AGENCIES
+        ================================================== -->
+
+        <div
+          class="module"
+          id="agenciesPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              B2B Agencies
+            </h2>
+
+            <p class="module-placeholder">
+              B2B agency database will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             QUOTATIONS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="quotationsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Quotations
+            </h2>
+
+            <p class="module-placeholder">
+              Quotation builder will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BOOKINGS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="bookingsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Bookings
+            </h2>
+
+            <p class="module-placeholder">
+              Booking management will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INVOICES
+        ================================================== -->
+
+        <div
+          class="module"
+          id="invoicesPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Invoices
+            </h2>
+
+            <p class="module-placeholder">
+              Invoice system will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             VOUCHERS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="vouchersPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Vouchers
+            </h2>
+
+            <p class="module-placeholder">
+              Voucher system will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PAYMENTS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="paymentsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Payments
+            </h2>
+
+            <p class="module-placeholder">
+              Payment management will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             EXPENSES
+        ================================================== -->
+
+        <div
+          class="module"
+          id="expensesPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Expenses
+            </h2>
+
+            <p class="module-placeholder">
+              Expense management will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROFIT & LOSS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="profitPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Profit &amp; Loss
+            </h2>
+
+            <p class="module-placeholder">
+              Profit &amp; Loss reporting will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TEAM
+        ================================================== -->
+
+        <div
+          class="module"
+          id="teamPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Team / Users
+            </h2>
+
+            <p class="module-placeholder">
+              Team management will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SETTINGS
+        ================================================== -->
+
+        <div
+          class="module"
+          id="settingsPage"
+          style="display:none;"
+        >
+
+          <div class="module-card">
+
+            <h2>
+              Settings
+            </h2>
+
+            <p class="module-placeholder">
+              ERP settings will be built next.
+            </p>
+
+          </div>
+
+        </div>
+
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =====================================================
+       CUSTOMER MODAL
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="customerModal"
+    style="display:none;"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2 id="customerModalTitle">
+          Add Customer
+        </h2>
+
+        <button
+          class="close-btn"
+          id="closeCustomerModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="customerForm">
+
+        <input
+          type="hidden"
+          id="customerDocId"
+        >
+
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+
+            <label for="customerName">
+              Customer Name *
+            </label>
+
+            <input
+              type="text"
+              id="customerName"
+              placeholder="Full name"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerMobile">
+              Mobile *
+            </label>
+
+            <input
+              type="tel"
+              id="customerMobile"
+              placeholder="Mobile number"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerWhatsapp">
+              WhatsApp
+            </label>
+
+            <input
+              type="tel"
+              id="customerWhatsapp"
+              placeholder="WhatsApp number"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerEmail">
+              Email
+            </label>
+
+            <input
+              type="email"
+              id="customerEmail"
+              placeholder="Email address"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerCity">
+              City
+            </label>
+
+            <input
+              type="text"
+              id="customerCity"
+              placeholder="City"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerCountry">
+              Country
+            </label>
+
+            <input
+              type="text"
+              id="customerCountry"
+              value="India"
+              placeholder="Country"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerType">
+              Customer Type
+            </label>
+
+            <select id="customerType">
+
+              <option value="Individual">
+                Individual
+              </option>
+
+              <option value="Corporate">
+                Corporate
+              </option>
+
+              <option value="B2B Agency">
+                B2B Agency
+              </option>
+
+              <option value="Group">
+                Group
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="customerSource">
+              Lead Source
+            </label>
+
+            <select id="customerSource">
+
+              <option value="Direct">
+                Direct
+              </option>
+
+              <option value="WhatsApp">
+                WhatsApp
+              </option>
+
+              <option value="Website">
+                Website
+              </option>
+
+              <option value="Instagram">
+                Instagram
+              </option>
+
+              <option value="Facebook">
+                Facebook
+              </option>
+
+              <option value="Referral">
+                Referral
+              </option>
+
+              <option value="B2B">
+                B2B
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group full-width">
+
+            <label for="customerNotes">
+              Notes
+            </label>
+
+            <textarea
+              id="customerNotes"
+              placeholder="Customer notes..."
+            ></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <div
+          class="status-message"
+          id="customerFormMessage"
+        ></div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-btn"
+            id="cancelCustomerBtn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-btn"
+          >
+            Save Customer
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       ENQUIRY MODAL
+  ====================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="enquiryModal"
+    style="display:none;"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2 id="enquiryModalTitle">
+          Add Enquiry
+        </h2>
+
+        <button
+          class="close-btn"
+          id="closeEnquiryModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="enquiryForm">
+
+        <input
+          type="hidden"
+          id="enquiryDocId"
+        >
+
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+
+            <label for="enquiryCustomer">
+              Customer *
+            </label>
+
+            <select
+              id="enquiryCustomer"
+              required
+            >
+
+              <option value="">
+                Select Customer
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryDestination">
+              Destination *
+            </label>
+
+            <input
+              type="text"
+              id="enquiryDestination"
+              placeholder="e.g. Meghalaya"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryStartDate">
+              Travel Start Date *
+            </label>
+
+            <input
+              type="date"
+              id="enquiryStartDate"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryEndDate">
+              Travel End Date
+            </label>
+
+            <input
+              type="date"
+              id="enquiryEndDate"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryAdults">
+              Adults
+            </label>
+
+            <input
+              type="number"
+              id="enquiryAdults"
+              value="1"
+              min="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryChildren">
+              Children
+            </label>
+
+            <input
+              type="number"
+              id="enquiryChildren"
+              value="0"
+              min="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryInfants">
+              Infants
+            </label>
+
+            <input
+              type="number"
+              id="enquiryInfants"
+              value="0"
+              min="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryTripType">
+              Trip Type
+            </label>
+
+            <select id="enquiryTripType">
+
+              <option value="Family">
+                Family
+              </option>
+
+              <option value="Honeymoon">
+                Honeymoon
+              </option>
+
+              <option value="Group">
+                Group
+              </option>
+
+              <option value="Corporate">
+                Corporate
+              </option>
+
+              <option value="Solo">
+                Solo
+              </option>
+
+              <option value="Friends">
+                Friends
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryBudget">
+              Budget
+            </label>
+
+            <input
+              type="number"
+              id="enquiryBudget"
+              placeholder="₹"
+              min="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquirySource">
+              Lead Source
+            </label>
+
+            <select id="enquirySource">
+
+              <option value="Direct">
+                Direct
+              </option>
+
+              <option value="WhatsApp">
+                WhatsApp
+              </option>
+
+              <option value="Website">
+                Website
+              </option>
+
+              <option value="Instagram">
+                Instagram
+              </option>
+
+              <option value="Facebook">
+                Facebook
+              </option>
+
+              <option value="Referral">
+                Referral
+              </option>
+
+              <option value="B2B">
+                B2B
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="enquiryStatus">
+              Enquiry Status
+            </label>
+
+            <select id="enquiryStatus">
+
+              <option value="New">
+                New
+              </option>
+
+              <option value="Follow-up">
+                Follow-up
+              </option>
+
+              <option value="Quoted">
+                Quoted
+              </option>
+
+              <option value="Confirmed">
+                Confirmed
+              </option>
+
+              <option value="Lost">
+                Lost
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group full-width">
+
+            <label for="enquiryNotes">
+              Notes
+            </label>
+
+            <textarea
+              id="enquiryNotes"
+              placeholder="Enquiry details, requirements, special requests..."
+            ></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <div
+          class="status-message"
+          id="enquiryFormMessage"
+        ></div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-btn"
+            id="cancelEnquiryBtn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-btn"
+          >
+            Save Enquiry
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       JAVASCRIPT ENTRY POINT
+  ====================================================== -->
+
+  <script
+    type="module"
+    src="./js/app.js"
+  ></script>
+
+</body>
+</html>
