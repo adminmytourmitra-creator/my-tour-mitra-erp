@@ -643,17 +643,120 @@
 
       </div>
 
-
-
       <!-- =================================================
-           FOLLOW UPS
-      ================================================== -->
+     FOLLOW UPS
+================================================== -->
 
-      <div
-        class="module"
-        id="followupsPage"
-        style="display:none;"
-      >
+<div
+  class="module"
+  id="followupsPage"
+  style="display:none;"
+>
+
+  <div class="module-header">
+
+    <div>
+
+      <h2>
+        Follow-ups
+      </h2>
+
+      <p>
+        Manage customer follow-ups and sales activities.
+      </p>
+
+    </div>
+
+    <button
+      class="primary-btn"
+      id="addFollowupBtn"
+      type="button"
+    >
+      + Add Follow-up
+    </button>
+
+  </div>
+
+
+  <div class="module-card">
+
+    <input
+      class="search-box"
+      type="text"
+      id="followupSearch"
+      placeholder="Search by customer, destination, follow-up ID or status..."
+    >
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Follow-up ID
+            </th>
+
+            <th>
+              Customer
+            </th>
+
+            <th>
+              Destination
+            </th>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Time
+            </th>
+
+            <th>
+              Type
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="followupsTableBody"
+        >
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="empty-table"
+            >
+              Loading follow-ups...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
 
         <div class="module-card">
 
@@ -1615,7 +1718,237 @@
 
 </div>
 
+<!-- =====================================================
+     FOLLOW-UP MODAL
+====================================================== -->
 
+<div
+  class="modal-overlay"
+  id="followupModal"
+  style="display:none;"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 id="followupModalTitle">
+        Add Follow-up
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeFollowupModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="followupForm">
+
+      <input
+        type="hidden"
+        id="followupDocId"
+      >
+
+
+      <div class="form-grid">
+
+
+        <!-- CUSTOMER -->
+
+        <div class="form-group">
+
+          <label for="followupCustomer">
+            Customer *
+          </label>
+
+          <select
+            id="followupCustomer"
+            required
+          >
+
+            <option value="">
+              Select Customer
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ENQUIRY -->
+
+        <div class="form-group">
+
+          <label for="followupEnquiry">
+            Enquiry
+          </label>
+
+          <select
+            id="followupEnquiry"
+          >
+
+            <option value="">
+              Select Enquiry
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="form-group">
+
+          <label for="followupDate">
+            Follow-up Date *
+          </label>
+
+          <input
+            type="date"
+            id="followupDate"
+            required
+          >
+
+        </div>
+
+
+        <!-- TIME -->
+
+        <div class="form-group">
+
+          <label for="followupTime">
+            Follow-up Time
+          </label>
+
+          <input
+            type="time"
+            id="followupTime"
+          >
+
+        </div>
+
+
+        <!-- TYPE -->
+
+        <div class="form-group">
+
+          <label for="followupType">
+            Follow-up Type
+          </label>
+
+          <select
+            id="followupType"
+          >
+
+            <option value="Call">
+              Call
+            </option>
+
+            <option value="WhatsApp">
+              WhatsApp
+            </option>
+
+            <option value="Email">
+              Email
+            </option>
+
+            <option value="Meeting">
+              Meeting
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label for="followupStatus">
+            Status
+          </label>
+
+          <select
+            id="followupStatus"
+          >
+
+            <option value="Pending">
+              Pending
+            </option>
+
+            <option value="Completed">
+              Completed
+            </option>
+
+            <option value="Cancelled">
+              Cancelled
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        <div class="form-group full-width">
+
+          <label for="followupNotes">
+            Notes
+          </label>
+
+          <textarea
+            id="followupNotes"
+            placeholder="Add follow-up details, customer response, next action..."
+          ></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        class="status-message"
+        id="followupFormMessage"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelFollowupBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Follow-up
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
 
 <!-- =====================================================
      JAVASCRIPT ENTRY POINT
