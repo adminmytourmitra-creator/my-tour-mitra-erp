@@ -22,37 +22,148 @@ import { initTeam } from "./modules/team.js";
 import { initSettings } from "./modules/settings.js";
 
 
+// ================= SAFE INITIALIZER =================
+
+function safeInit(name, initFunction) {
+
+  try {
+
+    initFunction();
+
+    console.log(
+      `${name} initialized successfully.`
+    );
+
+  } catch (error) {
+
+    console.error(
+      `${name} initialization failed:`,
+      error
+    );
+
+  }
+
+}
+
+
 // ================= APPLICATION START =================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-  // Authentication
-  initAuth();
+    console.log(
+      "Starting My Tour Mitra ERP..."
+    );
 
-  // UI navigation
-  initUI();
 
-  // Modules
-  initDashboard();
-  initCustomers();
-  initEnquiries();
-  initFollowups();
-  initPackages();
-  initHotels();
-  initCabs();
-  initAgencies();
-  initQuotations();
-  initBookings();
-  initInvoices();
-  initVouchers();
-  initPayments();
-  initExpenses();
-  initProfit();
-  initTeam();
-  initSettings();
+    // ================= AUTH =================
 
-  console.log(
-    "My Tour Mitra ERP initialized successfully."
-  );
+    safeInit(
+      "Authentication",
+      initAuth
+    );
 
-});
+
+    // ================= UI =================
+
+    safeInit(
+      "UI",
+      initUI
+    );
+
+
+    // ================= MODULES =================
+
+    safeInit(
+      "Dashboard",
+      initDashboard
+    );
+
+    safeInit(
+      "Customers",
+      initCustomers
+    );
+
+    safeInit(
+      "Enquiries",
+      initEnquiries
+    );
+
+    safeInit(
+      "Follow-ups",
+      initFollowups
+    );
+
+    safeInit(
+      "Packages",
+      initPackages
+    );
+
+    safeInit(
+      "Hotels",
+      initHotels
+    );
+
+    safeInit(
+      "Cabs",
+      initCabs
+    );
+
+    safeInit(
+      "B2B Agencies",
+      initAgencies
+    );
+
+    safeInit(
+      "Quotations",
+      initQuotations
+    );
+
+    safeInit(
+      "Bookings",
+      initBookings
+    );
+
+    safeInit(
+      "Invoices",
+      initInvoices
+    );
+
+    safeInit(
+      "Vouchers",
+      initVouchers
+    );
+
+    safeInit(
+      "Payments",
+      initPayments
+    );
+
+    safeInit(
+      "Expenses",
+      initExpenses
+    );
+
+    safeInit(
+      "Profit & Loss",
+      initProfit
+    );
+
+    safeInit(
+      "Team",
+      initTeam
+    );
+
+    safeInit(
+      "Settings",
+      initSettings
+    );
+
+
+    console.log(
+      "My Tour Mitra ERP initialized."
+    );
+
+  }
+);
