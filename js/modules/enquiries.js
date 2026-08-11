@@ -12,116 +12,210 @@ import {
 
 import { db, auth } from "../firebase.js";
 
-
 // ================= STATE =================
 
 let allEnquiries = [];
 let allCustomers = [];
 
-
 // ================= INITIALIZE =================
 
 export function initEnquiries() {
-
   setupEnquiryButtons();
   setupEnquiryForm();
   setupEnquirySearch();
-
   loadEnquiries();
   loadCustomerDropdown();
-
 }
-
 
 // ================= ELEMENT HELPER =================
 
 function getElement(id) {
-
   return document.getElementById(id);
-
 }
-
 
 // ================= ENQUIRY BUTTONS =================
 
 function setupEnquiryButtons() {
-
-  const addButton =
-    getElement("addEnquiryBtn");
-
-  const closeButton =
-    getElement("closeEnquiryModal");
-
-  const cancelButton =
-    getElement("cancelEnquiryBtn");
-
+  const addButton = getElement("addEnquiryBtn");
+  const closeButton = getElement("closeEnquiryModal");
+  const cancelButton = getElement("cancelEnquiryBtn");
 
   if (addButton) {
-
-    addButton.addEventListener(
-      "click",
-      () => openEnquiryModal()
-    );
-
+    addButton.addEventListener("click", () => {
+      openEnquiryModal();
+    });
   }
 
-
   if (closeButton) {
-
     closeButton.addEventListener(
       "click",
       closeEnquiryModal
     );
-
   }
 
-
   if (cancelButton) {
-
     cancelButton.addEventListener(
       "click",
       closeEnquiryModal
     );
-
   }
-
 }
-
 
 // ================= ENQUIRY FORM =================
 
 function setupEnquiryForm() {
-
-  const form =
-    getElement("enquiryForm");
+  const form = getElement("enquiryForm");
 
   if (!form) return;
-
 
   form.addEventListener(
     "submit",
     saveEnquiry
   );
-
 }
 
+// ================= OPEN ENQUIRY MODAL =================
+
+async function openEnquiryModal(enquiry = null) {
+  const modal = getElement("enquiryModal");
+  const form = getElement("enquiryForm");
+  const title = getElement("enquiryModalTitle");
+  const message = getElement("enquiryFormMessage");
+
+  if (!modal || !form) return;
+
+  modal.style.display = "flex";
+
+  if (message) {
+    message.textContent = "";
+  }
+
+  await loadCustomerDropdown();
+
+  if (enquiry) {
+
+    if (title) {
+      title.textContent = "Edit Enquiry";
+    }
+
+    getElement("enquiryDocId").value =
+      enquiry.id || "";
+
+    getElement("enquiryCustomer").value =
+      enquiry.customerDocId || "";
+
+    getElement("enquiryDestination").value =
+      enquiry.destination || "";
+
+    getElement("enquiryStartDate").value =
+      enquiry.startDate || "";
+
+    getElement("enquiryEndDate").value =
+      enquiry.endDate || "";
+
+    getElement("enquiryAdults").value =
+      enquiry.adults ?? 1;
+
+    getElement("enquiryChildren").value =
+      enquiry.children ?? 0;
+
+    getElement("enquiryInfants").value =
+      enquiry.infants ?? 0;
+
+    getElement("enquiryTripType").value =
+      enquiry.tripType || "Family";
+
+    getElement("enquiryBudget").value =
+      enquiry.budget ?? "";
+
+    getElement("enquirySource").value =
+      enquiry.source || "Direct";
+
+    getElement("enquiryStatus").value =
+      enquiry.status || "New";
+
+    getElement("enquiryNotes").value =
+      enquiry.notes || "";
+
+  } else {
+
+    if (title) {
+      title.textContent = "Add Enquiry";
+    }
+
+    form.reset();
+
+    getElement("enquiryDocId").value = "";
+
+    getElement("enquiryAdults").value = 1;
+
+    getElement("enquiryChildren").value = 0;
+
+    getElement("enquiryInfants").value = 0;
+
+    getElement("enquiryStatus").value = "New";
+
+  }
+}
+
+// ================= CLOSE ENQUIRY MODAL =================
+
+function closeEnquiryModal() {
+  const modal = getElement("enquiryModal");
+  const form = getElement("enquiryForm");
+
+  if (modal) {
+    modal.style.display = "none";
+  }
+
+  if (form) {
+    form.reset();
+  }
+
+  const docId = getElement("enquiryDocId");
+
+  if (docId) {
+    docId.value = "";
+  }
+
+  const adults = getElement("enquiryAdults");
+
+  if (adults) {
+    adults.value = 1;
+  }
+
+  const children = getElement("enquiryChildren");
+
+  if (children) {
+    children.value = 0;
+  }
+
+  const infants = getElement("enquiryInfants");
+
+  if (infants) {
+    infants.value = 0;
+  }
+
+  const status = getElement("enquiryStatus");
+
+  if (status) {
+    status.value = "New";
+  }
+}
 
 // ================= CUSTOMER DROPDOWN =================
 
 async function loadCustomerDropdown() {
-
   const dropdown =
     getElement("enquiryCustomer");
 
   if (!dropdown) return;
-
 
   dropdown.innerHTML = `
     <option value="">
       Loading customers...
     </option>
   `;
-
 
   try {
 
@@ -133,26 +227,19 @@ async function loadCustomerDropdown() {
         )
       );
 
-
     allCustomers =
       snapshot.docs.map(
         (document) => ({
-
-          id:
-            document.id,
-
+          id: document.id,
           ...document.data()
-
         })
       );
-
 
     dropdown.innerHTML = `
       <option value="">
         Select Customer
       </option>
     `;
-
 
     allCustomers.forEach(
       (customer) => {
@@ -162,14 +249,11 @@ async function loadCustomerDropdown() {
             "option"
           );
 
-
         option.value =
           customer.id;
 
-
         option.textContent =
           `${customer.name || "Unnamed"} - ${customer.mobile || ""}`;
-
 
         dropdown.appendChild(
           option
@@ -178,7 +262,6 @@ async function loadCustomerDropdown() {
       }
     );
 
-
   } catch (error) {
 
     console.error(
@@ -186,214 +269,34 @@ async function loadCustomerDropdown() {
       error
     );
 
-
     dropdown.innerHTML = `
       <option value="">
         Unable to load customers
       </option>
     `;
-
   }
-
 }
-
-
-// ================= OPEN ENQUIRY MODAL =================
-
-async function openEnquiryModal(
-  enquiry = null
-) {
-
-  const modal =
-    getElement("enquiryModal");
-
-  const form =
-    getElement("enquiryForm");
-
-  const title =
-    getElement("enquiryModalTitle");
-
-  const message =
-    getElement("enquiryFormMessage");
-
-
-  if (!modal || !form) return;
-
-
-  modal.style.display =
-    "flex";
-
-
-  if (message) {
-
-    message.textContent =
-      "";
-
-  }
-
-
-  // Always refresh customer list
-  await loadCustomerDropdown();
-
-
-  if (enquiry) {
-
-    title.textContent =
-      "Edit Enquiry";
-
-
-    getElement("enquiryDocId").value =
-      enquiry.id || "";
-
-
-    getElement("enquiryCustomer").value =
-      enquiry.customerDocId || "";
-
-
-    getElement("enquiryDestination").value =
-      enquiry.destination || "";
-
-
-    getElement("enquiryStartDate").value =
-      enquiry.startDate || "";
-
-
-    getElement("enquiryEndDate").value =
-      enquiry.endDate || "";
-
-
-    getElement("enquiryAdults").value =
-      enquiry.adults ?? 1;
-
-
-    getElement("enquiryChildren").value =
-      enquiry.children ?? 0;
-
-
-    getElement("enquiryInfants").value =
-      enquiry.infants ?? 0;
-
-
-    getElement("enquiryTripType").value =
-      enquiry.tripType || "Family";
-
-
-    getElement("enquiryBudget").value =
-      enquiry.budget || "";
-
-
-    getElement("enquirySource").value =
-      enquiry.source || "Direct";
-
-
-    getElement("enquiryStatus").value =
-      enquiry.status || "New";
-
-
-    getElement("enquiryNotes").value =
-      enquiry.notes || "";
-
-  } else {
-
-    title.textContent =
-      "Add Enquiry";
-
-
-    form.reset();
-
-
-    getElement("enquiryDocId").value =
-      "";
-
-
-    getElement("enquiryAdults").value =
-      1;
-
-
-    getElement("enquiryChildren").value =
-      0;
-
-
-    getElement("enquiryInfants").value =
-      0;
-
-
-    getElement("enquiryStatus").value =
-      "New";
-
-
-    getElement("enquiryTripType").value =
-      "Family";
-
-
-    getElement("enquirySource").value =
-      "Direct";
-
-  }
-
-}
-
-
-// ================= CLOSE ENQUIRY MODAL =================
-
-function closeEnquiryModal() {
-
-  const modal =
-    getElement("enquiryModal");
-
-  const form =
-    getElement("enquiryForm");
-
-
-  if (modal) {
-
-    modal.style.display =
-      "none";
-
-  }
-
-
-  if (form) {
-
-    form.reset();
-
-  }
-
-
-  const docId =
-    getElement("enquiryDocId");
-
-  if (docId) {
-
-    docId.value =
-      "";
-
-  }
-
-}
-
 
 // ================= SAVE ENQUIRY =================
 
 async function saveEnquiry(event) {
-
   event.preventDefault();
 
-
   const message =
-    getElement("enquiryFormMessage");
+    getElement(
+      "enquiryFormMessage"
+    );
 
-
-  showEnquiryMessage(
-    "Saving enquiry...",
-    "#1769e0"
-  );
-
+  if (message) {
+    message.style.color = "#1769e0";
+    message.textContent =
+      "Saving enquiry...";
+  }
 
   const customerDocId =
-    getElement("enquiryCustomer")
-      ?.value;
-
+    getElement(
+      "enquiryCustomer"
+    )?.value || "";
 
   if (!customerDocId) {
 
@@ -403,9 +306,7 @@ async function saveEnquiry(event) {
     );
 
     return;
-
   }
-
 
   const selectedCustomer =
     allCustomers.find(
@@ -413,7 +314,6 @@ async function saveEnquiry(event) {
         customer.id ===
         customerDocId
     );
-
 
   const enquiryData = {
 
@@ -424,71 +324,79 @@ async function saveEnquiry(event) {
       selectedCustomer?.name || "",
 
     destination:
-      getElement("enquiryDestination")
-        ?.value
-        .trim() || "",
+      getElement(
+        "enquiryDestination"
+      )?.value.trim() || "",
 
     startDate:
-      getElement("enquiryStartDate")
-        ?.value || "",
+      getElement(
+        "enquiryStartDate"
+      )?.value || "",
 
     endDate:
-      getElement("enquiryEndDate")
-        ?.value || "",
+      getElement(
+        "enquiryEndDate"
+      )?.value || "",
 
     adults:
       Number(
-        getElement("enquiryAdults")
-          ?.value || 0
+        getElement(
+          "enquiryAdults"
+        )?.value || 0
       ),
 
     children:
       Number(
-        getElement("enquiryChildren")
-          ?.value || 0
+        getElement(
+          "enquiryChildren"
+        )?.value || 0
       ),
 
     infants:
       Number(
-        getElement("enquiryInfants")
-          ?.value || 0
+        getElement(
+          "enquiryInfants"
+        )?.value || 0
       ),
 
     tripType:
-      getElement("enquiryTripType")
-        ?.value || "Family",
+      getElement(
+        "enquiryTripType"
+      )?.value || "Family",
 
     budget:
       Number(
-        getElement("enquiryBudget")
-          ?.value || 0
+        getElement(
+          "enquiryBudget"
+        )?.value || 0
       ),
 
     source:
-      getElement("enquirySource")
-        ?.value || "Direct",
+      getElement(
+        "enquirySource"
+      )?.value || "Direct",
 
     status:
-      getElement("enquiryStatus")
-        ?.value || "New",
+      getElement(
+        "enquiryStatus"
+      )?.value || "New",
 
     notes:
-      getElement("enquiryNotes")
-        ?.value
-        .trim() || "",
+      getElement(
+        "enquiryNotes"
+      )?.value.trim() || "",
 
     updatedAt:
       serverTimestamp()
 
   };
 
-
   try {
 
     const existingId =
-      getElement("enquiryDocId")
-        ?.value;
-
+      getElement(
+        "enquiryDocId"
+      )?.value || "";
 
     // ================= EDIT =================
 
@@ -506,14 +414,12 @@ async function saveEnquiry(event) {
 
       );
 
-
       showEnquiryMessage(
         "Enquiry updated successfully.",
         "#15803d"
       );
 
     }
-
 
     // ================= NEW =================
 
@@ -522,12 +428,10 @@ async function saveEnquiry(event) {
       enquiryData.createdAt =
         serverTimestamp();
 
-
       enquiryData.createdBy =
         auth.currentUser
           ? auth.currentUser.email
           : "";
-
 
       const enquiryRef =
         await addDoc(
@@ -541,13 +445,11 @@ async function saveEnquiry(event) {
 
         );
 
-
       const enquiryId =
         "ENQ-" +
         enquiryRef.id
           .substring(0, 6)
           .toUpperCase();
-
 
       await updateDoc(
 
@@ -560,23 +462,18 @@ async function saveEnquiry(event) {
 
       );
 
-
       showEnquiryMessage(
         "Enquiry saved successfully.",
         "#15803d"
       );
-
     }
 
-
     await loadEnquiries();
-
 
     setTimeout(
       closeEnquiryModal,
       700
     );
-
 
   } catch (error) {
 
@@ -585,16 +482,12 @@ async function saveEnquiry(event) {
       error
     );
 
-
     showEnquiryMessage(
       "Could not save enquiry. Check Firestore rules.",
       "#dc2626"
     );
-
   }
-
 }
-
 
 // ================= MESSAGE =================
 
@@ -602,36 +495,31 @@ function showEnquiryMessage(
   text,
   color
 ) {
-
   const message =
-    getElement("enquiryFormMessage");
-
+    getElement(
+      "enquiryFormMessage"
+    );
 
   if (!message) return;
-
 
   message.style.color =
     color;
 
   message.textContent =
     text;
-
 }
-
 
 // ================= LOAD ENQUIRIES =================
 
 async function loadEnquiries() {
-
   const table =
-    getElement("enquiriesTableBody");
-
+    getElement(
+      "enquiriesTableBody"
+    );
 
   if (!table) return;
 
-
   table.innerHTML = `
-
     <tr>
       <td
         colspan="8"
@@ -640,9 +528,7 @@ async function loadEnquiries() {
         Loading enquiries...
       </td>
     </tr>
-
   `;
-
 
   try {
 
@@ -654,27 +540,21 @@ async function loadEnquiries() {
         )
       );
 
-
     allEnquiries =
       snapshot.docs.map(
         (document) => ({
-
           id:
             document.id,
 
           ...document.data()
-
         })
       );
-
 
     renderEnquiries(
       allEnquiries
     );
 
-
     updateEnquiryDashboard();
-
 
   } catch (error) {
 
@@ -683,9 +563,7 @@ async function loadEnquiries() {
       error
     );
 
-
     table.innerHTML = `
-
       <tr>
         <td
           colspan="8"
@@ -695,29 +573,25 @@ async function loadEnquiries() {
           Check Firestore security rules.
         </td>
       </tr>
-
     `;
-
   }
-
 }
-
 
 // ================= RENDER ENQUIRIES =================
 
-function renderEnquiries(enquiries) {
-
+function renderEnquiries(
+  enquiries
+) {
   const table =
-    getElement("enquiriesTableBody");
-
+    getElement(
+      "enquiriesTableBody"
+    );
 
   if (!table) return;
-
 
   if (!enquiries.length) {
 
     table.innerHTML = `
-
       <tr>
         <td
           colspan="8"
@@ -727,13 +601,10 @@ function renderEnquiries(enquiries) {
           Click "+ Add Enquiry" to create one.
         </td>
       </tr>
-
     `;
 
     return;
-
   }
-
 
   table.innerHTML =
     enquiries
@@ -748,9 +619,7 @@ function renderEnquiries(enquiries) {
               enquiry.children || 0
             );
 
-
           return `
-
             <tr>
 
               <td>
@@ -786,7 +655,9 @@ function renderEnquiries(enquiries) {
               <td>
                 ₹${Number(
                   enquiry.budget || 0
-                ).toLocaleString("en-IN")}
+                ).toLocaleString(
+                  "en-IN"
+                )}
               </td>
 
               <td>
@@ -816,18 +687,13 @@ function renderEnquiries(enquiries) {
               </td>
 
             </tr>
-
           `;
-
         }
       )
       .join("");
 
-
   setupEnquiryRowActions();
-
 }
-
 
 // ================= ROW ACTIONS =================
 
@@ -837,52 +703,55 @@ function setupEnquiryRowActions() {
     .querySelectorAll(
       "[data-enquiry-edit-id]"
     )
-    .forEach((button) => {
+    .forEach(
+      (button) => {
 
-      button.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-          const enquiry =
-            allEnquiries.find(
-              (item) =>
-                item.id ===
-                button.dataset.enquiryEditId
-            );
+            const enquiry =
+              allEnquiries.find(
+                (item) =>
+                  item.id ===
+                  button.dataset
+                    .enquiryEditId
+              );
 
-
-          if (enquiry) {
-
-            openEnquiryModal(
-              enquiry
-            );
+            if (enquiry) {
+              openEnquiryModal(
+                enquiry
+              );
+            }
 
           }
+        );
 
-        }
-      );
-
-    });
-
+      }
+    );
 
   document
     .querySelectorAll(
       "[data-enquiry-delete-id]"
     )
-    .forEach((button) => {
+    .forEach(
+      (button) => {
 
-      button.addEventListener(
-        "click",
-        () =>
-          deleteEnquiry(
-            button.dataset.enquiryDeleteId
-          )
-      );
+        button.addEventListener(
+          "click",
+          () => {
 
-    });
+            deleteEnquiry(
+              button.dataset
+                .enquiryDeleteId
+            );
 
+          }
+        );
+
+      }
+    );
 }
-
 
 // ================= DELETE ENQUIRY =================
 
@@ -894,15 +763,12 @@ async function deleteEnquiry(id) {
         item.id === id
     );
 
-
   const confirmed =
     confirm(
       `Delete enquiry "${enquiry?.enquiryId || ""}"?`
     );
 
-
   if (!confirmed) return;
-
 
   try {
 
@@ -914,9 +780,7 @@ async function deleteEnquiry(id) {
       )
     );
 
-
     await loadEnquiries();
-
 
   } catch (error) {
 
@@ -925,26 +789,22 @@ async function deleteEnquiry(id) {
       error
     );
 
-
     alert(
       "Could not delete enquiry."
     );
-
   }
-
 }
-
 
 // ================= SEARCH =================
 
 function setupEnquirySearch() {
 
   const searchBox =
-    getElement("enquirySearch");
-
+    getElement(
+      "enquirySearch"
+    );
 
   if (!searchBox) return;
-
 
   searchBox.addEventListener(
     "input",
@@ -955,7 +815,6 @@ function setupEnquirySearch() {
           .toLowerCase()
           .trim();
 
-
       if (!search) {
 
         renderEnquiries(
@@ -963,9 +822,7 @@ function setupEnquirySearch() {
         );
 
         return;
-
       }
-
 
       const filtered =
         allEnquiries.filter(
@@ -995,11 +852,18 @@ function setupEnquirySearch() {
                 .toLowerCase()
                 .includes(search)
 
+              ||
+
+              String(
+                enquiry.status || ""
+              )
+                .toLowerCase()
+                .includes(search)
+
             );
 
           }
         );
-
 
       renderEnquiries(
         filtered
@@ -1007,9 +871,7 @@ function setupEnquirySearch() {
 
     }
   );
-
 }
-
 
 // ================= DASHBOARD =================
 
@@ -1021,7 +883,6 @@ function updateEnquiryDashboard() {
     "Quoted"
   ];
 
-
   const activeCount =
     allEnquiries.filter(
       (enquiry) =>
@@ -1030,46 +891,39 @@ function updateEnquiryDashboard() {
         )
     ).length;
 
-
   const cards =
     document.querySelectorAll(
       ".card"
     );
 
+  cards.forEach(
+    (card) => {
 
-  cards.forEach((card) => {
-
-    const title =
-      card.querySelector(
-        ".card-title"
-      );
-
-
-    if (
-      title &&
-      title.textContent.trim() ===
-        "Active Enquiries"
-    ) {
-
-      const value =
+      const title =
         card.querySelector(
-          ".card-value"
+          ".card-title"
         );
 
+      if (
+        title &&
+        title.textContent.trim() ===
+          "Active Enquiries"
+      ) {
 
-      if (value) {
+        const value =
+          card.querySelector(
+            ".card-value"
+          );
 
-        value.textContent =
-          activeCount;
-
+        if (value) {
+          value.textContent =
+            activeCount;
+        }
       }
 
     }
-
-  });
-
+  );
 }
-
 
 // ================= HTML ESCAPE =================
 
@@ -1101,5 +955,4 @@ function escapeHtml(value) {
       /'/g,
       "&#039;"
     );
-
 }
