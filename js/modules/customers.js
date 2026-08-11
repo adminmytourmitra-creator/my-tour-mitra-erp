@@ -1,4 +1,6 @@
-// ================= CUSTOMERS MODULE =================
+// =====================================================
+// CUSTOMERS MODULE
+// =====================================================
 
 import {
   collection,
@@ -13,12 +15,16 @@ import {
 import { db, auth } from "../firebase.js";
 
 
-// ================= STATE =================
+// =====================================================
+// STATE
+// =====================================================
 
 let allCustomers = [];
 
 
-// ================= INITIALIZE =================
+// =====================================================
+// INITIALIZE MODULE
+// =====================================================
 
 export function initCustomers() {
 
@@ -31,7 +37,9 @@ export function initCustomers() {
 }
 
 
-// ================= ELEMENTS =================
+// =====================================================
+// ELEMENT HELPER
+// =====================================================
 
 function getElement(id) {
 
@@ -40,7 +48,9 @@ function getElement(id) {
 }
 
 
-// ================= CUSTOMER BUTTONS =================
+// =====================================================
+// CUSTOMER BUTTONS
+// =====================================================
 
 function setupCustomerButtons() {
 
@@ -86,7 +96,9 @@ function setupCustomerButtons() {
 }
 
 
-// ================= CUSTOMER FORM =================
+// =====================================================
+// CUSTOMER FORM
+// =====================================================
 
 function setupCustomerForm() {
 
@@ -94,7 +106,6 @@ function setupCustomerForm() {
     getElement("customerForm");
 
   if (!form) return;
-
 
   form.addEventListener(
     "submit",
@@ -104,7 +115,9 @@ function setupCustomerForm() {
 }
 
 
-// ================= OPEN CUSTOMER MODAL =================
+// =====================================================
+// OPEN CUSTOMER MODAL
+// =====================================================
 
 function openCustomerModal(customer = null) {
 
@@ -134,10 +147,18 @@ function openCustomerModal(customer = null) {
   }
 
 
+  // ---------------------------------------------------
+  // EDIT CUSTOMER
+  // ---------------------------------------------------
+
   if (customer) {
 
-    title.textContent =
-      "Edit Customer";
+    if (title) {
+
+      title.textContent =
+        "Edit Customer";
+
+    }
 
 
     getElement("customerDocId").value =
@@ -170,10 +191,21 @@ function openCustomerModal(customer = null) {
     getElement("customerNotes").value =
       customer.notes || "";
 
-  } else {
+  }
 
-    title.textContent =
-      "Add Customer";
+
+  // ---------------------------------------------------
+  // NEW CUSTOMER
+  // ---------------------------------------------------
+
+  else {
+
+    if (title) {
+
+      title.textContent =
+        "Add Customer";
+
+    }
 
 
     form.reset();
@@ -190,7 +222,9 @@ function openCustomerModal(customer = null) {
 }
 
 
-// ================= CLOSE CUSTOMER MODAL =================
+// =====================================================
+// CLOSE CUSTOMER MODAL
+// =====================================================
 
 function closeCustomerModal() {
 
@@ -240,7 +274,9 @@ function closeCustomerModal() {
 }
 
 
-// ================= SAVE CUSTOMER =================
+// =====================================================
+// SAVE CUSTOMER
+// =====================================================
 
 async function saveCustomer(event) {
 
@@ -320,7 +356,9 @@ async function saveCustomer(event) {
         ?.value;
 
 
-    // ================= EDIT =================
+    // -------------------------------------------------
+    // EDIT EXISTING CUSTOMER
+    // -------------------------------------------------
 
     if (existingId) {
 
@@ -345,7 +383,9 @@ async function saveCustomer(event) {
     }
 
 
-    // ================= NEW CUSTOMER =================
+    // -------------------------------------------------
+    // CREATE NEW CUSTOMER
+    // -------------------------------------------------
 
     else {
 
@@ -425,7 +465,9 @@ async function saveCustomer(event) {
 }
 
 
-// ================= CUSTOMER MESSAGE =================
+// =====================================================
+// CUSTOMER MESSAGE
+// =====================================================
 
 function showCustomerMessage(
   text,
@@ -448,7 +490,9 @@ function showCustomerMessage(
 }
 
 
-// ================= LOAD CUSTOMERS =================
+// =====================================================
+// LOAD CUSTOMERS
+// =====================================================
 
 async function loadCustomers() {
 
@@ -532,7 +576,9 @@ async function loadCustomers() {
 }
 
 
-// ================= RENDER CUSTOMERS =================
+// =====================================================
+// RENDER CUSTOMERS
+// =====================================================
 
 function renderCustomers(customers) {
 
@@ -645,9 +691,12 @@ function renderCustomers(customers) {
 }
 
 
-// ================= ROW ACTIONS =================
+// =====================================================
+// CUSTOMER ROW ACTIONS
+// =====================================================
 
 function setupCustomerRowActions() {
+
 
   document
     .querySelectorAll(
@@ -689,10 +738,13 @@ function setupCustomerRowActions() {
 
       button.addEventListener(
         "click",
-        () =>
+        () => {
+
           deleteCustomer(
             button.dataset.customerDeleteId
-          )
+          );
+
+        }
       );
 
     });
@@ -700,7 +752,9 @@ function setupCustomerRowActions() {
 }
 
 
-// ================= DELETE CUSTOMER =================
+// =====================================================
+// DELETE CUSTOMER
+// =====================================================
 
 async function deleteCustomer(id) {
 
@@ -751,7 +805,9 @@ async function deleteCustomer(id) {
 }
 
 
-// ================= SEARCH =================
+// =====================================================
+// CUSTOMER SEARCH
+// =====================================================
 
 function setupCustomerSearch() {
 
@@ -843,7 +899,9 @@ function setupCustomerSearch() {
 }
 
 
-// ================= DASHBOARD =================
+// =====================================================
+// CUSTOMER DASHBOARD COUNT
+// =====================================================
 
 function updateCustomerDashboard() {
 
@@ -887,7 +945,9 @@ function updateCustomerDashboard() {
 }
 
 
-// ================= HTML ESCAPE =================
+// =====================================================
+// HTML ESCAPE
+// =====================================================
 
 function escapeHtml(value) {
 
