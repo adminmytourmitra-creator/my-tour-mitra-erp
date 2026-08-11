@@ -25,21 +25,32 @@ async function loadDashboard() {
 
     const customersSnapshot =
       await getDocs(
-        collection(db, "customers")
+        collection(
+          db,
+          "customers"
+        )
       );
+
 
     const enquiriesSnapshot =
       await getDocs(
-        collection(db, "enquiries")
+        collection(
+          db,
+          "enquiries"
+        )
       );
 
 
     const totalCustomers =
       customersSnapshot.size;
 
+
     const enquiries =
       enquiriesSnapshot.docs.map(
-        (document) => document.data()
+        (document) => ({
+          id: document.id,
+          ...document.data()
+        })
       );
 
 
@@ -64,6 +75,7 @@ async function loadDashboard() {
       totalCustomers
     );
 
+
     updateCard(
       "Active Enquiries",
       activeEnquiries
@@ -84,37 +96,50 @@ async function loadDashboard() {
 
 // ================= UPDATE DASHBOARD CARD =================
 
-function updateCard(title, value) {
+function updateCard(
+  title,
+  value
+) {
 
   const cards =
-    document.querySelectorAll(".card");
+    document.querySelectorAll(
+      ".card"
+    );
 
 
-  cards.forEach((card) => {
+  cards.forEach(
+    (card) => {
 
-    const cardTitle =
-      card.querySelector(".card-title");
+      const cardTitle =
+        card.querySelector(
+          ".card-title"
+        );
 
-    if (!cardTitle) return;
+
+      if (!cardTitle) return;
 
 
-    if (
-      cardTitle.textContent.trim() ===
-      title
-    ) {
+      if (
+        cardTitle.textContent.trim() ===
+        title
+      ) {
 
-      const cardValue =
-        card.querySelector(".card-value");
+        const cardValue =
+          card.querySelector(
+            ".card-value"
+          );
 
-      if (cardValue) {
 
-        cardValue.textContent =
-          value;
+        if (cardValue) {
+
+          cardValue.textContent =
+            value;
+
+        }
 
       }
 
     }
-
-  });
+  );
 
 }
