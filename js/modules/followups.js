@@ -537,4 +537,506 @@ async function saveFollowup(event) {
         );
 
       const followupId =
-        "F
+        "FUP-" +
+        followupRef.id
+          .substring(0, 6)
+          .toUpperCase();
+
+      await updateDoc(
+
+        followupRef,
+
+        {
+          followupId:
+            followupId
+        }
+
+      );
+
+      showFollowupMessage(
+        "Follow-up saved successfully.",
+        "#15803d"
+      );
+
+    }
+
+    await loadFollowups();
+
+    setTimeout(
+      closeFollowupModal,
+      700
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Follow-up save error:",
+      error
+    );
+
+    showFollowupMessage(
+      "Could not save follow-up. Check Firestore rules.",
+      "#dc2626"
+    );
+
+  }
+
+}
+
+// ======================================================
+// MESSAGE
+// ======================================================
+
+function showFollowupMessage(
+  text,
+  color
+) {
+
+  const message =
+    getElement(
+      "followupFormMessage"
+    );
+
+  if (!message) return;
+
+  message.style.color =
+    color;
+
+  message.textContent =
+    text;
+
+}
+
+// ======================================================
+// LOAD FOLLOW-UPS
+// ======================================================
+
+async function loadFollowups() {
+
+  const table =
+    getElement(
+      "followupsTableBody"
+    );
+
+  if (!table) return;
+
+  table.innerHTML = `
+    <tr>
+      <td
+        colspan="8"
+        class="empty-table"
+      >
+        Loading follow-ups...
+      </td>
+    </tr>
+  `;
+
+  try {
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "followups"
+        )
+      );
+
+    allFollowups =
+      snapshot.docs.map(
+        (document) => ({
+          id:
+            document.id,
+          ...document.data()
+        })
+      );
+
+    renderFollowups(
+      allFollowups
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Follow-up loading error:",
+      error
+    );
+
+    table.innerHTML = `
+      <tr>
+        <td
+          colspan="8"
+          class="empty-table"
+        >
+          Unable to load follow-ups.
+          Check Firestore security rules.
+        </td>
+      </tr>
+    `;
+
+  }
+
+}
+
+// ======================================================
+// RENDER FOLLOW-UPS
+// ======================================================
+
+function renderFollowups(
+  followups
+) {
+
+  const table =
+    getElement(
+      "followupsTableBody"
+    );
+
+  if (!table) return;
+
+  if (!followups.length) {
+
+    table.innerHTML = `
+      <tr>
+        <td
+          colspan="8"
+          class="empty-table"
+        >
+          No follow-ups found.
+          Click "+ Add Follow-up" to create one.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+  table.innerHTML =
+    followups
+      .map(
+        (followup) => {
+
+          return `
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  followup.followupId ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    followup.customerName ||
+                    "-"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  followup.destination ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  followup.followupDate ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  followup.followupTime ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  followup.type ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                <span class="status-badge">
+                  ${escapeHtml(
+                    followup.status ||
+                    "Pending"
+                  )}
+                </span>
+              </td>
+
+              <td>
+
+                <button
+                  class="edit-btn"
+                  data-followup-edit-id="${followup.id}"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="danger-btn"
+                  data-followup-delete-id="${followup.id}"
+                >
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+          `;
+
+        }
+      )
+      .join("");
+
+  setupFollowupRowActions();
+
+}
+
+// ======================================================
+// ROW ACTIONS
+// ======================================================
+
+function setupFollowupRowActions() {
+
+  document
+    .querySelectorAll(
+      "[data-followup-edit-id]"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const followup =
+              allFollowups.find(
+                (item) =>
+                  item.id ===
+                  button.dataset
+                    .followupEditId
+              );
+
+            if (followup) {
+
+              openFollowupModal(
+                followup
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  document
+    .querySelectorAll(
+      "[data-followup-delete-id]"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            deleteFollowup(
+              button.dataset
+                .followupDeleteId
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+// ======================================================
+// DELETE
+// ======================================================
+
+async function deleteFollowup(
+  id
+) {
+
+  const followup =
+    allFollowups.find(
+      (item) =>
+        item.id === id
+    );
+
+  const confirmed =
+    confirm(
+      `Delete follow-up "${followup?.followupId || ""}"?`
+    );
+
+  if (!confirmed) return;
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "followups",
+        id
+      )
+    );
+
+    await loadFollowups();
+
+  } catch (error) {
+
+    console.error(
+      "Follow-up delete error:",
+      error
+    );
+
+    alert(
+      "Could not delete follow-up."
+    );
+
+  }
+
+}
+
+// ======================================================
+// SEARCH
+// ======================================================
+
+function setupFollowupSearch() {
+
+  const searchBox =
+    getElement(
+      "followupSearch"
+    );
+
+  if (!searchBox) return;
+
+  searchBox.addEventListener(
+    "input",
+    () => {
+
+      const search =
+        searchBox.value
+          .toLowerCase()
+          .trim();
+
+      if (!search) {
+
+        renderFollowups(
+          allFollowups
+        );
+
+        return;
+
+      }
+
+      const filtered =
+        allFollowups.filter(
+          (followup) => {
+
+            return (
+
+              String(
+                followup.customerName ||
+                ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                followup.destination ||
+                ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                followup.followupId ||
+                ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                followup.status ||
+                ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              String(
+                followup.type ||
+                ""
+              )
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+          }
+        );
+
+      renderFollowups(
+        filtered
+      );
+
+    }
+  );
+
+}
+
+// ======================================================
+// ESCAPE HTML
+// ======================================================
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
