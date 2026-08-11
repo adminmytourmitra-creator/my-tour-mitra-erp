@@ -9,65 +9,106 @@ import {
 import { auth } from "./firebase.js";
 
 
-// ================= ELEMENTS =================
+// ================= ELEMENT HELPER =================
 
-const loginPage = document.getElementById("loginPage");
-const appPage = document.getElementById("app");
-const loginForm = document.getElementById("loginForm");
-const message = document.getElementById("message");
-const userEmail = document.getElementById("userEmail");
-const logoutBtn = document.getElementById("logoutBtn");
+function getElement(id) {
+  return document.getElementById(id);
+}
 
 
 // ================= LOGIN =================
 
 function setupLogin() {
 
+  const loginForm =
+    getElement("loginForm");
+
   if (!loginForm) return;
 
-  loginForm.addEventListener("submit", async (event) => {
 
-    event.preventDefault();
+  loginForm.addEventListener(
+    "submit",
+    async (event) => {
 
-    const email = document
-      .getElementById("email")
-      .value
-      .trim();
+      event.preventDefault();
 
-    const password = document
-      .getElementById("password")
-      .value;
 
-    if (message) {
-      message.style.color = "#1769e0";
-      message.textContent = "Signing in...";
-    }
+      const email =
+        getElement("email")
+          ?.value
+          .trim() || "";
 
-    try {
+      const password =
+        getElement("password")
+          ?.value || "";
 
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
 
-      if (message) {
-        message.textContent = "";
+      const message =
+        getElement("message");
+
+
+      if (!email || !password) {
+
+        if (message) {
+
+          message.style.color =
+            "#dc2626";
+
+          message.textContent =
+            "Please enter email and password.";
+
+        }
+
+        return;
       }
 
-    } catch (error) {
-
-      console.error("Login error:", error);
 
       if (message) {
-        message.style.color = "#dc2626";
+
+        message.style.color =
+          "#1769e0";
+
         message.textContent =
-          "Invalid email or password.";
+          "Signing in...";
+
+      }
+
+
+      try {
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+        if (message) {
+          message.textContent = "";
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Login error:",
+          error
+        );
+
+
+        if (message) {
+
+          message.style.color =
+            "#dc2626";
+
+          message.textContent =
+            "Invalid email or password.";
+
+        }
+
       }
 
     }
-
-  });
+  );
 
 }
 
@@ -76,21 +117,31 @@ function setupLogin() {
 
 function setupLogout() {
 
+  const logoutBtn =
+    getElement("logoutBtn");
+
   if (!logoutBtn) return;
 
-  logoutBtn.addEventListener("click", async () => {
 
-    try {
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
 
-      await signOut(auth);
+      try {
 
-    } catch (error) {
+        await signOut(auth);
 
-      console.error("Logout error:", error);
+      } catch (error) {
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+      }
 
     }
-
-  });
+  );
 
 }
 
@@ -99,36 +150,66 @@ function setupLogout() {
 
 function setupAuthState() {
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(
+    auth,
+    (user) => {
 
-    if (user) {
+      const loginPage =
+        getElement("loginPage");
 
-      if (loginPage) {
-        loginPage.style.display = "none";
-      }
+      const appPage =
+        getElement("app");
 
-      if (appPage) {
-        appPage.style.display = "block";
-      }
+      const userEmail =
+        getElement("userEmail");
 
-      if (userEmail) {
-        userEmail.textContent =
-          user.email || "";
-      }
 
-    } else {
+      if (user) {
 
-      if (loginPage) {
-        loginPage.style.display = "flex";
-      }
+        if (loginPage) {
 
-      if (appPage) {
-        appPage.style.display = "none";
+          loginPage.style.display =
+            "none";
+
+        }
+
+
+        if (appPage) {
+
+          appPage.style.display =
+            "block";
+
+        }
+
+
+        if (userEmail) {
+
+          userEmail.textContent =
+            user.email || "";
+
+        }
+
+      } else {
+
+        if (loginPage) {
+
+          loginPage.style.display =
+            "flex";
+
+        }
+
+
+        if (appPage) {
+
+          appPage.style.display =
+            "none";
+
+        }
+
       }
 
     }
-
-  });
+  );
 
 }
 
