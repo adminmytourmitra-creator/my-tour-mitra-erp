@@ -24,42 +24,1330 @@
 <body>
 
 
-  <!-- =====================================================
-       LOGIN PAGE
-  ====================================================== -->
+<!-- =====================================================
+     LOGIN PAGE
+====================================================== -->
 
-  <div
-    id="loginPage"
-    class="login-page"
-  >
+<div
+  id="loginPage"
+  class="login-page"
+>
 
-    <div class="login-card">
+  <div class="login-card">
 
-      <div class="login-logo">
+    <div class="login-logo">
 
-        <h1>
-          My Tour Mitra
-        </h1>
+      <h1>My Tour Mitra</h1>
 
-        <p>
-          Travel Management ERP
-        </p>
+      <p>Travel Management ERP</p>
+
+    </div>
+
+
+    <form id="loginForm">
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        >
 
       </div>
 
 
-      <form id="loginForm">
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="primary-btn login-btn"
+      >
+        Sign In
+      </button>
+
+
+      <div
+        id="message"
+        class="status-message"
+      ></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+====================================================== -->
+
+<div
+  id="app"
+  class="app-layout"
+  style="display:none;"
+>
+
+
+  <!-- ===================================================
+       SIDEBAR
+  ==================================================== -->
+
+  <aside class="sidebar">
+
+
+    <div class="sidebar-brand">
+
+      <h2>
+        My Tour Mitra
+      </h2>
+
+      <span>
+        Travel ERP
+      </span>
+
+    </div>
+
+
+    <nav class="sidebar-menu">
+
+
+      <button
+        class="menu-item active"
+        data-page="dashboard"
+        type="button"
+      >
+        <span>Dashboard</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="customers"
+        type="button"
+      >
+        <span>Customers</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="enquiries"
+        type="button"
+      >
+        <span>Enquiries</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="followups"
+        type="button"
+      >
+        <span>Follow-ups</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="packages"
+        type="button"
+      >
+        <span>Packages</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="hotels"
+        type="button"
+      >
+        <span>Hotels</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="cabs"
+        type="button"
+      >
+        <span>Cabs</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="agencies"
+        type="button"
+      >
+        <span>B2B Agencies</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="quotations"
+        type="button"
+      >
+        <span>Quotations</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="bookings"
+        type="button"
+      >
+        <span>Bookings</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="invoices"
+        type="button"
+      >
+        <span>Invoices</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="vouchers"
+        type="button"
+      >
+        <span>Vouchers</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="payments"
+        type="button"
+      >
+        <span>Payments</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="expenses"
+        type="button"
+      >
+        <span>Expenses</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="profit"
+        type="button"
+      >
+        <span>Profit &amp; Loss</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="team"
+        type="button"
+      >
+        <span>Team / Users</span>
+      </button>
+
+
+      <button
+        class="menu-item"
+        data-page="settings"
+        type="button"
+      >
+        <span>Settings</span>
+      </button>
+
+
+    </nav>
+
+
+    <!-- SIDEBAR USER -->
+
+    <div class="sidebar-user">
+
+      <div
+        id="userEmail"
+        class="user-email"
+      >
+        —
+      </div>
+
+
+      <button
+        id="logoutBtn"
+        class="logout-btn"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </div>
+
+
+  </aside>
+
+
+
+  <!-- ===================================================
+       MAIN CONTENT
+  ==================================================== -->
+
+  <main class="main-content">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+      <h1 id="pageTitle">
+        Dashboard
+      </h1>
+
+    </header>
+
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
+
+    <section class="content-area">
+
+
+      <!-- =================================================
+           DASHBOARD
+      ================================================== -->
+
+      <div
+        class="module"
+        id="dashboardPage"
+      >
+
+        <div class="module-header">
+
+          <div>
+
+            <h2>
+              Dashboard
+            </h2>
+
+            <p>
+              Welcome to My Tour Mitra ERP.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+
+          <div class="card">
+
+            <div class="card-title">
+              Total Customers
+            </div>
+
+            <div
+              class="card-value"
+              id="totalCustomers"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-title">
+              Active Enquiries
+            </div>
+
+            <div
+              class="card-value"
+              id="activeEnquiries"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-title">
+              Confirmed Bookings
+            </div>
+
+            <div
+              class="card-value"
+              id="confirmedBookings"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-title">
+              Pending Payments
+            </div>
+
+            <div
+              class="card-value"
+              id="pendingPayments"
+            >
+              ₹0
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           CUSTOMERS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="customersPage"
+        style="display:none;"
+      >
+
+        <div class="module-header">
+
+          <div>
+
+            <h2>
+              Customers
+            </h2>
+
+            <p>
+              Manage all your travel customers.
+            </p>
+
+          </div>
+
+
+          <button
+            class="primary-btn"
+            id="addCustomerBtn"
+            type="button"
+          >
+            + Add Customer
+          </button>
+
+        </div>
+
+
+        <div class="module-card">
+
+
+          <input
+            class="search-box"
+            type="text"
+            id="customerSearch"
+            placeholder="Search customer by name, mobile or email..."
+          >
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>Customer ID</th>
+
+                  <th>Name</th>
+
+                  <th>Mobile</th>
+
+                  <th>WhatsApp</th>
+
+                  <th>Email</th>
+
+                  <th>City</th>
+
+                  <th>Type</th>
+
+                  <th>Actions</th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody id="customersTableBody">
+
+                <tr>
+
+                  <td
+                    colspan="8"
+                    class="empty-table"
+                  >
+                    Loading customers...
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           ENQUIRIES
+      ================================================== -->
+
+      <div
+        class="module"
+        id="enquiriesPage"
+        style="display:none;"
+      >
+
+        <div class="module-header">
+
+          <div>
+
+            <h2>
+              Enquiries
+            </h2>
+
+            <p>
+              Manage customer enquiries and sales pipeline.
+            </p>
+
+          </div>
+
+
+          <button
+            class="primary-btn"
+            id="addEnquiryBtn"
+            type="button"
+          >
+            + Add Enquiry
+          </button>
+
+        </div>
+
+
+        <div class="module-card">
+
+
+          <input
+            class="search-box"
+            type="text"
+            id="enquirySearch"
+            placeholder="Search by customer, destination or enquiry ID..."
+          >
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>Enquiry ID</th>
+
+                  <th>Customer</th>
+
+                  <th>Destination</th>
+
+                  <th>Travel Date</th>
+
+                  <th>Pax</th>
+
+                  <th>Budget</th>
+
+                  <th>Status</th>
+
+                  <th>Actions</th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody id="enquiriesTableBody">
+
+                <tr>
+
+                  <td
+                    colspan="8"
+                    class="empty-table"
+                  >
+                    Loading enquiries...
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           FOLLOW UPS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="followupsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Follow-ups
+          </h2>
+
+          <p class="module-placeholder">
+            Follow-up management will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           PACKAGES
+      ================================================== -->
+
+      <div
+        class="module"
+        id="packagesPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Packages
+          </h2>
+
+          <p class="module-placeholder">
+            Package builder will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           HOTELS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="hotelsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Hotels
+          </h2>
+
+          <p class="module-placeholder">
+            Hotel database will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           CABS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="cabsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Cabs
+          </h2>
+
+          <p class="module-placeholder">
+            Cab database will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           B2B AGENCIES
+      ================================================== -->
+
+      <div
+        class="module"
+        id="agenciesPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            B2B Agencies
+          </h2>
+
+          <p class="module-placeholder">
+            B2B agency database will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           QUOTATIONS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="quotationsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Quotations
+          </h2>
+
+          <p class="module-placeholder">
+            Quotation builder will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           BOOKINGS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="bookingsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Bookings
+          </h2>
+
+          <p class="module-placeholder">
+            Booking management will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           INVOICES
+      ================================================== -->
+
+      <div
+        class="module"
+        id="invoicesPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Invoices
+          </h2>
+
+          <p class="module-placeholder">
+            Invoice system will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           VOUCHERS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="vouchersPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Vouchers
+          </h2>
+
+          <p class="module-placeholder">
+            Voucher system will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           PAYMENTS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="paymentsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Payments
+          </h2>
+
+          <p class="module-placeholder">
+            Payment management will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           EXPENSES
+      ================================================== -->
+
+      <div
+        class="module"
+        id="expensesPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Expenses
+          </h2>
+
+          <p class="module-placeholder">
+            Expense management will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           PROFIT & LOSS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="profitPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Profit &amp; Loss
+          </h2>
+
+          <p class="module-placeholder">
+            Profit &amp; Loss reporting will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           TEAM
+      ================================================== -->
+
+      <div
+        class="module"
+        id="teamPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Team / Users
+          </h2>
+
+          <p class="module-placeholder">
+            Team management will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================================
+           SETTINGS
+      ================================================== -->
+
+      <div
+        class="module"
+        id="settingsPage"
+        style="display:none;"
+      >
+
+        <div class="module-card">
+
+          <h2>
+            Settings
+          </h2>
+
+          <p class="module-placeholder">
+            ERP settings will be built next.
+          </p>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     CUSTOMER MODAL
+====================================================== -->
+
+<div
+  class="modal-overlay"
+  id="customerModal"
+  style="display:none;"
+>
+
+  <div class="modal">
+
+
+    <div class="modal-header">
+
+      <h2 id="customerModalTitle">
+        Add Customer
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeCustomerModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="customerForm">
+
+
+      <input
+        type="hidden"
+        id="customerDocId"
+      >
+
+
+      <div class="form-grid">
+
 
         <div class="form-group">
 
-          <label for="email">
+          <label for="customerName">
+            Customer Name *
+          </label>
+
+          <input
+            type="text"
+            id="customerName"
+            placeholder="Full name"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerMobile">
+            Mobile *
+          </label>
+
+          <input
+            type="tel"
+            id="customerMobile"
+            placeholder="Mobile number"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerWhatsapp">
+            WhatsApp
+          </label>
+
+          <input
+            type="tel"
+            id="customerWhatsapp"
+            placeholder="WhatsApp number"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerEmail">
             Email
           </label>
 
           <input
             type="email"
-            id="email"
-            placeholder="Enter your email"
+            id="customerEmail"
+            placeholder="Email address"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerCity">
+            City
+          </label>
+
+          <input
+            type="text"
+            id="customerCity"
+            placeholder="City"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerCountry">
+            Country
+          </label>
+
+          <input
+            type="text"
+            id="customerCountry"
+            value="India"
+            placeholder="Country"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerType">
+            Customer Type
+          </label>
+
+          <select id="customerType">
+
+            <option value="Individual">
+              Individual
+            </option>
+
+            <option value="Corporate">
+              Corporate
+            </option>
+
+            <option value="B2B Agency">
+              B2B Agency
+            </option>
+
+            <option value="Group">
+              Group
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="customerSource">
+            Lead Source
+          </label>
+
+          <select id="customerSource">
+
+            <option value="Direct">
+              Direct
+            </option>
+
+            <option value="WhatsApp">
+              WhatsApp
+            </option>
+
+            <option value="Website">
+              Website
+            </option>
+
+            <option value="Instagram">
+              Instagram
+            </option>
+
+            <option value="Facebook">
+              Facebook
+            </option>
+
+            <option value="Referral">
+              Referral
+            </option>
+
+            <option value="B2B">
+              B2B
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="customerNotes">
+            Notes
+          </label>
+
+          <textarea
+            id="customerNotes"
+            placeholder="Customer notes..."
+          ></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        class="status-message"
+        id="customerFormMessage"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelCustomerBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Customer
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ENQUIRY MODAL
+====================================================== -->
+
+<div
+  class="modal-overlay"
+  id="enquiryModal"
+  style="display:none;"
+>
+
+  <div class="modal">
+
+
+    <div class="modal-header">
+
+      <h2 id="enquiryModalTitle">
+        Add Enquiry
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeEnquiryModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="enquiryForm">
+
+
+      <input
+        type="hidden"
+        id="enquiryDocId"
+      >
+
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+
+          <label for="enquiryCustomer">
+            Customer *
+          </label>
+
+          <select
+            id="enquiryCustomer"
+            required
+          >
+
+            <option value="">
+              Select Customer
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryDestination">
+            Destination *
+          </label>
+
+          <input
+            type="text"
+            id="enquiryDestination"
+            placeholder="e.g. Meghalaya"
             required
           >
 
@@ -68,2654 +1356,275 @@
 
         <div class="form-group">
 
-          <label for="password">
-            Password
+          <label for="enquiryStartDate">
+            Travel Start Date *
           </label>
 
           <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
+            type="date"
+            id="enquiryStartDate"
             required
           >
 
         </div>
 
 
+        <div class="form-group">
+
+          <label for="enquiryEndDate">
+            Travel End Date
+          </label>
+
+          <input
+            type="date"
+            id="enquiryEndDate"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryAdults">
+            Adults
+          </label>
+
+          <input
+            type="number"
+            id="enquiryAdults"
+            value="1"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryChildren">
+            Children
+          </label>
+
+          <input
+            type="number"
+            id="enquiryChildren"
+            value="0"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryInfants">
+            Infants
+          </label>
+
+          <input
+            type="number"
+            id="enquiryInfants"
+            value="0"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryTripType">
+            Trip Type
+          </label>
+
+          <select id="enquiryTripType">
+
+            <option value="Family">
+              Family
+            </option>
+
+            <option value="Honeymoon">
+              Honeymoon
+            </option>
+
+            <option value="Group">
+              Group
+            </option>
+
+            <option value="Corporate">
+              Corporate
+            </option>
+
+            <option value="Solo">
+              Solo
+            </option>
+
+            <option value="Friends">
+              Friends
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryBudget">
+            Budget
+          </label>
+
+          <input
+            type="number"
+            id="enquiryBudget"
+            placeholder="₹"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquirySource">
+            Lead Source
+          </label>
+
+          <select id="enquirySource">
+
+            <option value="Direct">
+              Direct
+            </option>
+
+            <option value="WhatsApp">
+              WhatsApp
+            </option>
+
+            <option value="Website">
+              Website
+            </option>
+
+            <option value="Instagram">
+              Instagram
+            </option>
+
+            <option value="Facebook">
+              Facebook
+            </option>
+
+            <option value="Referral">
+              Referral
+            </option>
+
+            <option value="B2B">
+              B2B
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="enquiryStatus">
+            Enquiry Status
+          </label>
+
+          <select id="enquiryStatus">
+
+            <option value="New">
+              New
+            </option>
+
+            <option value="Follow-up">
+              Follow-up
+            </option>
+
+            <option value="Quoted">
+              Quoted
+            </option>
+
+            <option value="Confirmed">
+              Confirmed
+            </option>
+
+            <option value="Lost">
+              Lost
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="enquiryNotes">
+            Notes
+          </label>
+
+          <textarea
+            id="enquiryNotes"
+            placeholder="Enquiry details, requirements, special requests..."
+          ></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        class="status-message"
+        id="enquiryFormMessage"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelEnquiryBtn"
+        >
+          Cancel
+        </button>
+
         <button
           type="submit"
-          class="primary-btn login-btn"
+          class="primary-btn"
         >
-          Sign In
-        </button>
-
-
-        <div
-          id="message"
-          class="status-message"
-        ></div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       MAIN APPLICATION
-  ====================================================== -->
-
-  <div
-    id="app"
-    class="app-layout"
-    style="display:none;"
-  >
-
-
-    <!-- ===================================================
-         SIDEBAR
-    ==================================================== -->
-
-    <aside class="sidebar">
-
-
-      <div class="sidebar-brand">
-
-        <h2>
-          My Tour Mitra
-        </h2>
-
-        <span>
-          Travel ERP
-        </span>
-
-      </div>
-
-
-
-      <nav class="sidebar-menu">
-
-
-        <button
-          class="menu-item active"
-          data-page="dashboard"
-          type="button"
-        >
-          <span>Dashboard</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="customers"
-          type="button"
-        >
-          <span>Customers</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="enquiries"
-          type="button"
-        >
-          <span>Enquiries</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="followups"
-          type="button"
-        >
-          <span>Follow-ups</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="packages"
-          type="button"
-        >
-          <span>Packages</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="hotels"
-          type="button"
-        >
-          <span>Hotels</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="cabs"
-          type="button"
-        >
-          <span>Cabs</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="agencies"
-          type="button"
-        >
-          <span>B2B Agencies</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="quotations"
-          type="button"
-        >
-          <span>Quotations</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="bookings"
-          type="button"
-        >
-          <span>Bookings</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="invoices"
-          type="button"
-        >
-          <span>Invoices</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="vouchers"
-          type="button"
-        >
-          <span>Vouchers</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="payments"
-          type="button"
-        >
-          <span>Payments</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="expenses"
-          type="button"
-        >
-          <span>Expenses</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="profit"
-          type="button"
-        >
-          <span>Profit &amp; Loss</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="team"
-          type="button"
-        >
-          <span>Team / Users</span>
-        </button>
-
-
-        <button
-          class="menu-item"
-          data-page="settings"
-          type="button"
-        >
-          <span>Settings</span>
-        </button>
-
-
-      </nav>
-
-
-
-      <div class="sidebar-user">
-
-        <div
-          id="userEmail"
-          class="user-email"
-        >
-          —
-        </div>
-
-
-        <button
-          id="logoutBtn"
-          class="logout-btn"
-          type="button"
-        >
-          Logout
+          Save Enquiry
         </button>
 
       </div>
 
 
-    </aside>
-
-
-
-    <!-- ===================================================
-         MAIN CONTENT
-    ==================================================== -->
-
-    <main class="main-content">
-
-
-      <header class="topbar">
-
-        <h1 id="pageTitle">
-          Dashboard
-        </h1>
-
-      </header>
-
-
-
-      <section class="content-area">
-
-
-
-        <!-- =================================================
-             DASHBOARD
-        ================================================== -->
-
-        <div
-          class="module"
-          id="dashboardPage"
-        >
-
-          <div class="module-header">
-
-            <div>
-
-              <h2>
-                Dashboard
-              </h2>
-
-              <p>
-                Welcome to My Tour Mitra ERP.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="dashboard-grid">
-
-
-            <div class="card">
-
-              <div class="card-title">
-                Total Customers
-              </div>
-
-              <div
-                class="card-value"
-                id="totalCustomers"
-              >
-                0
-              </div>
-
-            </div>
-
-
-            <div class="card">
-
-              <div class="card-title">
-                Active Enquiries
-              </div>
-
-              <div
-                class="card-value"
-                id="activeEnquiries"
-              >
-                0
-              </div>
-
-            </div>
-
-
-            <div class="card">
-
-              <div class="card-title">
-                Confirmed Bookings
-              </div>
-
-              <div
-                class="card-value"
-                id="confirmedBookings"
-              >
-                0
-              </div>
-
-            </div>
-
-
-            <div class="card">
-
-              <div class="card-title">
-                Pending Payments
-              </div>
-
-              <div
-                class="card-value"
-                id="pendingPayments"
-              >
-                ₹0
-              </div>
-
-            </div>
-
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             CUSTOMERS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="customersPage"
-          style="display:none;"
-        >
-
-          <div class="module-header">
-
-            <div>
-
-              <h2>
-                Customers
-              </h2>
-
-              <p>
-                Manage all your travel customers.
-              </p>
-
-            </div>
-
-
-            <button
-              class="primary-btn"
-              id="addCustomerBtn"
-              type="button"
-            >
-              + Add Customer
-            </button>
-
-          </div>
-
-
-          <div class="module-card">
-
-            <input
-              class="search-box"
-              type="text"
-              id="customerSearch"
-              placeholder="Search customer by name, mobile or email..."
-            >
-
-
-            <div class="table-wrapper">
-
-              <table>
-
-                <thead>
-
-                  <tr>
-
-                    <th>Customer ID</th>
-                    <th>Name</th>
-                    <th>Mobile</th>
-                    <th>WhatsApp</th>
-                    <th>Email</th>
-                    <th>City</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-
-                  </tr>
-
-                </thead>
-
-
-                <tbody id="customersTableBody">
-
-                  <tr>
-
-                    <td
-                      colspan="8"
-                      class="empty-table"
-                    >
-                      Loading customers...
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             ENQUIRIES
-        ================================================== -->
-
-        <div
-          class="module"
-          id="enquiriesPage"
-          style="display:none;"
-        >
-
-          <div class="module-header">
-
-            <div>
-
-              <h2>
-                Enquiries
-              </h2>
-
-              <p>
-                Manage customer enquiries and sales pipeline.
-              </p>
-
-            </div>
-
-
-            <button
-              class="primary-btn"
-              id="addEnquiryBtn"
-              type="button"
-            >
-              + Add Enquiry
-            </button>
-
-          </div>
-
-
-          <div class="module-card">
-
-            <input
-              class="search-box"
-              type="text"
-              id="enquirySearch"
-              placeholder="Search by customer, destination or enquiry ID..."
-            >
-
-
-            <div class="table-wrapper">
-
-              <table>
-
-                <thead>
-
-                  <tr>
-
-                    <th>Enquiry ID</th>
-                    <th>Customer</th>
-                    <th>Destination</th>
-                    <th>Travel Date</th>
-                    <th>Pax</th>
-                    <th>Budget</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-
-                  </tr>
-
-                </thead>
-
-
-                <tbody id="enquiriesTableBody">
-
-                  <tr>
-
-                    <td
-                      colspan="8"
-                      class="empty-table"
-                    >
-                      Loading enquiries...
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             FOLLOW UPS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="followupsPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Follow-ups
-            </h2>
-
-            <p class="module-placeholder">
-              Follow-up management will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             PACKAGES
-        ================================================== -->
-
-        <div
-          class="module"
-          id="packagesPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Packages
-            </h2>
-
-            <p class="module-placeholder">
-              Package builder will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             HOTELS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="hotelsPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Hotels
-            </h2>
-
-            <p class="module-placeholder">
-              Hotel database will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             CABS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="cabsPage"
-          style="display:none;"
-        >
-
-          <div class="module-header">
-
-            <div>
-
-              <h2>
-                Cabs
-              </h2>
-
-              <p>
-                Manage vehicles, drivers and cab rates.
-              </p>
-
-            </div>
-
-
-            <button
-              class="primary-btn"
-              id="addCabBtn"
-              type="button"
-            >
-              + Add Cab
-            </button>
-
-          </div>
-
-
-          <div class="module-card">
-
-            <input
-              class="search-box"
-              type="text"
-              id="cabSearch"
-              placeholder="Search by cab, vehicle number, driver or location..."
-            >
-
-
-            <div class="table-wrapper">
-
-              <table>
-
-                <thead>
-
-                  <tr>
-
-                    <th>Cab ID</th>
-                    <th>Cab Name</th>
-                    <th>Vehicle No.</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
-                    <th>Driver</th>
-                    <th>Phone</th>
-                    <th>Rate</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-
-                  </tr>
-
-                </thead>
-
-
-                <tbody id="cabsTableBody">
-
-                  <tr>
-
-                    <td
-                      colspan="10"
-                      class="empty-table"
-                    >
-                      Loading cabs...
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             B2B AGENCIES
-        ================================================== -->
-
-        <div
-          class="module"
-          id="agenciesPage"
-          style="display:none;"
-        >
-
-          <div class="module-header">
-
-            <div>
-
-              <h2>
-                B2B Agencies
-              </h2>
-
-              <p>
-                Manage your B2B travel agency partners.
-              </p>
-
-            </div>
-
-
-            <button
-              class="primary-btn"
-              id="addAgencyBtn"
-              type="button"
-            >
-              + Add Agency
-            </button>
-
-          </div>
-
-
-          <div class="module-card">
-
-            <input
-              class="search-box"
-              type="text"
-              id="agencySearch"
-              placeholder="Search agency, contact person, mobile or email..."
-            >
-
-
-            <div class="table-wrapper">
-
-              <table>
-
-                <thead>
-
-                  <tr>
-
-                    <th>Agency ID</th>
-                    <th>Agency Name</th>
-                    <th>Contact Person</th>
-                    <th>Mobile</th>
-                    <th>WhatsApp</th>
-                    <th>Email</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-
-                  </tr>
-
-                </thead>
-
-
-                <tbody id="agenciesTableBody">
-
-                  <tr>
-
-                    <td
-                      colspan="10"
-                      class="empty-table"
-                    >
-                      Loading agencies...
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             QUOTATIONS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="quotationsPage"
-          style="display:none;"
-        >
-
-          <div class="module-header">
-
-            <div>
-
-              <h2>
-                Quotations
-              </h2>
-
-              <p>
-                Create and manage customer quotations.
-              </p>
-
-            </div>
-
-
-            <button
-              class="primary-btn"
-              id="addQuotationBtn"
-              type="button"
-            >
-              + Create Quotation
-            </button>
-
-          </div>
-
-
-          <div class="module-card">
-
-            <input
-              class="search-box"
-              type="text"
-              id="quotationSearch"
-              placeholder="Search quotation, customer or destination..."
-            >
-
-
-            <div class="table-wrapper">
-
-              <table>
-
-                <thead>
-
-                  <tr>
-
-                    <th>Quotation ID</th>
-                    <th>Customer</th>
-                    <th>Destination</th>
-                    <th>Travel Date</th>
-                    <th>Pax</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-
-                  </tr>
-
-                </thead>
-
-
-                <tbody id="quotationsTableBody">
-
-                  <tr>
-
-                    <td
-                      colspan="8"
-                      class="empty-table"
-                    >
-                      Loading quotations...
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             BOOKINGS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="bookingsPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Bookings
-            </h2>
-
-            <p class="module-placeholder">
-              Booking management will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             INVOICES
-        ================================================== -->
-
-        <div
-          class="module"
-          id="invoicesPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Invoices
-            </h2>
-
-            <p class="module-placeholder">
-              Invoice system will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             VOUCHERS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="vouchersPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Vouchers
-            </h2>
-
-            <p class="module-placeholder">
-              Voucher system will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             PAYMENTS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="paymentsPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Payments
-            </h2>
-
-            <p class="module-placeholder">
-              Payment management will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             EXPENSES
-        ================================================== -->
-
-        <div
-          class="module"
-          id="expensesPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Expenses
-            </h2>
-
-            <p class="module-placeholder">
-              Expense management will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             PROFIT & LOSS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="profitPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Profit &amp; Loss
-            </h2>
-
-            <p class="module-placeholder">
-              Profit &amp; Loss reporting will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             TEAM
-        ================================================== -->
-
-        <div
-          class="module"
-          id="teamPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Team / Users
-            </h2>
-
-            <p class="module-placeholder">
-              Team management will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             SETTINGS
-        ================================================== -->
-
-        <div
-          class="module"
-          id="settingsPage"
-          style="display:none;"
-        >
-
-          <div class="module-card">
-
-            <h2>
-              Settings
-            </h2>
-
-            <p class="module-placeholder">
-              ERP settings will be built next.
-            </p>
-
-          </div>
-
-        </div>
-
-
-      </section>
-
-    </main>
+    </form>
 
   </div>
 
+</div>
 
 
-  <!-- =====================================================
-       CUSTOMER MODAL
-  ====================================================== -->
 
-  <div
-    class="modal-overlay"
-    id="customerModal"
-    style="display:none;"
-  >
+<!-- =====================================================
+     JAVASCRIPT ENTRY POINT
+====================================================== -->
 
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 id="customerModalTitle">
-          Add Customer
-        </h2>
-
-        <button
-          class="close-btn"
-          id="closeCustomerModal"
-          type="button"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <form id="customerForm">
-
-        <input
-          type="hidden"
-          id="customerDocId"
-        >
-
-
-        <div class="form-grid">
-
-
-          <div class="form-group">
-
-            <label for="customerName">
-              Customer Name *
-            </label>
-
-            <input
-              type="text"
-              id="customerName"
-              placeholder="Full name"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerMobile">
-              Mobile *
-            </label>
-
-            <input
-              type="tel"
-              id="customerMobile"
-              placeholder="Mobile number"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerWhatsapp">
-              WhatsApp
-            </label>
-
-            <input
-              type="tel"
-              id="customerWhatsapp"
-              placeholder="WhatsApp number"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerEmail">
-              Email
-            </label>
-
-            <input
-              type="email"
-              id="customerEmail"
-              placeholder="Email address"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerCity">
-              City
-            </label>
-
-            <input
-              type="text"
-              id="customerCity"
-              placeholder="City"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerCountry">
-              Country
-            </label>
-
-            <input
-              type="text"
-              id="customerCountry"
-              value="India"
-              placeholder="Country"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerType">
-              Customer Type
-            </label>
-
-            <select id="customerType">
-
-              <option value="Individual">
-                Individual
-              </option>
-
-              <option value="Corporate">
-                Corporate
-              </option>
-
-              <option value="B2B Agency">
-                B2B Agency
-              </option>
-
-              <option value="Group">
-                Group
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="customerSource">
-              Lead Source
-            </label>
-
-            <select id="customerSource">
-
-              <option value="Direct">
-                Direct
-              </option>
-
-              <option value="WhatsApp">
-                WhatsApp
-              </option>
-
-              <option value="Website">
-                Website
-              </option>
-
-              <option value="Instagram">
-                Instagram
-              </option>
-
-              <option value="Facebook">
-                Facebook
-              </option>
-
-              <option value="Referral">
-                Referral
-              </option>
-
-              <option value="B2B">
-                B2B
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group full-width">
-
-            <label for="customerNotes">
-              Notes
-            </label>
-
-            <textarea
-              id="customerNotes"
-              placeholder="Customer notes..."
-            ></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <div
-          class="status-message"
-          id="customerFormMessage"
-        ></div>
-
-
-        <div class="form-actions">
-
-          <button
-            type="button"
-            class="secondary-btn"
-            id="cancelCustomerBtn"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            class="primary-btn"
-          >
-            Save Customer
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       ENQUIRY MODAL
-  ====================================================== -->
-
-  <div
-    class="modal-overlay"
-    id="enquiryModal"
-    style="display:none;"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 id="enquiryModalTitle">
-          Add Enquiry
-        </h2>
-
-        <button
-          class="close-btn"
-          id="closeEnquiryModal"
-          type="button"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <form id="enquiryForm">
-
-        <input
-          type="hidden"
-          id="enquiryDocId"
-        >
-
-
-        <div class="form-grid">
-
-
-          <div class="form-group">
-
-            <label for="enquiryCustomer">
-              Customer *
-            </label>
-
-            <select
-              id="enquiryCustomer"
-              required
-            >
-
-              <option value="">
-                Select Customer
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryDestination">
-              Destination *
-            </label>
-
-            <input
-              type="text"
-              id="enquiryDestination"
-              placeholder="e.g. Meghalaya"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryStartDate">
-              Travel Start Date *
-            </label>
-
-            <input
-              type="date"
-              id="enquiryStartDate"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryEndDate">
-              Travel End Date
-            </label>
-
-            <input
-              type="date"
-              id="enquiryEndDate"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryAdults">
-              Adults
-            </label>
-
-            <input
-              type="number"
-              id="enquiryAdults"
-              value="1"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryChildren">
-              Children
-            </label>
-
-            <input
-              type="number"
-              id="enquiryChildren"
-              value="0"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryInfants">
-              Infants
-            </label>
-
-            <input
-              type="number"
-              id="enquiryInfants"
-              value="0"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryTripType">
-              Trip Type
-            </label>
-
-            <select id="enquiryTripType">
-
-              <option value="Family">
-                Family
-              </option>
-
-              <option value="Honeymoon">
-                Honeymoon
-              </option>
-
-              <option value="Group">
-                Group
-              </option>
-
-              <option value="Corporate">
-                Corporate
-              </option>
-
-              <option value="Solo">
-                Solo
-              </option>
-
-              <option value="Friends">
-                Friends
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryBudget">
-              Budget
-            </label>
-
-            <input
-              type="number"
-              id="enquiryBudget"
-              placeholder="₹"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquirySource">
-              Lead Source
-            </label>
-
-            <select id="enquirySource">
-
-              <option value="Direct">
-                Direct
-              </option>
-
-              <option value="WhatsApp">
-                WhatsApp
-              </option>
-
-              <option value="Website">
-                Website
-              </option>
-
-              <option value="Instagram">
-                Instagram
-              </option>
-
-              <option value="Facebook">
-                Facebook
-              </option>
-
-              <option value="Referral">
-                Referral
-              </option>
-
-              <option value="B2B">
-                B2B
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="enquiryStatus">
-              Enquiry Status
-            </label>
-
-            <select id="enquiryStatus">
-
-              <option value="New">
-                New
-              </option>
-
-              <option value="Follow-up">
-                Follow-up
-              </option>
-
-              <option value="Quoted">
-                Quoted
-              </option>
-
-              <option value="Confirmed">
-                Confirmed
-              </option>
-
-              <option value="Lost">
-                Lost
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group full-width">
-
-            <label for="enquiryNotes">
-              Notes
-            </label>
-
-            <textarea
-              id="enquiryNotes"
-              placeholder="Enquiry details, requirements, special requests..."
-            ></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <div
-          class="status-message"
-          id="enquiryFormMessage"
-        ></div>
-
-
-        <div class="form-actions">
-
-          <button
-            type="button"
-            class="secondary-btn"
-            id="cancelEnquiryBtn"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            class="primary-btn"
-          >
-            Save Enquiry
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       CAB MODAL
-  ====================================================== -->
-
-  <div
-    class="modal-overlay"
-    id="cabModal"
-    style="display:none;"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 id="cabModalTitle">
-          Add Cab
-        </h2>
-
-        <button
-          class="close-btn"
-          id="closeCabModal"
-          type="button"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <form id="cabForm">
-
-        <input
-          type="hidden"
-          id="cabDocId"
-        >
-
-
-        <div class="form-grid">
-
-
-          <div class="form-group">
-
-            <label for="cabName">
-              Cab Name *
-            </label>
-
-            <input
-              type="text"
-              id="cabName"
-              placeholder="e.g. Swift Dzire"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabVehicleNumber">
-              Vehicle Number *
-            </label>
-
-            <input
-              type="text"
-              id="cabVehicleNumber"
-              placeholder="e.g. AS01AB1234"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabType">
-              Vehicle Type
-            </label>
-
-            <select id="cabType">
-
-              <option value="Sedan">
-                Sedan
-              </option>
-
-              <option value="Hatchback">
-                Hatchback
-              </option>
-
-              <option value="SUV">
-                SUV
-              </option>
-
-              <option value="Innova">
-                Innova
-              </option>
-
-              <option value="Innova Crysta">
-                Innova Crysta
-              </option>
-
-              <option value="Tempo Traveller">
-                Tempo Traveller
-              </option>
-
-              <option value="Bus">
-                Bus
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabCapacity">
-              Passenger Capacity
-            </label>
-
-            <input
-              type="number"
-              id="cabCapacity"
-              min="1"
-              placeholder="e.g. 4"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabDriverName">
-              Driver Name
-            </label>
-
-            <input
-              type="text"
-              id="cabDriverName"
-              placeholder="Driver name"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabDriverPhone">
-              Driver Phone
-            </label>
-
-            <input
-              type="tel"
-              id="cabDriverPhone"
-              placeholder="Driver mobile"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabRate">
-              Rate
-            </label>
-
-            <input
-              type="number"
-              id="cabRate"
-              min="0"
-              placeholder="₹"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabRateType">
-              Rate Type
-            </label>
-
-            <select id="cabRateType">
-
-              <option value="Per Day">
-                Per Day
-              </option>
-
-              <option value="Per KM">
-                Per KM
-              </option>
-
-              <option value="Per Trip">
-                Per Trip
-              </option>
-
-              <option value="Per Hour">
-                Per Hour
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabLocation">
-              Base Location
-            </label>
-
-            <input
-              type="text"
-              id="cabLocation"
-              placeholder="e.g. Guwahati"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="cabStatus">
-              Status
-            </label>
-
-            <select id="cabStatus">
-
-              <option value="Available">
-                Available
-              </option>
-
-              <option value="Busy">
-                Busy
-              </option>
-
-              <option value="Inactive">
-                Inactive
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group full-width">
-
-            <label for="cabNotes">
-              Notes
-            </label>
-
-            <textarea
-              id="cabNotes"
-              placeholder="Cab or driver notes..."
-            ></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <div
-          class="status-message"
-          id="cabFormMessage"
-        ></div>
-
-
-        <div class="form-actions">
-
-          <button
-            type="button"
-            class="secondary-btn"
-            id="cancelCabBtn"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            class="primary-btn"
-          >
-            Save Cab
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       B2B AGENCY MODAL
-  ====================================================== -->
-
-  <div
-    class="modal-overlay"
-    id="agencyModal"
-    style="display:none;"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 id="agencyModalTitle">
-          Add B2B Agency
-        </h2>
-
-        <button
-          class="close-btn"
-          id="closeAgencyModal"
-          type="button"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <form id="agencyForm">
-
-        <input
-          type="hidden"
-          id="agencyDocId"
-        >
-
-
-        <div class="form-grid">
-
-
-          <div class="form-group">
-
-            <label for="agencyName">
-              Agency Name *
-            </label>
-
-            <input
-              type="text"
-              id="agencyName"
-              placeholder="Travel agency name"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyContactPerson">
-              Contact Person
-            </label>
-
-            <input
-              type="text"
-              id="agencyContactPerson"
-              placeholder="Contact person's name"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyMobile">
-              Mobile *
-            </label>
-
-            <input
-              type="tel"
-              id="agencyMobile"
-              placeholder="Mobile number"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyWhatsapp">
-              WhatsApp
-            </label>
-
-            <input
-              type="tel"
-              id="agencyWhatsapp"
-              placeholder="WhatsApp number"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyEmail">
-              Email
-            </label>
-
-            <input
-              type="email"
-              id="agencyEmail"
-              placeholder="Agency email"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyCity">
-              City
-            </label>
-
-            <input
-              type="text"
-              id="agencyCity"
-              placeholder="City"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyState">
-              State
-            </label>
-
-            <input
-              type="text"
-              id="agencyState"
-              placeholder="State"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyCountry">
-              Country
-            </label>
-
-            <input
-              type="text"
-              id="agencyCountry"
-              value="India"
-              placeholder="Country"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyWebsite">
-              Website
-            </label>
-
-            <input
-              type="url"
-              id="agencyWebsite"
-              placeholder="https://example.com"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="agencyStatus">
-              Status
-            </label>
-
-            <select id="agencyStatus">
-
-              <option value="Active">
-                Active
-              </option>
-
-              <option value="Inactive">
-                Inactive
-              </option>
-
-              <option value="Blocked">
-                Blocked
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group full-width">
-
-            <label for="agencyNotes">
-              Notes
-            </label>
-
-            <textarea
-              id="agencyNotes"
-              placeholder="B2B terms, payment terms, special notes..."
-            ></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <div
-          class="status-message"
-          id="agencyFormMessage"
-        ></div>
-
-
-        <div class="form-actions">
-
-          <button
-            type="button"
-            class="secondary-btn"
-            id="cancelAgencyBtn"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            class="primary-btn"
-          >
-            Save Agency
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       QUOTATION MODAL
-  ====================================================== -->
-
-  <div
-    class="modal-overlay"
-    id="quotationModal"
-    style="display:none;"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 id="quotationModalTitle">
-          Create Quotation
-        </h2>
-
-        <button
-          class="close-btn"
-          id="closeQuotationModal"
-          type="button"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <form id="quotationForm">
-
-        <input
-          type="hidden"
-          id="quotationDocId"
-        >
-
-
-        <div class="form-grid">
-
-
-          <div class="form-group">
-
-            <label for="quotationCustomer">
-              Customer *
-            </label>
-
-            <select
-              id="quotationCustomer"
-              required
-            >
-
-              <option value="">
-                Select Customer
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationEnquiry">
-              Enquiry
-            </label>
-
-            <select id="quotationEnquiry">
-
-              <option value="">
-                Select Enquiry
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationDestination">
-              Destination *
-            </label>
-
-            <input
-              type="text"
-              id="quotationDestination"
-              placeholder="e.g. Meghalaya"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationStartDate">
-              Travel Start Date
-            </label>
-
-            <input
-              type="date"
-              id="quotationStartDate"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationEndDate">
-              Travel End Date
-            </label>
-
-            <input
-              type="date"
-              id="quotationEndDate"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationAdults">
-              Adults
-            </label>
-
-            <input
-              type="number"
-              id="quotationAdults"
-              value="1"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationChildren">
-              Children
-            </label>
-
-            <input
-              type="number"
-              id="quotationChildren"
-              value="0"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationInfants">
-              Infants
-            </label>
-
-            <input
-              type="number"
-              id="quotationInfants"
-              value="0"
-              min="0"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationTripType">
-              Trip Type
-            </label>
-
-            <select id="quotationTripType">
-
-              <option value="Family">
-                Family
-              </option>
-
-              <option value="Honeymoon">
-                Honeymoon
-              </option>
-
-              <option value="Group">
-                Group
-              </option>
-
-              <option value="Corporate">
-                Corporate
-              </option>
-
-              <option value="Solo">
-                Solo
-              </option>
-
-              <option value="Friends">
-                Friends
-              </option>
-
-              <option value="Other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationSubtotal">
-              Subtotal
-            </label>
-
-            <input
-              type="number"
-              id="quotationSubtotal"
-              min="0"
-              placeholder="₹"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationDiscount">
-              Discount
-            </label>
-
-            <input
-              type="number"
-              id="quotationDiscount"
-              min="0"
-              value="0"
-              placeholder="₹"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationTax">
-              Tax / GST
-            </label>
-
-            <input
-              type="number"
-              id="quotationTax"
-              min="0"
-              value="0"
-              placeholder="₹"
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationTotal">
-              Total Amount
-            </label>
-
-            <input
-              type="number"
-              id="quotationTotal"
-              min="0"
-              readonly
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="quotationStatus">
-              Status
-            </label>
-
-            <select id="quotationStatus">
-
-              <option value="Draft">
-                Draft
-              </option>
-
-              <option value="Sent">
-                Sent
-              </option>
-
-              <option value="Accepted">
-                Accepted
-              </option>
-
-              <option value="Rejected">
-                Rejected
-              </option>
-
-              <option value="Expired">
-                Expired
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group full-width">
-
-            <label for="quotationNotes">
-              Notes
-            </label>
-
-            <textarea
-              id="quotationNotes"
-              placeholder="Quotation notes, inclusions, exclusions, special terms..."
-            ></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <div
-          class="status-message"
-          id="quotationFormMessage"
-        ></div>
-
-
-        <div class="form-actions">
-
-          <button
-            type="button"
-            class="secondary-btn"
-            id="cancelQuotationBtn"
-          >
-            Cancel
-          </button>
-
-
-          <button
-            type="submit"
-            class="primary-btn"
-          >
-            Save Quotation
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       JAVASCRIPT ENTRY POINT
-  ====================================================== -->
-
-  <script
-    type="module"
-    src="./js/app.js"
-  ></script>
+<script
+  type="module"
+  src="./js/app.js"
+></script>
 
 
 </body>
