@@ -1,6 +1,8 @@
 // ================= APP CONTROLLER =================
 
+import { initAuth } from "./auth.js";
 import { initUI } from "./ui.js";
+
 import { initDashboard } from "./modules/dashboard.js";
 import { initCustomers } from "./modules/customers.js";
 import { initEnquiries } from "./modules/enquiries.js";
@@ -20,12 +22,17 @@ import { initTeam } from "./modules/team.js";
 import { initSettings } from "./modules/settings.js";
 
 
-// ================= INITIALIZE APPLICATION =================
+// ================= APPLICATION START =================
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  // Authentication
+  initAuth();
+
+  // UI navigation
   initUI();
 
+  // Modules
   initDashboard();
   initCustomers();
   initEnquiries();
@@ -44,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initTeam();
   initSettings();
 
-  console.log("My Tour Mitra ERP initialized successfully.");
+  console.log(
+    "My Tour Mitra ERP initialized successfully."
+  );
 
 });
