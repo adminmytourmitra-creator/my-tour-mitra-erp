@@ -11,28 +11,34 @@ import { getAuth } from
 import { getFirestore } from
   "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-import { firebaseConfig } from "./config.js";
+import { firebaseConfig } from
+  "./config.js";
 
 
-// -----------------------------------------------------
+// =====================================================
 // INITIALIZE FIREBASE
-// -----------------------------------------------------
+// =====================================================
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(
+    firebaseConfig
+  );
 
 
-// -----------------------------------------------------
+// =====================================================
 // FIREBASE SERVICES
-// -----------------------------------------------------
+// =====================================================
 
-const auth = getAuth(app);
+const auth =
+  getAuth(app);
 
-const db = getFirestore(app);
+const db =
+  getFirestore(app);
 
 
-// -----------------------------------------------------
-// EXPORT
-// -----------------------------------------------------
+// =====================================================
+// EXPORT SERVICES
+// =====================================================
 
 export {
   app,
