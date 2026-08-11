@@ -19,6 +19,7 @@ import { db, auth } from "../firebase.js";
 // ======================================================
 
 let allPackages = [];
+let itineraryDays = [];
 
 // ======================================================
 // INITIALIZE
@@ -29,6 +30,7 @@ export function initPackages() {
   setupPackageButtons();
   setupPackageForm();
   setupPackageSearch();
+  setupItineraryControls();
 
   loadPackages();
 
@@ -43,7 +45,7 @@ function getElement(id) {
 }
 
 // ======================================================
-// BUTTONS
+// PACKAGE BUTTONS
 // ======================================================
 
 function setupPackageButtons() {
@@ -87,7 +89,7 @@ function setupPackageButtons() {
 }
 
 // ======================================================
-// FORM
+// PACKAGE FORM
 // ======================================================
 
 function setupPackageForm() {
@@ -105,7 +107,25 @@ function setupPackageForm() {
 }
 
 // ======================================================
-// OPEN MODAL
+// ITINERARY CONTROLS
+// ======================================================
+
+function setupItineraryControls() {
+
+  const addDayButton =
+    getElement("addItineraryDayBtn");
+
+  if (!addDayButton) return;
+
+  addDayButton.addEventListener(
+    "click",
+    addItineraryDay
+  );
+
+}
+
+// ======================================================
+// OPEN PACKAGE MODAL
 // ======================================================
 
 function openPackageModal(packageData = null) {
@@ -129,6 +149,10 @@ function openPackageModal(packageData = null) {
   if (message) {
     message.textContent = "";
   }
+
+  // ====================================================
+  // EDIT PACKAGE
+  // ====================================================
 
   if (packageData) {
 
@@ -169,7 +193,24 @@ function openPackageModal(packageData = null) {
     getElement("packageDescription").value =
       packageData.description || "";
 
-  } else {
+    // Load saved itinerary
+
+    itineraryDays =
+      Array.isArray(
+        packageData.itinerary
+      )
+        ? packageData.itinerary
+        : [];
+
+    renderItineraryDays();
+
+  }
+
+  // ====================================================
+  // NEW PACKAGE
+  // ====================================================
+
+  else {
 
     if (title) {
       title.textContent = "Add Package";
@@ -198,12 +239,28 @@ function openPackageModal(packageData = null) {
     getElement("packageStatus").value =
       "Active";
 
+    // Start with ONLY Day 1
+
+    itineraryDays = [
+
+      {
+        day: 1,
+        title: "",
+        description: "",
+        meals: "None",
+        overnight: ""
+      }
+
+    ];
+
+    renderItineraryDays();
+
   }
 
 }
 
 // ======================================================
-// CLOSE MODAL
+// CLOSE PACKAGE MODAL
 // ======================================================
 
 function closePackageModal() {
@@ -229,6 +286,411 @@ function closePackageModal() {
     docId.value = "";
   }
 
+  itineraryDays = [];
+
+}
+
+// ======================================================
+// ADD ITINERARY DAY
+// ======================================================
+
+function addItineraryDay() {
+
+  collectItineraryFromDOM();
+
+  const nextDay =
+    itineraryDays.length + 1;
+
+  itineraryDays.push({
+
+    day: nextDay,
+
+    title: "",
+
+    description: "",
+
+    meals: "None",
+
+    overnight: ""
+
+  });
+
+  renderItineraryDays();
+
+  // Scroll to newly added day
+
+  setTimeout(() => {
+
+    const container =
+      getElement("itineraryDays");
+
+    if (container) {
+
+      container.lastElementChild
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
+
+    }
+
+  }, 50);
+
+}
+
+// ======================================================
+// REMOVE ITINERARY DAY
+// ======================================================
+
+function removeItineraryDay(index) {
+
+  collectItineraryFromDOM();
+
+  // Don't allow deleting the last day
+
+  if (itineraryDays.length <= 1) {
+
+    alert(
+      "At least one itinerary day is required."
+    );
+
+    return;
+
+  }
+
+  itineraryDays.splice(
+    index,
+    1
+  );
+
+  // Renumber days
+
+  itineraryDays =
+    itineraryDays.map(
+      (day, position) => ({
+
+        ...day,
+
+        day:
+          position + 1
+
+      })
+    );
+
+  renderItineraryDays();
+
+}
+
+// ======================================================
+// COLLECT ITINERARY FROM DOM
+// ======================================================
+
+function collectItineraryFromDOM() {
+
+  const dayElements =
+    document.querySelectorAll(
+      "#itineraryDays .itinerary-day"
+    );
+
+  if (!dayElements.length) return;
+
+  itineraryDays =
+    Array.from(dayElements)
+      .map(
+        (dayElement, index) => {
+
+          const title =
+            dayElement.querySelector(
+              ".itinerary-title"
+            );
+
+          const description =
+            dayElement.querySelector(
+              ".itinerary-description"
+            );
+
+          const meals =
+            dayElement.querySelector(
+              ".itinerary-meals"
+            );
+
+          const overnight =
+            dayElement.querySelector(
+              ".itinerary-overnight"
+            );
+
+          return {
+
+            day:
+              index + 1,
+
+            title:
+              title?.value.trim() || "",
+
+            description:
+              description?.value.trim() || "",
+
+            meals:
+              meals?.value || "None",
+
+            overnight:
+              overnight?.value.trim() || ""
+
+          };
+
+        }
+      );
+
+}
+
+// ======================================================
+// RENDER ITINERARY
+// ======================================================
+
+function renderItineraryDays() {
+
+  const container =
+    getElement("itineraryDays");
+
+  if (!container) return;
+
+  // Make sure at least Day 1 exists
+
+  if (!itineraryDays.length) {
+
+    itineraryDays = [
+
+      {
+        day: 1,
+        title: "",
+        description: "",
+        meals: "None",
+        overnight: ""
+      }
+
+    ];
+
+  }
+
+  container.innerHTML =
+    itineraryDays
+      .map(
+        (dayData, index) => `
+
+          <div
+            class="itinerary-day"
+            data-day="${index + 1}"
+          >
+
+            <div
+              class="itinerary-day-header"
+            >
+
+              <h4>
+                Day ${index + 1}
+              </h4>
+
+              ${
+                itineraryDays.length > 1
+                  ? `
+                    <button
+                      type="button"
+                      class="danger-btn"
+                      data-remove-itinerary="${index}"
+                    >
+                      Remove Day
+                    </button>
+                  `
+                  : ""
+              }
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+              <!-- DAY TITLE -->
+
+              <div class="form-group">
+
+                <label>
+                  Day Title
+                </label>
+
+                <input
+                  type="text"
+                  class="itinerary-title"
+                  placeholder="e.g. Guwahati to Shillong"
+                  value="${escapeAttribute(
+                    dayData.title
+                  )}"
+                >
+
+              </div>
+
+
+              <!-- MEALS -->
+
+              <div class="form-group">
+
+                <label>
+                  Meals
+                </label>
+
+                <select
+                  class="itinerary-meals"
+                >
+
+                  <option
+                    value="None"
+                    ${
+                      dayData.meals === "None"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    None
+                  </option>
+
+                  <option
+                    value="Breakfast"
+                    ${
+                      dayData.meals === "Breakfast"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Breakfast
+                  </option>
+
+                  <option
+                    value="Lunch"
+                    ${
+                      dayData.meals === "Lunch"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Lunch
+                  </option>
+
+                  <option
+                    value="Dinner"
+                    ${
+                      dayData.meals === "Dinner"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Dinner
+                  </option>
+
+                  <option
+                    value="Breakfast & Dinner"
+                    ${
+                      dayData.meals ===
+                      "Breakfast & Dinner"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Breakfast &amp; Dinner
+                  </option>
+
+                  <option
+                    value="All Meals"
+                    ${
+                      dayData.meals === "All Meals"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    All Meals
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <!-- DETAILS -->
+
+              <div
+                class="form-group full-width"
+              >
+
+                <label>
+                  Itinerary Details
+                </label>
+
+                <textarea
+                  class="itinerary-description"
+                  placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
+                >${escapeHtml(
+                  dayData.description
+                )}</textarea>
+
+              </div>
+
+
+              <!-- OVERNIGHT -->
+
+              <div class="form-group">
+
+                <label>
+                  Overnight Stay
+                </label>
+
+                <input
+                  type="text"
+                  class="itinerary-overnight"
+                  placeholder="e.g. Shillong"
+                  value="${escapeAttribute(
+                    dayData.overnight
+                  )}"
+                >
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+  // ====================================================
+  // REMOVE BUTTON EVENTS
+  // ====================================================
+
+  document
+    .querySelectorAll(
+      "[data-remove-itinerary]"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            removeItineraryDay(
+              Number(
+                button.dataset
+                  .removeItinerary
+              )
+            );
+
+          }
+        );
+
+      }
+    );
+
 }
 
 // ======================================================
@@ -238,6 +700,8 @@ function closePackageModal() {
 async function savePackage(event) {
 
   event.preventDefault();
+
+  collectItineraryFromDOM();
 
   const message =
     getElement("packageFormMessage");
@@ -303,10 +767,17 @@ async function savePackage(event) {
         ?.value
         .trim() || "",
 
+    itinerary:
+      itineraryDays,
+
     updatedAt:
       serverTimestamp()
 
   };
+
+  // ====================================================
+  // VALIDATION
+  // ====================================================
 
   if (!packageData.name) {
 
@@ -528,7 +999,7 @@ async function loadPackages() {
 }
 
 // ======================================================
-// RENDER
+// RENDER PACKAGES
 // ======================================================
 
 function renderPackages(packages) {
@@ -570,11 +1041,13 @@ function renderPackages(packages) {
             </td>
 
             <td>
+
               <strong>
                 ${escapeHtml(
                   packageData.name || "-"
                 )}
               </strong>
+
             </td>
 
             <td>
@@ -609,11 +1082,13 @@ function renderPackages(packages) {
             </td>
 
             <td>
+
               <span class="status-badge">
                 ${escapeHtml(
                   packageData.status || "Active"
                 )}
               </span>
+
             </td>
 
             <td>
@@ -708,7 +1183,7 @@ function setupPackageRowActions() {
 }
 
 // ======================================================
-// DELETE
+// DELETE PACKAGE
 // ======================================================
 
 async function deletePackage(id) {
@@ -872,6 +1347,36 @@ function escapeHtml(value) {
     .replace(
       /'/g,
       "&#039;"
+    );
+
+}
+
+// ======================================================
+// ATTRIBUTE ESCAPE
+// ======================================================
+
+function escapeAttribute(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
     );
 
 }
