@@ -12,210 +12,375 @@ import {
 
 import { db, auth } from "../firebase.js";
 
+
 // ================= STATE =================
 
 let allEnquiries = [];
 let allCustomers = [];
 
+
 // ================= INITIALIZE =================
 
 export function initEnquiries() {
+
   setupEnquiryButtons();
+
   setupEnquiryForm();
+
   setupEnquirySearch();
+
   loadEnquiries();
+
   loadCustomerDropdown();
+
 }
+
 
 // ================= ELEMENT HELPER =================
 
 function getElement(id) {
+
   return document.getElementById(id);
+
 }
+
 
 // ================= ENQUIRY BUTTONS =================
 
 function setupEnquiryButtons() {
-  const addButton = getElement("addEnquiryBtn");
-  const closeButton = getElement("closeEnquiryModal");
-  const cancelButton = getElement("cancelEnquiryBtn");
+
+  const addButton =
+    getElement("addEnquiryBtn");
+
+  const closeButton =
+    getElement("closeEnquiryModal");
+
+  const cancelButton =
+    getElement("cancelEnquiryBtn");
+
 
   if (addButton) {
-    addButton.addEventListener("click", () => {
-      openEnquiryModal();
-    });
+
+    addButton.addEventListener(
+      "click",
+      () => {
+        openEnquiryModal();
+      }
+    );
+
   }
 
+
   if (closeButton) {
+
     closeButton.addEventListener(
       "click",
       closeEnquiryModal
     );
+
   }
 
+
   if (cancelButton) {
+
     cancelButton.addEventListener(
       "click",
       closeEnquiryModal
     );
+
   }
+
 }
+
 
 // ================= ENQUIRY FORM =================
 
 function setupEnquiryForm() {
-  const form = getElement("enquiryForm");
+
+  const form =
+    getElement("enquiryForm");
 
   if (!form) return;
+
 
   form.addEventListener(
     "submit",
     saveEnquiry
   );
+
 }
+
 
 // ================= OPEN ENQUIRY MODAL =================
 
-async function openEnquiryModal(enquiry = null) {
-  const modal = getElement("enquiryModal");
-  const form = getElement("enquiryForm");
-  const title = getElement("enquiryModalTitle");
-  const message = getElement("enquiryFormMessage");
+async function openEnquiryModal(
+  enquiry = null
+) {
+
+  const modal =
+    getElement("enquiryModal");
+
+  const form =
+    getElement("enquiryForm");
+
+  const title =
+    getElement("enquiryModalTitle");
+
+  const message =
+    getElement("enquiryFormMessage");
+
 
   if (!modal || !form) return;
 
-  modal.style.display = "flex";
+
+  modal.style.display =
+    "flex";
+
 
   if (message) {
-    message.textContent = "";
+
+    message.textContent =
+      "";
+
   }
 
+
   await loadCustomerDropdown();
+
 
   if (enquiry) {
 
     if (title) {
-      title.textContent = "Edit Enquiry";
+
+      title.textContent =
+        "Edit Enquiry";
+
     }
 
-    getElement("enquiryDocId").value =
+
+    getElement(
+      "enquiryDocId"
+    ).value =
       enquiry.id || "";
 
-    getElement("enquiryCustomer").value =
+
+    getElement(
+      "enquiryCustomer"
+    ).value =
       enquiry.customerDocId || "";
 
-    getElement("enquiryDestination").value =
+
+    getElement(
+      "enquiryDestination"
+    ).value =
       enquiry.destination || "";
 
-    getElement("enquiryStartDate").value =
+
+    getElement(
+      "enquiryStartDate"
+    ).value =
       enquiry.startDate || "";
 
-    getElement("enquiryEndDate").value =
+
+    getElement(
+      "enquiryEndDate"
+    ).value =
       enquiry.endDate || "";
 
-    getElement("enquiryAdults").value =
+
+    getElement(
+      "enquiryAdults"
+    ).value =
       enquiry.adults ?? 1;
 
-    getElement("enquiryChildren").value =
+
+    getElement(
+      "enquiryChildren"
+    ).value =
       enquiry.children ?? 0;
 
-    getElement("enquiryInfants").value =
+
+    getElement(
+      "enquiryInfants"
+    ).value =
       enquiry.infants ?? 0;
 
-    getElement("enquiryTripType").value =
+
+    getElement(
+      "enquiryTripType"
+    ).value =
       enquiry.tripType || "Family";
 
-    getElement("enquiryBudget").value =
+
+    getElement(
+      "enquiryBudget"
+    ).value =
       enquiry.budget ?? "";
 
-    getElement("enquirySource").value =
+
+    getElement(
+      "enquirySource"
+    ).value =
       enquiry.source || "Direct";
 
-    getElement("enquiryStatus").value =
+
+    getElement(
+      "enquiryStatus"
+    ).value =
       enquiry.status || "New";
 
-    getElement("enquiryNotes").value =
+
+    getElement(
+      "enquiryNotes"
+    ).value =
       enquiry.notes || "";
 
   } else {
 
     if (title) {
-      title.textContent = "Add Enquiry";
+
+      title.textContent =
+        "Add Enquiry";
+
     }
+
 
     form.reset();
 
-    getElement("enquiryDocId").value = "";
 
-    getElement("enquiryAdults").value = 1;
+    getElement(
+      "enquiryDocId"
+    ).value =
+      "";
 
-    getElement("enquiryChildren").value = 0;
 
-    getElement("enquiryInfants").value = 0;
+    getElement(
+      "enquiryAdults"
+    ).value =
+      1;
 
-    getElement("enquiryStatus").value = "New";
+
+    getElement(
+      "enquiryChildren"
+    ).value =
+      0;
+
+
+    getElement(
+      "enquiryInfants"
+    ).value =
+      0;
+
+
+    getElement(
+      "enquiryStatus"
+    ).value =
+      "New";
 
   }
+
 }
+
 
 // ================= CLOSE ENQUIRY MODAL =================
 
 function closeEnquiryModal() {
-  const modal = getElement("enquiryModal");
-  const form = getElement("enquiryForm");
+
+  const modal =
+    getElement("enquiryModal");
+
+  const form =
+    getElement("enquiryForm");
+
 
   if (modal) {
-    modal.style.display = "none";
+
+    modal.style.display =
+      "none";
+
   }
+
 
   if (form) {
+
     form.reset();
+
   }
 
-  const docId = getElement("enquiryDocId");
+
+  const docId =
+    getElement("enquiryDocId");
 
   if (docId) {
-    docId.value = "";
+
+    docId.value =
+      "";
+
   }
 
-  const adults = getElement("enquiryAdults");
+
+  const adults =
+    getElement("enquiryAdults");
 
   if (adults) {
-    adults.value = 1;
+
+    adults.value =
+      1;
+
   }
 
-  const children = getElement("enquiryChildren");
+
+  const children =
+    getElement("enquiryChildren");
 
   if (children) {
-    children.value = 0;
+
+    children.value =
+      0;
+
   }
 
-  const infants = getElement("enquiryInfants");
+
+  const infants =
+    getElement("enquiryInfants");
 
   if (infants) {
-    infants.value = 0;
+
+    infants.value =
+      0;
+
   }
 
-  const status = getElement("enquiryStatus");
+
+  const status =
+    getElement("enquiryStatus");
 
   if (status) {
-    status.value = "New";
+
+    status.value =
+      "New";
+
   }
+
 }
+
 
 // ================= CUSTOMER DROPDOWN =================
 
 async function loadCustomerDropdown() {
+
   const dropdown =
     getElement("enquiryCustomer");
 
   if (!dropdown) return;
+
 
   dropdown.innerHTML = `
     <option value="">
       Loading customers...
     </option>
   `;
+
 
   try {
 
@@ -227,19 +392,26 @@ async function loadCustomerDropdown() {
         )
       );
 
+
     allCustomers =
       snapshot.docs.map(
         (document) => ({
-          id: document.id,
+
+          id:
+            document.id,
+
           ...document.data()
+
         })
       );
+
 
     dropdown.innerHTML = `
       <option value="">
         Select Customer
       </option>
     `;
+
 
     allCustomers.forEach(
       (customer) => {
@@ -249,11 +421,14 @@ async function loadCustomerDropdown() {
             "option"
           );
 
+
         option.value =
           customer.id;
 
+
         option.textContent =
           `${customer.name || "Unnamed"} - ${customer.mobile || ""}`;
+
 
         dropdown.appendChild(
           option
@@ -262,6 +437,7 @@ async function loadCustomerDropdown() {
       }
     );
 
+
   } catch (error) {
 
     console.error(
@@ -269,34 +445,30 @@ async function loadCustomerDropdown() {
       error
     );
 
+
     dropdown.innerHTML = `
       <option value="">
         Unable to load customers
       </option>
     `;
+
   }
+
 }
+
 
 // ================= SAVE ENQUIRY =================
 
 async function saveEnquiry(event) {
+
   event.preventDefault();
 
-  const message =
-    getElement(
-      "enquiryFormMessage"
-    );
-
-  if (message) {
-    message.style.color = "#1769e0";
-    message.textContent =
-      "Saving enquiry...";
-  }
 
   const customerDocId =
     getElement(
       "enquiryCustomer"
     )?.value || "";
+
 
   if (!customerDocId) {
 
@@ -306,7 +478,15 @@ async function saveEnquiry(event) {
     );
 
     return;
+
   }
+
+
+  showEnquiryMessage(
+    "Saving enquiry...",
+    "#1769e0"
+  );
+
 
   const selectedCustomer =
     allCustomers.find(
@@ -314,6 +494,7 @@ async function saveEnquiry(event) {
         customer.id ===
         customerDocId
     );
+
 
   const enquiryData = {
 
@@ -391,12 +572,14 @@ async function saveEnquiry(event) {
 
   };
 
+
   try {
 
     const existingId =
       getElement(
         "enquiryDocId"
       )?.value || "";
+
 
     // ================= EDIT =================
 
@@ -414,12 +597,14 @@ async function saveEnquiry(event) {
 
       );
 
+
       showEnquiryMessage(
         "Enquiry updated successfully.",
         "#15803d"
       );
 
     }
+
 
     // ================= NEW =================
 
@@ -428,10 +613,12 @@ async function saveEnquiry(event) {
       enquiryData.createdAt =
         serverTimestamp();
 
+
       enquiryData.createdBy =
         auth.currentUser
           ? auth.currentUser.email
           : "";
+
 
       const enquiryRef =
         await addDoc(
@@ -445,11 +632,13 @@ async function saveEnquiry(event) {
 
         );
 
+
       const enquiryId =
         "ENQ-" +
         enquiryRef.id
           .substring(0, 6)
           .toUpperCase();
+
 
       await updateDoc(
 
@@ -462,18 +651,23 @@ async function saveEnquiry(event) {
 
       );
 
+
       showEnquiryMessage(
         "Enquiry saved successfully.",
         "#15803d"
       );
+
     }
 
+
     await loadEnquiries();
+
 
     setTimeout(
       closeEnquiryModal,
       700
     );
+
 
   } catch (error) {
 
@@ -482,12 +676,16 @@ async function saveEnquiry(event) {
       error
     );
 
+
     showEnquiryMessage(
       "Could not save enquiry. Check Firestore rules.",
       "#dc2626"
     );
+
   }
+
 }
+
 
 // ================= MESSAGE =================
 
@@ -495,29 +693,38 @@ function showEnquiryMessage(
   text,
   color
 ) {
+
   const message =
     getElement(
       "enquiryFormMessage"
     );
 
+
   if (!message) return;
+
 
   message.style.color =
     color;
 
+
   message.textContent =
     text;
+
 }
+
 
 // ================= LOAD ENQUIRIES =================
 
 async function loadEnquiries() {
+
   const table =
     getElement(
       "enquiriesTableBody"
     );
 
+
   if (!table) return;
+
 
   table.innerHTML = `
     <tr>
@@ -530,6 +737,7 @@ async function loadEnquiries() {
     </tr>
   `;
 
+
   try {
 
     const snapshot =
@@ -540,21 +748,27 @@ async function loadEnquiries() {
         )
       );
 
+
     allEnquiries =
       snapshot.docs.map(
         (document) => ({
+
           id:
             document.id,
 
           ...document.data()
+
         })
       );
+
 
     renderEnquiries(
       allEnquiries
     );
 
+
     updateEnquiryDashboard();
+
 
   } catch (error) {
 
@@ -562,6 +776,7 @@ async function loadEnquiries() {
       "Enquiry loading error:",
       error
     );
+
 
     table.innerHTML = `
       <tr>
@@ -574,20 +789,26 @@ async function loadEnquiries() {
         </td>
       </tr>
     `;
+
   }
+
 }
+
 
 // ================= RENDER ENQUIRIES =================
 
 function renderEnquiries(
   enquiries
 ) {
+
   const table =
     getElement(
       "enquiriesTableBody"
     );
 
+
   if (!table) return;
+
 
   if (!enquiries.length) {
 
@@ -604,7 +825,9 @@ function renderEnquiries(
     `;
 
     return;
+
   }
+
 
   table.innerHTML =
     enquiries
@@ -618,6 +841,7 @@ function renderEnquiries(
             Number(
               enquiry.children || 0
             );
+
 
           return `
             <tr>
@@ -688,12 +912,16 @@ function renderEnquiries(
 
             </tr>
           `;
+
         }
       )
       .join("");
 
+
   setupEnquiryRowActions();
+
 }
+
 
 // ================= ROW ACTIONS =================
 
@@ -718,10 +946,13 @@ function setupEnquiryRowActions() {
                     .enquiryEditId
               );
 
+
             if (enquiry) {
+
               openEnquiryModal(
                 enquiry
               );
+
             }
 
           }
@@ -729,6 +960,7 @@ function setupEnquiryRowActions() {
 
       }
     );
+
 
   document
     .querySelectorAll(
@@ -751,7 +983,9 @@ function setupEnquiryRowActions() {
 
       }
     );
+
 }
+
 
 // ================= DELETE ENQUIRY =================
 
@@ -763,12 +997,15 @@ async function deleteEnquiry(id) {
         item.id === id
     );
 
+
   const confirmed =
     confirm(
       `Delete enquiry "${enquiry?.enquiryId || ""}"?`
     );
 
+
   if (!confirmed) return;
+
 
   try {
 
@@ -780,7 +1017,9 @@ async function deleteEnquiry(id) {
       )
     );
 
+
     await loadEnquiries();
+
 
   } catch (error) {
 
@@ -789,11 +1028,15 @@ async function deleteEnquiry(id) {
       error
     );
 
+
     alert(
       "Could not delete enquiry."
     );
+
   }
+
 }
+
 
 // ================= SEARCH =================
 
@@ -804,7 +1047,9 @@ function setupEnquirySearch() {
       "enquirySearch"
     );
 
+
   if (!searchBox) return;
+
 
   searchBox.addEventListener(
     "input",
@@ -815,6 +1060,7 @@ function setupEnquirySearch() {
           .toLowerCase()
           .trim();
 
+
       if (!search) {
 
         renderEnquiries(
@@ -822,7 +1068,9 @@ function setupEnquirySearch() {
         );
 
         return;
+
       }
+
 
       const filtered =
         allEnquiries.filter(
@@ -865,13 +1113,16 @@ function setupEnquirySearch() {
           }
         );
 
+
       renderEnquiries(
         filtered
       );
 
     }
   );
+
 }
+
 
 // ================= DASHBOARD =================
 
@@ -883,6 +1134,7 @@ function updateEnquiryDashboard() {
     "Quoted"
   ];
 
+
   const activeCount =
     allEnquiries.filter(
       (enquiry) =>
@@ -891,10 +1143,12 @@ function updateEnquiryDashboard() {
         )
     ).length;
 
+
   const cards =
     document.querySelectorAll(
       ".card"
     );
+
 
   cards.forEach(
     (card) => {
@@ -903,6 +1157,7 @@ function updateEnquiryDashboard() {
         card.querySelector(
           ".card-title"
         );
+
 
       if (
         title &&
@@ -915,15 +1170,21 @@ function updateEnquiryDashboard() {
             ".card-value"
           );
 
+
         if (value) {
+
           value.textContent =
             activeCount;
+
         }
+
       }
 
     }
   );
+
 }
+
 
 // ================= HTML ESCAPE =================
 
@@ -955,4 +1216,5 @@ function escapeHtml(value) {
       /'/g,
       "&#039;"
     );
+
 }
