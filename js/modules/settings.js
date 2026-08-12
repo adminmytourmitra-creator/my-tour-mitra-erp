@@ -163,20 +163,20 @@ function handleLogoSelection(event) {
   // ---------------------------------------------------
 
   if (
-    file.size >
-    5 * 1024 * 1024
-  ) {
+  file.size >
+  200 * 1024
+) {
 
-    showSettingsMessage(
-      "Logo size must be less than 5 MB.",
-      "#dc2626"
-    );
+  showSettingsMessage(
+    "Logo size must be less than 200 KB.",
+    "#dc2626"
+  );
 
-    event.target.value = "";
+  event.target.value = "";
 
-    return;
+  return;
 
-  }
+}
 
 
   agencyLogoFile =
@@ -427,14 +427,14 @@ async function loadAgencyProfile() {
     // -------------------------------------------------
 
     if (
-      data.logoUrl
-    ) {
+  data.logoData
+) {
 
-      showSavedLogo(
-        data.logoUrl
-      );
+  showSavedLogo(
+    data.logoData
+  );
 
-    }
+}
 
 
     console.log(
@@ -671,7 +671,19 @@ if (
       ?.logoData || "";
 
 }
+let logoData =
+  existingLogoData;
 
+if (agencyLogoFile) {
+
+  logoData =
+    await convertFileToBase64(
+      agencyLogoFile
+    );
+
+}
+    
+    
     // -------------------------------------------------
     // PROFILE DATA
     // -------------------------------------------------
@@ -715,7 +727,7 @@ if (
         panNumber,
 
       logoData:
-  existingLogoData,
+  logoData,
 
       pdfFooter:
         pdfFooter,
@@ -756,17 +768,6 @@ if (
       null;
 
 
-    // Refresh preview with actual Storage URL
-
-    if (logoUrl) {
-
-      showSavedLogo(
-        logoUrl
-      );
-
-    }
-
-
   } catch (error) {
 
     console.error(
@@ -776,7 +777,7 @@ if (
 
 
     showSettingsMessage(
-      "Could not save agency profile. Check Firebase Storage/Firestore rules.",
+      "Could not save agency profile. Please check Firestore permissions.",
       "#dc2626"
     );
 
@@ -836,54 +837,6 @@ function getValue(
 
 }
 
-// =====================================================
-// FILE EXTENSION
-// =====================================================
-
-function getFileExtension(
-  filename
-) {
-
-  const parts =
-    filename.split(".");
-
-  if (
-    parts.length < 2
-  ) {
-
-    return ".png";
-
-  }
-
-  const extension =
-    parts.pop()
-      .toLowerCase();
-
-
-  const allowed =
-    [
-      "jpg",
-      "jpeg",
-      "png",
-      "webp"
-    ];
-
-
-  if (
-    !allowed.includes(
-      extension
-    )
-  ) {
-
-    return ".png";
-
-  }
-
-
-  return "." +
-    extension;
-
-}
 
 // =====================================================
 // MESSAGE
@@ -906,5 +859,38 @@ function showSettingsMessage(
 
   message.textContent =
     text;
+
+}
+
+// =====================================================
+// CONVERT LOGO FILE TO BASE64
+// =====================================================
+
+function convertFileToBase64(file) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        () => resolve(
+          reader.result
+        );
+
+      reader.onerror =
+        () => reject(
+          new Error(
+            "Could not read logo file."
+          )
+        );
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
 
 }
