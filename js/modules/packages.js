@@ -32,17 +32,22 @@ export function initPackages() {
   setupPackageForm();
   setupPackageSearch();
   setupItineraryControls();
+
+  // Package description editor
   setupRichTextEditors();
 
   loadPackages();
 
 }
+
 // ======================================================
 // ELEMENT HELPER
 // ======================================================
 
 function getElement(id) {
+
   return document.getElementById(id);
+
 }
 
 // ======================================================
@@ -51,9 +56,15 @@ function getElement(id) {
 
 function setupPackageButtons() {
 
-  const addButton = getElement("addPackageBtn");
-  const closeButton = getElement("closePackageModal");
-  const cancelButton = getElement("cancelPackageBtn");
+  const addButton =
+    getElement("addPackageBtn");
+
+  const closeButton =
+    getElement("closePackageModal");
+
+  const cancelButton =
+    getElement("cancelPackageBtn");
+
 
   if (addButton) {
 
@@ -64,6 +75,7 @@ function setupPackageButtons() {
 
   }
 
+
   if (closeButton) {
 
     closeButton.addEventListener(
@@ -72,6 +84,7 @@ function setupPackageButtons() {
     );
 
   }
+
 
   if (cancelButton) {
 
@@ -90,7 +103,8 @@ function setupPackageButtons() {
 
 function setupPackageForm() {
 
-  const form = getElement("packageForm");
+  const form =
+    getElement("packageForm");
 
   if (!form) return;
 
@@ -137,13 +151,19 @@ function openPackageModal(packageData = null) {
   const message =
     getElement("packageFormMessage");
 
+
   if (!modal || !form) return;
+
 
   modal.style.display = "flex";
 
+
   if (message) {
+
     message.textContent = "";
+
   }
+
 
   // ====================================================
   // EDIT PACKAGE
@@ -152,112 +172,113 @@ function openPackageModal(packageData = null) {
   if (packageData) {
 
     if (title) {
-      title.textContent = "Edit Package";
+
+      title.textContent =
+        "Edit Package";
+
     }
+
 
     setValue(
       "packageDocId",
       packageData.id || ""
     );
 
+
     setValue(
       "packageName",
       packageData.name || ""
     );
+
 
     setValue(
       "packageDestination",
       packageData.destination || ""
     );
 
+
     setValue(
       "packageNights",
       packageData.nights ?? ""
     );
+
 
     setValue(
       "packageDays",
       packageData.days ?? ""
     );
 
+
     setValue(
       "packageType",
       packageData.type || "Domestic"
     );
+
 
     setValue(
       "packagePrice",
       packageData.price ?? ""
     );
 
+
     setValue(
       "packageMealPlan",
       packageData.mealPlan || "Breakfast"
     );
+
 
     setValue(
       "packageVehicle",
       packageData.vehicle || "Cab"
     );
 
+
     setValue(
       "packageStatus",
       packageData.status || "Active"
     );
 
+
+    // -----------------------------------------------
+    // LOAD DESCRIPTION RICH TEXT
+    // -----------------------------------------------
+
     setRichTextValue(
       "packageDescription",
       packageData.description || ""
     );
-    
-function setValue(id, value) {
-
-  const element = getElement(id);
-
-  if (!element) return;
-
-  element.value = value;
-
-}
 
 
-// ======================================================
-// SET RICH TEXT VALUE
-// ======================================================
-
-function setRichTextValue(id, value) {
-
-  const element = getElement(id);
-
-  if (!element) return;
-
-  element.innerHTML =
-    sanitizeRichText(value || "");
-
-}
-
-
-// ======================================================
-// CLOSE PACKAGE MODAL
-// ======================================================
-    
-    
     // -----------------------------------------------
     // LOAD ITINERARY
     // -----------------------------------------------
 
     itineraryDays =
       Array.isArray(packageData.itinerary)
+
         ? packageData.itinerary.map(
             (day, index) => ({
-              day: index + 1,
-              title: day.title || "",
-              description: day.description || "",
-              meals: day.meals || "None",
-              overnight: day.overnight || ""
+
+              day:
+                index + 1,
+
+              title:
+                day.title || "",
+
+              description:
+                day.description || "",
+
+              meals:
+                day.meals || "None",
+
+              overnight:
+                day.overnight || ""
+
             })
           )
+
         : [];
+
 
     if (!itineraryDays.length) {
 
@@ -273,9 +294,11 @@ function setRichTextValue(id, value) {
 
     }
 
+
     renderItineraryDays();
 
   }
+
 
   // ====================================================
   // NEW PACKAGE
@@ -284,58 +307,71 @@ function setRichTextValue(id, value) {
   else {
 
     if (title) {
-      title.textContent = "Add Package";
+
+      title.textContent =
+        "Add Package";
+
     }
 
-    form.reset();
-    
-    const packageDescription =
-  getElement("packageDescription");
 
-if (packageDescription) {
-  packageDescription.innerHTML = "";
-}
+    form.reset();
+
+
+    // Clear package description
+    setRichTextValue(
+      "packageDescription",
+      ""
+    );
+
 
     setValue(
       "packageDocId",
       ""
     );
 
+
     setValue(
       "packageNights",
       2
     );
+
 
     setValue(
       "packageDays",
       3
     );
 
+
     setValue(
       "packageType",
       "Domestic"
     );
+
 
     setValue(
       "packageMealPlan",
       "Breakfast"
     );
 
+
     setValue(
       "packageVehicle",
       "Cab"
     );
+
 
     setValue(
       "packageStatus",
       "Active"
     );
 
+
     // -----------------------------------------------
     // ONLY DAY 1 AT START
     // -----------------------------------------------
 
     itineraryDays = [
+
       {
         day: 1,
         title: "",
@@ -343,7 +379,9 @@ if (packageDescription) {
         meals: "None",
         overnight: ""
       }
+
     ];
+
 
     renderItineraryDays();
 
@@ -357,11 +395,31 @@ if (packageDescription) {
 
 function setValue(id, value) {
 
-  const element = getElement(id);
+  const element =
+    getElement(id);
 
   if (!element) return;
 
-  element.value = value;
+  element.value =
+    value;
+
+}
+
+// ======================================================
+// SET RICH TEXT VALUE
+// ======================================================
+
+function setRichTextValue(id, value) {
+
+  const element =
+    getElement(id);
+
+  if (!element) return;
+
+  element.innerHTML =
+    sanitizeRichText(
+      value || ""
+    );
 
 }
 
@@ -377,20 +435,43 @@ function closePackageModal() {
   const form =
     getElement("packageForm");
 
+
   if (modal) {
-    modal.style.display = "none";
+
+    modal.style.display =
+      "none";
+
   }
 
+
   if (form) {
+
     form.reset();
+
   }
+
+
+  // Clear description
+  const description =
+    getElement("packageDescription");
+
+  if (description) {
+
+    description.innerHTML = "";
+
+  }
+
 
   const docId =
     getElement("packageDocId");
 
+
   if (docId) {
+
     docId.value = "";
+
   }
+
 
   itineraryDays = [];
 
@@ -402,29 +483,41 @@ function closePackageModal() {
 
 function addItineraryDay() {
 
-  // Save current editor contents BEFORE rendering again
+  // IMPORTANT:
+  // Save everything currently typed before re-rendering
+
   collectItineraryFromDOM();
+
 
   const nextDay =
     itineraryDays.length + 1;
 
+
   itineraryDays.push({
 
-    day: nextDay,
+    day:
+      nextDay,
 
-    title: "",
+    title:
+      "",
 
-    description: "",
+    description:
+      "",
 
-    meals: "None",
+    meals:
+      "None",
 
-    overnight: ""
+    overnight:
+      ""
 
   });
 
+
   renderItineraryDays();
 
-  // Scroll to newly created day
+
+  // Scroll to newly added day
+
   setTimeout(() => {
 
     const container =
@@ -432,14 +525,21 @@ function addItineraryDay() {
 
     if (!container) return;
 
+
     const lastDay =
       container.lastElementChild;
+
 
     if (lastDay) {
 
       lastDay.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
+
+        behavior:
+          "smooth",
+
+        block:
+          "nearest"
+
       });
 
     }
@@ -456,6 +556,7 @@ function removeItineraryDay(index) {
 
   collectItineraryFromDOM();
 
+
   if (itineraryDays.length <= 1) {
 
     alert(
@@ -466,12 +567,15 @@ function removeItineraryDay(index) {
 
   }
 
+
   itineraryDays.splice(
     index,
     1
   );
 
-  // Renumber
+
+  // Renumber days
+
   itineraryDays =
     itineraryDays.map(
       (day, position) => ({
@@ -484,13 +588,13 @@ function removeItineraryDay(index) {
       })
     );
 
+
   renderItineraryDays();
 
 }
 
 // ======================================================
 // COLLECT ITINERARY FROM DOM
-// IMPORTANT FOR RICH TEXT EDITOR
 // ======================================================
 
 function collectItineraryFromDOM() {
@@ -500,9 +604,13 @@ function collectItineraryFromDOM() {
       "#itineraryDays .itinerary-day"
     );
 
+
   if (!dayElements.length) {
+
     return;
+
   }
+
 
   itineraryDays =
     Array.from(dayElements)
@@ -514,49 +622,56 @@ function collectItineraryFromDOM() {
               ".itinerary-title"
             );
 
+
           const description =
             dayElement.querySelector(
               ".itinerary-description"
             );
+
 
           const meals =
             dayElement.querySelector(
               ".itinerary-meals"
             );
 
+
           const overnight =
             dayElement.querySelector(
               ".itinerary-overnight"
             );
 
+
           // -----------------------------------------
-          // RICH TEXT
+          // RICH TEXT HTML
           // -----------------------------------------
 
           let descriptionValue = "";
 
+
           if (description) {
 
             if (
-              description.hasAttribute(
-                "contenteditable"
-              )
+              description.isContentEditable
             ) {
 
               descriptionValue =
-                description.innerHTML.trim();
+                sanitizeRichText(
+                  description.innerHTML.trim()
+                );
 
             }
 
             else {
 
               descriptionValue =
-                description.value
-                  ?.trim() || "";
+                String(
+                  description.value || ""
+                ).trim();
 
             }
 
           }
+
 
           return {
 
@@ -591,7 +706,9 @@ function renderItineraryDays() {
   const container =
     getElement("itineraryDays");
 
+
   if (!container) return;
+
 
   // -----------------------------------------------
   // MAKE SURE DAY 1 EXISTS
@@ -613,7 +730,9 @@ function renderItineraryDays() {
 
   }
 
+
   container.innerHTML =
+
     itineraryDays
       .map(
         (dayData, index) => `
@@ -634,6 +753,7 @@ function renderItineraryDays() {
               <h4>
                 Day ${index + 1}
               </h4>
+
 
               ${
                 itineraryDays.length > 1
@@ -665,6 +785,7 @@ function renderItineraryDays() {
                   Day Title
                 </label>
 
+
                 <input
                   type="text"
                   class="itinerary-title"
@@ -687,6 +808,7 @@ function renderItineraryDays() {
                   Meals
                 </label>
 
+
                 <select
                   class="itinerary-meals"
                 >
@@ -702,6 +824,7 @@ function renderItineraryDays() {
                     None
                   </option>
 
+
                   <option
                     value="Breakfast"
                     ${
@@ -712,6 +835,7 @@ function renderItineraryDays() {
                   >
                     Breakfast
                   </option>
+
 
                   <option
                     value="Lunch"
@@ -724,6 +848,7 @@ function renderItineraryDays() {
                     Lunch
                   </option>
 
+
                   <option
                     value="Dinner"
                     ${
@@ -734,6 +859,7 @@ function renderItineraryDays() {
                   >
                     Dinner
                   </option>
+
 
                   <option
                     value="Breakfast & Dinner"
@@ -746,6 +872,7 @@ function renderItineraryDays() {
                   >
                     Breakfast &amp; Dinner
                   </option>
+
 
                   <option
                     value="All Meals"
@@ -765,7 +892,6 @@ function renderItineraryDays() {
 
               <!-- ===================================
                    ITINERARY DETAILS
-                   RICH TEXT EDITOR
               ==================================== -->
 
               <div
@@ -781,19 +907,14 @@ function renderItineraryDays() {
                   class="rich-editor itinerary-rich-editor"
                 >
 
-
                   <!-- TOOLBAR -->
 
                   <div
                     class="rich-toolbar"
                   >
 
-
-                    <!-- BOLD -->
-
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="bold"
                       title="Bold"
                     >
@@ -801,11 +922,8 @@ function renderItineraryDays() {
                     </button>
 
 
-                    <!-- ITALIC -->
-
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="italic"
                       title="Italic"
                     >
@@ -813,11 +931,8 @@ function renderItineraryDays() {
                     </button>
 
 
-                    <!-- UNDERLINE -->
-
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="underline"
                       title="Underline"
                     >
@@ -825,11 +940,8 @@ function renderItineraryDays() {
                     </button>
 
 
-                    <!-- BULLET -->
-
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="insertUnorderedList"
                       title="Bullet List"
                     >
@@ -837,11 +949,8 @@ function renderItineraryDays() {
                     </button>
 
 
-                    <!-- NUMBER -->
-
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="insertOrderedList"
                       title="Numbered List"
                     >
@@ -853,7 +962,6 @@ function renderItineraryDays() {
 
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="foreColor"
                       data-value="#dc2626"
                       title="Red Text"
@@ -870,7 +978,6 @@ function renderItineraryDays() {
 
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="foreColor"
                       data-value="#2563eb"
                       title="Blue Text"
@@ -887,7 +994,6 @@ function renderItineraryDays() {
 
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="foreColor"
                       data-value="#15803d"
                       title="Green Text"
@@ -904,7 +1010,6 @@ function renderItineraryDays() {
 
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="foreColor"
                       data-value="#111827"
                       title="Black Text"
@@ -917,7 +1022,6 @@ function renderItineraryDays() {
 
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="hiliteColor"
                       data-value="#fef08a"
                       title="Highlight"
@@ -926,24 +1030,20 @@ function renderItineraryDays() {
                     </button>
 
 
-                    <!-- CLEAR FORMAT -->
+                    <!-- CLEAR -->
 
                     <button
                       type="button"
-                      class="rich-tool-btn"
                       data-command="removeFormat"
                       title="Clear Formatting"
                     >
                       Clear
                     </button>
 
-
                   </div>
 
 
-                  <!-- =================================
-                       EDITABLE AREA
-                  ================================== -->
+                  <!-- EDITABLE AREA -->
 
                   <div
                     class="rich-content itinerary-description"
@@ -952,7 +1052,6 @@ function renderItineraryDays() {
                   >${sanitizeRichText(
                     dayData.description || ""
                   )}</div>
-
 
                 </div>
 
@@ -968,6 +1067,7 @@ function renderItineraryDays() {
                 <label>
                   Overnight Stay
                 </label>
+
 
                 <input
                   type="text"
@@ -994,7 +1094,7 @@ function renderItineraryDays() {
   // REMOVE DAY BUTTONS
   // ====================================================
 
-  document
+  container
     .querySelectorAll(
       "[data-remove-itinerary]"
     )
@@ -1020,7 +1120,7 @@ function renderItineraryDays() {
 
 
   // ====================================================
-  // RICH TEXT TOOLBAR
+  // RICH TEXT EDITORS
   // ====================================================
 
   setupRichTextEditors();
@@ -1029,7 +1129,7 @@ function renderItineraryDays() {
 
 // ======================================================
 // RICH TEXT EDITOR SETUP
-// PACKAGE DESCRIPTION + ITINERARY
+// DESCRIPTION + ITINERARY
 // ======================================================
 
 function setupRichTextEditors() {
@@ -1039,6 +1139,7 @@ function setupRichTextEditors() {
       ".rich-editor"
     );
 
+
   editors.forEach(
     (editor) => {
 
@@ -1047,26 +1148,48 @@ function setupRichTextEditors() {
           ".rich-toolbar"
         );
 
+
       const content =
         editor.querySelector(
           ".rich-content"
         );
 
+
       if (!toolbar || !content) {
+
         return;
+
       }
+
+
+      // Prevent duplicate listeners
+      // when itinerary is re-rendered
+
+      if (
+        editor.dataset.richReady === "true"
+      ) {
+
+        return;
+
+      }
+
+
+      editor.dataset.richReady =
+        "true";
+
 
       const buttons =
         toolbar.querySelectorAll(
           "button[data-command]"
         );
 
+
       buttons.forEach(
         (button) => {
 
-          // -------------------------------------------
-          // KEEP TEXT SELECTION WHEN BUTTON IS CLICKED
-          // -------------------------------------------
+          // -----------------------------------------
+          // PRESERVE TEXT SELECTION
+          // -----------------------------------------
 
           button.addEventListener(
             "mousedown",
@@ -1078,9 +1201,9 @@ function setupRichTextEditors() {
           );
 
 
-          // -------------------------------------------
-          // EXECUTE RICH TEXT COMMAND
-          // -------------------------------------------
+          // -----------------------------------------
+          // COMMAND
+          // -----------------------------------------
 
           button.addEventListener(
             "click",
@@ -1088,17 +1211,27 @@ function setupRichTextEditors() {
 
               event.preventDefault();
 
-              content.focus();
 
               const command =
                 button.dataset.command;
 
+
               const value =
-                button.dataset.value || null;
+                button.dataset.value ||
+                null;
+
 
               if (!command) {
+
                 return;
+
               }
+
+
+              // Restore editor focus
+
+              content.focus();
+
 
               try {
 
@@ -1107,6 +1240,19 @@ function setupRichTextEditors() {
                   false,
                   value
                 );
+
+
+                // Keep browser rendering updated
+
+                content.dispatchEvent(
+                  new Event(
+                    "input",
+                    {
+                      bubbles: true
+                    }
+                  )
+                );
+
 
               } catch (error) {
 
@@ -1136,15 +1282,17 @@ async function savePackage(event) {
 
   event.preventDefault();
 
+
   // -----------------------------------------------
-  // VERY IMPORTANT:
-  // Get rich editor contents before saving.
+  // FIRST SAVE ITINERARY EDITOR CONTENT
   // -----------------------------------------------
 
   collectItineraryFromDOM();
 
+
   const message =
     getElement("packageFormMessage");
+
 
   if (message) {
 
@@ -1156,6 +1304,27 @@ async function savePackage(event) {
 
   }
 
+
+  // -----------------------------------------------
+  // DESCRIPTION HTML
+  // -----------------------------------------------
+
+  const descriptionElement =
+    getElement("packageDescription");
+
+
+  const packageDescription =
+    descriptionElement
+      ? sanitizeRichText(
+          descriptionElement.innerHTML.trim()
+        )
+      : "";
+
+
+  // -----------------------------------------------
+  // PACKAGE DATA
+  // -----------------------------------------------
+
   const packageData = {
 
     name:
@@ -1163,10 +1332,12 @@ async function savePackage(event) {
         ?.value
         .trim() || "",
 
+
     destination:
       getElement("packageDestination")
         ?.value
         .trim() || "",
+
 
     nights:
       Number(
@@ -1174,15 +1345,18 @@ async function savePackage(event) {
           ?.value || 0
       ),
 
+
     days:
       Number(
         getElement("packageDays")
           ?.value || 0
       ),
 
+
     type:
       getElement("packageType")
         ?.value || "Domestic",
+
 
     price:
       Number(
@@ -1190,29 +1364,34 @@ async function savePackage(event) {
           ?.value || 0
       ),
 
+
     mealPlan:
       getElement("packageMealPlan")
         ?.value || "Breakfast",
+
 
     vehicle:
       getElement("packageVehicle")
         ?.value || "Cab",
 
+
     status:
       getElement("packageStatus")
         ?.value || "Active",
 
-    description:
-      getElement("packageDescription")
-        ?.innerHTML
-        .trim() || "",
 
-    // -----------------------------------------------
-    // ITINERARY WITH HTML FORMATTING
-    // -----------------------------------------------
+    // IMPORTANT:
+    // Save HTML, not .value
+
+    description:
+      packageDescription,
+
+
+    // Itinerary includes HTML formatting
 
     itinerary:
       itineraryDays,
+
 
     updatedAt:
       serverTimestamp()
@@ -1234,6 +1413,7 @@ async function savePackage(event) {
     return;
 
   }
+
 
   if (!packageData.destination) {
 
@@ -1272,6 +1452,7 @@ async function savePackage(event) {
 
       );
 
+
       showPackageMessage(
         "Package updated successfully.",
         "#15803d"
@@ -1289,10 +1470,12 @@ async function savePackage(event) {
       packageData.createdAt =
         serverTimestamp();
 
+
       packageData.createdBy =
         auth.currentUser
           ? auth.currentUser.email
           : "";
+
 
       const packageRef =
         await addDoc(
@@ -1319,8 +1502,10 @@ async function savePackage(event) {
         packageRef,
 
         {
+
           packageId:
             packageId
+
         }
 
       );
@@ -1354,6 +1539,7 @@ async function savePackage(event) {
       error
     );
 
+
     showPackageMessage(
       "Could not save package. Check Firestore rules.",
       "#dc2626"
@@ -1375,10 +1561,13 @@ function showPackageMessage(
   const message =
     getElement("packageFormMessage");
 
+
   if (!message) return;
+
 
   message.style.color =
     color;
+
 
   message.textContent =
     text;
@@ -1394,7 +1583,9 @@ async function loadPackages() {
   const table =
     getElement("packagesTableBody");
 
+
   if (!table) return;
+
 
   table.innerHTML = `
     <tr>
@@ -1469,6 +1660,7 @@ function renderPackages(packages) {
 
   const table =
     getElement("packagesTableBody");
+
 
   if (!table) return;
 
@@ -1741,6 +1933,7 @@ function setupPackageSearch() {
   const searchBox =
     getElement("packageSearch");
 
+
   if (!searchBox) return;
 
 
@@ -1777,7 +1970,9 @@ function setupPackageSearch() {
                 .toLowerCase()
                 .includes(search)
 
+
               ||
+
 
               String(
                 packageData.destination || ""
@@ -1785,7 +1980,9 @@ function setupPackageSearch() {
                 .toLowerCase()
                 .includes(search)
 
+
               ||
+
 
               String(
                 packageData.packageId || ""
@@ -1793,7 +1990,9 @@ function setupPackageSearch() {
                 .toLowerCase()
                 .includes(search)
 
+
               ||
+
 
               String(
                 packageData.type || ""
@@ -1801,7 +2000,9 @@ function setupPackageSearch() {
                 .toLowerCase()
                 .includes(search)
 
+
               ||
+
 
               String(
                 packageData.status || ""
@@ -1897,23 +2098,39 @@ function sanitizeRichText(value) {
 
   if (!value) return "";
 
+
   const wrapper =
     document.createElement("div");
 
-  wrapper.innerHTML = String(value);
+
+  wrapper.innerHTML =
+    String(value);
+
 
   const allowedTags = [
+
     "B",
     "STRONG",
+
     "I",
     "EM",
+
     "U",
+
     "UL",
     "OL",
     "LI",
+
     "BR",
+
     "SPAN"
+
   ];
+
+
+  // -----------------------------------------------
+  // Remove unsafe elements
+  // -----------------------------------------------
 
   wrapper
     .querySelectorAll("*")
@@ -1937,7 +2154,9 @@ function sanitizeRichText(value) {
         }
 
 
-        // Remove unwanted attributes
+        // -----------------------------------------
+        // Remove all attributes except style
+        // -----------------------------------------
 
         Array.from(
           element.attributes
@@ -1958,12 +2177,12 @@ function sanitizeRichText(value) {
         );
 
 
-        // Keep only safe inline styles
+        // -----------------------------------------
+        // SAFE STYLE FILTER
+        // -----------------------------------------
 
         if (
-          element.hasAttribute(
-            "style"
-          )
+          element.hasAttribute("style")
         ) {
 
           const style =
@@ -1971,24 +2190,44 @@ function sanitizeRichText(value) {
               "style"
             );
 
-          const safeStyle =
-            style
-              .split(";")
-              .filter(
-                (item) =>
-                  /^(color|background-color|font-weight|font-style|text-decoration)\s*:/i
-                    .test(item.trim())
-              )
-              .join(";");
 
-          if (safeStyle) {
+          const safeParts = [];
+
+
+          style
+            .split(";")
+            .forEach(
+              (part) => {
+
+                const trimmed =
+                  part.trim();
+
+
+                if (
+                  /^(color|background-color|font-weight|font-style|text-decoration)\s*:/i
+                    .test(trimmed)
+                ) {
+
+                  safeParts.push(
+                    trimmed
+                  );
+
+                }
+
+              }
+            );
+
+
+          if (safeParts.length) {
 
             element.setAttribute(
               "style",
-              safeStyle
+              safeParts.join(";")
             );
 
-          } else {
+          }
+
+          else {
 
             element.removeAttribute(
               "style"
