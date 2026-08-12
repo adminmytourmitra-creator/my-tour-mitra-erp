@@ -1167,23 +1167,55 @@
 
 
       <!-- =================================================
-           SETTINGS
-      ================================================== -->
+     SETTINGS
+================================================== -->
 
-      <div
-        class="module"
-        id="settingsPage"
-        style="display:none;"
-      >
+<div
+  class="module"
+  id="settingsPage"
+  style="display:none;"
+>
 
-        <div class="module-card">
+  <div class="module-card">
 
-          <h2>
-            Settings
-          </h2>
+    <!-- =================================================
+         SETTINGS HEADER
+    ================================================== -->
 
-          <p class="module-placeholder">
-            ERP settings will be built next.
+    <div class="settings-header">
+
+      <div>
+
+        <h2>
+          Settings
+        </h2>
+
+        <p class="settings-subtitle">
+          Manage your agency information and PDF branding.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         AGENCY PROFILE
+    ================================================== -->
+
+    <div class="settings-section">
+
+      <div class="settings-section-header">
+
+        <div>
+
+          <h3>
+            Agency Profile
+          </h3>
+
+          <p>
+            These details will be used automatically
+            in quotations, invoices, vouchers and itineraries.
           </p>
 
         </div>
@@ -1191,12 +1223,341 @@
       </div>
 
 
-    </section>
+      <form
+        id="agencyProfileForm"
+      >
 
-  </main>
+        <!-- =================================================
+             LOGO
+        ================================================== -->
+
+        <div class="agency-logo-section">
+
+          <div class="agency-logo-preview-area">
+
+            <div
+              id="agencyLogoPreviewContainer"
+              class="agency-logo-preview-container"
+              style="display:none;"
+            >
+
+              <img
+                id="agencyLogoPreview"
+                class="agency-logo-preview"
+                src=""
+                alt="Agency Logo"
+              >
+
+            </div>
+
+
+            <div class="agency-logo-info">
+
+              <h4>
+                Agency Logo
+              </h4>
+
+              <p>
+                Upload your agency logo for PDF documents.
+              </p>
+
+              <p class="small-note">
+                Recommended: PNG/JPG/WebP, maximum 5 MB.
+              </p>
+
+
+              <div class="logo-buttons">
+
+                <label
+                  for="agencyLogo"
+                  class="secondary-btn"
+                >
+                  Choose Logo
+                </label>
+
+                <input
+                  type="file"
+                  id="agencyLogo"
+                  accept="image/png,image/jpeg,image/webp"
+                  style="display:none;"
+                >
+
+
+                <button
+                  type="button"
+                  class="danger-btn"
+                  id="removeAgencyLogoBtn"
+                  style="display:none;"
+                >
+                  Remove
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BASIC AGENCY INFORMATION
+        ================================================== -->
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="agencyName">
+              Agency / Company Name *
+            </label>
+
+            <input
+              type="text"
+              id="agencyName"
+              placeholder="e.g. My Tour Mitra"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyTagline">
+              Tagline
+            </label>
+
+            <input
+              type="text"
+              id="agencyTagline"
+              placeholder="e.g. Explore More, Travel Better"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyPhone">
+              Phone
+            </label>
+
+            <input
+              type="tel"
+              id="agencyPhone"
+              placeholder="+91 XXXXX XXXXX"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyWhatsApp">
+              WhatsApp
+            </label>
+
+            <input
+              type="tel"
+              id="agencyWhatsApp"
+              placeholder="+91 XXXXX XXXXX"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyEmail">
+              Email
+            </label>
+
+            <input
+              type="email"
+              id="agencyEmail"
+              placeholder="info@example.com"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyWebsite">
+              Website
+            </label>
+
+            <input
+              type="url"
+              id="agencyWebsite"
+              placeholder="https://example.com"
+            >
+
+          </div>
+
+
+          <!-- =================================================
+               ADDRESS
+          ================================================== -->
+
+          <div class="form-group full-width">
+
+            <label for="agencyAddress">
+              Full Address
+            </label>
+
+            <textarea
+              id="agencyAddress"
+              rows="3"
+              placeholder="Office address"
+            ></textarea>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyCity">
+              City
+            </label>
+
+            <input
+              type="text"
+              id="agencyCity"
+              placeholder="City"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyState">
+              State
+            </label>
+
+            <input
+              type="text"
+              id="agencyState"
+              placeholder="State"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyPin">
+              PIN Code
+            </label>
+
+            <input
+              type="text"
+              id="agencyPin"
+              placeholder="PIN Code"
+              maxlength="6"
+            >
+
+          </div>
+
+
+          <!-- =================================================
+               TAX DETAILS
+          ================================================== -->
+
+          <div class="form-group">
+
+            <label for="agencyGST">
+              GST Number
+            </label>
+
+            <input
+              type="text"
+              id="agencyGST"
+              placeholder="GSTIN"
+              maxlength="15"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="agencyPAN">
+              PAN Number
+            </label>
+
+            <input
+              type="text"
+              id="agencyPAN"
+              placeholder="PAN"
+              maxlength="10"
+            >
+
+          </div>
+
+
+          <!-- =================================================
+               PDF FOOTER
+          ================================================== -->
+
+          <div class="form-group full-width">
+
+            <label for="agencyPdfFooter">
+              PDF Footer Text
+            </label>
+
+            <textarea
+              id="agencyPdfFooter"
+              rows="3"
+              placeholder="Thank you for choosing My Tour Mitra. Terms & conditions apply."
+            ></textarea>
+
+            <small>
+              This text can be automatically shown at the bottom
+              of your itinerary, quotation, invoice and voucher PDFs.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div
+          class="status-message"
+          id="settingsFormMessage"
+        ></div>
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="form-actions">
+
+          <button
+            type="submit"
+            class="primary-btn"
+            id="saveAgencyProfileBtn"
+          >
+            Save Agency Profile
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
 
 </div>
-
 
 
 <!-- =====================================================
