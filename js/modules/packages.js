@@ -1,4 +1,5 @@
 // ======================================================
+// MY TOUR MITRA ERP
 // PACKAGES MODULE
 // ======================================================
 
@@ -50,14 +51,9 @@ function getElement(id) {
 
 function setupPackageButtons() {
 
-  const addButton =
-    getElement("addPackageBtn");
-
-  const closeButton =
-    getElement("closePackageModal");
-
-  const cancelButton =
-    getElement("cancelPackageBtn");
+  const addButton = getElement("addPackageBtn");
+  const closeButton = getElement("closePackageModal");
+  const cancelButton = getElement("cancelPackageBtn");
 
   if (addButton) {
 
@@ -94,8 +90,7 @@ function setupPackageButtons() {
 
 function setupPackageForm() {
 
-  const form =
-    getElement("packageForm");
+  const form = getElement("packageForm");
 
   if (!form) return;
 
@@ -160,47 +155,91 @@ function openPackageModal(packageData = null) {
       title.textContent = "Edit Package";
     }
 
-    getElement("packageDocId").value =
-      packageData.id || "";
+    setValue(
+      "packageDocId",
+      packageData.id || ""
+    );
 
-    getElement("packageName").value =
-      packageData.name || "";
+    setValue(
+      "packageName",
+      packageData.name || ""
+    );
 
-    getElement("packageDestination").value =
-      packageData.destination || "";
+    setValue(
+      "packageDestination",
+      packageData.destination || ""
+    );
 
-    getElement("packageNights").value =
-      packageData.nights ?? "";
+    setValue(
+      "packageNights",
+      packageData.nights ?? ""
+    );
 
-    getElement("packageDays").value =
-      packageData.days ?? "";
+    setValue(
+      "packageDays",
+      packageData.days ?? ""
+    );
 
-    getElement("packageType").value =
-      packageData.type || "Domestic";
+    setValue(
+      "packageType",
+      packageData.type || "Domestic"
+    );
 
-    getElement("packagePrice").value =
-      packageData.price ?? "";
+    setValue(
+      "packagePrice",
+      packageData.price ?? ""
+    );
 
-    getElement("packageMealPlan").value =
-      packageData.mealPlan || "Breakfast";
+    setValue(
+      "packageMealPlan",
+      packageData.mealPlan || "Breakfast"
+    );
 
-    getElement("packageVehicle").value =
-      packageData.vehicle || "Cab";
+    setValue(
+      "packageVehicle",
+      packageData.vehicle || "Cab"
+    );
 
-    getElement("packageStatus").value =
-      packageData.status || "Active";
+    setValue(
+      "packageStatus",
+      packageData.status || "Active"
+    );
 
-    getElement("packageDescription").value =
-      packageData.description || "";
+    setValue(
+      "packageDescription",
+      packageData.description || ""
+    );
 
-    // Load saved itinerary
+    // -----------------------------------------------
+    // LOAD ITINERARY
+    // -----------------------------------------------
 
     itineraryDays =
-      Array.isArray(
-        packageData.itinerary
-      )
-        ? packageData.itinerary
+      Array.isArray(packageData.itinerary)
+        ? packageData.itinerary.map(
+            (day, index) => ({
+              day: index + 1,
+              title: day.title || "",
+              description: day.description || "",
+              meals: day.meals || "None",
+              overnight: day.overnight || ""
+            })
+          )
         : [];
+
+    if (!itineraryDays.length) {
+
+      itineraryDays = [
+        {
+          day: 1,
+          title: "",
+          description: "",
+          meals: "None",
+          overnight: ""
+        }
+      ];
+
+    }
 
     renderItineraryDays();
 
@@ -218,31 +257,46 @@ function openPackageModal(packageData = null) {
 
     form.reset();
 
-    getElement("packageDocId").value =
-      "";
+    setValue(
+      "packageDocId",
+      ""
+    );
 
-    getElement("packageNights").value =
-      2;
+    setValue(
+      "packageNights",
+      2
+    );
 
-    getElement("packageDays").value =
-      3;
+    setValue(
+      "packageDays",
+      3
+    );
 
-    getElement("packageType").value =
-      "Domestic";
+    setValue(
+      "packageType",
+      "Domestic"
+    );
 
-    getElement("packageMealPlan").value =
-      "Breakfast";
+    setValue(
+      "packageMealPlan",
+      "Breakfast"
+    );
 
-    getElement("packageVehicle").value =
-      "Cab";
+    setValue(
+      "packageVehicle",
+      "Cab"
+    );
 
-    getElement("packageStatus").value =
-      "Active";
+    setValue(
+      "packageStatus",
+      "Active"
+    );
 
-    // Start with ONLY Day 1
+    // -----------------------------------------------
+    // ONLY DAY 1 AT START
+    // -----------------------------------------------
 
     itineraryDays = [
-
       {
         day: 1,
         title: "",
@@ -250,12 +304,25 @@ function openPackageModal(packageData = null) {
         meals: "None",
         overnight: ""
       }
-
     ];
 
     renderItineraryDays();
 
   }
+
+}
+
+// ======================================================
+// SET VALUE HELPER
+// ======================================================
+
+function setValue(id, value) {
+
+  const element = getElement(id);
+
+  if (!element) return;
+
+  element.value = value;
 
 }
 
@@ -296,6 +363,7 @@ function closePackageModal() {
 
 function addItineraryDay() {
 
+  // Save current editor contents BEFORE rendering again
   collectItineraryFromDOM();
 
   const nextDay =
@@ -317,24 +385,27 @@ function addItineraryDay() {
 
   renderItineraryDays();
 
-  // Scroll to newly added day
-
+  // Scroll to newly created day
   setTimeout(() => {
 
     const container =
       getElement("itineraryDays");
 
-    if (container) {
+    if (!container) return;
 
-      container.lastElementChild
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest"
-        });
+    const lastDay =
+      container.lastElementChild;
+
+    if (lastDay) {
+
+      lastDay.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
 
     }
 
-  }, 50);
+  }, 100);
 
 }
 
@@ -345,8 +416,6 @@ function addItineraryDay() {
 function removeItineraryDay(index) {
 
   collectItineraryFromDOM();
-
-  // Don't allow deleting the last day
 
   if (itineraryDays.length <= 1) {
 
@@ -363,8 +432,7 @@ function removeItineraryDay(index) {
     1
   );
 
-  // Renumber days
-
+  // Renumber
   itineraryDays =
     itineraryDays.map(
       (day, position) => ({
@@ -383,6 +451,7 @@ function removeItineraryDay(index) {
 
 // ======================================================
 // COLLECT ITINERARY FROM DOM
+// IMPORTANT FOR RICH TEXT EDITOR
 // ======================================================
 
 function collectItineraryFromDOM() {
@@ -392,7 +461,9 @@ function collectItineraryFromDOM() {
       "#itineraryDays .itinerary-day"
     );
 
-  if (!dayElements.length) return;
+  if (!dayElements.length) {
+    return;
+  }
 
   itineraryDays =
     Array.from(dayElements)
@@ -419,6 +490,35 @@ function collectItineraryFromDOM() {
               ".itinerary-overnight"
             );
 
+          // -----------------------------------------
+          // RICH TEXT
+          // -----------------------------------------
+
+          let descriptionValue = "";
+
+          if (description) {
+
+            if (
+              description.hasAttribute(
+                "contenteditable"
+              )
+            ) {
+
+              descriptionValue =
+                description.innerHTML.trim();
+
+            }
+
+            else {
+
+              descriptionValue =
+                description.value
+                  ?.trim() || "";
+
+            }
+
+          }
+
           return {
 
             day:
@@ -428,7 +528,7 @@ function collectItineraryFromDOM() {
               title?.value.trim() || "",
 
             description:
-              description?.value.trim() || "",
+              descriptionValue,
 
             meals:
               meals?.value || "None",
@@ -454,7 +554,9 @@ function renderItineraryDays() {
 
   if (!container) return;
 
-  // Make sure at least Day 1 exists
+  // -----------------------------------------------
+  // MAKE SURE DAY 1 EXISTS
+  // -----------------------------------------------
 
   if (!itineraryDays.length) {
 
@@ -481,6 +583,10 @@ function renderItineraryDays() {
             class="itinerary-day"
             data-day="${index + 1}"
           >
+
+            <!-- =====================================
+                 DAY HEADER
+            ====================================== -->
 
             <div
               class="itinerary-day-header"
@@ -510,7 +616,9 @@ function renderItineraryDays() {
             <div class="form-grid">
 
 
-              <!-- DAY TITLE -->
+              <!-- ===================================
+                   DAY TITLE
+              ==================================== -->
 
               <div class="form-group">
 
@@ -530,7 +638,9 @@ function renderItineraryDays() {
               </div>
 
 
-              <!-- MEALS -->
+              <!-- ===================================
+                   MEALS
+              ==================================== -->
 
               <div class="form-group">
 
@@ -614,164 +724,205 @@ function renderItineraryDays() {
               </div>
 
 
-              <!-- =================================================
-     ITINERARY DETAILS - RICH TEXT EDITOR
-================================================== -->
+              <!-- ===================================
+                   ITINERARY DETAILS
+                   RICH TEXT EDITOR
+              ==================================== -->
 
-<div
-  class="form-group full-width"
->
+              <div
+                class="form-group full-width"
+              >
 
-  <label>
-    Itinerary Details
-  </label>
-
-
-  <div class="rich-editor itinerary-rich-editor">
+                <label>
+                  Itinerary Details
+                </label>
 
 
-    <!-- TOOLBAR -->
-
-    <div class="rich-toolbar">
-
-      <button
-        type="button"
-        data-command="bold"
-        title="Bold"
-      >
-        <b>B</b>
-      </button>
+                <div
+                  class="rich-editor itinerary-rich-editor"
+                >
 
 
-      <button
-        type="button"
-        data-command="italic"
-        title="Italic"
-      >
-        <i>I</i>
-      </button>
+                  <!-- TOOLBAR -->
+
+                  <div
+                    class="rich-toolbar"
+                  >
 
 
-      <button
-        type="button"
-        data-command="underline"
-        title="Underline"
-      >
-        <u>U</u>
-      </button>
+                    <!-- BOLD -->
+
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="bold"
+                      title="Bold"
+                    >
+                      <b>B</b>
+                    </button>
 
 
-      <button
-        type="button"
-        data-command="insertUnorderedList"
-        title="Bullet List"
-      >
-        • List
-      </button>
+                    <!-- ITALIC -->
+
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="italic"
+                      title="Italic"
+                    >
+                      <i>I</i>
+                    </button>
 
 
-      <button
-        type="button"
-        data-command="insertOrderedList"
-        title="Numbered List"
-      >
-        1. List
-      </button>
+                    <!-- UNDERLINE -->
+
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="underline"
+                      title="Underline"
+                    >
+                      <u>U</u>
+                    </button>
 
 
-      <!-- RED -->
+                    <!-- BULLET -->
 
-      <button
-        type="button"
-        data-command="foreColor"
-        data-value="#dc2626"
-        title="Red Text"
-      >
-        <span style="color:#dc2626;">
-          A
-        </span>
-      </button>
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="insertUnorderedList"
+                      title="Bullet List"
+                    >
+                      • List
+                    </button>
 
 
-      <!-- BLUE -->
+                    <!-- NUMBER -->
 
-      <button
-        type="button"
-        data-command="foreColor"
-        data-value="#2563eb"
-        title="Blue Text"
-      >
-        <span style="color:#2563eb;">
-          A
-        </span>
-      </button>
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="insertOrderedList"
+                      title="Numbered List"
+                    >
+                      1. List
+                    </button>
 
 
-      <!-- GREEN -->
+                    <!-- RED -->
 
-      <button
-        type="button"
-        data-command="foreColor"
-        data-value="#15803d"
-        title="Green Text"
-      >
-        <span style="color:#15803d;">
-          A
-        </span>
-      </button>
-
-
-      <!-- BLACK -->
-
-      <button
-        type="button"
-        data-command="foreColor"
-        data-value="#111827"
-        title="Black Text"
-      >
-        A
-      </button>
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="foreColor"
+                      data-value="#dc2626"
+                      title="Red Text"
+                    >
+                      <span
+                        style="color:#dc2626;font-weight:bold;"
+                      >
+                        A
+                      </span>
+                    </button>
 
 
-      <!-- HIGHLIGHT -->
+                    <!-- BLUE -->
 
-      <button
-        type="button"
-        data-command="hiliteColor"
-        data-value="#fef08a"
-        title="Highlight"
-      >
-        🖍
-      </button>
-
-
-      <!-- CLEAR -->
-
-      <button
-        type="button"
-        data-command="removeFormat"
-        title="Clear Formatting"
-      >
-        Clear
-      </button>
-
-    </div>
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="foreColor"
+                      data-value="#2563eb"
+                      title="Blue Text"
+                    >
+                      <span
+                        style="color:#2563eb;font-weight:bold;"
+                      >
+                        A
+                      </span>
+                    </button>
 
 
-    <!-- EDITABLE CONTENT -->
+                    <!-- GREEN -->
 
-    <div
-      class="rich-content itinerary-description"
-      contenteditable="true"
-      data-placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
-    >${dayData.description || ""}</div>
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="foreColor"
+                      data-value="#15803d"
+                      title="Green Text"
+                    >
+                      <span
+                        style="color:#15803d;font-weight:bold;"
+                      >
+                        A
+                      </span>
+                    </button>
 
 
-  </div>
+                    <!-- BLACK -->
 
-</div>
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="foreColor"
+                      data-value="#111827"
+                      title="Black Text"
+                    >
+                      A
+                    </button>
 
-              <!-- OVERNIGHT -->
+
+                    <!-- HIGHLIGHT -->
+
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="hiliteColor"
+                      data-value="#fef08a"
+                      title="Highlight"
+                    >
+                      🖍
+                    </button>
+
+
+                    <!-- CLEAR FORMAT -->
+
+                    <button
+                      type="button"
+                      class="rich-tool-btn"
+                      data-command="removeFormat"
+                      title="Clear Formatting"
+                    >
+                      Clear
+                    </button>
+
+
+                  </div>
+
+
+                  <!-- =================================
+                       EDITABLE AREA
+                  ================================== -->
+
+                  <div
+                    class="rich-content itinerary-description"
+                    contenteditable="true"
+                    data-placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
+                  >${sanitizeRichText(
+                    dayData.description || ""
+                  )}</div>
+
+
+                </div>
+
+              </div>
+
+
+              <!-- ===================================
+                   OVERNIGHT
+              ==================================== -->
 
               <div class="form-group">
 
@@ -801,7 +952,7 @@ function renderItineraryDays() {
 
 
   // ====================================================
-  // REMOVE BUTTON EVENTS
+  // REMOVE DAY BUTTONS
   // ====================================================
 
   document
@@ -828,6 +979,109 @@ function renderItineraryDays() {
       }
     );
 
+
+  // ====================================================
+  // RICH TEXT TOOLBAR
+  // ====================================================
+
+  setupRichTextEditors();
+
+}
+
+// ======================================================
+// RICH TEXT EDITOR SETUP
+// ======================================================
+
+function setupRichTextEditors() {
+
+  const editors =
+    document.querySelectorAll(
+      ".itinerary-rich-editor"
+    );
+
+  editors.forEach(
+    (editor) => {
+
+      const toolbar =
+        editor.querySelector(
+          ".rich-toolbar"
+        );
+
+      const content =
+        editor.querySelector(
+          ".rich-content"
+        );
+
+      if (!toolbar || !content) {
+        return;
+      }
+
+      const buttons =
+        toolbar.querySelectorAll(
+          ".rich-tool-btn"
+        );
+
+      buttons.forEach(
+        (button) => {
+
+          // -------------------------------------------
+          // IMPORTANT:
+          // mousedown prevents selection from being
+          // lost when toolbar button is clicked.
+          // -------------------------------------------
+
+          button.addEventListener(
+            "mousedown",
+            (event) => {
+
+              event.preventDefault();
+
+            }
+          );
+
+
+          button.addEventListener(
+            "click",
+            (event) => {
+
+              event.preventDefault();
+
+              content.focus();
+
+              const command =
+                button.dataset.command;
+
+              const value =
+                button.dataset.value || null;
+
+              if (!command) return;
+
+              try {
+
+                document.execCommand(
+                  command,
+                  false,
+                  value
+                );
+
+              } catch (error) {
+
+                console.error(
+                  "Rich editor command error:",
+                  error
+                );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+    }
+  );
+
 }
 
 // ======================================================
@@ -837,6 +1091,11 @@ function renderItineraryDays() {
 async function savePackage(event) {
 
   event.preventDefault();
+
+  // -----------------------------------------------
+  // VERY IMPORTANT:
+  // Get rich editor contents before saving.
+  // -----------------------------------------------
 
   collectItineraryFromDOM();
 
@@ -904,6 +1163,10 @@ async function savePackage(event) {
         ?.value
         .trim() || "",
 
+    // -----------------------------------------------
+    // ITINERARY WITH HTML FORMATTING
+    // -----------------------------------------------
+
     itinerary:
       itineraryDays,
 
@@ -911,6 +1174,7 @@ async function savePackage(event) {
       serverTimestamp()
 
   };
+
 
   // ====================================================
   // VALIDATION
@@ -938,11 +1202,13 @@ async function savePackage(event) {
 
   }
 
+
   try {
 
     const existingId =
       getElement("packageDocId")
         ?.value || "";
+
 
     // ==================================================
     // EDIT
@@ -969,8 +1235,9 @@ async function savePackage(event) {
 
     }
 
+
     // ==================================================
-    // NEW
+    // NEW PACKAGE
     // ==================================================
 
     else {
@@ -995,11 +1262,13 @@ async function savePackage(event) {
 
         );
 
+
       const packageId =
         "PKG-" +
         packageRef.id
           .substring(0, 6)
           .toUpperCase();
+
 
       await updateDoc(
 
@@ -1012,6 +1281,7 @@ async function savePackage(event) {
 
       );
 
+
       showPackageMessage(
         "Package saved successfully.",
         "#15803d"
@@ -1019,12 +1289,19 @@ async function savePackage(event) {
 
     }
 
+
+    // Reload package list
+
     await loadPackages();
+
+
+    // Close after success
 
     setTimeout(
       closePackageModal,
       700
     );
+
 
   } catch (error) {
 
@@ -1086,6 +1363,7 @@ async function loadPackages() {
     </tr>
   `;
 
+
   try {
 
     const snapshot =
@@ -1095,6 +1373,7 @@ async function loadPackages() {
           "packages"
         )
       );
+
 
     allPackages =
       snapshot.docs.map(
@@ -1108,9 +1387,11 @@ async function loadPackages() {
         })
       );
 
+
     renderPackages(
       allPackages
     );
+
 
   } catch (error) {
 
@@ -1118,6 +1399,7 @@ async function loadPackages() {
       "Package loading error:",
       error
     );
+
 
     table.innerHTML = `
       <tr>
@@ -1146,6 +1428,7 @@ function renderPackages(packages) {
 
   if (!table) return;
 
+
   if (!packages.length) {
 
     table.innerHTML = `
@@ -1164,6 +1447,7 @@ function renderPackages(packages) {
 
   }
 
+
   table.innerHTML =
     packages
       .map(
@@ -1177,6 +1461,7 @@ function renderPackages(packages) {
               )}
             </td>
 
+
             <td>
 
               <strong>
@@ -1187,59 +1472,80 @@ function renderPackages(packages) {
 
             </td>
 
+
             <td>
               ${escapeHtml(
                 packageData.destination || "-"
               )}
             </td>
 
-            <td>
-              ${packageData.nights || 0}N /
-              ${packageData.days || 0}D
-            </td>
 
             <td>
+
+              ${packageData.nights || 0}N /
+              ${packageData.days || 0}D
+
+            </td>
+
+
+            <td>
+
               ${escapeHtml(
                 packageData.type || "-"
               )}
+
             </td>
 
+
             <td>
+
               ₹${Number(
                 packageData.price || 0
               ).toLocaleString(
                 "en-IN"
               )}
+
             </td>
 
+
             <td>
+
               ${escapeHtml(
                 packageData.mealPlan || "-"
               )}
+
             </td>
+
 
             <td>
 
               <span class="status-badge">
+
                 ${escapeHtml(
-                  packageData.status || "Active"
+                  packageData.status ||
+                  "Active"
                 )}
+
               </span>
 
             </td>
+
 
             <td>
 
               <button
                 class="edit-btn"
                 data-package-edit-id="${packageData.id}"
+                type="button"
               >
                 Edit
               </button>
 
+
               <button
                 class="danger-btn"
                 data-package-delete-id="${packageData.id}"
+                type="button"
               >
                 Delete
               </button>
@@ -1252,6 +1558,7 @@ function renderPackages(packages) {
       )
       .join("");
 
+
   setupPackageRowActions();
 
 }
@@ -1261,6 +1568,10 @@ function renderPackages(packages) {
 // ======================================================
 
 function setupPackageRowActions() {
+
+  // -----------------------------------------------
+  // EDIT
+  // -----------------------------------------------
 
   document
     .querySelectorAll(
@@ -1281,6 +1592,7 @@ function setupPackageRowActions() {
                     .packageEditId
               );
 
+
             if (packageData) {
 
               openPackageModal(
@@ -1294,6 +1606,11 @@ function setupPackageRowActions() {
 
       }
     );
+
+
+  // -----------------------------------------------
+  // DELETE
+  // -----------------------------------------------
 
   document
     .querySelectorAll(
@@ -1331,12 +1648,15 @@ async function deletePackage(id) {
         item.id === id
     );
 
+
   const confirmed =
     confirm(
       `Delete package "${packageData?.name || ""}"?`
     );
 
+
   if (!confirmed) return;
+
 
   try {
 
@@ -1348,7 +1668,9 @@ async function deletePackage(id) {
       )
     );
 
+
     await loadPackages();
+
 
   } catch (error) {
 
@@ -1356,6 +1678,7 @@ async function deletePackage(id) {
       "Package delete error:",
       error
     );
+
 
     alert(
       "Could not delete package."
@@ -1376,6 +1699,7 @@ function setupPackageSearch() {
 
   if (!searchBox) return;
 
+
   searchBox.addEventListener(
     "input",
     () => {
@@ -1384,6 +1708,7 @@ function setupPackageSearch() {
         searchBox.value
           .toLowerCase()
           .trim();
+
 
       if (!search) {
 
@@ -1394,6 +1719,7 @@ function setupPackageSearch() {
         return;
 
       }
+
 
       const filtered =
         allPackages.filter(
@@ -1443,6 +1769,7 @@ function setupPackageSearch() {
 
           }
         );
+
 
       renderPackages(
         filtered
@@ -1515,5 +1842,122 @@ function escapeAttribute(value) {
       />/g,
       "&gt;"
     );
+
+}
+
+// ======================================================
+// RICH TEXT SANITIZER
+// ======================================================
+
+function sanitizeRichText(value) {
+
+  if (!value) return "";
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.innerHTML = String(value);
+
+  const allowedTags = [
+    "B",
+    "STRONG",
+    "I",
+    "EM",
+    "U",
+    "UL",
+    "OL",
+    "LI",
+    "BR",
+    "SPAN"
+  ];
+
+  wrapper
+    .querySelectorAll("*")
+    .forEach(
+      (element) => {
+
+        if (
+          !allowedTags.includes(
+            element.tagName
+          )
+        ) {
+
+          element.replaceWith(
+            ...Array.from(
+              element.childNodes
+            )
+          );
+
+          return;
+
+        }
+
+
+        // Remove unwanted attributes
+
+        Array.from(
+          element.attributes
+        ).forEach(
+          (attribute) => {
+
+            if (
+              attribute.name !== "style"
+            ) {
+
+              element.removeAttribute(
+                attribute.name
+              );
+
+            }
+
+          }
+        );
+
+
+        // Keep only safe inline styles
+
+        if (
+          element.hasAttribute(
+            "style"
+          )
+        ) {
+
+          const style =
+            element.getAttribute(
+              "style"
+            );
+
+          const safeStyle =
+            style
+              .split(";")
+              .filter(
+                (item) =>
+                  /^(color|background-color|font-weight|font-style|text-decoration)\s*:/i
+                    .test(item.trim())
+              )
+              .join(";");
+
+          if (safeStyle) {
+
+            element.setAttribute(
+              "style",
+              safeStyle
+            );
+
+          } else {
+
+            element.removeAttribute(
+              "style"
+            );
+
+          }
+
+        }
+
+      }
+    );
+
+
+  return wrapper.innerHTML;
 
 }
