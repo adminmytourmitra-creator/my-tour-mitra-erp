@@ -2073,9 +2073,6 @@
 
       <div class="form-grid">
 
-
-        <!-- PACKAGE NAME -->
-
         <div class="form-group">
 
           <label for="packageName">
@@ -2091,8 +2088,6 @@
 
         </div>
 
-
-        <!-- DESTINATION -->
 
         <div class="form-group">
 
@@ -2110,8 +2105,6 @@
         </div>
 
 
-        <!-- NIGHTS -->
-
         <div class="form-group">
 
           <label for="packageNights">
@@ -2127,8 +2120,6 @@
 
         </div>
 
-
-        <!-- DAYS -->
 
         <div class="form-group">
 
@@ -2146,8 +2137,6 @@
         </div>
 
 
-        <!-- PACKAGE TYPE -->
-
         <div class="form-group">
 
           <label for="packageType">
@@ -2156,64 +2145,24 @@
 
           <select id="packageType">
 
-            <option value="Domestic">
-              Domestic
-            </option>
-
-            <option value="Northeast">
-              Northeast
-            </option>
-
-            <option value="Honeymoon">
-              Honeymoon
-            </option>
-
-            <option value="Family">
-              Family
-            </option>
-
-            <option value="Adventure">
-              Adventure
-            </option>
-
-            <option value="Religious">
-              Religious
-            </option>
-
-            <option value="Wildlife">
-              Wildlife
-            </option>
-
-            <option value="Heritage">
-              Heritage
-            </option>
-
-            <option value="Offbeat">
-              Offbeat
-            </option>
-
-            <option value="Festival">
-              Festival
-            </option>
-
-            <option value="Student">
-              Student
-            </option>
-
-            <option value="Corporate">
-              Corporate
-            </option>
-
-            <option value="Other">
-              Other
-            </option>
+            <option value="Domestic">Domestic</option>
+            <option value="Northeast">Northeast</option>
+            <option value="Honeymoon">Honeymoon</option>
+            <option value="Family">Family</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Religious">Religious</option>
+            <option value="Wildlife">Wildlife</option>
+            <option value="Heritage">Heritage</option>
+            <option value="Offbeat">Offbeat</option>
+            <option value="Festival">Festival</option>
+            <option value="Student">Student</option>
+            <option value="Corporate">Corporate</option>
+            <option value="Other">Other</option>
 
           </select>
 
         </div>
 
-
-        <!-- PRICE -->
 
         <div class="form-group">
 
@@ -2230,8 +2179,6 @@
 
         </div>
 
-
-        <!-- MEAL PLAN -->
 
         <div class="form-group">
 
@@ -2262,8 +2209,6 @@
         </div>
 
 
-        <!-- VEHICLE -->
-
         <div class="form-group">
 
           <label for="packageVehicle">
@@ -2272,30 +2217,16 @@
 
           <select id="packageVehicle">
 
-            <option value="Cab">
-              Cab
-            </option>
-
-            <option value="Sedan">
-              Sedan
-            </option>
-
-            <option value="SUV">
-              SUV
-            </option>
-
+            <option value="Cab">Cab</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
             <option value="Tempo Traveller">
               Tempo Traveller
             </option>
-
-            <option value="Bus">
-              Bus
-            </option>
-
+            <option value="Bus">Bus</option>
             <option value="Own Vehicle">
               Own Vehicle
             </option>
-
             <option value="Not Included">
               Not Included
             </option>
@@ -2305,8 +2236,6 @@
         </div>
 
 
-        <!-- STATUS -->
-
         <div class="form-group">
 
           <label for="packageStatus">
@@ -2315,31 +2244,134 @@
 
           <select id="packageStatus">
 
-            <option value="Active">
-              Active
-            </option>
-
-            <option value="Inactive">
-              Inactive
-            </option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
 
           </select>
 
         </div>
 
 
-        <!-- DESCRIPTION -->
+        <!-- =================================================
+             DESCRIPTION / RICH TEXT
+        ================================================== -->
 
         <div class="form-group full-width">
 
-          <label for="packageDescription">
+          <label>
             Description / Notes
           </label>
 
-          <textarea
-            id="packageDescription"
-            placeholder="Package details, inclusions, special notes..."
-          ></textarea>
+          <div
+            class="rich-editor"
+            data-editor="packageDescription"
+          >
+
+            <div class="rich-toolbar">
+
+              <button
+                type="button"
+                data-command="bold"
+                title="Bold"
+              >
+                <b>B</b>
+              </button>
+
+              <button
+                type="button"
+                data-command="italic"
+                title="Italic"
+              >
+                <i>I</i>
+              </button>
+
+              <button
+                type="button"
+                data-command="underline"
+                title="Underline"
+              >
+                <u>U</u>
+              </button>
+
+              <button
+                type="button"
+                data-command="insertUnorderedList"
+                title="Bullet List"
+              >
+                • List
+              </button>
+
+              <button
+                type="button"
+                data-command="insertOrderedList"
+                title="Numbered List"
+              >
+                1. List
+              </button>
+
+              <button
+                type="button"
+                data-command="foreColor"
+                data-value="#dc2626"
+                title="Red Text"
+              >
+                <span style="color:#dc2626;">A</span>
+              </button>
+
+              <button
+                type="button"
+                data-command="foreColor"
+                data-value="#2563eb"
+                title="Blue Text"
+              >
+                <span style="color:#2563eb;">A</span>
+              </button>
+
+              <button
+                type="button"
+                data-command="foreColor"
+                data-value="#15803d"
+                title="Green Text"
+              >
+                <span style="color:#15803d;">A</span>
+              </button>
+
+              <button
+                type="button"
+                data-command="foreColor"
+                data-value="#111827"
+                title="Black Text"
+              >
+                A
+              </button>
+
+              <button
+                type="button"
+                data-command="hiliteColor"
+                data-value="#fef08a"
+                title="Highlight"
+              >
+                🖍
+              </button>
+
+              <button
+                type="button"
+                data-command="removeFormat"
+                title="Clear Formatting"
+              >
+                Clear
+              </button>
+
+            </div>
+
+            <div
+              id="packageDescription"
+              class="rich-content"
+              contenteditable="true"
+              data-placeholder="Package details, inclusions, special notes..."
+            ></div>
+
+          </div>
 
         </div>
 
@@ -2347,150 +2379,45 @@
 
 
       <!-- =================================================
-     ITINERARY
-================================================== -->
+           ITINERARY
+      ================================================== -->
 
-<div class="package-itinerary-section">
+      <div class="package-itinerary-section">
 
-  <div class="itinerary-header">
+        <div class="itinerary-header">
 
-    <div>
-      <h3>Day-wise Itinerary</h3>
+          <div>
 
-      <p>
-        Add your itinerary day by day.
-      </p>
-    </div>
+            <h3>
+              Day-wise Itinerary
+            </h3>
 
-    <button
-      type="button"
-      class="secondary-btn"
-      id="addItineraryDayBtn"
-    >
-      + Add Day
-    </button>
+            <p>
+              Add your itinerary day by day.
+            </p>
 
-  </div>
+          </div>
 
 
-  <!-- DAY 1 WILL APPEAR HERE AUTOMATICALLY -->
+          <button
+            type="button"
+            class="secondary-btn"
+            id="addItineraryDayBtn"
+          >
+            + Add Day
+          </button>
 
-  <div
-    id="itineraryDays"
-    class="itinerary-days"
-  >
+        </div>
 
-    <div
-      class="itinerary-day"
-      data-day="1"
-    >
 
-      <div class="itinerary-day-header">
+        <!-- DAYS ARE GENERATED BY JAVASCRIPT -->
 
-        <h4>
-          Day 1
-        </h4>
+        <div
+          id="itineraryDays"
+          class="itinerary-days"
+        ></div>
 
       </div>
-
-
-      <div class="form-grid">
-
-        <!-- DAY TITLE -->
-
-        <div class="form-group">
-
-          <label>
-            Day Title
-          </label>
-
-          <input
-            type="text"
-            class="itinerary-title"
-            placeholder="e.g. Guwahati to Shillong"
-          >
-
-        </div>
-
-
-        <!-- MEALS -->
-
-        <div class="form-group">
-
-          <label>
-            Meals
-          </label>
-
-          <select class="itinerary-meals">
-
-            <option value="None">
-              None
-            </option>
-
-            <option value="Breakfast">
-              Breakfast
-            </option>
-
-            <option value="Lunch">
-              Lunch
-            </option>
-
-            <option value="Dinner">
-              Dinner
-            </option>
-
-            <option value="Breakfast & Dinner">
-              Breakfast &amp; Dinner
-            </option>
-
-            <option value="All Meals">
-              All Meals
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <!-- ITINERARY DETAILS -->
-
-        <div class="form-group full-width">
-
-          <label>
-            Itinerary Details
-          </label>
-
-          <textarea
-            class="itinerary-description"
-            placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
-          ></textarea>
-
-        </div>
-
-
-        <!-- OVERNIGHT -->
-
-        <div class="form-group">
-
-          <label>
-            Overnight Stay
-          </label>
-
-          <input
-            type="text"
-            class="itinerary-overnight"
-            placeholder="e.g. Shillong"
-          >
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
 
 
       <!-- =================================================
