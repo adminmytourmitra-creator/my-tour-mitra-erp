@@ -12,15 +12,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import {
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
-
-import {
   db,
-  auth,
-  storage
+  auth
 } from "../firebase.js";
 
 // =====================================================
@@ -666,61 +659,18 @@ async function saveAgencyProfile(
       );
 
 
-    let existingLogoUrl =
-      "";
+    let existingLogoData =
+  "";
 
+if (
+  existingSnapshot.exists()
+) {
 
-    if (
-      existingSnapshot.exists()
-    ) {
+  existingLogoData =
+    existingSnapshot.data()
+      ?.logoData || "";
 
-      existingLogoUrl =
-        existingSnapshot.data()
-          ?.logoUrl || "";
-
-    }
-
-
-    // -------------------------------------------------
-    // UPLOAD NEW LOGO
-    // -------------------------------------------------
-
-    let logoUrl =
-      existingLogoUrl;
-
-
-    if (agencyLogoFile) {
-
-      const fileExtension =
-        getFileExtension(
-          agencyLogoFile.name
-        );
-
-
-      const logoPath =
-        `agency-profile/logo${fileExtension}`;
-
-
-      const logoRef =
-        ref(
-          storage,
-          logoPath
-        );
-
-
-      await uploadBytes(
-        logoRef,
-        agencyLogoFile
-      );
-
-
-      logoUrl =
-        await getDownloadURL(
-          logoRef
-        );
-
-    }
-
+}
 
     // -------------------------------------------------
     // PROFILE DATA
@@ -764,8 +714,8 @@ async function saveAgencyProfile(
       panNumber:
         panNumber,
 
-      logoUrl:
-        logoUrl,
+      logoData:
+  existingLogoData,
 
       pdfFooter:
         pdfFooter,
