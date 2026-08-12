@@ -32,11 +32,11 @@ export function initPackages() {
   setupPackageForm();
   setupPackageSearch();
   setupItineraryControls();
+  setupRichTextEditors();
 
   loadPackages();
 
 }
-
 // ======================================================
 // ELEMENT HELPER
 // ======================================================
@@ -205,11 +205,43 @@ function openPackageModal(packageData = null) {
       packageData.status || "Active"
     );
 
-    setValue(
+    setRichTextValue(
       "packageDescription",
       packageData.description || ""
     );
+    
+function setValue(id, value) {
 
+  const element = getElement(id);
+
+  if (!element) return;
+
+  element.value = value;
+
+}
+
+
+// ======================================================
+// SET RICH TEXT VALUE
+// ======================================================
+
+function setRichTextValue(id, value) {
+
+  const element = getElement(id);
+
+  if (!element) return;
+
+  element.innerHTML =
+    sanitizeRichText(value || "");
+
+}
+
+
+// ======================================================
+// CLOSE PACKAGE MODAL
+// ======================================================
+    
+    
     // -----------------------------------------------
     // LOAD ITINERARY
     // -----------------------------------------------
@@ -256,6 +288,13 @@ function openPackageModal(packageData = null) {
     }
 
     form.reset();
+    
+    const packageDescription =
+  getElement("packageDescription");
+
+if (packageDescription) {
+  packageDescription.innerHTML = "";
+}
 
     setValue(
       "packageDocId",
@@ -990,13 +1029,14 @@ function renderItineraryDays() {
 
 // ======================================================
 // RICH TEXT EDITOR SETUP
+// PACKAGE DESCRIPTION + ITINERARY
 // ======================================================
 
 function setupRichTextEditors() {
 
   const editors =
     document.querySelectorAll(
-      ".itinerary-rich-editor"
+      ".rich-editor"
     );
 
   editors.forEach(
@@ -1018,16 +1058,14 @@ function setupRichTextEditors() {
 
       const buttons =
         toolbar.querySelectorAll(
-          ".rich-tool-btn"
+          "button[data-command]"
         );
 
       buttons.forEach(
         (button) => {
 
           // -------------------------------------------
-          // IMPORTANT:
-          // mousedown prevents selection from being
-          // lost when toolbar button is clicked.
+          // KEEP TEXT SELECTION WHEN BUTTON IS CLICKED
           // -------------------------------------------
 
           button.addEventListener(
@@ -1039,6 +1077,10 @@ function setupRichTextEditors() {
             }
           );
 
+
+          // -------------------------------------------
+          // EXECUTE RICH TEXT COMMAND
+          // -------------------------------------------
 
           button.addEventListener(
             "click",
@@ -1054,7 +1096,9 @@ function setupRichTextEditors() {
               const value =
                 button.dataset.value || null;
 
-              if (!command) return;
+              if (!command) {
+                return;
+              }
 
               try {
 
@@ -1160,7 +1204,7 @@ async function savePackage(event) {
 
     description:
       getElement("packageDescription")
-        ?.value
+        ?.innerHTML
         .trim() || "",
 
     // -----------------------------------------------
