@@ -2042,6 +2042,10 @@
 
   <div class="modal">
 
+    <!-- =================================================
+         MODAL HEADER
+    ================================================== -->
+
     <div class="modal-header">
 
       <h2 id="packageModalTitle">
@@ -2059,6 +2063,10 @@
     </div>
 
 
+    <!-- =================================================
+         PACKAGE FORM
+    ================================================== -->
+
     <form id="packageForm">
 
       <input
@@ -2072,6 +2080,8 @@
       ================================================== -->
 
       <div class="form-grid">
+
+        <!-- PACKAGE NAME -->
 
         <div class="form-group">
 
@@ -2089,6 +2099,8 @@
         </div>
 
 
+        <!-- DESTINATION -->
+
         <div class="form-group">
 
           <label for="packageDestination">
@@ -2104,6 +2116,8 @@
 
         </div>
 
+
+        <!-- NIGHTS -->
 
         <div class="form-group">
 
@@ -2121,6 +2135,8 @@
         </div>
 
 
+        <!-- DAYS -->
+
         <div class="form-group">
 
           <label for="packageDays">
@@ -2137,6 +2153,8 @@
         </div>
 
 
+        <!-- PACKAGE TYPE -->
+
         <div class="form-group">
 
           <label for="packageType">
@@ -2145,24 +2163,64 @@
 
           <select id="packageType">
 
-            <option value="Domestic">Domestic</option>
-            <option value="Northeast">Northeast</option>
-            <option value="Honeymoon">Honeymoon</option>
-            <option value="Family">Family</option>
-            <option value="Adventure">Adventure</option>
-            <option value="Religious">Religious</option>
-            <option value="Wildlife">Wildlife</option>
-            <option value="Heritage">Heritage</option>
-            <option value="Offbeat">Offbeat</option>
-            <option value="Festival">Festival</option>
-            <option value="Student">Student</option>
-            <option value="Corporate">Corporate</option>
-            <option value="Other">Other</option>
+            <option value="Domestic">
+              Domestic
+            </option>
+
+            <option value="Northeast">
+              Northeast
+            </option>
+
+            <option value="Honeymoon">
+              Honeymoon
+            </option>
+
+            <option value="Family">
+              Family
+            </option>
+
+            <option value="Adventure">
+              Adventure
+            </option>
+
+            <option value="Religious">
+              Religious
+            </option>
+
+            <option value="Wildlife">
+              Wildlife
+            </option>
+
+            <option value="Heritage">
+              Heritage
+            </option>
+
+            <option value="Offbeat">
+              Offbeat
+            </option>
+
+            <option value="Festival">
+              Festival
+            </option>
+
+            <option value="Student">
+              Student
+            </option>
+
+            <option value="Corporate">
+              Corporate
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
 
           </select>
 
         </div>
 
+
+        <!-- PRICE -->
 
         <div class="form-group">
 
@@ -2179,6 +2237,8 @@
 
         </div>
 
+
+        <!-- MEAL PLAN -->
 
         <div class="form-group">
 
@@ -2209,6 +2269,8 @@
         </div>
 
 
+        <!-- VEHICLE -->
+
         <div class="form-group">
 
           <label for="packageVehicle">
@@ -2217,16 +2279,30 @@
 
           <select id="packageVehicle">
 
-            <option value="Cab">Cab</option>
-            <option value="Sedan">Sedan</option>
-            <option value="SUV">SUV</option>
+            <option value="Cab">
+              Cab
+            </option>
+
+            <option value="Sedan">
+              Sedan
+            </option>
+
+            <option value="SUV">
+              SUV
+            </option>
+
             <option value="Tempo Traveller">
               Tempo Traveller
             </option>
-            <option value="Bus">Bus</option>
+
+            <option value="Bus">
+              Bus
+            </option>
+
             <option value="Own Vehicle">
               Own Vehicle
             </option>
+
             <option value="Not Included">
               Not Included
             </option>
@@ -2236,6 +2312,8 @@
         </div>
 
 
+        <!-- STATUS -->
+
         <div class="form-group">
 
           <label for="packageStatus">
@@ -2244,8 +2322,13 @@
 
           <select id="packageStatus">
 
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Inactive">
+              Inactive
+            </option>
 
           </select>
 
@@ -2253,7 +2336,7 @@
 
 
         <!-- =================================================
-             DESCRIPTION / RICH TEXT
+             PACKAGE DESCRIPTION
         ================================================== -->
 
         <div class="form-group full-width">
@@ -2262,12 +2345,17 @@
             Description / Notes
           </label>
 
+
           <div
             class="rich-editor"
             data-editor="packageDescription"
           >
 
+            <!-- TOOLBAR -->
+
             <div class="rich-toolbar">
+
+              <!-- BOLD -->
 
               <button
                 type="button"
@@ -2277,6 +2365,9 @@
                 <b>B</b>
               </button>
 
+
+              <!-- ITALIC -->
+
               <button
                 type="button"
                 data-command="italic"
@@ -2284,6 +2375,9 @@
               >
                 <i>I</i>
               </button>
+
+
+              <!-- UNDERLINE -->
 
               <button
                 type="button"
@@ -2293,6 +2387,9 @@
                 <u>U</u>
               </button>
 
+
+              <!-- BULLET -->
+
               <button
                 type="button"
                 data-command="insertUnorderedList"
@@ -2300,6 +2397,9 @@
               >
                 • List
               </button>
+
+
+              <!-- NUMBER -->
 
               <button
                 type="button"
@@ -2309,14 +2409,24 @@
                 1. List
               </button>
 
+
+              <!-- RED -->
+
               <button
                 type="button"
                 data-command="foreColor"
                 data-value="#dc2626"
                 title="Red Text"
               >
-                <span style="color:#dc2626;">A</span>
+                <span
+                  style="color:#dc2626;font-weight:bold;"
+                >
+                  A
+                </span>
               </button>
+
+
+              <!-- BLUE -->
 
               <button
                 type="button"
@@ -2324,8 +2434,15 @@
                 data-value="#2563eb"
                 title="Blue Text"
               >
-                <span style="color:#2563eb;">A</span>
+                <span
+                  style="color:#2563eb;font-weight:bold;"
+                >
+                  A
+                </span>
               </button>
+
+
+              <!-- GREEN -->
 
               <button
                 type="button"
@@ -2333,8 +2450,15 @@
                 data-value="#15803d"
                 title="Green Text"
               >
-                <span style="color:#15803d;">A</span>
+                <span
+                  style="color:#15803d;font-weight:bold;"
+                >
+                  A
+                </span>
               </button>
+
+
+              <!-- BLACK -->
 
               <button
                 type="button"
@@ -2345,6 +2469,9 @@
                 A
               </button>
 
+
+              <!-- HIGHLIGHT -->
+
               <button
                 type="button"
                 data-command="hiliteColor"
@@ -2353,6 +2480,9 @@
               >
                 🖍
               </button>
+
+
+              <!-- CLEAR -->
 
               <button
                 type="button"
@@ -2363,6 +2493,9 @@
               </button>
 
             </div>
+
+
+            <!-- EDITABLE DESCRIPTION -->
 
             <div
               id="packageDescription"
@@ -2379,7 +2512,7 @@
 
 
       <!-- =================================================
-           ITINERARY
+           ITINERARY SECTION
       ================================================== -->
 
       <div class="package-itinerary-section">
@@ -2410,7 +2543,7 @@
         </div>
 
 
-        <!-- DAYS ARE GENERATED BY JAVASCRIPT -->
+        <!-- JAVASCRIPT GENERATES DAYS HERE -->
 
         <div
           id="itineraryDays"
@@ -2443,6 +2576,7 @@
         >
           Cancel
         </button>
+
 
         <button
           type="submit"
