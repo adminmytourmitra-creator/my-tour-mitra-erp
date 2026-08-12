@@ -881,29 +881,439 @@
 
 
       <!-- =================================================
-           HOTELS
-      ================================================== -->
+     HOTELS
+================================================== -->
 
-      <div
-        class="module"
-        id="hotelsPage"
-        style="display:none;"
+<div
+  class="module"
+  id="hotelsPage"
+  style="display:none;"
+>
+
+  <div class="module-card">
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <div class="module-header">
+
+      <div>
+        <h2>Hotels</h2>
+
+        <p class="module-subtitle">
+          Manage your hotel database and accommodation details.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="primary-btn"
+        id="addHotelBtn"
       >
+        + Add Hotel
+      </button>
 
-        <div class="module-card">
+    </div>
 
-          <h2>
-            Hotels
-          </h2>
 
-          <p class="module-placeholder">
-            Hotel database will be built next.
-          </p>
+    <!-- =================================================
+         SEARCH
+    ================================================== -->
 
-        </div>
+    <div class="module-toolbar">
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          id="hotelSearch"
+          placeholder="Search by hotel name, city, state, category or Hotel ID..."
+        >
 
       </div>
 
+    </div>
+
+
+    <!-- =================================================
+         HOTEL TABLE
+    ================================================== -->
+
+    <div class="table-wrapper">
+
+      <table class="data-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Hotel ID</th>
+
+            <th>Hotel Name</th>
+
+            <th>City</th>
+
+            <th>State</th>
+
+            <th>Category</th>
+
+            <th>Room Type</th>
+
+            <th>Meal Plan</th>
+
+            <th>Rate</th>
+
+            <th>Status</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="hotelsTableBody">
+
+          <tr>
+
+            <td
+              colspan="10"
+              class="empty-table"
+            >
+              Loading hotels...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =================================================
+     HOTEL MODAL
+================================================== -->
+
+<div
+  class="modal-overlay"
+  id="hotelModal"
+  style="display:none;"
+>
+
+  <div class="modal">
+
+    <!-- =================================================
+         MODAL HEADER
+    ================================================== -->
+
+    <div class="modal-header">
+
+      <h3 id="hotelModalTitle">
+        Add Hotel
+      </h3>
+
+      <button
+        type="button"
+        class="modal-close"
+        id="closeHotelModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- =================================================
+         HOTEL FORM
+    ================================================== -->
+
+    <form id="hotelForm">
+
+      <!-- Hidden Document ID -->
+
+      <input
+        type="hidden"
+        id="hotelDocId"
+      >
+
+
+      <div class="form-grid">
+
+
+        <!-- HOTEL NAME -->
+
+        <div class="form-group">
+
+          <label for="hotelName">
+            Hotel Name *
+          </label>
+
+          <input
+            type="text"
+            id="hotelName"
+            placeholder="Enter hotel name"
+            required
+          >
+
+        </div>
+
+
+        <!-- CITY -->
+
+        <div class="form-group">
+
+          <label for="hotelCity">
+            City *
+          </label>
+
+          <input
+            type="text"
+            id="hotelCity"
+            placeholder="Enter city"
+            required
+          >
+
+        </div>
+
+
+        <!-- STATE -->
+
+        <div class="form-group">
+
+          <label for="hotelState">
+            State *
+          </label>
+
+          <input
+            type="text"
+            id="hotelState"
+            placeholder="Enter state"
+            required
+          >
+
+        </div>
+
+
+        <!-- CATEGORY -->
+
+        <div class="form-group">
+
+          <label for="hotelCategory">
+            Category
+          </label>
+
+          <select id="hotelCategory">
+
+            <option value="Standard">
+              Standard
+            </option>
+
+            <option value="Deluxe">
+              Deluxe
+            </option>
+
+            <option value="Premium">
+              Premium
+            </option>
+
+            <option value="Luxury">
+              Luxury
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ROOM TYPE -->
+
+        <div class="form-group">
+
+          <label for="hotelRoomType">
+            Room Type
+          </label>
+
+          <select id="hotelRoomType">
+
+            <option value="Standard">
+              Standard
+            </option>
+
+            <option value="Deluxe">
+              Deluxe
+            </option>
+
+            <option value="Super Deluxe">
+              Super Deluxe
+            </option>
+
+            <option value="Suite">
+              Suite
+            </option>
+
+            <option value="Family Room">
+              Family Room
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- MEAL PLAN -->
+
+        <div class="form-group">
+
+          <label for="hotelMealPlan">
+            Meal Plan
+          </label>
+
+          <select id="hotelMealPlan">
+
+            <option value="EP">
+              EP - Room Only
+            </option>
+
+            <option value="CP">
+              CP - Breakfast
+            </option>
+
+            <option value="MAP">
+              MAP - Breakfast + Dinner
+            </option>
+
+            <option value="AP">
+              AP - Breakfast + Lunch + Dinner
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- RATE -->
+
+        <div class="form-group">
+
+          <label for="hotelRate">
+            Reference Rate (₹)
+          </label>
+
+          <input
+            type="number"
+            id="hotelRate"
+            min="0"
+            step="0.01"
+            placeholder="Optional"
+          >
+
+        </div>
+
+
+        <!-- CONTACT -->
+
+        <div class="form-group">
+
+          <label for="hotelContact">
+            Contact
+          </label>
+
+          <input
+            type="text"
+            id="hotelContact"
+            placeholder="Phone / WhatsApp"
+          >
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label for="hotelStatus">
+            Status
+          </label>
+
+          <select id="hotelStatus">
+
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Inactive">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        <div class="form-group form-group-full">
+
+          <label for="hotelNotes">
+            Internal Notes
+          </label>
+
+          <textarea
+            id="hotelNotes"
+            rows="4"
+            placeholder="Add internal notes about this hotel..."
+          ></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- =================================================
+           FORM MESSAGE
+      ================================================== -->
+
+      <div
+        id="hotelFormMessage"
+        class="form-message"
+      ></div>
+
+
+      <!-- =================================================
+           MODAL FOOTER
+      ================================================== -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="cancelHotelBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Hotel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
 
 
       <!-- =================================================
