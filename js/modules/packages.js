@@ -614,25 +614,162 @@ function renderItineraryDays() {
               </div>
 
 
-              <!-- DETAILS -->
+              <!-- =================================================
+     ITINERARY DETAILS - RICH TEXT EDITOR
+================================================== -->
 
-              <div
-                class="form-group full-width"
-              >
+<div
+  class="form-group full-width"
+>
 
-                <label>
-                  Itinerary Details
-                </label>
+  <label>
+    Itinerary Details
+  </label>
 
-                <textarea
-                  class="itinerary-description"
-                  placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
-                >${escapeHtml(
-                  dayData.description
-                )}</textarea>
 
-              </div>
+  <div class="rich-editor itinerary-rich-editor">
 
+
+    <!-- TOOLBAR -->
+
+    <div class="rich-toolbar">
+
+      <button
+        type="button"
+        data-command="bold"
+        title="Bold"
+      >
+        <b>B</b>
+      </button>
+
+
+      <button
+        type="button"
+        data-command="italic"
+        title="Italic"
+      >
+        <i>I</i>
+      </button>
+
+
+      <button
+        type="button"
+        data-command="underline"
+        title="Underline"
+      >
+        <u>U</u>
+      </button>
+
+
+      <button
+        type="button"
+        data-command="insertUnorderedList"
+        title="Bullet List"
+      >
+        • List
+      </button>
+
+
+      <button
+        type="button"
+        data-command="insertOrderedList"
+        title="Numbered List"
+      >
+        1. List
+      </button>
+
+
+      <!-- RED -->
+
+      <button
+        type="button"
+        data-command="foreColor"
+        data-value="#dc2626"
+        title="Red Text"
+      >
+        <span style="color:#dc2626;">
+          A
+        </span>
+      </button>
+
+
+      <!-- BLUE -->
+
+      <button
+        type="button"
+        data-command="foreColor"
+        data-value="#2563eb"
+        title="Blue Text"
+      >
+        <span style="color:#2563eb;">
+          A
+        </span>
+      </button>
+
+
+      <!-- GREEN -->
+
+      <button
+        type="button"
+        data-command="foreColor"
+        data-value="#15803d"
+        title="Green Text"
+      >
+        <span style="color:#15803d;">
+          A
+        </span>
+      </button>
+
+
+      <!-- BLACK -->
+
+      <button
+        type="button"
+        data-command="foreColor"
+        data-value="#111827"
+        title="Black Text"
+      >
+        A
+      </button>
+
+
+      <!-- HIGHLIGHT -->
+
+      <button
+        type="button"
+        data-command="hiliteColor"
+        data-value="#fef08a"
+        title="Highlight"
+      >
+        🖍
+      </button>
+
+
+      <!-- CLEAR -->
+
+      <button
+        type="button"
+        data-command="removeFormat"
+        title="Clear Formatting"
+      >
+        Clear
+      </button>
+
+    </div>
+
+
+    <!-- EDITABLE CONTENT -->
+
+    <div
+      class="rich-content itinerary-description"
+      contenteditable="true"
+      data-placeholder="Describe the day's activities, sightseeing, transfers, places to visit etc."
+    >${dayData.description || ""}</div>
+
+
+  </div>
+
+</div>
 
               <!-- OVERNIGHT -->
 
