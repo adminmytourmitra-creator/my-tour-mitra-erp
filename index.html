@@ -1773,29 +1773,568 @@
 
 
       <!-- =================================================
-           B2B AGENCIES
-      ================================================== -->
+     B2B AGENCIES
+================================================== -->
 
-      <div
-        class="module"
-        id="agenciesPage"
-        style="display:none;"
-      >
+<div
+  class="module"
+  id="agenciesPage"
+  style="display:none;"
+>
 
-        <div class="module-card">
+  <div class="module-card">
 
-          <h2>
-            B2B Agencies
-          </h2>
+    <!-- =================================================
+         HEADER
+    ================================================== -->
 
-          <p class="module-placeholder">
-            B2B agency database will be built next.
-          </p>
+    <div
+      class="module-header"
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:15px;
+        flex-wrap:wrap;
+      "
+    >
 
-        </div>
+      <div>
+
+        <h2>
+          B2B Agencies
+        </h2>
+
+        <p class="module-description">
+          Manage your B2B travel agency and partner database.
+        </p>
 
       </div>
 
+
+      <button
+        type="button"
+        id="addAgencyBtn"
+        class="primary-btn"
+      >
+        + Add Agency
+      </button>
+
+    </div>
+
+
+    <!-- =================================================
+         SEARCH
+    ================================================== -->
+
+    <div
+      class="module-toolbar"
+      style="
+        margin-top:20px;
+        margin-bottom:20px;
+      "
+    >
+
+      <input
+        type="text"
+        id="agencySearch"
+        class="search-input"
+        placeholder="Search by agency name, contact person, mobile, email, city or state..."
+      >
+
+    </div>
+
+
+    <!-- =================================================
+         AGENCY TABLE
+    ================================================== -->
+
+    <div
+      class="table-container"
+      style="
+        width:100%;
+        overflow-x:auto;
+      "
+    >
+
+      <table
+        class="data-table"
+        id="agenciesTable"
+      >
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Agency ID
+            </th>
+
+            <th>
+              Agency Name
+            </th>
+
+            <th>
+              Contact Person
+            </th>
+
+            <th>
+              Mobile
+            </th>
+
+            <th>
+              WhatsApp
+            </th>
+
+            <th>
+              Email
+            </th>
+
+            <th>
+              City
+            </th>
+
+            <th>
+              State
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="agenciesTableBody"
+        >
+
+          <tr>
+
+            <td
+              colspan="10"
+              class="empty-table"
+            >
+              Loading agencies...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- =================================================
+       ADD / EDIT AGENCY MODAL
+  ================================================== -->
+
+  <div
+    id="agencyModal"
+    class="modal-overlay"
+    style="display:none;"
+  >
+
+    <div
+      class="modal-card"
+    >
+
+      <!-- =================================================
+           MODAL HEADER
+      ================================================== -->
+
+      <div
+        class="modal-header"
+      >
+
+        <h3
+          id="agencyModalTitle"
+        >
+          Add B2B Agency
+        </h3>
+
+
+        <button
+          type="button"
+          id="closeAgencyModal"
+          class="modal-close-btn"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           FORM MESSAGE
+      ================================================== -->
+
+      <div
+        id="agencyFormMessage"
+        class="form-message"
+      ></div>
+
+
+      <!-- =================================================
+           AGENCY FORM
+      ================================================== -->
+
+      <form
+        id="agencyForm"
+      >
+
+        <!-- Hidden document ID -->
+
+        <input
+          type="hidden"
+          id="agencyDocId"
+        >
+
+
+        <!-- =================================================
+             BASIC DETAILS
+        ================================================== -->
+
+        <div
+          class="form-section"
+        >
+
+          <h4>
+            Agency Details
+          </h4>
+
+
+          <div
+            class="form-grid"
+          >
+
+            <!-- Agency Name -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyName"
+              >
+                Agency Name
+                <span>*</span>
+              </label>
+
+              <input
+                type="text"
+                id="agencyName"
+                placeholder="Enter agency name"
+                required
+              >
+
+            </div>
+
+
+            <!-- Contact Person -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyContactPerson"
+              >
+                Contact Person
+              </label>
+
+              <input
+                type="text"
+                id="agencyContactPerson"
+                placeholder="Enter contact person name"
+              >
+
+            </div>
+
+
+            <!-- Mobile -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyMobile"
+              >
+                Mobile
+              </label>
+
+              <input
+                type="tel"
+                id="agencyMobile"
+                placeholder="Enter mobile number"
+              >
+
+            </div>
+
+
+            <!-- WhatsApp -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyWhatsapp"
+              >
+                WhatsApp
+              </label>
+
+              <input
+                type="tel"
+                id="agencyWhatsapp"
+                placeholder="Enter WhatsApp number"
+              >
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyEmail"
+              >
+                Email
+              </label>
+
+              <input
+                type="email"
+                id="agencyEmail"
+                placeholder="Enter email address"
+              >
+
+            </div>
+
+
+            <!-- Website -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyWebsite"
+              >
+                Website
+              </label>
+
+              <input
+                type="url"
+                id="agencyWebsite"
+                placeholder="https://example.com"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LOCATION
+        ================================================== -->
+
+        <div
+          class="form-section"
+        >
+
+          <h4>
+            Location
+          </h4>
+
+
+          <div
+            class="form-grid"
+          >
+
+            <!-- City -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyCity"
+              >
+                City
+              </label>
+
+              <input
+                type="text"
+                id="agencyCity"
+                placeholder="Enter city"
+              >
+
+            </div>
+
+
+            <!-- State -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyState"
+              >
+                State
+              </label>
+
+              <input
+                type="text"
+                id="agencyState"
+                placeholder="Enter state"
+              >
+
+            </div>
+
+
+            <!-- Country -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyCountry"
+              >
+                Country
+              </label>
+
+              <input
+                type="text"
+                id="agencyCountry"
+                value="India"
+                placeholder="Enter country"
+              >
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div
+              class="form-group"
+            >
+
+              <label
+                for="agencyStatus"
+              >
+                Status
+              </label>
+
+              <select
+                id="agencyStatus"
+              >
+
+                <option
+                  value="Active"
+                >
+                  Active
+                </option>
+
+                <option
+                  value="Inactive"
+                >
+                  Inactive
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             NOTES
+        ================================================== -->
+
+        <div
+          class="form-section"
+        >
+
+          <h4>
+            Additional Information
+          </h4>
+
+
+          <div
+            class="form-group"
+          >
+
+            <label
+              for="agencyNotes"
+            >
+              Internal Notes
+            </label>
+
+            <textarea
+              id="agencyNotes"
+              rows="4"
+              placeholder="Enter internal notes..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FORM ACTIONS
+        ================================================== -->
+
+        <div
+          class="modal-footer"
+        >
+
+          <button
+            type="button"
+            id="cancelAgencyBtn"
+            class="secondary-btn"
+          >
+            Cancel
+          </button>
+
+
+          <button
+            type="submit"
+            class="primary-btn"
+          >
+            Save Agency
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
 
 
       <!-- =================================================
