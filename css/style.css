@@ -612,3 +612,200 @@ tbody tr:hover {
   }
 
 }
+
+/* =====================================================
+   SETTINGS MODULE
+===================================================== */
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.settings-header h2 {
+  font-size: 26px;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.settings-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.settings-section {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.settings-section-header {
+  margin-bottom: 24px;
+}
+
+.settings-section-header h3 {
+  font-size: 20px;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.settings-section-header p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =====================================================
+   AGENCY LOGO
+===================================================== */
+
+.agency-logo-section {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.agency-logo-preview-area {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.agency-logo-preview-container {
+  width: 120px;
+  height: 90px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.agency-logo-preview {
+  max-width: 105px;
+  max-height: 75px;
+  object-fit: contain;
+}
+
+.agency-logo-info {
+  flex: 1;
+}
+
+.agency-logo-info h4 {
+  font-size: 16px;
+  color: #111827;
+  margin-bottom: 5px;
+}
+
+.agency-logo-info p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.small-note {
+  font-size: 12px !important;
+  color: #9ca3af !important;
+}
+
+.logo-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.logo-buttons .secondary-btn,
+.logo-buttons .danger-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* =====================================================
+   SETTINGS FORM
+===================================================== */
+
+#agencyProfileForm .form-grid {
+  margin-top: 10px;
+}
+
+#agencyProfileForm .form-group {
+  margin-bottom: 4px;
+}
+
+#agencyProfileForm label {
+  color: #374151;
+}
+
+#agencyProfileForm input,
+#agencyProfileForm textarea {
+  background: #ffffff;
+}
+
+#agencyProfileForm small {
+  display: block;
+  margin-top: 7px;
+  color: #9ca3af;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* =====================================================
+   SETTINGS MESSAGE
+===================================================== */
+
+#settingsFormMessage {
+  padding: 8px 0;
+  font-weight: 500;
+}
+
+/* =====================================================
+   SETTINGS ACTIONS
+===================================================== */
+
+#saveAgencyProfileBtn {
+  min-width: 170px;
+}
+
+#saveAgencyProfileBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   SETTINGS MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .settings-section {
+    padding: 18px;
+  }
+
+  .agency-logo-preview-area {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .agency-logo-preview-container {
+    width: 140px;
+    height: 100px;
+  }
+
+  .settings-header {
+    margin-bottom: 20px;
+  }
+
+}
