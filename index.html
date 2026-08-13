@@ -1936,10 +1936,10 @@
 
 
   <!-- =================================================
-       ADD / EDIT AGENCY MODAL
-  ================================================== -->
+     ADD / EDIT AGENCY MODAL
+================================================== -->
 
-  <div
+<div
   id="agencyModal"
   class="modal-overlay"
   style="
@@ -1948,56 +1948,96 @@
     inset:0;
     z-index:9999;
     background:rgba(0,0,0,0.55);
-    overflow-y:auto;
+    align-items:center;
+    justify-content:center;
     padding:20px;
     box-sizing:border-box;
-    align-items:flex-start;
-    justify-content:center;
-  "
->
-    <div
-  class="modal-card"
-  style="
-    width:100%;
-    max-width:850px;
-    max-height:calc(100vh - 40px);
     overflow-y:auto;
-    overflow-x:hidden;
-    box-sizing:border-box;
-    margin:0 auto;
   "
 >
-      <!-- =================================================
-           MODAL HEADER
-      ================================================== -->
 
-      <div
-  class="modal-header"
-  style="
-    position:sticky;
-    top:0;
-    z-index:10;
-    background:#fff;
-    padding-bottom:15px;
-  "
->
-        <h3
-          id="agencyModalTitle"
-        >
-          Add B2B Agency
-        </h3>
+  <div
+    class="modal-card"
+    style="
+      position:relative;
+      width:100%;
+      max-width:850px;
+      max-height:90vh;
+      background:#ffffff;
+      border-radius:16px;
+      box-shadow:0 20px 60px rgba(0,0,0,0.25);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-sizing:border-box;
+    "
+  >
+
+    <!-- =================================================
+         MODAL HEADER
+    ================================================== -->
+
+    <div
+      class="modal-header"
+      style="
+        flex-shrink:0;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:22px 28px;
+        background:#ffffff;
+        border-bottom:1px solid #e5e7eb;
+      "
+    >
+
+      <h3
+        id="agencyModalTitle"
+        style="
+          margin:0;
+          font-size:24px;
+          font-weight:700;
+        "
+      >
+        Add B2B Agency
+      </h3>
 
 
-        <button
-          type="button"
-          id="closeAgencyModal"
-          class="modal-close-btn"
-        >
-          ×
-        </button>
+      <button
+        type="button"
+        id="closeAgencyModal"
+        class="modal-close-btn"
+        style="
+          width:34px;
+          height:34px;
+          border:none;
+          background:#f3f4f6;
+          border-radius:8px;
+          font-size:24px;
+          line-height:1;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        "
+      >
+        ×
+      </button>
 
-      </div>
+    </div>
 
+
+    <!-- =================================================
+         SCROLLABLE MODAL BODY
+    ================================================== -->
+
+    <div
+      style="
+        flex:1;
+        overflow-y:auto;
+        padding:24px 28px;
+        box-sizing:border-box;
+      "
+    >
 
       <!-- =================================================
            FORM MESSAGE
@@ -2006,6 +2046,9 @@
       <div
         id="agencyFormMessage"
         class="form-message"
+        style="
+          margin-bottom:10px;
+        "
       ></div>
 
 
@@ -2026,7 +2069,7 @@
 
 
         <!-- =================================================
-             BASIC DETAILS
+             AGENCY DETAILS
         ================================================== -->
 
         <div
@@ -2271,15 +2314,11 @@
                 id="agencyStatus"
               >
 
-                <option
-                  value="Active"
-                >
+                <option value="Active">
                   Active
                 </option>
 
-                <option
-                  value="Inactive"
-                >
+                <option value="Inactive">
                   Inactive
                 </option>
 
@@ -2293,7 +2332,7 @@
 
 
         <!-- =================================================
-             NOTES
+             ADDITIONAL INFORMATION
         ================================================== -->
 
         <div
@@ -2325,41 +2364,45 @@
 
         </div>
 
-
-        <!-- =================================================
-             FORM ACTIONS
-        ================================================== -->
-
-        <div
-  class="modal-footer"
-  style="
-    position:sticky;
-    bottom:0;
-    z-index:10;
-    background:#fff;
-    padding-top:15px;
-    border-top:1px solid #e5e7eb;
-  "
->
-          <button
-            type="button"
-            id="cancelAgencyBtn"
-            class="secondary-btn"
-          >
-            Cancel
-          </button>
-
-
-          <button
-            type="submit"
-            class="primary-btn"
-          >
-            Save Agency
-          </button>
-
-        </div>
-
       </form>
+
+    </div>
+
+
+    <!-- =================================================
+         MODAL FOOTER
+    ================================================== -->
+
+    <div
+      class="modal-footer"
+      style="
+        flex-shrink:0;
+        display:flex;
+        justify-content:flex-end;
+        align-items:center;
+        gap:10px;
+        padding:16px 28px;
+        background:#ffffff;
+        border-top:1px solid #e5e7eb;
+      "
+    >
+
+      <button
+        type="button"
+        id="cancelAgencyBtn"
+        class="secondary-btn"
+      >
+        Cancel
+      </button>
+
+
+      <button
+        type="submit"
+        form="agencyForm"
+        class="primary-btn"
+      >
+        Save Agency
+      </button>
 
     </div>
 
