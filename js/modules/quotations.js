@@ -13,19 +13,10 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-import {
-  db,
-  auth
-} from "../firebase.js";
+import { db, auth } from "../firebase.js";
 
-
-// ======================================================
-// STATE
-// ======================================================
-
-let allQuotations = [];
-
-let quotationInitialized = false;
+let quotations = [];
+let initialized = false;
 
 
 // ======================================================
@@ -34,23 +25,14 @@ let quotationInitialized = false;
 
 export function initQuotations() {
 
-  if (quotationInitialized) {
-    return;
-  }
+  if (initialized) return;
 
-  quotationInitialized = true;
+  initialized = true;
 
-  console.log("Quotations module initializing...");
+  console.log("Quotations module starting...");
 
-  setupQuotationButtons();
-
-  setupQuotationForm();
-
-  setupQuotationSearch();
-
+  bindEvents();
   loadQuotations();
-
-  console.log("Quotations module initialized successfully.");
 
 }
 
@@ -59,78 +41,87 @@ export function initQuotations() {
 // ELEMENT
 // ======================================================
 
-function el(id) {
-
+function $(id) {
   return document.getElementById(id);
-
 }
 
 
 // ======================================================
-// BUTTONS
+// EVENTS
 // ======================================================
 
-function setupQuotationButtons() {
+function bindEvents() {
 
-  const addBtn = el("addQuotationBtn");
-
-  const closeBtn = el("closeQuotationModal");
-
-  const cancelBtn = el("cancelQuotationBtn");
-
+  const addBtn = $("addQuotationBtn");
+  const form = $("quotationForm");
+  const closeBtn = $("closeQuotationModal");
+  const cancelBtn = $("cancelQuotationBtn");
+  const search = $("quotationSearch");
+  const modal = $("quotationModal");
 
   if (addBtn) {
-
-    addBtn.addEventListener(
-      "click",
-      () => {
-
-        openQuotationModal();
-
-      }
-    );
-
+    addBtn.addEventListener("click", () => {
+      openQuotation();
+    });
   }
 
+  if (form) {
+    form.addEventListener("submit", saveQuotation);
+  }
 
   if (closeBtn) {
-
-    closeBtn.addEventListener(
-      "click",
-      closeQuotationModal
-    );
-
+    closeBtn.addEventListener("click", closeQuotation);
   }
-
 
   if (cancelBtn) {
-
-    cancelBtn.addEventListener(
-      "click",
-      closeQuotationModal
-    );
-
+    cancelBtn.addEventListener("click", closeQuotation);
   }
-
-
-  const modal = el("quotationModal");
 
   if (modal) {
+    modal.addEventListener("click", (e) => {
 
-    modal.addEventListener(
-      "click",
-      (event) => {
-
-        if (
-          event.target === modal
-        ) {
-
-          closeQuotationModal();
-
-        }
-
+      if (e.target === modal) {
+        closeQuotation();
       }
-    );
+
+    });
+  }
+
+  if (search) {
+
+    search.addEventListener("input", () => {
+
+      const value =
+        search.value.toLowerCase().trim();
+
+      if (!value) {
+        renderQuotations(quotations);
+        return;
+      }
+
+      const filtered =
+        quotations.filter(q => {
+
+          const text = [
+
+            q.quotationId,
+            q.customer,
+            q.enquiry,
+            q.packageName,
+            q.destination,
+            q.status
+
+          ]
+            .map(v => String(v || "").toLowerCase())
+            .join(" ");
+
+          return text.includes(value);
+
+        });
+
+      renderQuotations(filtered);
+
+    });
 
   }
 
@@ -138,196 +129,122 @@ function setupQuotationButtons() {
 
 
 // ======================================================
-// FORM
+// OPEN
 // ======================================================
 
-function setupQuotationForm() {
+function openQuotation(data = null) {
 
-  const form = el("quotationForm");
-
-  if (!form) {
-
-    console.warn(
-      "quotationForm not found."
-    );
-
-    return;
-
-  }
-
-
-  form.addEventListener(
-    "submit",
-    saveQuotation
-  );
-
-}
-
-
-// ======================================================
-// OPEN MODAL
-// ======================================================
-
-function openQuotationModal(
-  quotation = null
-) {
-
-  const modal = el("quotationModal");
-
-  const form = el("quotationForm");
-
-  const title = el("quotationModalTitle");
-
-  const message = el("quotationFormMessage");
-
+  const modal = $("quotationModal");
+  const form = $("quotationForm");
+  const title = $("quotationModalTitle");
+  const message = $("quotationFormMessage");
 
   if (!modal || !form) {
 
     console.error(
-      "Quotation modal/form not found."
+      "Quotation form/modal not found."
     );
 
     return;
-
   }
-
-
-  if (message) {
-
-    message.textContent = "";
-
-    message.style.color = "";
-
-  }
-
 
   form.reset();
 
+  if (message) {
+    message.textContent = "";
+  }
 
-  if (quotation) {
+  if (data) {
 
-    if (title) {
+    title.textContent = "Edit Quotation";
 
-      title.textContent =
-        "Edit Quotation";
-
-    }
-
-
-    setValue(
-      "quotationDocId",
-      quotation.id
-    );
+    setValue("quotationDocId", data.id);
 
     setValue(
       "quotationCustomer",
-      quotation.customer
+      data.customer
     );
 
     setValue(
       "quotationEnquiry",
-      quotation.enquiry
+      data.enquiry
     );
 
     setValue(
       "quotationPackage",
-      quotation.packageName
+      data.packageName
     );
 
     setValue(
       "quotationDestination",
-      quotation.destination
+      data.destination
     );
 
     setValue(
       "quotationStartDate",
-      quotation.startDate
+      data.startDate
     );
 
     setValue(
       "quotationEndDate",
-      quotation.endDate
+      data.endDate
     );
 
     setValue(
       "quotationAdults",
-      quotation.adults ?? 2
+      data.adults ?? 2
     );
 
     setValue(
       "quotationChildren",
-      quotation.children ?? 0
+      data.children ?? 0
     );
 
     setValue(
       "quotationRooms",
-      quotation.rooms ?? 1
+      data.rooms ?? 1
     );
 
     setValue(
       "quotationValidUntil",
-      quotation.validUntil
+      data.validUntil
     );
 
     setValue(
       "quotationTotal",
-      quotation.total ?? 0
+      data.total ?? ""
     );
 
     setValue(
       "quotationPerPerson",
-      quotation.perPerson ?? ""
+      data.perPerson ?? ""
     );
 
     setValue(
       "quotationStatus",
-      quotation.status || "Draft"
+      data.status || "Draft"
     );
 
     setValue(
       "quotationNotes",
-      quotation.notes
+      data.notes
     );
+
+  } else {
+
+    title.textContent = "Add Quotation";
+
+    setValue("quotationDocId", "");
+
+    setValue("quotationAdults", 2);
+
+    setValue("quotationChildren", 0);
+
+    setValue("quotationRooms", 1);
+
+    setValue("quotationStatus", "Draft");
 
   }
-
-  else {
-
-    if (title) {
-
-      title.textContent =
-        "Add Quotation";
-
-    }
-
-
-    setValue(
-      "quotationDocId",
-      ""
-    );
-
-    setValue(
-      "quotationAdults",
-      2
-    );
-
-    setValue(
-      "quotationChildren",
-      0
-    );
-
-    setValue(
-      "quotationRooms",
-      1
-    );
-
-    setValue(
-      "quotationStatus",
-      "Draft"
-    );
-
-  }
-
 
   modal.style.display = "flex";
 
@@ -335,65 +252,27 @@ function openQuotationModal(
 
 
 // ======================================================
-// CLOSE MODAL
+// CLOSE
 // ======================================================
 
-function closeQuotationModal() {
+function closeQuotation() {
 
-  const modal = el("quotationModal");
-
-  const form = el("quotationForm");
-
+  const modal = $("quotationModal");
+  const form = $("quotationForm");
 
   if (modal) {
-
     modal.style.display = "none";
-
   }
-
 
   if (form) {
-
     form.reset();
-
   }
 
-
-  setValue(
-    "quotationDocId",
-    ""
-  );
-
-  setValue(
-    "quotationAdults",
-    2
-  );
-
-  setValue(
-    "quotationChildren",
-    0
-  );
-
-  setValue(
-    "quotationRooms",
-    1
-  );
-
-  setValue(
-    "quotationStatus",
-    "Draft"
-  );
-
-
-  const message = el(
-    "quotationFormMessage"
-  );
-
-  if (message) {
-
-    message.textContent = "";
-
-  }
+  setValue("quotationDocId", "");
+  setValue("quotationAdults", 2);
+  setValue("quotationChildren", 0);
+  setValue("quotationRooms", 1);
+  setValue("quotationStatus", "Draft");
 
 }
 
@@ -402,10 +281,9 @@ function closeQuotationModal() {
 // SAVE
 // ======================================================
 
-async function saveQuotation(event) {
+async function saveQuotation(e) {
 
-  event.preventDefault();
-
+  e.preventDefault();
 
   const customer =
     getValue("quotationCustomer");
@@ -414,61 +292,51 @@ async function saveQuotation(event) {
     getValue("quotationPackage");
 
   const total =
-    Number(
-      getValue("quotationTotal") || 0
-    );
-
+    Number(getValue("quotationTotal") || 0);
 
   if (!customer) {
 
-    showQuotationMessage(
+    message(
       "Customer name is required.",
-      "#dc2626"
+      "error"
     );
 
     return;
-
   }
-
 
   if (!packageName) {
 
-    showQuotationMessage(
+    message(
       "Package / Tour Name is required.",
-      "#dc2626"
+      "error"
     );
 
     return;
-
   }
-
 
   if (total <= 0) {
 
-    showQuotationMessage(
+    message(
       "Please enter a valid quotation amount.",
-      "#dc2626"
+      "error"
     );
 
     return;
-
   }
 
-
-  showQuotationMessage(
+  message(
     "Saving quotation...",
-    "#2563eb"
+    "info"
   );
 
+  const data = {
 
-  const quotationData = {
-
-    customer: customer,
+    customer,
 
     enquiry:
       getValue("quotationEnquiry"),
 
-    packageName: packageName,
+    packageName,
 
     destination:
       getValue("quotationDestination"),
@@ -497,7 +365,7 @@ async function saveQuotation(event) {
     validUntil:
       getValue("quotationValidUntil"),
 
-    total: total,
+    total,
 
     perPerson:
       Number(
@@ -529,21 +397,17 @@ async function saveQuotation(event) {
     if (existingId) {
 
       await updateDoc(
-
         doc(
           db,
           "quotations",
           existingId
         ),
-
-        quotationData
-
+        data
       );
 
-
-      showQuotationMessage(
+      message(
         "Quotation updated successfully.",
-        "#15803d"
+        "success"
       );
 
     }
@@ -555,51 +419,39 @@ async function saveQuotation(event) {
 
     else {
 
-      quotationData.createdAt =
+      data.createdAt =
         serverTimestamp();
 
-
-      quotationData.createdBy =
+      data.createdBy =
         auth.currentUser
           ? auth.currentUser.email
           : "";
 
-
-      const quotationRef =
+      const ref =
         await addDoc(
-
           collection(
             db,
             "quotations"
           ),
-
-          quotationData
-
+          data
         );
-
 
       const quotationId =
         "QT-" +
-        quotationRef.id
+        ref.id
           .substring(0, 6)
           .toUpperCase();
 
-
       await updateDoc(
-
-        quotationRef,
-
+        ref,
         {
-          quotationId:
-            quotationId
+          quotationId
         }
-
       );
 
-
-      showQuotationMessage(
+      message(
         `Quotation ${quotationId} saved successfully.`,
-        "#15803d"
+        "success"
       );
 
     }
@@ -608,29 +460,21 @@ async function saveQuotation(event) {
     await loadQuotations();
 
 
-    setTimeout(
-      () => {
-
-        closeQuotationModal();
-
-      },
-      700
-    );
+    setTimeout(() => {
+      closeQuotation();
+    }, 700);
 
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
     console.error(
       "Quotation save error:",
       error
     );
 
-
-    showQuotationMessage(
+    message(
       "Could not save quotation. Check Firestore permissions.",
-      "#dc2626"
+      "error"
     );
 
   }
@@ -644,35 +488,24 @@ async function saveQuotation(event) {
 
 async function loadQuotations() {
 
-  const table =
-    el("quotationsTableBody");
+  const tbody =
+    $("quotationsTableBody");
 
+  if (!tbody) {
 
-  if (!table) {
-
-    console.warn(
+    console.error(
       "quotationsTableBody not found."
     );
 
     return;
-
   }
 
-
-  table.innerHTML = `
-
+  tbody.innerHTML = `
     <tr>
-
-      <td
-        colspan="8"
-        class="empty-table"
-      >
+      <td colspan="8" class="empty-table">
         Loading quotations...
-
       </td>
-
     </tr>
-
   `;
 
 
@@ -680,60 +513,40 @@ async function loadQuotations() {
 
     const snapshot =
       await getDocs(
-
         collection(
           db,
           "quotations"
         )
-
       );
 
-
-    allQuotations =
+    quotations =
       snapshot.docs.map(
-        (item) => ({
-
-          id: item.id,
-
-          ...item.data()
-
+        d => ({
+          id: d.id,
+          ...d.data()
         })
       );
 
-
     renderQuotations(
-      allQuotations
+      quotations
     );
 
-  }
 
-  catch (error) {
+  } catch (error) {
 
     console.error(
       "Quotation loading error:",
       error
     );
 
-
-    table.innerHTML = `
-
+    tbody.innerHTML = `
       <tr>
-
-        <td
-          colspan="8"
-          class="empty-table"
-        >
-
+        <td colspan="8" class="empty-table">
           Unable to load quotations.
-
           <br>
-
-          Check Firestore rules.
-
+          Check Firestore permissions.
         </td>
-
       </tr>
-
     `;
 
   }
@@ -745,236 +558,173 @@ async function loadQuotations() {
 // RENDER
 // ======================================================
 
-function renderQuotations(
-  quotations
-) {
+function renderQuotations(list) {
 
-  const table =
-    el("quotationsTableBody");
+  const tbody =
+    $("quotationsTableBody");
 
-
-  if (!table) return;
+  if (!tbody) return;
 
 
-  if (!quotations.length) {
+  if (!list.length) {
 
-    table.innerHTML = `
-
+    tbody.innerHTML = `
       <tr>
-
-        <td
-          colspan="8"
-          class="empty-table"
-        >
-
+        <td colspan="8" class="empty-table">
           No quotations found.
-
         </td>
-
       </tr>
-
     `;
 
     return;
-
   }
 
 
-  table.innerHTML =
-    quotations
-      .map(
-        (quotation) => {
+  tbody.innerHTML =
+    list.map(q => {
 
-          const pax =
-            Number(
-              quotation.adults || 0
-            ) +
-            Number(
-              quotation.children || 0
-            );
+      const pax =
+        Number(q.adults || 0) +
+        Number(q.children || 0);
 
+      return `
 
-          return `
+        <tr>
 
-            <tr>
+          <td>
+            <strong>
+              ${escapeHtml(
+                q.quotationId || "-"
+              )}
+            </strong>
+          </td>
 
-              <td>
+          <td>
+            ${escapeHtml(
+              q.customer || "-"
+            )}
+          </td>
 
-                <strong>
-                  ${escapeHtml(
-                    quotation.quotationId || "-"
-                  )}
-                </strong>
+          <td>
 
-              </td>
+            <strong>
+              ${escapeHtml(
+                q.packageName || "-"
+              )}
+            </strong>
 
+            ${
+              q.destination
+                ? `
+                  <br>
+                  <small>
+                    ${escapeHtml(
+                      q.destination
+                    )}
+                  </small>
+                `
+                : ""
+            }
 
-              <td>
+          </td>
 
-                ${escapeHtml(
-                  quotation.customer || "-"
-                )}
+          <td>
+            ${escapeHtml(
+              q.startDate || "-"
+            )}
+          </td>
 
-              </td>
+          <td>
+            ${pax}
+          </td>
 
+          <td>
+            ₹${Number(
+              q.total || 0
+            ).toLocaleString("en-IN")}
+          </td>
 
-              <td>
+          <td>
 
-                <strong>
-                  ${escapeHtml(
-                    quotation.packageName || "-"
-                  )}
-                </strong>
+            <span class="status-badge">
+              ${escapeHtml(
+                q.status || "Draft"
+              )}
+            </span>
 
-                ${
-                  quotation.destination
-                    ? `
-                      <br>
-                      <small>
-                        ${escapeHtml(
-                          quotation.destination
-                        )}
-                      </small>
-                    `
-                    : ""
-                }
+          </td>
 
-              </td>
+          <td>
 
+            <button
+              type="button"
+              class="edit-btn"
+              data-edit="${q.id}"
+            >
+              Edit
+            </button>
 
-              <td>
+            <button
+              type="button"
+              class="danger-btn"
+              data-delete="${q.id}"
+            >
+              Delete
+            </button>
 
-                ${escapeHtml(
-                  quotation.startDate || "-"
-                )}
+          </td>
 
-              </td>
+        </tr>
 
+      `;
 
-              <td>
-
-                ${pax}
-
-              </td>
-
-
-              <td>
-
-                ₹${Number(
-                  quotation.total || 0
-                ).toLocaleString(
-                  "en-IN"
-                )}
-
-              </td>
-
-
-              <td>
-
-                <span class="status-badge">
-
-                  ${escapeHtml(
-                    quotation.status || "Draft"
-                  )}
-
-                </span>
-
-              </td>
-
-
-              <td>
-
-                <button
-                  type="button"
-                  class="edit-btn"
-                  data-quotation-edit-id="${quotation.id}"
-                >
-                  Edit
-                </button>
+    }).join("");
 
 
-                <button
-                  type="button"
-                  class="danger-btn"
-                  data-quotation-delete-id="${quotation.id}"
-                >
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-      )
-      .join("");
-
-
-  setupQuotationRowActions();
+  bindRowButtons();
 
 }
 
 
 // ======================================================
-// ROW ACTIONS
+// ROW BUTTONS
 // ======================================================
 
-function setupQuotationRowActions() {
+function bindRowButtons() {
 
   document
-    .querySelectorAll(
-      "[data-quotation-edit-id]"
-    )
-    .forEach(
-      (button) => {
+    .querySelectorAll("[data-edit]")
+    .forEach(btn => {
 
-        button.onclick =
-          () => {
+      btn.onclick = () => {
 
-            const quotation =
-              allQuotations.find(
-                (item) =>
-                  item.id ===
-                  button.dataset
-                    .quotationEditId
-              );
+        const item =
+          quotations.find(
+            q => q.id === btn.dataset.edit
+          );
 
+        if (item) {
+          openQuotation(item);
+        }
 
-            if (quotation) {
+      };
 
-              openQuotationModal(
-                quotation
-              );
-
-            }
-
-          };
-
-      }
-    );
+    });
 
 
   document
-    .querySelectorAll(
-      "[data-quotation-delete-id]"
-    )
-    .forEach(
-      (button) => {
+    .querySelectorAll("[data-delete]")
+    .forEach(btn => {
 
-        button.onclick =
-          () => {
+      btn.onclick = () => {
 
-            deleteQuotation(
-              button.dataset
-                .quotationDeleteId
-            );
+        deleteQuotation(
+          btn.dataset.delete
+        );
 
-          };
+      };
 
-      }
-    );
+    });
 
 }
 
@@ -985,53 +735,40 @@ function setupQuotationRowActions() {
 
 async function deleteQuotation(id) {
 
-  const quotation =
-    allQuotations.find(
-      (item) =>
-        item.id === id
+  const item =
+    quotations.find(
+      q => q.id === id
     );
 
-
-  const quotationId =
-    quotation?.quotationId ||
-    id;
+  if (!item) return;
 
 
-  if (
-    !confirm(
-      `Delete quotation "${quotationId}"?`
-    )
-  ) {
+  const ok =
+    confirm(
+      `Delete quotation "${item.quotationId || id}"?`
+    );
 
-    return;
-
-  }
+  if (!ok) return;
 
 
   try {
 
     await deleteDoc(
-
       doc(
         db,
         "quotations",
         id
       )
-
     );
-
 
     await loadQuotations();
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
     console.error(
       "Quotation delete error:",
       error
     );
-
 
     alert(
       "Could not delete quotation."
@@ -1043,188 +780,61 @@ async function deleteQuotation(id) {
 
 
 // ======================================================
-// SEARCH
-// ======================================================
-
-function setupQuotationSearch() {
-
-  const searchBox =
-    el("quotationSearch");
-
-
-  if (!searchBox) return;
-
-
-  searchBox.addEventListener(
-    "input",
-    () => {
-
-      const search =
-        searchBox.value
-          .toLowerCase()
-          .trim();
-
-
-      if (!search) {
-
-        renderQuotations(
-          allQuotations
-        );
-
-        return;
-
-      }
-
-
-      const filtered =
-        allQuotations.filter(
-          (quotation) => {
-
-            return [
-
-              quotation.quotationId,
-
-              quotation.customer,
-
-              quotation.packageName,
-
-              quotation.destination,
-
-              quotation.status,
-
-              quotation.enquiry
-
-            ]
-              .map(
-                value =>
-                  String(
-                    value || ""
-                  ).toLowerCase()
-              )
-              .some(
-                value =>
-                  value.includes(search)
-              );
-
-          }
-        );
-
-
-      renderQuotations(
-        filtered
-      );
-
-    }
-  );
-
-}
-
-
-// ======================================================
 // MESSAGE
 // ======================================================
 
-function showQuotationMessage(
-  text,
-  color
-) {
+function message(text, type) {
 
-  const message =
-    el("quotationFormMessage");
+  const box =
+    $("quotationFormMessage");
 
+  if (!box) return;
 
-  if (!message) return;
+  box.textContent = text;
 
-
-  message.textContent =
-    text;
-
-  message.style.color =
-    color;
+  box.className =
+    "form-message " + type;
 
 }
 
 
 // ======================================================
-// GET VALUE
+// VALUE
 // ======================================================
 
 function getValue(id) {
 
-  const element =
-    el(id);
+  const element = $(id);
 
-
-  if (!element) {
-
-    return "";
-
-  }
-
-
-  return String(
-    element.value || ""
-  ).trim();
+  return element
+    ? String(element.value || "").trim()
+    : "";
 
 }
 
 
-// ======================================================
-// SET VALUE
-// ======================================================
+function setValue(id, value) {
 
-function setValue(
-  id,
-  value
-) {
-
-  const element =
-    el(id);
-
+  const element = $(id);
 
   if (element) {
-
-    element.value =
-      value ?? "";
-
+    element.value = value ?? "";
   }
 
 }
 
 
 // ======================================================
-// ESCAPE HTML
+// HTML ESCAPE
 // ======================================================
 
 function escapeHtml(value) {
 
-  return String(
-    value ?? ""
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
