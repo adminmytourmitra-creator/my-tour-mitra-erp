@@ -2404,34 +2404,37 @@
         Save Agency
       </button>
 
-    </div>
+      </div> <!-- closes agency modal-card -->
 
-  </div>
+</div> <!-- closes agencyModal -->
 
-</div>
+</div> <!-- closes agenciesPage -->
 
-  
-<!-- =====================================================
+
+<!-- =========================================================
      QUOTATIONS MODULE
-===================================================== -->
+========================================================= -->
 
 <div
-  id="quotationsPage"
   class="module"
+  id="quotationsPage"
   style="display:none;"
 >
 
-  <div class="quotation-page">
+  <div class="module-card">
 
     <!-- HEADER -->
-    <div class="quotation-header">
+
+    <div class="module-header">
 
       <div>
+
         <h2>Quotations</h2>
 
-        <p>
+        <p class="module-description">
           Create and manage customer quotations and tour proposals.
         </p>
+
       </div>
 
       <button
@@ -2446,87 +2449,77 @@
 
 
     <!-- SEARCH -->
-    <div class="quotation-toolbar">
+
+    <div class="module-toolbar quotation-toolbar">
 
       <input
         type="text"
         id="quotationSearch"
         class="search-input"
-        placeholder="Search quotation ID, customer, package, destination or status..."
+        placeholder="Search quotation ID, customer, package, destination..."
       >
 
     </div>
 
 
     <!-- TABLE -->
-    <div class="quotation-table-card">
 
-      <div class="table-wrapper">
+    <div class="table-container">
 
-        <table
-          id="quotationsTable"
-          class="data-table"
-        >
+      <table
+        class="data-table"
+        id="quotationsTable"
+      >
 
-          <thead>
+        <thead>
 
-            <tr>
+          <tr>
 
-              <th>Quotation ID</th>
+            <th>Quotation ID</th>
+            <th>Customer</th>
+            <th>Package / Destination</th>
+            <th>Travel Date</th>
+            <th>Pax</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
 
-              <th>Customer</th>
+          </tr>
 
-              <th>Package / Destination</th>
+        </thead>
 
-              <th>Travel Date</th>
+        <tbody id="quotationsTableBody">
 
-              <th>Pax</th>
+          <tr>
 
-              <th>Total</th>
+            <td
+              colspan="8"
+              class="empty-table"
+            >
+              Loading quotations...
+            </td>
 
-              <th>Status</th>
+          </tr>
 
-              <th>Actions</th>
+        </tbody>
 
-            </tr>
-
-          </thead>
-
-
-          <tbody id="quotationsTableBody">
-
-            <tr>
-
-              <td
-                colspan="8"
-                class="empty-table"
-              >
-                Loading quotations...
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
+      </table>
 
     </div>
 
   </div>
 
 
-  <!-- =================================================
+  <!-- =========================================================
        QUOTATION MODAL
-  ================================================== -->
+  ========================================================= -->
 
   <div
     id="quotationModal"
-    class="quotation-modal-overlay"
+    class="modal-overlay quotation-modal-overlay"
   >
 
-    <div class="quotation-modal">
+    <div class="quotation-modal-card">
 
       <!-- MODAL HEADER -->
 
@@ -2539,7 +2532,7 @@
           </h3>
 
           <p>
-            Enter quotation and travel details.
+            Create customer quotation
           </p>
 
         </div>
@@ -2547,7 +2540,7 @@
         <button
           type="button"
           id="closeQuotationModal"
-          class="quotation-close-btn"
+          class="modal-close-btn"
         >
           ×
         </button>
@@ -2555,11 +2548,11 @@
       </div>
 
 
-      <!-- FORM MESSAGE -->
+      <!-- MESSAGE -->
 
       <div
         id="quotationFormMessage"
-        class="quotation-message"
+        class="form-message"
       ></div>
 
 
@@ -2573,17 +2566,17 @@
         >
 
 
-        <!-- =========================================
+        <!-- ===============================
              QUOTATION DETAILS
-        ========================================== -->
+        ================================ -->
 
-        <div class="quotation-section">
+        <div class="form-section">
 
           <h4>Quotation Details</h4>
 
-          <div class="quotation-grid">
+          <div class="form-grid">
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Customer Name <span>*</span>
@@ -2599,7 +2592,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Enquiry Reference
@@ -2614,7 +2607,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Package / Tour Name <span>*</span>
@@ -2630,7 +2623,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Destination
@@ -2649,17 +2642,17 @@
         </div>
 
 
-        <!-- =========================================
+        <!-- ===============================
              TRAVEL DETAILS
-        ========================================== -->
+        ================================ -->
 
-        <div class="quotation-section">
+        <div class="form-section">
 
           <h4>Travel Details</h4>
 
-          <div class="quotation-grid">
+          <div class="form-grid">
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Travel Start Date
@@ -2673,7 +2666,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Travel End Date
@@ -2687,7 +2680,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Adults
@@ -2703,7 +2696,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Children
@@ -2719,7 +2712,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Rooms
@@ -2735,7 +2728,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Valid Until
@@ -2753,17 +2746,17 @@
         </div>
 
 
-        <!-- =========================================
+        <!-- ===============================
              PRICING
-        ========================================== -->
+        ================================ -->
 
-        <div class="quotation-section">
+        <div class="form-section">
 
           <h4>Quotation Amount</h4>
 
-          <div class="quotation-grid">
+          <div class="form-grid">
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Total Quotation Amount (₹) <span>*</span>
@@ -2781,7 +2774,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Per Person Amount (₹)
@@ -2798,7 +2791,7 @@
             </div>
 
 
-            <div class="quotation-field">
+            <div class="form-group">
 
               <label>
                 Status
@@ -2835,15 +2828,15 @@
         </div>
 
 
-        <!-- =========================================
+        <!-- ===============================
              NOTES
-        ========================================== -->
+        ================================ -->
 
-        <div class="quotation-section">
+        <div class="form-section">
 
           <h4>Additional Information</h4>
 
-          <div class="quotation-field">
+          <div class="form-group">
 
             <label>
               Internal Notes
@@ -2862,7 +2855,7 @@
 
         <!-- FOOTER -->
 
-        <div class="quotation-modal-footer">
+        <div class="quotation-form-footer">
 
           <button
             type="button"
@@ -2890,30 +2883,27 @@
 </div>
 
 
-      <!-- =================================================
-           BOOKINGS
-      ================================================== -->
+<!-- =========================================================
+     BOOKINGS MODULE
+========================================================= -->
 
-      <div
-        class="module"
-        id="bookingsPage"
-        style="display:none;"
-      >
+<div
+  class="module"
+  id="bookingsPage"
+  style="display:none;"
+>
 
-        <div class="module-card">
+  <div class="module-card">
 
-          <h2>
-            Bookings
-          </h2>
+    <h2>Bookings</h2>
 
-          <p class="module-placeholder">
-            Booking management will be built next.
-          </p>
+    <p class="module-placeholder">
+      Booking management will be built next.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
-
+</div>
 
 
       <!-- =================================================
