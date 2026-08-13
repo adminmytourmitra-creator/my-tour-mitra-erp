@@ -11,7 +11,6 @@ import { initPackages } from "./modules/packages.js";
 import { initHotels } from "./modules/hotels.js";
 import { initCabs } from "./modules/cabs.js";
 import { initAgencies } from "./modules/agencies.js";
-import { initQuotations } from "./modules/quotations.js";
 import { initBookings } from "./modules/bookings.js";
 import { initInvoices } from "./modules/invoices.js";
 import { initVouchers } from "./modules/vouchers.js";
@@ -113,11 +112,6 @@ document.addEventListener(
     safeInit(
       "B2B Agencies",
       initAgencies
-    );
-
-    safeInit(
-      "Quotations",
-      initQuotations
     );
 
     safeInit(
