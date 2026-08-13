@@ -812,132 +812,27 @@ tbody tr:hover {
 
 
 /* =====================================================
-   QUOTATIONS - FINAL FIX
+   QUOTATIONS EXTERNAL PAGE
 ===================================================== */
 
 #quotationsPage {
+  width: 100%;
+}
+
+#quotationsPage .form-section {
+  margin-bottom: 24px;
+}
+
+#quotationsPage .form-section h3 {
+  font-size: 17px;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+#quotationsPage .modal-overlay {
   display: none;
-  width: 100%;
 }
 
-#quotationsPage[style*="display: block"] {
-  display: block !important;
-}
-
-#quotationsPage .module-card {
-  display: block !important;
-  width: 100%;
-  background: #ffffff;
-}
-
-#quotationsPage .module-header {
-  display: flex !important;
-  visibility: visible !important;
-}
-
-#quotationsPage .quotation-toolbar {
-  display: block !important;
-  visibility: visible !important;
-}
-
-#quotationsPage .table-container {
-  display: block !important;
-  visibility: visible !important;
-  width: 100%;
-  overflow-x: auto;
-}
-
-#quotationsPage table {
-  display: table !important;
-  width: 100%;
-}
-
-#quotationsPage thead {
-  display: table-header-group !important;
-}
-
-#quotationsPage tbody {
-  display: table-row-group !important;
-}
-
-#quotationsPage tr {
-  display: table-row !important;
-}
-
-#quotationsPage th,
-#quotationsPage td {
-  display: table-cell !important;
-}
-
-
-/* =====================================================
-   QUOTATION MODAL FIX
-===================================================== */
-
-#quotationModal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 20px;
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
-}
-
-#quotationModal[style*="display: flex"] {
-  display: flex !important;
-}
-
-#quotationModal .quotation-modal-card {
-  display: block !important;
-  width: 100%;
-  max-width: 900px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-}
-
-#quotationModal .quotation-modal-header {
-  display: flex !important;
-}
-
-#quotationModal form {
-  display: block !important;
-}
-
-#quotationModal .form-grid {
-  display: grid !important;
-}
-
-#quotationModal .form-section {
-  display: block !important;
-}
-
-#quotationModal .quotation-form-footer {
-  display: flex !important;
-}
-
-
-/* =====================================================
-   QUOTATION BUTTON
-===================================================== */
-
-#addQuotationBtn {
-  display: inline-block !important;
-  visibility: visible !important;
-}
-
-
-/* =====================================================
-   QUOTATION SEARCH
-===================================================== */
-
-#quotationSearch {
-  display: block !important;
-  visibility: visible !important;
-}
+#quotationsPage .modal-overlay[style*="flex"] {
+  display: flex;
 }
