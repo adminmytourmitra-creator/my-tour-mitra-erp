@@ -1,1 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Quotations - My Tour Mitra ERP</title>
+
+</head>
+
+<body>
+
+<div
+  class="module"
+  id="quotationsPage"
+>
+
+  <div class="module-card">
+
+    <!-- HEADER -->
+
+    <div class="module-header">
+
+      <div>
+
+        <h2>
+          Quotations
+        </h2>
+
+        <p>
+          Create and manage customer quotations and tour proposals.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        id="addQuotationBtn"
+        class="primary-btn"
+      >
+        + Add Quotation
+      </button>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="quotationSearch"
+        placeholder="Search quotation..."
+      >
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Quotation ID
+            </th>
+
+            <th>
+              Customer
+            </th>
+
+            <th>
+              Package / Destination
+            </th>
+
+            <th>
+              Travel Date
+            </th>
+
+            <th>
+              Pax
+            </th>
+
+            <th>
+              Total
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="quotationsTableBody">
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="empty-table"
+            >
+              Loading quotations...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       QUOTATION MODAL
+  ================================================== -->
+
+  <div
+    id="quotationModal"
+    class="modal-overlay"
+  >
+
+    <div class="modal">
+
+      <!-- HEADER -->
+
+      <div class="modal-header">
+
+        <h2 id="quotationModalTitle">
+          Add Quotation
+        </h2>
+
+        <button
+          type="button"
+          id="closeQuotationModal"
+          class="close-btn"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="quotationFormMessage"
+        class="status-message"
+      ></div>
+
+
+      <!-- FORM -->
+
+      <form id="quotationForm">
+
+        <input
+          type="hidden"
+          id="quotationDocId"
+        >
+
+
+        <!-- QUOTATION DETAILS -->
+
+        <div class="form-section">
+
+          <h3>
+            Quotation Details
+          </h3>
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label>
+                Customer Name *
+              </label>
+
+              <input
+                type="text"
+                id="quotationCustomer"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Enquiry Reference
+              </label>
+
+              <input
+                type="text"
+                id="quotationEnquiry"
+                placeholder="ENQ-000001"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Package / Tour Name *
+              </label>
+
+              <input
+                type="text"
+                id="quotationPackage"
+                placeholder="Meghalaya 4N/5D"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Destination
+              </label>
+
+              <input
+                type="text"
+                id="quotationDestination"
+                placeholder="Meghalaya"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- TRAVEL DETAILS -->
+
+        <div class="form-section">
+
+          <h3>
+            Travel Details
+          </h3>
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label>
+                Travel Start Date
+              </label>
+
+              <input
+                type="date"
+                id="quotationStartDate"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Travel End Date
+              </label>
+
+              <input
+                type="date"
+                id="quotationEndDate"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Adults
+              </label>
+
+              <input
+                type="number"
+                id="quotationAdults"
+                value="2"
+                min="0"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Children
+              </label>
+
+              <input
+                type="number"
+                id="quotationChildren"
+                value="0"
+                min="0"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Rooms
+              </label>
+
+              <input
+                type="number"
+                id="quotationRooms"
+                value="1"
+                min="0"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Valid Until
+              </label>
+
+              <input
+                type="date"
+                id="quotationValidUntil"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- AMOUNT -->
+
+        <div class="form-section">
+
+          <h3>
+            Quotation Amount
+          </h3>
+
+          <div class="form-grid">
+
+
+            <div class="form-group">
+
+              <label>
+                Total Amount (₹) *
+              </label>
+
+              <input
+                type="number"
+                id="quotationTotal"
+                min="0"
+                step="0.01"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Per Person Amount (₹)
+              </label>
+
+              <input
+                type="number"
+                id="quotationPerPerson"
+                min="0"
+                step="0.01"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Status
+              </label>
+
+              <select id="quotationStatus">
+
+                <option value="Draft">
+                  Draft
+                </option>
+
+                <option value="Sent">
+                  Sent
+                </option>
+
+                <option value="Accepted">
+                  Accepted
+                </option>
+
+                <option value="Rejected">
+                  Rejected
+                </option>
+
+                <option value="Expired">
+                  Expired
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        <div class="form-section">
+
+          <h3>
+            Additional Information
+          </h3>
+
+          <div class="form-group">
+
+            <label>
+              Internal Notes
+            </label>
+
+            <textarea
+              id="quotationNotes"
+              rows="4"
+              placeholder="Internal notes..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            id="cancelQuotationBtn"
+            class="secondary-btn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-btn"
+          >
+            Save Quotation
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ==================================================
+     QUOTATION LOADER
+================================================== -->
+
+<script type="module">
+
+  import {
+    initQuotations
+  }
+  from "./js/modules/quotations.js";
+
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+      initQuotations();
+
+    }
+  );
+
+</script>
+
+</body>
+
+</html>
