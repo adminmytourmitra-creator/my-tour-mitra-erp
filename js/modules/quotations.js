@@ -29,11 +29,8 @@ let allQuotations = [];
 export function initQuotations() {
 
   setupQuotationButtons();
-
   setupQuotationForm();
-
   setupQuotationSearch();
-
   loadQuotations();
 
 }
@@ -44,9 +41,7 @@ export function initQuotations() {
 // ======================================================
 
 function getElement(id) {
-
   return document.getElementById(id);
-
 }
 
 
@@ -56,43 +51,22 @@ function getElement(id) {
 
 function setupQuotationButtons() {
 
-  const addButton =
-    getElement("addQuotationBtn");
-
-  const closeButton =
-    getElement("closeQuotationModal");
-
-  const cancelButton =
-    getElement("cancelQuotationBtn");
-
+  const addButton = getElement("addQuotationBtn");
+  const closeButton = getElement("closeQuotationModal");
+  const cancelButton = getElement("cancelQuotationBtn");
 
   if (addButton) {
-
-    addButton.addEventListener(
-      "click",
-      () => openQuotationModal()
-    );
-
+    addButton.addEventListener("click", () => {
+      openQuotationModal();
+    });
   }
-
 
   if (closeButton) {
-
-    closeButton.addEventListener(
-      "click",
-      closeQuotationModal
-    );
-
+    closeButton.addEventListener("click", closeQuotationModal);
   }
 
-
   if (cancelButton) {
-
-    cancelButton.addEventListener(
-      "click",
-      closeQuotationModal
-    );
-
+    cancelButton.addEventListener("click", closeQuotationModal);
   }
 
 }
@@ -104,16 +78,11 @@ function setupQuotationButtons() {
 
 function setupQuotationForm() {
 
-  const form =
-    getElement("quotationForm");
+  const form = getElement("quotationForm");
 
   if (!form) return;
 
-
-  form.addEventListener(
-    "submit",
-    saveQuotation
-  );
+  form.addEventListener("submit", saveQuotation);
 
 }
 
@@ -122,161 +91,70 @@ function setupQuotationForm() {
 // OPEN MODAL
 // ======================================================
 
-function openQuotationModal(
-  quotation = null
-) {
+function openQuotationModal(quotation = null) {
 
-  const modal =
-    getElement("quotationModal");
-
-  const form =
-    getElement("quotationForm");
-
-  const title =
-    getElement("quotationModalTitle");
-
-  const message =
-    getElement("quotationFormMessage");
-
+  const modal = getElement("quotationModal");
+  const form = getElement("quotationForm");
+  const title = getElement("quotationModalTitle");
+  const message = getElement("quotationFormMessage");
 
   if (!modal || !form) return;
 
-
-  modal.style.display =
-    "flex";
-
+  modal.style.display = "flex";
 
   if (message) {
-
-    message.textContent =
-      "";
-
+    message.textContent = "";
   }
 
 
+  // EDIT
   if (quotation) {
 
     if (title) {
-
-      title.textContent =
-        "Edit Quotation";
-
+      title.textContent = "Edit Quotation";
     }
 
+    setValue("quotationDocId", quotation.id);
+    setValue("quotationCustomer", quotation.customer);
+    setValue("quotationEnquiry", quotation.enquiry);
+    setValue("quotationPackage", quotation.packageName);
+    setValue("quotationDestination", quotation.destination);
 
-    setValue(
-      "quotationDocId",
-      quotation.id
-    );
+    setValue("quotationStartDate", quotation.startDate);
+    setValue("quotationEndDate", quotation.endDate);
 
-    setValue(
-      "quotationCustomer",
-      quotation.customer
-    );
+    setValue("quotationAdults", quotation.adults ?? 2);
+    setValue("quotationChildren", quotation.children ?? 0);
+    setValue("quotationRooms", quotation.rooms ?? 1);
 
-    setValue(
-      "quotationEnquiry",
-      quotation.enquiry
-    );
+    setValue("quotationValidUntil", quotation.validUntil);
 
-    setValue(
-      "quotationPackage",
-      quotation.packageName
-    );
-
-    setValue(
-      "quotationDestination",
-      quotation.destination
-    );
-
-    setValue(
-      "quotationStartDate",
-      quotation.startDate
-    );
-
-    setValue(
-      "quotationEndDate",
-      quotation.endDate
-    );
-
-    setValue(
-      "quotationAdults",
-      quotation.adults ?? 2
-    );
-
-    setValue(
-      "quotationChildren",
-      quotation.children ?? 0
-    );
-
-    setValue(
-      "quotationRooms",
-      quotation.rooms ?? 1
-    );
-
-    setValue(
-      "quotationValidUntil",
-      quotation.validUntil
-    );
-
-    setValue(
-      "quotationTotal",
-      quotation.total ?? 0
-    );
-
-    setValue(
-      "quotationPerPerson",
-      quotation.perPerson ?? ""
-    );
+    setValue("quotationTotal", quotation.total ?? 0);
+    setValue("quotationPerPerson", quotation.perPerson ?? "");
 
     setValue(
       "quotationStatus",
-      quotation.status ||
-      "Draft"
+      quotation.status || "Draft"
     );
 
-    setValue(
-      "quotationNotes",
-      quotation.notes
-    );
+    setValue("quotationNotes", quotation.notes);
 
-  } else {
+  }
+
+  // ADD
+  else {
 
     if (title) {
-
-      title.textContent =
-        "Add Quotation";
-
+      title.textContent = "Add Quotation";
     }
-
 
     form.reset();
 
-
-    setValue(
-      "quotationDocId",
-      ""
-    );
-
-    setValue(
-      "quotationAdults",
-      2
-    );
-
-    setValue(
-      "quotationChildren",
-      0
-    );
-
-    setValue(
-      "quotationRooms",
-      1
-    );
-
-    setValue(
-      "quotationStatus",
-      "Draft"
-    );
+    setValue("quotationDocId", "");
+    setValue("quotationAdults", 2);
+    setValue("quotationChildren", 0);
+    setValue("quotationRooms", 1);
+    setValue("quotationStatus", "Draft");
 
   }
 
@@ -289,52 +167,22 @@ function openQuotationModal(
 
 function closeQuotationModal() {
 
-  const modal =
-    getElement("quotationModal");
-
-  const form =
-    getElement("quotationForm");
-
+  const modal = getElement("quotationModal");
+  const form = getElement("quotationForm");
 
   if (modal) {
-
-    modal.style.display =
-      "none";
-
+    modal.style.display = "none";
   }
-
 
   if (form) {
-
     form.reset();
-
   }
 
-
-  setValue(
-    "quotationDocId",
-    ""
-  );
-
-  setValue(
-    "quotationAdults",
-    2
-  );
-
-  setValue(
-    "quotationChildren",
-    0
-  );
-
-  setValue(
-    "quotationRooms",
-    1
-  );
-
-  setValue(
-    "quotationStatus",
-    "Draft"
-  );
+  setValue("quotationDocId", "");
+  setValue("quotationAdults", 2);
+  setValue("quotationChildren", 0);
+  setValue("quotationRooms", 1);
+  setValue("quotationStatus", "Draft");
 
 }
 
@@ -347,7 +195,6 @@ async function saveQuotation(event) {
 
   event.preventDefault();
 
-
   showQuotationMessage(
     "Saving quotation...",
     "#1769e0"
@@ -356,85 +203,45 @@ async function saveQuotation(event) {
 
   const quotationData = {
 
-    customer:
-      getValue(
-        "quotationCustomer"
-      ),
+    customer: getValue("quotationCustomer"),
 
-    enquiry:
-      getValue(
-        "quotationEnquiry"
-      ),
+    enquiry: getValue("quotationEnquiry"),
 
-    packageName:
-      getValue(
-        "quotationPackage"
-      ),
+    packageName: getValue("quotationPackage"),
 
-    destination:
-      getValue(
-        "quotationDestination"
-      ),
+    destination: getValue("quotationDestination"),
 
-    startDate:
-      getValue(
-        "quotationStartDate"
-      ),
+    startDate: getValue("quotationStartDate"),
 
-    endDate:
-      getValue(
-        "quotationEndDate"
-      ),
+    endDate: getValue("quotationEndDate"),
 
-    adults:
-      Number(
-        getValue(
-          "quotationAdults"
-        ) || 0
-      ),
+    adults: Number(
+      getValue("quotationAdults") || 0
+    ),
 
-    children:
-      Number(
-        getValue(
-          "quotationChildren"
-        ) || 0
-      ),
+    children: Number(
+      getValue("quotationChildren") || 0
+    ),
 
-    rooms:
-      Number(
-        getValue(
-          "quotationRooms"
-        ) || 0
-      ),
+    rooms: Number(
+      getValue("quotationRooms") || 0
+    ),
 
-    validUntil:
-      getValue(
-        "quotationValidUntil"
-      ),
+    validUntil: getValue("quotationValidUntil"),
 
-    total:
-      Number(
-        getValue(
-          "quotationTotal"
-        ) || 0
-      ),
+    total: Number(
+      getValue("quotationTotal") || 0
+    ),
 
-    perPerson:
-      Number(
-        getValue(
-          "quotationPerPerson"
-        ) || 0
-      ),
+    perPerson: Number(
+      getValue("quotationPerPerson") || 0
+    ),
 
     status:
-      getValue(
-        "quotationStatus"
-      ) || "Draft",
+      getValue("quotationStatus") || "Draft",
 
     notes:
-      getValue(
-        "quotationNotes"
-      ),
+      getValue("quotationNotes"),
 
     updatedAt:
       serverTimestamp()
@@ -445,29 +252,23 @@ async function saveQuotation(event) {
   try {
 
     const existingId =
-      getValue(
-        "quotationDocId"
-      );
+      getValue("quotationDocId");
 
 
     // ==================================================
-    // EDIT EXISTING QUOTATION
+    // UPDATE
     // ==================================================
 
     if (existingId) {
 
       await updateDoc(
-
         doc(
           db,
           "quotations",
           existingId
         ),
-
         quotationData
-
       );
-
 
       showQuotationMessage(
         "Quotation updated successfully.",
@@ -478,14 +279,13 @@ async function saveQuotation(event) {
 
 
     // ==================================================
-    // CREATE NEW QUOTATION
+    // CREATE
     // ==================================================
 
     else {
 
       quotationData.createdAt =
         serverTimestamp();
-
 
       quotationData.createdBy =
         auth.currentUser
@@ -495,14 +295,8 @@ async function saveQuotation(event) {
 
       const quotationRef =
         await addDoc(
-
-          collection(
-            db,
-            "quotations"
-          ),
-
+          collection(db, "quotations"),
           quotationData
-
         );
 
 
@@ -514,14 +308,10 @@ async function saveQuotation(event) {
 
 
       await updateDoc(
-
         quotationRef,
-
         {
-          quotationId:
-            quotationId
+          quotationId: quotationId
         }
-
       );
 
 
@@ -549,7 +339,6 @@ async function saveQuotation(event) {
       error
     );
 
-
     showQuotationMessage(
       "Could not save quotation. Check Firestore rules.",
       "#dc2626"
@@ -567,20 +356,14 @@ async function saveQuotation(event) {
 async function loadQuotations() {
 
   const table =
-    getElement(
-      "quotationsTableBody"
-    );
-
+    getElement("quotationsTableBody");
 
   if (!table) return;
 
 
   table.innerHTML = `
     <tr>
-      <td
-        colspan="8"
-        class="empty-table"
-      >
+      <td colspan="8" class="empty-table">
         Loading quotations...
       </td>
     </tr>
@@ -601,12 +384,8 @@ async function loadQuotations() {
     allQuotations =
       snapshot.docs.map(
         (document) => ({
-
-          id:
-            document.id,
-
+          id: document.id,
           ...document.data()
-
         })
       );
 
@@ -626,10 +405,7 @@ async function loadQuotations() {
 
     table.innerHTML = `
       <tr>
-        <td
-          colspan="8"
-          class="empty-table"
-        >
+        <td colspan="8" class="empty-table">
           Unable to load quotations.
           Check Firestore security rules.
         </td>
@@ -645,15 +421,10 @@ async function loadQuotations() {
 // RENDER QUOTATIONS
 // ======================================================
 
-function renderQuotations(
-  quotations
-) {
+function renderQuotations(quotations) {
 
   const table =
-    getElement(
-      "quotationsTableBody"
-    );
-
+    getElement("quotationsTableBody");
 
   if (!table) return;
 
@@ -662,10 +433,7 @@ function renderQuotations(
 
     table.innerHTML = `
       <tr>
-        <td
-          colspan="8"
-          class="empty-table"
-        >
+        <td colspan="8" class="empty-table">
           No quotations found.
           Click "+ Add Quotation" to create one.
         </td>
@@ -673,132 +441,106 @@ function renderQuotations(
     `;
 
     return;
-
   }
 
 
   table.innerHTML =
     quotations
-      .map(
-        (quotation) => {
+      .map((quotation) => {
 
-          const totalPax =
-            Number(
-              quotation.adults || 0
-            ) +
-            Number(
-              quotation.children || 0
-            );
+        const totalPax =
+          Number(quotation.adults || 0) +
+          Number(quotation.children || 0);
 
 
-          return `
+        return `
+          <tr>
 
-            <tr>
-
-              <td>
-                <strong>
-                  ${escapeHtml(
-                    quotation.quotationId ||
-                    "-"
-                  )}
-                </strong>
-              </td>
-
-
-              <td>
+            <td>
+              <strong>
                 ${escapeHtml(
-                  quotation.customer ||
-                  "-"
+                  quotation.quotationId || "-"
                 )}
-              </td>
+              </strong>
+            </td>
 
+            <td>
+              ${escapeHtml(
+                quotation.customer || "-"
+              )}
+            </td>
 
-              <td>
+            <td>
 
-                <strong>
-                  ${escapeHtml(
-                    quotation.packageName ||
-                    "-"
-                  )}
-                </strong>
-
-                ${
-                  quotation.destination
-                    ? `
-                      <br>
-                      <small>
-                        ${escapeHtml(
-                          quotation.destination
-                        )}
-                      </small>
-                    `
-                    : ""
-                }
-
-              </td>
-
-
-              <td>
+              <strong>
                 ${escapeHtml(
-                  quotation.startDate ||
-                  "-"
+                  quotation.packageName || "-"
                 )}
-              </td>
+              </strong>
 
+              ${
+                quotation.destination
+                  ? `
+                    <br>
+                    <small>
+                      ${escapeHtml(
+                        quotation.destination
+                      )}
+                    </small>
+                  `
+                  : ""
+              }
 
-              <td>
-                ${totalPax}
-              </td>
+            </td>
 
+            <td>
+              ${escapeHtml(
+                quotation.startDate || "-"
+              )}
+            </td>
 
-              <td>
-                ₹${Number(
-                  quotation.total || 0
-                ).toLocaleString(
-                  "en-IN"
+            <td>
+              ${totalPax}
+            </td>
+
+            <td>
+              ₹${Number(
+                quotation.total || 0
+              ).toLocaleString("en-IN")}
+            </td>
+
+            <td>
+
+              <span class="status-badge">
+                ${escapeHtml(
+                  quotation.status || "Draft"
                 )}
-              </td>
+              </span>
 
+            </td>
 
-              <td>
+            <td>
 
-                <span
-                  class="status-badge"
-                >
-                  ${escapeHtml(
-                    quotation.status ||
-                    "Draft"
-                  )}
-                </span>
+              <button
+                class="edit-btn"
+                data-quotation-edit-id="${quotation.id}"
+              >
+                Edit
+              </button>
 
-              </td>
+              <button
+                class="danger-btn"
+                data-quotation-delete-id="${quotation.id}"
+              >
+                Delete
+              </button>
 
+            </td>
 
-              <td>
+          </tr>
+        `;
 
-                <button
-                  class="edit-btn"
-                  data-quotation-edit-id="${quotation.id}"
-                >
-                  Edit
-                </button>
-
-
-                <button
-                  class="danger-btn"
-                  data-quotation-delete-id="${quotation.id}"
-                >
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-      )
+      })
       .join("");
 
 
@@ -817,69 +559,61 @@ function setupQuotationRowActions() {
     .querySelectorAll(
       "[data-quotation-edit-id]"
     )
-    .forEach(
-      (button) => {
+    .forEach((button) => {
 
-        button.addEventListener(
-          "click",
-          () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-            const quotation =
-              allQuotations.find(
-                (item) =>
-                  item.id ===
-                  button.dataset
-                    .quotationEditId
-              );
+          const quotation =
+            allQuotations.find(
+              (item) =>
+                item.id ===
+                button.dataset
+                  .quotationEditId
+            );
 
 
-            if (quotation) {
-
-              openQuotationModal(
-                quotation
-              );
-
-            }
-
+          if (quotation) {
+            openQuotationModal(
+              quotation
+            );
           }
-        );
 
-      }
-    );
+        }
+      );
+
+    });
 
 
   document
     .querySelectorAll(
       "[data-quotation-delete-id]"
     )
-    .forEach(
-      (button) => {
+    .forEach((button) => {
 
-        button.addEventListener(
-          "click",
-          () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-            deleteQuotation(
-              button.dataset
-                .quotationDeleteId
-            );
+          deleteQuotation(
+            button.dataset
+              .quotationDeleteId
+          );
 
-          }
-        );
+        }
+      );
 
-      }
-    );
+    });
 
 }
 
 
 // ======================================================
-// DELETE QUOTATION
+// DELETE
 // ======================================================
 
-async function deleteQuotation(
-  id
-) {
+async function deleteQuotation(id) {
 
   const quotation =
     allQuotations.find(
@@ -890,7 +624,9 @@ async function deleteQuotation(
 
   const confirmed =
     confirm(
-      `Delete quotation "${quotation?.quotationId || ""}"?`
+      `Delete quotation "${
+        quotation?.quotationId || ""
+      }"?`
     );
 
 
@@ -918,7 +654,6 @@ async function deleteQuotation(
       error
     );
 
-
     alert(
       "Could not delete quotation."
     );
@@ -938,7 +673,6 @@ function setupQuotationSearch() {
     getElement(
       "quotationSearch"
     );
-
 
   if (!searchBox) return;
 
@@ -971,8 +705,7 @@ function setupQuotationSearch() {
             return (
 
               String(
-                quotation.quotationId ||
-                ""
+                quotation.quotationId || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -980,8 +713,7 @@ function setupQuotationSearch() {
               ||
 
               String(
-                quotation.customer ||
-                ""
+                quotation.customer || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -989,8 +721,7 @@ function setupQuotationSearch() {
               ||
 
               String(
-                quotation.packageName ||
-                ""
+                quotation.packageName || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -998,8 +729,7 @@ function setupQuotationSearch() {
               ||
 
               String(
-                quotation.destination ||
-                ""
+                quotation.destination || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -1007,8 +737,7 @@ function setupQuotationSearch() {
               ||
 
               String(
-                quotation.status ||
-                ""
+                quotation.status || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -1016,8 +745,7 @@ function setupQuotationSearch() {
               ||
 
               String(
-                quotation.enquiry ||
-                ""
+                quotation.enquiry || ""
               )
                 .toLowerCase()
                 .includes(search)
@@ -1042,26 +770,17 @@ function setupQuotationSearch() {
 // MESSAGE
 // ======================================================
 
-function showQuotationMessage(
-  text,
-  color
-) {
+function showQuotationMessage(text, color) {
 
   const message =
     getElement(
       "quotationFormMessage"
     );
 
-
   if (!message) return;
 
-
-  message.style.color =
-    color;
-
-
-  message.textContent =
-    text;
+  message.style.color = color;
+  message.textContent = text;
 
 }
 
@@ -1073,28 +792,20 @@ function showQuotationMessage(
 function getValue(id) {
 
   return (
-    getElement(id)
-      ?.value
-      ?.trim() || ""
+    getElement(id)?.value?.trim() || ""
   );
 
 }
 
 
-function setValue(
-  id,
-  value
-) {
+function setValue(id, value) {
 
   const element =
     getElement(id);
 
-
   if (element) {
-
     element.value =
       value ?? "";
-
   }
 
 }
@@ -1108,29 +819,14 @@ function escapeHtml(value) {
 
   return String(value)
 
-    .replace(
-      /&/g,
-      "&amp;"
-    )
+    .replace(/&/g, "&amp;")
 
-    .replace(
-      /</g,
-      "&lt;"
-    )
+    .replace(/</g, "&lt;")
 
-    .replace(
-      />/g,
-      "&gt;"
-    )
+    .replace(/>/g, "&gt;")
 
-    .replace(
-      /"/g,
-      "&quot;"
-    )
+    .replace(/"/g, "&quot;")
 
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/'/g, "&#039;");
 
 }
