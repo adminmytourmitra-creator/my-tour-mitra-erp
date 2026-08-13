@@ -22,6 +22,8 @@ import { db, auth } from "../firebase.js";
 
 let allQuotations = [];
 
+let quotationInitialized = false;
+
 
 // ======================================================
 // INITIALIZE
@@ -31,6 +33,13 @@ export function initQuotations() {
 
   console.log("Quotations module initializing...");
 
+  if (quotationInitialized) {
+    console.log("Quotations already initialized.");
+    return;
+  }
+
+  quotationInitialized = true;
+
   setupQuotationButtons();
 
   setupQuotationForm();
@@ -39,16 +48,44 @@ export function initQuotations() {
 
   loadQuotations();
 
+  console.log("Quotations module initialized successfully.");
+
 }
 
 
 // ======================================================
-// ELEMENT HELPER
+// HELPER
 // ======================================================
 
 function getElement(id) {
 
   return document.getElementById(id);
+
+}
+
+
+function getValue(id) {
+
+  const element = getElement(id);
+
+  if (!element) {
+    return "";
+  }
+
+  return element.value.trim();
+
+}
+
+
+function setValue(id, value) {
+
+  const element = getElement(id);
+
+  if (!element) {
+    return;
+  }
+
+  element.value = value ?? "";
 
 }
 
@@ -59,18 +96,21 @@ function getElement(id) {
 
 function setupQuotationButtons() {
 
-  const addButton = getElement("addQuotationBtn");
+  const addButton =
+    getElement("addQuotationBtn");
 
-  const closeButton = getElement("closeQuotationModal");
+  const closeButton =
+    getElement("closeQuotationModal");
 
-  const cancelButton = getElement("cancelQuotationBtn");
+  const cancelButton =
+    getElement("cancelQuotationBtn");
 
 
   if (addButton) {
 
     addButton.addEventListener(
       "click",
-      function () {
+      () => {
 
         openQuotationModal();
 
@@ -84,11 +124,7 @@ function setupQuotationButtons() {
 
     closeButton.addEventListener(
       "click",
-      function () {
-
-        closeQuotationModal();
-
-      }
+      closeQuotationModal
     );
 
   }
@@ -98,9 +134,29 @@ function setupQuotationButtons() {
 
     cancelButton.addEventListener(
       "click",
-      function () {
+      closeQuotationModal
+    );
 
-        closeQuotationModal();
+  }
+
+
+  const modal =
+    getElement("quotationModal");
+
+
+  if (modal) {
+
+    modal.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target === modal
+        ) {
+
+          closeQuotationModal();
+
+        }
 
       }
     );
@@ -116,26 +172,22 @@ function setupQuotationButtons() {
 
 function setupQuotationForm() {
 
-  const form = getElement("quotationForm");
+  const form =
+    getElement("quotationForm");
 
   if (!form) {
 
-    console.warn(
-      "quotationForm not found."
+    console.error(
+      "Quotation form not found."
     );
 
     return;
-
   }
 
 
   form.addEventListener(
     "submit",
-    function (event) {
-
-      saveQuotation(event);
-
-    }
+    saveQuotation
   );
 
 }
@@ -145,21 +197,24 @@ function setupQuotationForm() {
 // OPEN MODAL
 // ======================================================
 
-function openQuotationModal(quotation = null) {
+function openQuotationModal(
+  quotation = null
+) {
 
-  const modal = getElement("quotationModal");
+  const modal =
+    getElement("quotationModal");
 
-  const form = getElement("quotationForm");
+  const form =
+    getElement("quotationForm");
 
-  const title = getElement("quotationModalTitle");
-
-  const message = getElement("quotationFormMessage");
+  const title =
+    getElement("quotationModalTitle");
 
 
   if (!modal || !form) {
 
     console.error(
-      "Quotation modal or form not found."
+      "Quotation modal/form not found."
     );
 
     return;
@@ -167,24 +222,14 @@ function openQuotationModal(quotation = null) {
   }
 
 
-  modal.style.display = "flex";
-
-  document.body.style.overflow = "hidden";
-
-
-  if (message) {
-
-    message.textContent = "";
-
-  }
+  clearQuotationMessage();
 
 
   if (quotation) {
 
     if (title) {
-
-      title.textContent = "Edit Quotation";
-
+      title.textContent =
+        "Edit Quotation";
     }
 
 
@@ -266,9 +311,8 @@ function openQuotationModal(quotation = null) {
   } else {
 
     if (title) {
-
-      title.textContent = "Add Quotation";
-
+      title.textContent =
+        "Add Quotation";
     }
 
 
@@ -302,6 +346,13 @@ function openQuotationModal(quotation = null) {
 
   }
 
+
+  modal.style.display =
+    "flex";
+
+  document.body.style.overflow =
+    "hidden";
+
 }
 
 
@@ -311,19 +362,23 @@ function openQuotationModal(quotation = null) {
 
 function closeQuotationModal() {
 
-  const modal = getElement("quotationModal");
+  const modal =
+    getElement("quotationModal");
 
-  const form = getElement("quotationForm");
+  const form =
+    getElement("quotationForm");
 
 
   if (modal) {
 
-    modal.style.display = "none";
+    modal.style.display =
+      "none";
 
   }
 
 
-  document.body.style.overflow = "";
+  document.body.style.overflow =
+    "";
 
 
   if (form) {
@@ -358,22 +413,18 @@ function closeQuotationModal() {
     "Draft"
   );
 
+  clearQuotationMessage();
+
 }
 
 
 // ======================================================
-// SAVE QUOTATION
+// SAVE
 // ======================================================
 
 async function saveQuotation(event) {
 
   event.preventDefault();
-
-
-  showQuotationMessage(
-    "Saving quotation...",
-    "#2563eb"
-  );
 
 
   const customer =
@@ -424,15 +475,20 @@ async function saveQuotation(event) {
   }
 
 
+  showQuotationMessage(
+    "Saving quotation...",
+    "#2563eb"
+  );
+
+
   const quotationData = {
 
-    customer: customer,
+    customer,
 
     enquiry:
       getValue("quotationEnquiry"),
 
-    packageName:
-      packageName,
+    packageName,
 
     destination:
       getValue("quotationDestination"),
@@ -461,8 +517,7 @@ async function saveQuotation(event) {
     validUntil:
       getValue("quotationValidUntil"),
 
-    total:
-      total,
+    total,
 
     perPerson:
       Number(
@@ -523,7 +578,6 @@ async function saveQuotation(event) {
       quotationData.createdAt =
         serverTimestamp();
 
-
       quotationData.createdBy =
         auth.currentUser
           ? auth.currentUser.email
@@ -544,9 +598,10 @@ async function saveQuotation(event) {
 
 
       const quotationId =
-        createQuotationId(
-          quotationRef.id
-        );
+        "QT-" +
+        quotationRef.id
+          .substring(0, 6)
+          .toUpperCase();
 
 
       await updateDoc(
@@ -554,8 +609,7 @@ async function saveQuotation(event) {
         quotationRef,
 
         {
-          quotationId:
-            quotationId
+          quotationId
         }
 
       );
@@ -573,12 +627,12 @@ async function saveQuotation(event) {
 
 
     setTimeout(
-      function () {
+      () => {
 
         closeQuotationModal();
 
       },
-      800
+      700
     );
 
 
@@ -591,7 +645,8 @@ async function saveQuotation(event) {
 
 
     showQuotationMessage(
-      "Could not save quotation. Check Firebase / Firestore.",
+      "Could not save quotation: " +
+      error.message,
       "#dc2626"
     );
 
@@ -601,24 +656,7 @@ async function saveQuotation(event) {
 
 
 // ======================================================
-// QUOTATION ID
-// ======================================================
-
-function createQuotationId(firebaseId) {
-
-  const shortId =
-    String(firebaseId)
-      .substring(0, 6)
-      .toUpperCase();
-
-
-  return "QT-" + shortId;
-
-}
-
-
-// ======================================================
-// LOAD QUOTATIONS
+// LOAD
 // ======================================================
 
 async function loadQuotations() {
@@ -631,8 +669,8 @@ async function loadQuotations() {
 
   if (!table) {
 
-    console.warn(
-      "quotationsTableBody not found."
+    console.error(
+      "Quotation table body not found."
     );
 
     return;
@@ -642,10 +680,7 @@ async function loadQuotations() {
 
   table.innerHTML = `
     <tr>
-      <td
-        colspan="8"
-        class="empty-table"
-      >
+      <td colspan="8" class="empty-table">
         Loading quotations...
       </td>
     </tr>
@@ -656,29 +691,23 @@ async function loadQuotations() {
 
     const snapshot =
       await getDocs(
-
         collection(
           db,
           "quotations"
         )
-
       );
 
 
     allQuotations =
       snapshot.docs.map(
-        function (documentSnapshot) {
+        quotationDoc => ({
 
-          return {
+          id:
+            quotationDoc.id,
 
-            id:
-              documentSnapshot.id,
+          ...quotationDoc.data()
 
-            ...documentSnapshot.data()
-
-          };
-
-        }
+        })
       );
 
 
@@ -697,12 +726,10 @@ async function loadQuotations() {
 
     table.innerHTML = `
       <tr>
-        <td
-          colspan="8"
-          class="empty-table"
-        >
+        <td colspan="8" class="empty-table">
           Unable to load quotations.
-          Check Firestore permissions.
+          <br>
+          ${escapeHtml(error.message)}
         </td>
       </tr>
     `;
@@ -713,7 +740,7 @@ async function loadQuotations() {
 
 
 // ======================================================
-// RENDER TABLE
+// RENDER
 // ======================================================
 
 function renderQuotations(
@@ -726,7 +753,9 @@ function renderQuotations(
     );
 
 
-  if (!table) return;
+  if (!table) {
+    return;
+  }
 
 
   if (!quotations.length) {
@@ -751,41 +780,26 @@ function renderQuotations(
   table.innerHTML =
     quotations
       .map(
-        function (quotation) {
+        quotation => {
 
           const adults =
             Number(
               quotation.adults || 0
             );
 
-
           const children =
             Number(
               quotation.children || 0
             );
 
-
           const totalPax =
             adults + children;
 
 
-          const amount =
+          const total =
             Number(
               quotation.total || 0
             );
-
-
-          const destination =
-            quotation.destination
-              ? `
-                <br>
-                <small>
-                  ${escapeHtml(
-                    quotation.destination
-                  )}
-                </small>
-              `
-              : "";
 
 
           return `
@@ -815,7 +829,18 @@ function renderQuotations(
                   )}
                 </strong>
 
-                ${destination}
+                ${
+                  quotation.destination
+                    ? `
+                      <br>
+                      <small>
+                        ${escapeHtml(
+                          quotation.destination
+                        )}
+                      </small>
+                    `
+                    : ""
+                }
 
               </td>
 
@@ -833,7 +858,7 @@ function renderQuotations(
 
 
               <td>
-                ₹${amount.toLocaleString(
+                ₹${total.toLocaleString(
                   "en-IN"
                 )}
               </td>
@@ -855,20 +880,15 @@ function renderQuotations(
                 <button
                   type="button"
                   class="edit-btn"
-                  data-quotation-edit-id="${escapeHtml(
-                    quotation.id
-                  )}"
+                  data-quotation-edit-id="${quotation.id}"
                 >
                   Edit
                 </button>
 
-
                 <button
                   type="button"
                   class="danger-btn"
-                  data-quotation-delete-id="${escapeHtml(
-                    quotation.id
-                  )}"
+                  data-quotation-delete-id="${quotation.id}"
                 >
                   Delete
                 </button>
@@ -894,74 +914,65 @@ function renderQuotations(
 
 function setupQuotationRowActions() {
 
-  const editButtons =
-    document.querySelectorAll(
+  document
+    .querySelectorAll(
       "[data-quotation-edit-id]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset
+                .quotationEditId;
+
+
+            const quotation =
+              allQuotations.find(
+                item =>
+                  item.id === id
+              );
+
+
+            if (quotation) {
+
+              openQuotationModal(
+                quotation
+              );
+
+            }
+
+          }
+        );
+
+      }
     );
 
 
-  editButtons.forEach(
-    function (button) {
+  document
+    .querySelectorAll(
+      "[data-quotation-delete-id]"
+    )
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        function () {
+        button.addEventListener(
+          "click",
+          () => {
 
-          const id =
-            button.dataset
-              .quotationEditId;
-
-
-          const quotation =
-            allQuotations.find(
-              function (item) {
-
-                return item.id === id;
-
-              }
-            );
-
-
-          if (quotation) {
-
-            openQuotationModal(
-              quotation
+            deleteQuotation(
+              button.dataset
+                .quotationDeleteId
             );
 
           }
+        );
 
-        }
-      );
-
-    }
-  );
-
-
-  const deleteButtons =
-    document.querySelectorAll(
-      "[data-quotation-delete-id]"
+      }
     );
-
-
-  deleteButtons.forEach(
-    function (button) {
-
-      button.addEventListener(
-        "click",
-        function () {
-
-          const id =
-            button.dataset
-              .quotationDeleteId;
-
-
-          deleteQuotation(id);
-
-        }
-      );
-
-    }
-  );
 
 }
 
@@ -974,25 +985,20 @@ async function deleteQuotation(id) {
 
   const quotation =
     allQuotations.find(
-      function (item) {
-
-        return item.id === id;
-
-      }
+      item =>
+        item.id === id
     );
-
-
-  const quotationId =
-    quotation?.quotationId || "";
 
 
   const confirmed =
-    window.confirm(
-      `Delete quotation "${quotationId}"?`
+    confirm(
+      `Delete quotation "${quotation?.quotationId || ""}"?`
     );
 
 
-  if (!confirmed) return;
+  if (!confirmed) {
+    return;
+  }
 
 
   try {
@@ -1019,8 +1025,9 @@ async function deleteQuotation(id) {
     );
 
 
-    window.alert(
-      "Could not delete quotation."
+    alert(
+      "Could not delete quotation: " +
+      error.message
     );
 
   }
@@ -1040,12 +1047,14 @@ function setupQuotationSearch() {
     );
 
 
-  if (!searchBox) return;
+  if (!searchBox) {
+    return;
+  }
 
 
   searchBox.addEventListener(
     "input",
-    function () {
+    () => {
 
       const search =
         searchBox.value
@@ -1066,56 +1075,30 @@ function setupQuotationSearch() {
 
       const filtered =
         allQuotations.filter(
-          function (quotation) {
+          quotation => {
 
-            return (
+            const text = [
 
-              String(
-                quotation.quotationId || ""
-              )
-                .toLowerCase()
-                .includes(search)
+              quotation.quotationId,
 
-              ||
+              quotation.customer,
 
-              String(
-                quotation.customer || ""
-              )
-                .toLowerCase()
-                .includes(search)
+              quotation.packageName,
 
-              ||
+              quotation.destination,
 
-              String(
-                quotation.packageName || ""
-              )
-                .toLowerCase()
-                .includes(search)
+              quotation.status,
 
-              ||
+              quotation.enquiry
 
-              String(
-                quotation.destination || ""
-              )
-                .toLowerCase()
-                .includes(search)
+            ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
 
-              ||
 
-              String(
-                quotation.status || ""
-              )
-                .toLowerCase()
-                .includes(search)
-
-              ||
-
-              String(
-                quotation.enquiry || ""
-              )
-                .toLowerCase()
-                .includes(search)
-
+            return text.includes(
+              search
             );
 
           }
@@ -1133,7 +1116,7 @@ function setupQuotationSearch() {
 
 
 // ======================================================
-// FORM MESSAGE
+// MESSAGE
 // ======================================================
 
 function showQuotationMessage(
@@ -1147,53 +1130,36 @@ function showQuotationMessage(
     );
 
 
-  if (!message) return;
-
-
-  message.textContent =
-    text;
+  if (!message) {
+    return;
+  }
 
 
   message.style.color =
     color;
 
-}
 
-
-// ======================================================
-// VALUE HELPERS
-// ======================================================
-
-function getValue(id) {
-
-  const element =
-    getElement(id);
-
-
-  if (!element) return "";
-
-
-  return String(
-    element.value || ""
-  ).trim();
+  message.textContent =
+    text;
 
 }
 
 
-function setValue(
-  id,
-  value
-) {
+function clearQuotationMessage() {
 
-  const element =
-    getElement(id);
-
-
-  if (!element) return;
+  const message =
+    getElement(
+      "quotationFormMessage"
+    );
 
 
-  element.value =
-    value ?? "";
+  if (!message) {
+    return;
+  }
+
+
+  message.textContent =
+    "";
 
 }
 
