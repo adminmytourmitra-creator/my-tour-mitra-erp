@@ -809,3 +809,331 @@ tbody tr:hover {
   }
 
 }
+
+/* =====================================================
+   QUOTATIONS MODULE
+===================================================== */
+
+.quotation-page-header {
+  margin-bottom: 20px;
+}
+
+.module-description {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+
+.quotation-toolbar {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.search-input {
+  width: 100%;
+  max-width: 600px;
+}
+
+
+.quotation-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+.data-table th,
+.data-table td {
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   QUOTATION MODAL
+===================================================== */
+
+.quotation-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  align-items: flex-start;
+  justify-content: center;
+
+  padding: 25px;
+
+  overflow-y: auto;
+}
+
+
+.quotation-modal-card {
+  width: 100%;
+  max-width: 900px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25);
+
+  margin: auto;
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   MODAL HEADER
+===================================================== */
+
+.quotation-modal-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 22px 28px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  background: #ffffff;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 5;
+}
+
+
+.quotation-modal-header h3 {
+  font-size: 22px;
+
+  color: #111827;
+
+  margin-bottom: 4px;
+}
+
+
+.quotation-modal-header p {
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+
+.quotation-close-btn {
+  width: 36px;
+
+  height: 36px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+
+.quotation-close-btn:hover {
+  background: #e5e7eb;
+
+  color: #111827;
+}
+
+
+/* =====================================================
+   FORM MESSAGE
+===================================================== */
+
+.quotation-form-message {
+  min-height: 20px;
+
+  padding: 12px 28px 0;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   FORM SECTION
+===================================================== */
+
+.quotation-form-section {
+  padding: 24px 28px;
+
+  border-bottom: 1px solid #eef0f4;
+}
+
+
+.quotation-section-title {
+  font-size: 17px;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  margin-bottom: 18px;
+}
+
+
+.quotation-form-section .form-grid {
+  margin-bottom: 0;
+}
+
+
+.quotation-form-section .form-group {
+  margin-bottom: 4px;
+}
+
+
+.quotation-form-section label span {
+  color: #dc2626;
+}
+
+
+/* =====================================================
+   MODAL FOOTER
+===================================================== */
+
+.quotation-modal-footer {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 16px 28px;
+
+  border-top: 1px solid #e5e7eb;
+
+  background: #ffffff;
+
+  position: sticky;
+
+  bottom: 0;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   STATUS BADGES
+===================================================== */
+
+.status-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: #eef2ff;
+
+  color: #3730a3;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   QUOTATION MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .quotation-modal-overlay {
+    padding: 10px;
+  }
+
+
+  .quotation-modal-card {
+    border-radius: 12px;
+  }
+
+
+  .quotation-modal-header {
+    padding: 18px;
+  }
+
+
+  .quotation-form-message {
+    padding-left: 18px;
+
+    padding-right: 18px;
+  }
+
+
+  .quotation-form-section {
+    padding: 18px;
+  }
+
+
+  .quotation-modal-footer {
+    padding: 14px 18px;
+  }
+
+
+  .quotation-modal-header h3 {
+    font-size: 19px;
+  }
+
+}
+
+
+@media (max-width: 550px) {
+
+  .quotation-modal-overlay {
+    padding: 5px;
+  }
+
+
+  .quotation-modal-footer {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+
+  .quotation-modal-footer button {
+    width: 100%;
+  }
+
+}
