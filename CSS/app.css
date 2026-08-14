@@ -1,1 +1,967 @@
+/* =========================================================
+   MY TOUR MITRA ERP
+   DASHBOARD / APPLICATION SHELL STYLES
+   ========================================================= */
 
+
+/* =========================================================
+   1. MAIN APPLICATION
+   ========================================================= */
+
+.screen-app {
+    min-height: 100vh;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background: var(--bg);
+}
+
+
+/* =========================================================
+   2. SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    z-index: 900;
+
+    width: var(--sidebar-width);
+
+    display: flex;
+    flex-direction: column;
+
+    color: #cbd5e1;
+
+    background: #0f172a;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+
+    transition:
+        width 0.25s ease,
+        transform 0.25s ease;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   3. SIDEBAR HEADER
+   ========================================================= */
+
+.sidebar-header {
+    min-height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 16px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.sidebar-brand {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.sidebar-logo-wrapper {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+}
+
+
+.sidebar-logo {
+    width: 100%;
+    height: 100%;
+
+    padding: 5px;
+
+    object-fit: contain;
+}
+
+
+.sidebar-logo-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    background: #2563eb;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.4px;
+}
+
+
+.sidebar-brand-text {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.sidebar-brand-text strong {
+    max-width: 155px;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.sidebar-brand-text span {
+    color: #94a3b8;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 0.6px;
+
+    text-transform: uppercase;
+}
+
+
+.sidebar-close {
+    display: none;
+
+    width: 34px;
+    height: 34px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #94a3b8;
+
+    background: transparent;
+
+    border-radius: 8px;
+
+    font-size: 22px;
+}
+
+
+.sidebar-close:hover {
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   4. MAIN NAVIGATION
+   ========================================================= */
+
+.main-navigation {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 14px 10px;
+}
+
+
+.main-navigation::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+.main-navigation::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.main-navigation::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.14);
+
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   5. NAV ITEM
+   ========================================================= */
+
+.nav-item {
+    width: 100%;
+
+    min-height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 3px;
+
+    padding: 0 12px;
+
+    color: #94a3b8;
+
+    background: transparent;
+
+    border-radius: 9px;
+
+    text-align: left;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.nav-item:hover {
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.07);
+}
+
+
+.nav-item.active {
+    color: #ffffff;
+
+    background: #2563eb;
+
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.20);
+}
+
+
+.nav-item.active:hover {
+    background: #1d4ed8;
+}
+
+
+.nav-icon {
+    width: 22px;
+    height: 22px;
+
+    flex: 0 0 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: currentColor;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+.nav-label {
+    overflow: hidden;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   6. NAV DIVIDER
+   ========================================================= */
+
+.nav-divider {
+    height: 1px;
+
+    margin: 12px 8px;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   7. SIDEBAR USER
+   ========================================================= */
+
+.sidebar-user {
+    min-height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.user-avatar,
+.topbar-user-avatar {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    background: #2563eb;
+
+    font-weight: 700;
+
+    border-radius: 50%;
+}
+
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    font-size: 13px;
+}
+
+
+.sidebar-user-info {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.sidebar-user-info strong {
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.sidebar-user-info span {
+    overflow: hidden;
+
+    margin-top: 1px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.logout-button {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #94a3b8;
+
+    background: transparent;
+
+    border-radius: 7px;
+
+    font-size: 17px;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.logout-button:hover {
+    color: #fca5a5;
+
+    background: rgba(220, 38, 38, 0.12);
+}
+
+
+/* =========================================================
+   8. APPLICATION LAYOUT
+   ========================================================= */
+
+.app-layout {
+    min-width: 0;
+
+    min-height: 100vh;
+
+    width: calc(100% - var(--sidebar-width));
+
+    margin-left: var(--sidebar-width);
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        width 0.25s ease,
+        margin-left 0.25s ease;
+}
+
+
+/* =========================================================
+   9. TOPBAR
+   ========================================================= */
+
+.topbar {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 800;
+
+    min-height: var(--topbar-height);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 0 24px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom: 1px solid var(--border);
+
+    backdrop-filter: blur(10px);
+}
+
+
+.topbar-left {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.sidebar-toggle {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text);
+
+    background: var(--bg-secondary);
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    font-size: 18px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.sidebar-toggle:hover {
+    color: var(--primary);
+
+    background: var(--primary-light);
+
+    border-color: #bfdbfe;
+}
+
+
+/* =========================================================
+   10. PAGE HEADING
+   ========================================================= */
+
+.page-heading {
+    min-width: 0;
+}
+
+
+.page-heading h1 {
+    overflow: hidden;
+
+    color: var(--dark);
+
+    font-size: 20px;
+    font-weight: 750;
+
+    letter-spacing: -0.25px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.page-heading p {
+    margin-top: 1px;
+
+    overflow: hidden;
+
+    color: var(--text-light);
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   11. TOPBAR RIGHT
+   ========================================================= */
+
+.topbar-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.topbar-action {
+    position: relative;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text);
+
+    background: transparent;
+
+    border-radius: 9px;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.topbar-action:hover {
+    color: var(--primary);
+
+    background: var(--primary-light);
+}
+
+
+.topbar-action-icon {
+    font-size: 19px;
+    line-height: 1;
+}
+
+
+.notification-badge {
+    position: absolute;
+
+    top: 2px;
+    right: 1px;
+
+    min-width: 17px;
+    height: 17px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 4px;
+
+    color: #ffffff;
+
+    background: var(--danger);
+
+    border: 2px solid #ffffff;
+
+    border-radius: 999px;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   12. TOPBAR USER
+   ========================================================= */
+
+.topbar-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding-left: 8px;
+}
+
+
+.topbar-user-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    font-size: 12px;
+}
+
+
+.topbar-user-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.topbar-user-info strong {
+    overflow: hidden;
+
+    color: var(--dark);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.topbar-user-info span {
+    margin-top: 1px;
+
+    color: var(--text-light);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   13. MODULE CONTAINER
+   ========================================================= */
+
+.module-container {
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: 0;
+
+    padding: 24px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+/* =========================================================
+   14. MOBILE SIDEBAR OVERLAY
+   ========================================================= */
+
+.sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 850;
+
+    background: rgba(15, 23, 42, 0.48);
+
+    backdrop-filter: blur(2px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   15. TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    :root {
+        --sidebar-width: 235px;
+    }
+
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+
+    .module-container {
+        padding: 20px;
+    }
+
+
+    .sidebar-brand-text strong {
+        max-width: 130px;
+    }
+
+}
+
+
+/* =========================================================
+   16. MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .screen-app {
+        display: block;
+
+        overflow: visible;
+    }
+
+
+    .sidebar {
+        width: min(285px, 85vw);
+
+        transform: translateX(-100%);
+
+        box-shadow:
+            12px 0 30px rgba(15, 23, 42, 0.16);
+    }
+
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+
+    .sidebar-close {
+        display: flex;
+    }
+
+
+    .app-layout {
+        width: 100%;
+
+        min-height: 100vh;
+
+        margin-left: 0;
+    }
+
+
+    .topbar {
+        min-height: var(--topbar-height);
+
+        padding: 0 14px;
+    }
+
+
+    .topbar-left {
+        gap: 9px;
+    }
+
+
+    .sidebar-toggle {
+        width: 36px;
+        height: 36px;
+
+        flex-basis: 36px;
+    }
+
+
+    .page-heading h1 {
+        font-size: 17px;
+    }
+
+
+    .page-heading p {
+        display: none;
+    }
+
+
+    .topbar-user {
+        padding-left: 0;
+    }
+
+
+    .topbar-user-info {
+        display: none;
+    }
+
+
+    .topbar-action {
+        width: 36px;
+        height: 36px;
+    }
+
+
+    .module-container {
+        padding: 16px;
+    }
+
+
+    .sidebar-overlay {
+        display: block;
+    }
+
+}
+
+
+/* =========================================================
+   17. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .topbar {
+        gap: 10px;
+
+        padding: 0 12px;
+    }
+
+
+    .topbar-right {
+        gap: 4px;
+    }
+
+
+    .page-heading h1 {
+        max-width: 150px;
+
+        font-size: 16px;
+    }
+
+
+    .module-container {
+        padding: 12px;
+    }
+
+
+    .topbar-user-avatar {
+        width: 34px;
+        height: 34px;
+
+        flex-basis: 34px;
+    }
+
+}
+
+
+/* =========================================================
+   18. LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1600px) {
+
+    .module-container {
+        padding: 28px 32px;
+    }
+
+
+    .topbar {
+        padding: 0 32px;
+    }
+
+}
+
+
+/* =========================================================
+   19. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sidebar,
+    .app-layout,
+    .sidebar-overlay,
+    .nav-item,
+    .topbar-action,
+    .sidebar-toggle {
+        transition: none;
+    }
+
+}
