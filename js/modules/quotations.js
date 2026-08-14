@@ -15,6 +15,10 @@ import {
 
 import { db, auth } from "../firebase.js";
 
+import {
+  generateQuotationPDF,
+  shareQuotationPDF
+} from "./quotation-pdf.js";
 
 // ======================================================
 // STATE
@@ -3204,26 +3208,34 @@ function renderQuotations(
               <td>
 
                 <button
-                  type="button"
-                  class="edit-btn"
-                  data-quotation-edit-id="${escapeAttribute(
-                    quotation.id
-                  )}"
-                >
-                  Edit
-                </button>
+  class="edit-btn"
+  data-quotation-edit-id="${quotation.id}"
+>
+  Edit
+</button>
 
+<button
+  class="primary-btn"
+  data-quotation-pdf-id="${quotation.id}"
+  style="padding:7px 11px; margin-right:5px;"
+>
+  PDF
+</button>
 
-                <button
-                  type="button"
-                  class="danger-btn"
-                  data-quotation-delete-id="${escapeAttribute(
-                    quotation.id
-                  )}"
-                >
-                  Delete
-                </button>
+<button
+  class="secondary-btn"
+  data-quotation-share-id="${quotation.id}"
+  style="padding:7px 11px; margin-right:5px;"
+>
+  Share
+</button>
 
+<button
+  class="danger-btn"
+  data-quotation-delete-id="${quotation.id}"
+>
+  Delete
+</button>
               </td>
 
             </tr>
@@ -3246,6 +3258,10 @@ function renderQuotations(
 
 function setupQuotationRowActions() {
 
+  // ==================================================
+  // EDIT BUTTON
+  // ==================================================
+
   document
     .querySelectorAll(
       "[data-quotation-edit-id]"
@@ -3265,7 +3281,6 @@ function setupQuotationRowActions() {
                     .quotationEditId
               );
 
-
             if (quotation) {
 
               openQuotationModal(
@@ -3280,6 +3295,98 @@ function setupQuotationRowActions() {
       }
     );
 
+
+  // ==================================================
+  // PDF BUTTON
+  // ==================================================
+
+  document
+    .querySelectorAll(
+      "[data-quotation-pdf-id]"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const quotation =
+              allQuotations.find(
+                (item) =>
+                  item.id ===
+                  button.dataset
+                    .quotationPdfId
+              );
+
+            if (!quotation) {
+
+              alert(
+                "Quotation not found."
+              );
+
+              return;
+
+            }
+
+            generateQuotationPDF(
+              quotation
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  // ==================================================
+  // SHARE BUTTON
+  // ==================================================
+
+  document
+    .querySelectorAll(
+      "[data-quotation-share-id]"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const quotation =
+              allQuotations.find(
+                (item) =>
+                  item.id ===
+                  button.dataset
+                    .quotationShareId
+              );
+
+            if (!quotation) {
+
+              alert(
+                "Quotation not found."
+              );
+
+              return;
+
+            }
+
+            shareQuotationPDF(
+              quotation
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  // ==================================================
+  // DELETE BUTTON
+  // ==================================================
 
   document
     .querySelectorAll(
@@ -3304,7 +3411,6 @@ function setupQuotationRowActions() {
     );
 
 }
-
 
 // ======================================================
 // DELETE QUOTATION
