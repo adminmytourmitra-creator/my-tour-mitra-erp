@@ -1,1 +1,443 @@
+/* =========================================================
+   MY TOUR MITRA ERP
+   LOGIN SCREEN STYLES
+   ========================================================= */
 
+
+/* =========================================================
+   1. LOGIN SCREEN
+   ========================================================= */
+
+.screen-login {
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(37, 99, 235, 0.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(14, 165, 233, 0.10),
+            transparent 35%
+        ),
+        #f8fafc;
+}
+
+
+/* =========================================================
+   2. LOGIN CONTAINER
+   ========================================================= */
+
+.login-container {
+    width: 100%;
+    max-width: 440px;
+
+    margin: auto;
+}
+
+
+/* =========================================================
+   3. LOGIN CARD
+   ========================================================= */
+
+.login-card {
+    width: 100%;
+
+    padding: 38px 36px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.10);
+
+    animation: login-card-enter 0.35s ease;
+}
+
+
+@keyframes login-card-enter {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   4. LOGIN BRAND
+   ========================================================= */
+
+.login-brand {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+
+.login-logo-wrapper {
+    width: 76px;
+    height: 76px;
+
+    margin-bottom: 16px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background: #eff6ff;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 16px;
+}
+
+
+.login-logo {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 8px;
+}
+
+
+.login-logo-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #2563eb;
+
+    background: #eff6ff;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+.login-brand h1 {
+    margin-bottom: 4px;
+
+    color: #0f172a;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    letter-spacing: -0.4px;
+}
+
+
+.login-brand p {
+    color: #64748b;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   5. LOGIN FORM
+   ========================================================= */
+
+.login-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.login-form .form-group {
+    gap: 7px;
+}
+
+
+.login-form .form-group label {
+    color: #334155;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.login-form input {
+    min-height: 46px;
+
+    padding: 11px 13px;
+
+    color: #0f172a;
+
+    background: #ffffff;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.login-form input:hover {
+    border-color: #94a3b8;
+}
+
+
+.login-form input:focus {
+    background: #ffffff;
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+.login-form input::placeholder {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   6. PASSWORD FIELD
+   ========================================================= */
+
+.password-input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.password-input-wrapper input {
+    padding-right: 70px;
+}
+
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 10px;
+
+    transform: translateY(-50%);
+
+    min-height: 30px;
+
+    padding: 0 8px;
+
+    color: #64748b;
+
+    background: transparent;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.password-toggle:hover {
+    color: #2563eb;
+
+    background: #eff6ff;
+}
+
+
+/* =========================================================
+   7. LOGIN ERROR
+   ========================================================= */
+
+.login-form .form-error {
+    padding: 10px 12px;
+
+    color: #b91c1c;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   8. LOGIN BUTTON
+   ========================================================= */
+
+#login-button {
+    min-height: 46px;
+
+    margin-top: 2px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, 0.16);
+}
+
+
+#login-button:hover {
+    box-shadow:
+        0 6px 16px rgba(37, 99, 235, 0.22);
+}
+
+
+#login-button:disabled {
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   9. LOGIN BUTTON LOADER
+   ========================================================= */
+
+#login-button-loader {
+    width: 17px;
+    height: 17px;
+
+    border-width: 2px;
+}
+
+
+/* =========================================================
+   10. MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .screen-login {
+        padding: 16px;
+    }
+
+
+    .login-card {
+        padding: 30px 22px;
+
+        border-radius: 16px;
+    }
+
+
+    .login-logo-wrapper {
+        width: 68px;
+        height: 68px;
+    }
+
+
+    .login-brand {
+        margin-bottom: 26px;
+    }
+
+
+    .login-brand h1 {
+        font-size: 21px;
+    }
+
+
+    .login-brand p {
+        font-size: 12px;
+    }
+
+
+    .login-form {
+        gap: 16px;
+    }
+
+
+    .login-form input {
+        min-height: 44px;
+    }
+
+
+    #login-button {
+        min-height: 44px;
+    }
+
+}
+
+
+/* =========================================================
+   11. VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .screen-login {
+        padding: 10px;
+    }
+
+
+    .login-card {
+        padding: 26px 18px;
+    }
+
+
+    .login-brand h1 {
+        font-size: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   12. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .login-card {
+        animation: none;
+    }
+
+}
