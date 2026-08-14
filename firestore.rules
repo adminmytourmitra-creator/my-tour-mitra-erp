@@ -1,1 +1,263 @@
+rules_version = '2';
 
+service cloud.firestore {
+
+  match /databases/{database}/documents {
+
+    /* =====================================================
+       AUTHENTICATION
+       ===================================================== */
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+
+    /* =====================================================
+       USER DOCUMENT
+       ===================================================== */
+
+    match /users/{userId} {
+
+      // Logged-in users can read their own profile
+      allow read: if isSignedIn()
+                  && request.auth.uid == userId;
+
+      // User creation/update handled by authenticated user
+      // for their own profile
+      allow create: if isSignedIn()
+                    && request.auth.uid == userId;
+
+      allow update: if isSignedIn()
+                    && request.auth.uid == userId;
+
+      allow delete: if false;
+    }
+
+
+    /* =====================================================
+       CUSTOMERS
+       ===================================================== */
+
+    match /customers/{customerId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       ENQUIRIES
+       ===================================================== */
+
+    match /enquiries/{enquiryId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       FOLLOW UPS
+       ===================================================== */
+
+    match /followups/{followupId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       PACKAGES
+       ===================================================== */
+
+    match /packages/{packageId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       HOTELS
+       ===================================================== */
+
+    match /hotels/{hotelId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       CABS
+       ===================================================== */
+
+    match /cabs/{cabId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       AGENCIES
+       ===================================================== */
+
+    match /agencies/{agencyId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       QUOTATIONS
+       ===================================================== */
+
+    match /quotations/{quotationId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       BOOKINGS
+       ===================================================== */
+
+    match /bookings/{bookingId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       INVOICES
+       ===================================================== */
+
+    match /invoices/{invoiceId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       VOUCHERS
+       ===================================================== */
+
+    match /vouchers/{voucherId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       PAYMENTS
+       ===================================================== */
+
+    match /payments/{paymentId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       EXPENSES
+       ===================================================== */
+
+    match /expenses/{expenseId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       PROFIT & LOSS
+       ===================================================== */
+
+    match /profit_loss/{profitId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       TEAM
+       ===================================================== */
+
+    match /team/{teamId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       SETTINGS
+       ===================================================== */
+
+    match /settings/{settingId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       PACKAGE MASTER
+       ===================================================== */
+
+    match /package_master/{packageId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       SUPPLIERS
+       ===================================================== */
+
+    match /suppliers/{supplierId} {
+
+      allow read, create, update: if isSignedIn();
+
+      allow delete: if isSignedIn();
+    }
+
+
+    /* =====================================================
+       DENY EVERYTHING ELSE
+       ===================================================== */
+
+    match /{document=**} {
+
+      allow read, write: if false;
+    }
+  }
+}
