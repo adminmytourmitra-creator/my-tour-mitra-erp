@@ -1,16 +1,19 @@
 <!-- =========================================================
-     MY TOUR MITRA
+     MY TOUR MITRA ERP
      QUOTATIONS MODULE
-     File: quotations.html
-========================================================= -->
+     ========================================================= -->
 
-<div id="quotationsPage" class="module" style="display:none;">
+<section
+    id="quotationsPage"
+    class="module"
+    style="display:none;"
+>
 
     <!-- =====================================================
          PAGE HEADER
-    ====================================================== -->
+         ===================================================== -->
 
-    <div class="page-header">
+    <div class="module-header">
 
         <div>
             <h2>Quotations</h2>
@@ -23,7 +26,7 @@
         <button
             type="button"
             id="addQuotationBtn"
-            class="primary-btn"
+            class="btn btn-primary"
         >
             + Add Quotation
         </button>
@@ -32,770 +35,766 @@
 
 
     <!-- =====================================================
-         SEARCH
-    ====================================================== -->
+         SEARCH / FILTER
+         ===================================================== -->
 
     <div class="quotation-toolbar">
 
-        <input
-            type="text"
-            id="quotationSearch"
-            placeholder="Search quotation ID, customer, package or destination..."
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="quotationSearch"
+                placeholder="Search quotation ID, customer, package or destination..."
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div>
+
+            <select id="quotationStatusFilter">
+
+                <option value="">
+                    All Status
+                </option>
+
+                <option value="Draft">
+                    Draft
+                </option>
+
+                <option value="Sent">
+                    Sent
+                </option>
+
+                <option value="Accepted">
+                    Accepted
+                </option>
+
+                <option value="Rejected">
+                    Rejected
+                </option>
+
+                <option value="Expired">
+                    Expired
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUOTATIONS TABLE
+         ===================================================== -->
+
+    <div class="card quotation-table-card">
+
+        <div class="table-responsive">
+
+            <table
+                class="data-table"
+                id="quotationsTable"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Quotation ID
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Package
+                        </th>
+
+                        <th>
+                            Destination
+                        </th>
+
+                        <th>
+                            Travel Date
+                        </th>
+
+                        <th>
+                            Pax
+                        </th>
+
+                        <th>
+                            Grand Total
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="quotationsTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            class="empty-state"
+                        >
+                            Loading quotations...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ADD / EDIT QUOTATION MODAL
+     ========================================================= -->
+
+<div
+    id="quotationModal"
+    class="modal"
+    style="display:none;"
+>
+
+    <div class="modal-overlay"></div>
+
+
+    <div class="modal-content quotation-modal">
+
+        <!-- =================================================
+             MODAL HEADER
+             ================================================= -->
+
+        <div class="modal-header">
+
+            <div>
+
+                <h3 id="quotationModalTitle">
+                    Add Quotation
+                </h3>
+
+            </div>
+
+            <button
+                type="button"
+                id="closeQuotationModal"
+                class="modal-close"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             FORM
+             ================================================= -->
+
+        <form
+            id="quotationForm"
             autocomplete="off"
         >
 
-    </div>
+            <!-- Hidden ID -->
 
-
-    <!-- =====================================================
-         QUOTATION TABLE
-    ====================================================== -->
-
-    <div class="table-container">
-
-        <table class="data-table quotation-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Quotation ID
-                    </th>
-
-                    <th>
-                        Customer
-                    </th>
-
-                    <th>
-                        Package
-                    </th>
-
-                    <th>
-                        Travel Date
-                    </th>
-
-                    <th>
-                        Pax
-                    </th>
-
-                    <th>
-                        Grand Total
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                    <th>
-                        Actions
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="quotationsTableBody">
-
-                <tr>
-
-                    <td
-                        colspan="8"
-                        class="empty-table"
-                    >
-                        Loading quotations...
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    <!-- =====================================================
-         ADD / EDIT QUOTATION MODAL
-    ====================================================== -->
-
-    <div
-        id="quotationModal"
-        class="modal"
-        style="display:none;"
-    >
-
-        <div class="modal-content quotation-modal-content">
+            <input
+                type="hidden"
+                id="quotationId"
+                name="quotationId"
+            >
 
 
             <!-- =================================================
-                 MODAL HEADER
-            ================================================== -->
+                 CUSTOMER & ENQUIRY
+                 ================================================= -->
 
-            <div class="modal-header">
+            <div class="form-section">
 
-                <div>
+                <h4>
+                    Customer & Enquiry
+                </h4>
 
-                    <h3 id="quotationModalTitle">
-                        Add Quotation
-                    </h3>
 
-                    <p class="modal-subtitle">
-                        Create customer quotation
-                    </p>
+                <div class="form-grid">
+
+                    <!-- CUSTOMER -->
+
+                    <div class="form-group">
+
+                        <label for="quotationCustomer">
+                            Customer Name
+                            <span>*</span>
+                        </label>
+
+                        <select
+                            id="quotationCustomer"
+                            name="customerId"
+                            required
+                        >
+
+                            <option value="">
+                                Select Customer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ENQUIRY -->
+
+                    <div class="form-group">
+
+                        <label for="quotationEnquiry">
+                            Enquiry Reference
+                        </label>
+
+                        <select
+                            id="quotationEnquiry"
+                            name="enquiryId"
+                        >
+
+                            <option value="">
+                                Select Enquiry
+                            </option>
+
+                        </select>
+
+                    </div>
 
                 </div>
-
-
-                <button
-                    type="button"
-                    id="closeQuotationModalBtn"
-                    class="modal-close"
-                >
-                    ×
-                </button>
 
             </div>
 
 
             <!-- =================================================
-                 FORM
-            ================================================== -->
+                 PACKAGE
+                 ================================================= -->
 
-            <form
-                id="quotationForm"
-                autocomplete="off"
-            >
+            <div class="form-section">
 
-                <!-- Hidden document ID -->
+                <h4>
+                    Package / Tour
+                </h4>
 
-                <input
-                    type="hidden"
-                    id="quotationDocId"
-                    name="quotationDocId"
-                >
 
+                <div class="form-grid">
 
-                <!-- =================================================
-                     QUOTATION DETAILS
-                ================================================== -->
+                    <!-- PACKAGE -->
 
-                <div class="form-section">
+                    <div class="form-group">
 
-                    <div class="form-section-title">
-                        Quotation Details
-                    </div>
+                        <label for="quotationPackage">
+                            Package / Tour Name
+                            <span>*</span>
+                        </label>
 
-
-                    <div class="form-grid-2">
-
-
-                        <!-- Customer -->
-
-                        <div class="form-group">
-
-                            <label for="quotationCustomer">
-                                Customer Name
-                                <span>*</span>
-                            </label>
-
-                            <select
-                                id="quotationCustomer"
-                                name="customerId"
-                                required
-                            >
-
-                                <option value="">
-                                    Select Customer
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Enquiry -->
-
-                        <div class="form-group">
-
-                            <label for="quotationEnquiry">
-                                Enquiry Reference
-                            </label>
-
-                            <select
-                                id="quotationEnquiry"
-                                name="enquiryId"
-                            >
-
-                                <option value="">
-                                    Select Enquiry
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Package -->
-
-                        <div class="form-group">
-
-                            <label for="quotationPackage">
-                                Package / Tour Name
-                                <span>*</span>
-                            </label>
-
-                            <select
-                                id="quotationPackage"
-                                name="packageId"
-                                required
-                            >
-
-                                <option value="">
-                                    Select Package
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Destination -->
-
-                        <div class="form-group">
-
-                            <label for="quotationDestination">
-                                Destination
-                            </label>
-
-                            <input
-                                type="text"
-                                id="quotationDestination"
-                                name="destination"
-                                placeholder="Destination"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     TRAVEL DETAILS
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-section-title">
-                        Travel Details
-                    </div>
-
-
-                    <div class="form-grid-4">
-
-
-                        <!-- Start -->
-
-                        <div class="form-group">
-
-                            <label for="quotationStartDate">
-                                Travel Start Date
-                            </label>
-
-                            <input
-                                type="date"
-                                id="quotationStartDate"
-                                name="startDate"
-                            >
-
-                        </div>
-
-
-                        <!-- End -->
-
-                        <div class="form-group">
-
-                            <label for="quotationEndDate">
-                                Travel End Date
-                            </label>
-
-                            <input
-                                type="date"
-                                id="quotationEndDate"
-                                name="endDate"
-                            >
-
-                        </div>
-
-
-                        <!-- Adults -->
-
-                        <div class="form-group">
-
-                            <label for="quotationAdults">
-                                Adults
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationAdults"
-                                name="adults"
-                                min="0"
-                                value="0"
-                            >
-
-                        </div>
-
-
-                        <!-- Children -->
-
-                        <div class="form-group">
-
-                            <label for="quotationChildren">
-                                Children
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationChildren"
-                                name="children"
-                                min="0"
-                                value="0"
-                            >
-
-                        </div>
-
-
-                        <!-- Rooms -->
-
-                        <div class="form-group">
-
-                            <label for="quotationRooms">
-                                Rooms
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationRooms"
-                                name="rooms"
-                                min="0"
-                                value="0"
-                            >
-
-                        </div>
-
-
-                        <!-- Valid Until -->
-
-                        <div class="form-group">
-
-                            <label for="quotationValidUntil">
-                                Valid Until
-                            </label>
-
-                            <input
-                                type="date"
-                                id="quotationValidUntil"
-                                name="validUntil"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     HOTEL DETAILS
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-section-header">
-
-                        <div class="form-section-title">
-                            Hotel Details
-                        </div>
-
-                        <button
-                            type="button"
-                            id="addQuotationHotelBtn"
-                            class="secondary-btn"
+                        <select
+                            id="quotationPackage"
+                            name="packageId"
+                            required
                         >
-                            + Add Hotel
-                        </button>
+
+                            <option value="">
+                                Select Package
+                            </option>
+
+                        </select>
 
                     </div>
 
 
-                    <div
-                        id="quotationHotelsContainer"
-                        class="quotation-repeat-container"
-                    >
+                    <!-- DESTINATION -->
 
-                        <!-- JS will insert hotel rows -->
+                    <div class="form-group">
 
-                    </div>
+                        <label for="quotationDestination">
+                            Destination
+                        </label>
 
-                </div>
-
-
-                <!-- =================================================
-                     CAB / TRANSPORT DETAILS
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-section-header">
-
-                        <div class="form-section-title">
-                            Transportation
-                        </div>
-
-                        <button
-                            type="button"
-                            id="addQuotationCabBtn"
-                            class="secondary-btn"
+                        <input
+                            type="text"
+                            id="quotationDestination"
+                            name="destination"
+                            placeholder="Destination"
+                            readonly
                         >
-                            + Add Cab
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        id="quotationCabsContainer"
-                        class="quotation-repeat-container"
-                    >
-
-                        <!-- JS will insert cab rows -->
 
                     </div>
 
                 </div>
 
 
-                <!-- =================================================
-                     ITINERARY
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-section-title">
-                        Tour Itinerary
-                    </div>
-
-                    <div class="form-help">
-                        Itinerary will come automatically from the selected
-                        Package Master.
-                    </div>
-
-
-                    <div
-                        id="quotationItineraryContainer"
-                        class="quotation-itinerary-container"
-                    >
-
-                        <div class="empty-itinerary">
-                            Select a package to load itinerary.
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     INCLUSIONS / EXCLUSIONS
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-grid-2">
-
-
-                        <!-- Inclusions -->
-
-                        <div class="form-group">
-
-                            <label for="quotationInclusions">
-                                Inclusions
-                            </label>
-
-                            <textarea
-                                id="quotationInclusions"
-                                name="inclusions"
-                                rows="7"
-                                placeholder="One inclusion per line"
-                            ></textarea>
-
-                        </div>
-
-
-                        <!-- Exclusions -->
-
-                        <div class="form-group">
-
-                            <label for="quotationExclusions">
-                                Exclusions
-                            </label>
-
-                            <textarea
-                                id="quotationExclusions"
-                                name="exclusions"
-                                rows="7"
-                                placeholder="One exclusion per line"
-                            ></textarea>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     PRICING
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-section-title">
-                        Pricing
-                    </div>
-
-
-                    <div class="form-grid-2">
-
-
-                        <!-- Package Cost -->
-
-                        <div class="form-group">
-
-                            <label for="quotationPackageCost">
-                                Package Cost
-                                <span>*</span>
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationPackageCost"
-                                name="packageCost"
-                                min="0"
-                                step="0.01"
-                                placeholder="0.00"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Discount -->
-
-                        <div class="form-group">
-
-                            <label for="quotationDiscount">
-                                Discount
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationDiscount"
-                                name="discount"
-                                min="0"
-                                step="0.01"
-                                value="0"
-                            >
-
-                        </div>
-
-
-                        <!-- GST -->
-
-                        <div class="form-group">
-
-                            <label for="quotationGST">
-                                GST
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationGST"
-                                name="gst"
-                                min="0"
-                                step="0.01"
-                                value="0"
-                            >
-
-                        </div>
-
-
-                        <!-- Grand Total -->
-
-                        <div class="form-group">
-
-                            <label for="quotationGrandTotal">
-                                Grand Total
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationGrandTotal"
-                                name="grandTotal"
-                                readonly
-                            >
-
-                        </div>
-
-
-                        <!-- Total Package Cost -->
-
-                        <div class="form-group">
-
-                            <label for="quotationTotalPackageCost">
-                                Total Package Cost
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationTotalPackageCost"
-                                name="totalPackageCost"
-                                readonly
-                            >
-
-                        </div>
-
-
-                        <!-- Per Person -->
-
-                        <div class="form-group">
-
-                            <label for="quotationPerPerson">
-                                Per Person
-                            </label>
-
-                            <input
-                                type="number"
-                                id="quotationPerPerson"
-                                name="perPerson"
-                                readonly
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     STATUS
-                ================================================== -->
-
-                <div class="form-section">
-
-                    <div class="form-grid-2">
-
-
-                        <div class="form-group">
-
-                            <label for="quotationStatus">
-                                Status
-                            </label>
-
-                            <select
-                                id="quotationStatus"
-                                name="status"
-                            >
-
-                                <option value="Draft">
-                                    Draft
-                                </option>
-
-                                <option value="Sent">
-                                    Sent
-                                </option>
-
-                                <option value="Accepted">
-                                    Accepted
-                                </option>
-
-                                <option value="Rejected">
-                                    Rejected
-                                </option>
-
-                                <option value="Expired">
-                                    Expired
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="quotationNotes">
-                                Internal Notes
-                            </label>
-
-                            <textarea
-                                id="quotationNotes"
-                                name="internalNotes"
-                                rows="4"
-                                placeholder="Internal notes..."
-                            ></textarea>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     MESSAGE
-                ================================================== -->
+                <!-- PACKAGE ITINERARY -->
 
                 <div
-                    id="quotationFormMessage"
-                    class="form-message"
-                    style="display:none;"
-                ></div>
+                    id="quotationItineraryPreview"
+                    class="quotation-itinerary-preview"
+                >
+
+                    <div class="preview-empty">
+
+                        Select a package to load itinerary.
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
-                <!-- =================================================
-                     MODAL FOOTER
-                ================================================== -->
+            <!-- =================================================
+                 TRAVEL DETAILS
+                 ================================================= -->
 
-                <div class="modal-footer">
+            <div class="form-section">
+
+                <h4>
+                    Travel Details
+                </h4>
+
+
+                <div class="form-grid four-columns">
+
+                    <!-- START DATE -->
+
+                    <div class="form-group">
+
+                        <label for="quotationStartDate">
+                            Travel Start Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotationStartDate"
+                            name="startDate"
+                        >
+
+                    </div>
+
+
+                    <!-- END DATE -->
+
+                    <div class="form-group">
+
+                        <label for="quotationEndDate">
+                            Travel End Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotationEndDate"
+                            name="endDate"
+                        >
+
+                    </div>
+
+
+                    <!-- ADULTS -->
+
+                    <div class="form-group">
+
+                        <label for="quotationAdults">
+                            Adults
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationAdults"
+                            name="adults"
+                            min="0"
+                            value="1"
+                        >
+
+                    </div>
+
+
+                    <!-- CHILDREN -->
+
+                    <div class="form-group">
+
+                        <label for="quotationChildren">
+                            Children
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationChildren"
+                            name="children"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- ROOMS -->
+
+                    <div class="form-group">
+
+                        <label for="quotationRooms">
+                            Rooms
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationRooms"
+                            name="rooms"
+                            min="0"
+                            value="1"
+                        >
+
+                    </div>
+
+
+                    <!-- VALID UNTIL -->
+
+                    <div class="form-group">
+
+                        <label for="quotationValidUntil">
+                            Valid Until
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotationValidUntil"
+                            name="validUntil"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HOTELS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="section-heading-row">
+
+                    <h4>
+                        Hotel Details
+                    </h4>
 
                     <button
                         type="button"
-                        id="cancelQuotationBtn"
-                        class="secondary-btn"
+                        id="addQuotationHotelBtn"
+                        class="btn btn-secondary btn-small"
                     >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        id="saveQuotationBtn"
-                        class="primary-btn"
-                    >
-                        Save Quotation
+                        + Add Hotel
                     </button>
 
                 </div>
 
-            </form>
 
-        </div>
+                <div
+                    id="quotationHotelsContainer"
+                    class="quotation-repeat-container"
+                >
+
+                    <!-- JS will insert hotel rows -->
+
+                    <div class="repeat-empty">
+
+                        No hotels selected.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CABS / TRANSPORT
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="section-heading-row">
+
+                    <h4>
+                        Transportation
+                    </h4>
+
+                    <button
+                        type="button"
+                        id="addQuotationCabBtn"
+                        class="btn btn-secondary btn-small"
+                    >
+                        + Add Cab
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quotationCabsContainer"
+                    class="quotation-repeat-container"
+                >
+
+                    <!-- JS will insert cab rows -->
+
+                    <div class="repeat-empty">
+
+                        No transportation selected.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PRICING
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <h4>
+                    Quotation Pricing
+                </h4>
+
+
+                <div class="pricing-form-grid">
+
+                    <!-- PACKAGE COST -->
+
+                    <div class="form-group">
+
+                        <label for="quotationPackageCost">
+                            Package Cost
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationPackageCost"
+                            name="packageCost"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+
+                    <!-- DISCOUNT -->
+
+                    <div class="form-group">
+
+                        <label for="quotationDiscount">
+                            Discount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationDiscount"
+                            name="discount"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- GST -->
+
+                    <div class="form-group">
+
+                        <label for="quotationGST">
+                            GST
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationGST"
+                            name="gst"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- GRAND TOTAL -->
+
+                    <div class="form-group">
+
+                        <label for="quotationGrandTotal">
+                            Grand Total
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationGrandTotal"
+                            name="grandTotal"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <!-- PER PERSON -->
+
+                    <div class="form-group">
+
+                        <label for="quotationPerPerson">
+                            Per Person
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotationPerPerson"
+                            name="perPerson"
+                            readonly
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATUS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <h4>
+                    Status
+                </h4>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="quotationStatus">
+                            Quotation Status
+                        </label>
+
+                        <select
+                            id="quotationStatus"
+                            name="status"
+                        >
+
+                            <option value="Draft">
+                                Draft
+                            </option>
+
+                            <option value="Sent">
+                                Sent
+                            </option>
+
+                            <option value="Accepted">
+                                Accepted
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                            <option value="Expired">
+                                Expired
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NOTES
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <h4>
+                    Additional Information
+                </h4>
+
+
+                <div class="form-group">
+
+                    <label for="quotationNotes">
+                        Internal Notes
+                    </label>
+
+                    <textarea
+                        id="quotationNotes"
+                        name="internalNotes"
+                        rows="4"
+                        placeholder="Internal notes..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM ACTIONS
+                 ================================================= -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    id="cancelQuotationBtn"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="saveQuotationBtn"
+                    class="btn btn-primary"
+                >
+                    Save Quotation
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
@@ -804,11 +803,11 @@
 
 <!-- =========================================================
      HOTEL ROW TEMPLATE
-========================================================= -->
+     ========================================================= -->
 
 <template id="quotationHotelTemplate">
 
-    <div class="quotation-repeat-row quotation-hotel-row">
+    <div class="quotation-repeat-row hotel-row">
 
         <div class="form-group">
 
@@ -819,7 +818,7 @@
             <input
                 type="text"
                 class="quotation-hotel-city"
-                placeholder="e.g. Shillong"
+                placeholder="City / Destination"
             >
 
         </div>
@@ -847,13 +846,13 @@
         <div class="form-group">
 
             <label>
-                Room Type
+                Room
             </label>
 
             <input
                 type="text"
                 class="quotation-hotel-room"
-                placeholder="e.g. Deluxe Room"
+                placeholder="Room Type"
             >
 
         </div>
@@ -865,38 +864,18 @@
                 Meal Plan
             </label>
 
-            <select
+            <input
+                type="text"
                 class="quotation-hotel-meal"
+                placeholder="CP / MAP / AP"
             >
-
-                <option value="">
-                    Select
-                </option>
-
-                <option value="EP">
-                    EP
-                </option>
-
-                <option value="CP">
-                    CP
-                </option>
-
-                <option value="MAP">
-                    MAP
-                </option>
-
-                <option value="AP">
-                    AP
-                </option>
-
-            </select>
 
         </div>
 
 
         <button
             type="button"
-            class="danger-btn remove-quotation-hotel"
+            class="btn btn-danger btn-small remove-hotel-btn"
         >
             Remove
         </button>
@@ -908,11 +887,11 @@
 
 <!-- =========================================================
      CAB ROW TEMPLATE
-========================================================= -->
+     ========================================================= -->
 
 <template id="quotationCabTemplate">
 
-    <div class="quotation-repeat-row quotation-cab-row">
+    <div class="quotation-repeat-row cab-row">
 
         <div class="form-group">
 
@@ -942,7 +921,7 @@
             <input
                 type="text"
                 class="quotation-cab-type"
-                readonly
+                placeholder="Vehicle Type"
             >
 
         </div>
@@ -957,7 +936,7 @@
             <input
                 type="text"
                 class="quotation-cab-capacity"
-                readonly
+                placeholder="Capacity"
             >
 
         </div>
@@ -972,7 +951,7 @@
             <input
                 type="text"
                 class="quotation-cab-details"
-                placeholder="Transfer / sightseeing / full tour"
+                placeholder="Details / Remarks"
             >
 
         </div>
@@ -980,7 +959,7 @@
 
         <button
             type="button"
-            class="danger-btn remove-quotation-cab"
+            class="btn btn-danger btn-small remove-cab-btn"
         >
             Remove
         </button>
