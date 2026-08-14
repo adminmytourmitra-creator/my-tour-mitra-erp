@@ -836,3 +836,247 @@ tbody tr:hover {
 #quotationsPage .modal-overlay[style*="flex"] {
   display: flex;
 }
+
+/* =========================================================
+   QUOTATION MODULE
+========================================================= */
+
+.quotation-toolbar {
+  margin: 20px 0;
+}
+
+.quotation-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.quotation-modal {
+  width: 100%;
+  max-width: 1000px;
+  max-height: 94vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+}
+
+.quotation-modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 22px 28px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.quotation-modal-header h3 {
+  font-size: 23px;
+  margin-bottom: 5px;
+}
+
+.quotation-modal-header p {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.quotation-close-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.quotation-close-btn:hover {
+  background: #e5e7eb;
+}
+
+.quotation-form-message {
+  margin: 15px 28px 0;
+  min-height: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.quotation-section {
+  margin: 20px 28px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.quotation-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.quotation-section-title h4 {
+  font-size: 17px;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.quotation-section-title small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.quotation-section-title > span {
+  padding: 5px 9px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.quotation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.quotation-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.quotation-section .form-group {
+  margin-bottom: 0;
+}
+
+.quotation-section .form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.quotation-itinerary {
+  width: 100%;
+}
+
+.quotation-empty-box {
+  padding: 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.quotation-itinerary-day {
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  background: #f9fafb;
+}
+
+.quotation-itinerary-day h5 {
+  margin-bottom: 7px;
+  font-size: 15px;
+  color: #111827;
+}
+
+.quotation-itinerary-day p {
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+.quotation-hotel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quotation-hotel-row {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 100px;
+  gap: 12px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+}
+
+.quotation-add-row-btn {
+  margin-top: 14px;
+}
+
+.quotation-form-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 18px 28px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+#quotationGrandTotal,
+#quotationTotalPackageCost,
+#quotationPerPerson {
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+
+  .quotation-modal-overlay {
+    padding: 10px;
+  }
+
+  .quotation-modal {
+    max-height: 96vh;
+  }
+
+  .quotation-modal-header {
+    padding: 18px;
+  }
+
+  .quotation-section {
+    margin: 14px;
+    padding: 16px;
+  }
+
+  .quotation-grid,
+  .quotation-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quotation-hotel-row {
+    grid-template-columns: 1fr;
+  }
+
+  .quotation-form-actions {
+    padding: 15px;
+  }
+
+}
