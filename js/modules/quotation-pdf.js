@@ -1,448 +1,114 @@
-// ======================================================
-// MY TOUR MITRA
+// ============================================================
+// MY TOUR MITRA ERP
 // QUOTATION PDF GENERATOR
-// ======================================================
+// ============================================================
 //
-// IMPORTANT:
-// Company settings are NOT stored in Firebase Storage.
+// This file ONLY handles quotation PDF generation/sharing.
 //
-// Future Settings page will save company information in:
+// Company Settings will later be connected through:
 // localStorage key = "myTourMitraSettings"
 //
-// Logo and QR code will be stored as Data URLs.
-// This PDF module automatically reads them.
+// Logo and QR Code:
+// Data URL stored in localStorage.
+// NO Firebase Storage required.
 //
-// ======================================================
+// ============================================================
 
 
-// ======================================================
-// SETTINGS STORAGE KEY
-// ======================================================
+// ============================================================
+// SETTINGS
+// ============================================================
 
-const SETTINGS_KEY =
-  "myTourMitraSettings";
-
-
-// ======================================================
-// DEFAULT COMPANY SETTINGS
-// ======================================================
+const SETTINGS_KEY = "myTourMitraSettings";
 
 const DEFAULT_SETTINGS = {
+    companyName: "My Tour Mitra",
+    tagline: "Travel ERP",
 
-  companyName:
-    "My Tour Mitra",
+    logoDataUrl: "",
 
-  tagline:
-    "Travel ERP",
+    phone: "",
+    whatsapp: "",
+    email: "",
+    website: "",
 
-  logoDataUrl:
-    "",
+    address: "",
+    city: "",
+    state: "",
+    country: "India",
+    pincode: "",
 
-  phone:
-    "",
+    gstNumber: "",
+    panNumber: "",
 
-  whatsapp:
-    "",
+    bankName: "",
+    accountName: "",
+    accountNumber: "",
+    ifsc: "",
+    upiId: "",
 
-  email:
-    "",
+    qrCodeDataUrl: "",
 
-  website:
-    "",
-
-  address:
-    "",
-
-  city:
-    "",
-
-  state:
-    "",
-
-  country:
-    "India",
-
-  pincode:
-    "",
-
-  gstNumber:
-    "",
-
-  panNumber:
-    "",
-
-  bankName:
-    "",
-
-  accountName:
-    "",
-
-  accountNumber:
-    "",
-
-  ifsc:
-    "",
-
-  upiId:
-    "",
-
-  qrCodeDataUrl:
-    "",
-
-  quotationTerms:
-    "",
-
-  quotationFooter:
-    ""
-
+    quotationTerms: "",
+    quotationFooter: ""
 };
 
 
-// ======================================================
-// LOAD COMPANY SETTINGS
-// ======================================================
+// ============================================================
+// LOAD SETTINGS
+// ============================================================
 
 function getCompanySettings() {
 
-  try {
+    try {
 
-    const saved =
-      localStorage.getItem(
-        SETTINGS_KEY
-      );
+        const saved = localStorage.getItem(SETTINGS_KEY);
 
-    if (!saved) {
+        if (!saved) {
+            return { ...DEFAULT_SETTINGS };
+        }
 
-      return {
-        ...DEFAULT_SETTINGS
-      };
+        const parsed = JSON.parse(saved);
 
-    }
-
-    const parsed =
-      JSON.parse(saved);
-
-    return {
-
-      ...DEFAULT_SETTINGS,
-
-      ...parsed
-
-    };
-
-  } catch (error) {
-
-    console.error(
-      "Could not load company settings:",
-      error
-    );
-
-    return {
-      ...DEFAULT_SETTINGS
-    };
-
-  }
-
-}
-
-
-// ======================================================
-// LOAD HTML2PDF
-// ======================================================
-
-function loadHtml2Pdf() {
-
-  return new Promise(
-    (resolve, reject) => {
-
-      if (
-        typeof window.html2pdf ===
-        "function"
-      ) {
-
-        resolve(
-          window.html2pdf
-        );
-
-        return;
-
-      }
-
-
-      const existingScript =
-        document.querySelector(
-          'script[data-mytourmitra-html2pdf="true"]'
-        );
-
-
-      if (existingScript) {
-
-        existingScript.addEventListener(
-          "load",
-          () => {
-
-            if (
-              typeof window.html2pdf ===
-              "function"
-            ) {
-
-              resolve(
-                window.html2pdf
-              );
-
-            } else {
-
-              reject(
-                new Error(
-                  "html2pdf loaded but is unavailable."
-                )
-              );
-
-            }
-
-          }
-        );
-
-
-        existingScript.addEventListener(
-          "error",
-          () => {
-
-            reject(
-              new Error(
-                "Could not load html2pdf."
-              )
-            );
-
-          }
-        );
-
-
-        return;
-
-      }
-
-
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-      script.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.12.1/html2pdf.bundle.min.js";
-
-
-      script.async =
-        true;
-
-
-      script.dataset.mytourmitraHtml2pdf =
-        "true";
-
-
-      script.onload =
-        () => {
-
-          if (
-            typeof window.html2pdf ===
-            "function"
-          ) {
-
-            resolve(
-              window.html2pdf
-            );
-
-          } else {
-
-            reject(
-              new Error(
-                "html2pdf library unavailable."
-              )
-            );
-
-          }
-
+        return {
+            ...DEFAULT_SETTINGS,
+            ...parsed
         };
 
+    } catch (error) {
 
-      script.onerror =
-        () => {
+        console.error(
+            "My Tour Mitra Settings Error:",
+            error
+        );
 
-          reject(
-            new Error(
-              "Unable to load PDF library."
-            )
-          );
-
+        return {
+            ...DEFAULT_SETTINGS
         };
-
-
-      document.head.appendChild(
-        script
-      );
-
     }
-  );
-
 }
 
 
-// ======================================================
-// SAFE TEXT
-// ======================================================
+// ============================================================
+// SAFE HTML
+// ============================================================
 
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {
 
-  return String(
-    value ?? ""
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-// ======================================================
-// FORMAT CURRENCY
-// ======================================================
-
-function formatCurrency(
-  value
-) {
-
-  const number =
-    Number(
-      value || 0
-    );
-
-  return (
-    "₹" +
-    number.toLocaleString(
-      "en-IN",
-      {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }
-    )
-  );
-
-}
-
-
-// ======================================================
-// FORMAT DATE
-// ======================================================
-
-function formatDate(
-  value
-) {
-
-  if (!value) {
-
-    return "-";
-
-  }
-
-
-  const date =
-    new Date(
-      value + (
-        String(value).length === 10
-          ? "T00:00:00"
-          : ""
-      )
-    );
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return escapeHtml(
-      value
-    );
-
-  }
-
-
-  return date.toLocaleDateString(
-    "en-IN",
-    {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }
-  );
-
-}
-
-
-// ======================================================
-// GET FIRST AVAILABLE VALUE
-// ======================================================
-
-function firstValue(
-  object,
-  keys,
-  fallback = ""
-) {
-
-  for (
-    const key of keys
-  ) {
-
-    if (
-      object &&
-      object[key] !== undefined &&
-      object[key] !== null &&
-      object[key] !== ""
-    ) {
-
-      return object[key];
-
-    }
-
-  }
-
-
-  return fallback;
-
-}
-
-
-// ======================================================
-// HTML CONTENT CLEANER
-// ======================================================
+// ============================================================
+// RICH TEXT
+// ============================================================
 //
-// Package Master may contain:
+// Package Master itinerary may contain:
 // <ul>
 // <li>
 // <b>
@@ -451,1291 +117,1386 @@ function firstValue(
 // <span>
 // etc.
 //
-// We want the PDF to RENDER the HTML,
-// not print the tags.
+// We want HTML rendered, NOT displayed as text.
+// ============================================================
+
+function renderRichText(value) {
+
+    if (
+        value === undefined ||
+        value === null ||
+        value === ""
+    ) {
+        return "";
+    }
+
+    const container = document.createElement("div");
+
+    container.innerHTML = String(value);
+
+    container
+        .querySelectorAll("script, style")
+        .forEach(element => element.remove());
+
+    return container.innerHTML;
+}
+
+
+// ============================================================
+// DEEP VALUE HELPER
+// ============================================================
 //
-// ======================================================
+// This is important.
+//
+// Different quotation versions may save data like:
+//
+// quotation.packageCost
+// quotation.pricing.packageCost
+// quotation.costing.packageCost
+// quotation.package_cost
+//
+// This function checks all of them.
+// ============================================================
 
-function renderRichText(
-  value
-) {
+function getValue(object, paths, fallback = "") {
 
-  if (
-    value === undefined ||
-    value === null ||
-    value === ""
-  ) {
+    for (const path of paths) {
 
-    return "";
+        if (!path) continue;
 
-  }
+        const parts = path.split(".");
 
+        let current = object;
 
-  const container =
-    document.createElement(
-      "div"
-    );
+        let found = true;
 
+        for (const part of parts) {
 
-  container.innerHTML =
-    String(value);
+            if (
+                current === undefined ||
+                current === null ||
+                current[part] === undefined ||
+                current[part] === null
+            ) {
+                found = false;
+                break;
+            }
 
+            current = current[part];
+        }
 
-  container
-    .querySelectorAll(
-      "script, style"
-    )
-    .forEach(
-      (element) =>
-        element.remove()
-    );
+        if (
+            found &&
+            current !== "" &&
+            current !== null &&
+            current !== undefined
+        ) {
 
+            return current;
+        }
+    }
 
-  return container.innerHTML;
-
+    return fallback;
 }
 
 
-// ======================================================
-// ITINERARY NORMALIZER
-// ======================================================
+// ============================================================
+// NUMBER
+// ============================================================
 
-function getItinerary(
-  quotation
-) {
+function getNumber(object, paths, fallback = 0) {
 
-  const possible =
-    firstValue(
-      quotation,
-      [
-        "itinerary",
-        "packageItinerary",
-        "itineraryDays",
-        "days",
-        "dayWiseItinerary"
-      ],
-      []
+    const value = getValue(
+        object,
+        paths,
+        fallback
     );
 
+    const number = Number(
+        String(value)
+            .replace(/₹/g, "")
+            .replace(/,/g, "")
+            .trim()
+    );
 
-  if (
-    Array.isArray(possible)
-  ) {
-
-    return possible;
-
-  }
-
-
-  if (
-    typeof possible ===
-    "string"
-  ) {
-
-    return [
-      {
-        title:
-          "Tour Itinerary",
-        description:
-          possible
-      }
-    ];
-
-  }
-
-
-  return [];
-
+    return Number.isFinite(number)
+        ? number
+        : fallback;
 }
 
 
-// ======================================================
-// HOTEL NORMALIZER
-// ======================================================
+// ============================================================
+// CURRENCY
+// ============================================================
 
-function getHotels(
-  quotation
-) {
+function formatCurrency(value) {
 
-  const hotels =
-    firstValue(
-      quotation,
-      [
-        "hotels",
-        "hotelDetails",
-        "selectedHotels",
-        "hotelData"
-      ],
-      []
+    const number = Number(value || 0);
+
+    return "₹" + number.toLocaleString(
+        "en-IN",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
     );
-
-
-  if (
-    Array.isArray(hotels)
-  ) {
-
-    return hotels;
-
-  }
-
-
-  if (
-    typeof hotels ===
-    "string" &&
-    hotels.trim()
-  ) {
-
-    return [
-      {
-        hotel:
-          hotels
-      }
-    ];
-
-  }
-
-
-  return [];
-
 }
 
 
-// ======================================================
-// TRANSPORT NORMALIZER
-// ======================================================
+// ============================================================
+// DATE
+// ============================================================
 
-function getTransport(
-  quotation
-) {
+function formatDate(value) {
 
-  const transport =
-    firstValue(
-      quotation,
-      [
-        "transport",
-        "transportation",
-        "cab",
-        "cabDetails",
-        "selectedCab",
-        "vehicle"
-      ],
-      ""
-    );
+    if (!value) {
+        return "-";
+    }
 
+    try {
 
-  if (
-    typeof transport ===
-    "string"
-  ) {
+        const stringValue = String(value);
 
-    return [
-      {
-        vehicle:
-          transport
-      }
-    ];
+        const date = new Date(
+            stringValue.length === 10
+                ? stringValue + "T00:00:00"
+                : stringValue
+        );
 
-  }
+        if (Number.isNaN(date.getTime())) {
+            return escapeHtml(value);
+        }
 
+        return date.toLocaleDateString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
 
-  if (
-    Array.isArray(transport)
-  ) {
-
-    return transport;
-
-  }
-
-
-  if (
-    transport &&
-    typeof transport ===
-    "object"
-  ) {
-
-    return [
-      transport
-    ];
-
-  }
-
-
-  return [];
-
+    } catch {
+        return escapeHtml(value);
+    }
 }
 
 
-// ======================================================
-// GET INCLUSIONS
-// ======================================================
+// ============================================================
+// HTML2PDF LOADER
+// ============================================================
+
+function loadHtml2Pdf() {
+
+    return new Promise((resolve, reject) => {
+
+        if (
+            typeof window.html2pdf === "function"
+        ) {
+
+            resolve(window.html2pdf);
+            return;
+        }
+
+
+        const existingScript =
+            document.querySelector(
+                'script[data-mytourmitra-html2pdf="true"]'
+            );
+
+
+        if (existingScript) {
+
+            existingScript.addEventListener(
+                "load",
+                () => {
+
+                    if (
+                        typeof window.html2pdf ===
+                        "function"
+                    ) {
+
+                        resolve(window.html2pdf);
+
+                    } else {
+
+                        reject(
+                            new Error(
+                                "html2pdf loaded but unavailable."
+                            )
+                        );
+                    }
+                }
+            );
+
+
+            existingScript.addEventListener(
+                "error",
+                () => {
+
+                    reject(
+                        new Error(
+                            "Could not load html2pdf."
+                        )
+                    );
+                }
+            );
+
+            return;
+        }
+
+
+        const script =
+            document.createElement("script");
+
+
+        script.src =
+            "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+
+
+        script.async = true;
+
+
+        script.dataset.mytourmitraHtml2pdf =
+            "true";
+
+
+        script.onload = () => {
+
+            if (
+                typeof window.html2pdf ===
+                "function"
+            ) {
+
+                resolve(window.html2pdf);
+
+            } else {
+
+                reject(
+                    new Error(
+                        "PDF library unavailable."
+                    )
+                );
+            }
+        };
+
+
+        script.onerror = () => {
+
+            reject(
+                new Error(
+                    "Unable to load PDF library."
+                )
+            );
+        };
+
+
+        document.head.appendChild(script);
+
+    });
+}
+
+
+// ============================================================
+// ARRAY NORMALIZER
+// ============================================================
+
+function normalizeArray(value) {
+
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    if (
+        value &&
+        typeof value === "object"
+    ) {
+
+        return Object.values(value);
+    }
+
+    return [];
+}
+
+
+// ============================================================
+// ITINERARY
+// ============================================================
+
+function getItinerary(quotation) {
+
+    const value = getValue(
+        quotation,
+        [
+            "itinerary",
+            "packageItinerary",
+            "itineraryDays",
+            "days",
+            "dayWiseItinerary",
+            "package.itinerary",
+            "package.itineraryDays",
+            "package.days"
+        ],
+        []
+    );
+
+    return normalizeArray(value);
+}
+
+
+// ============================================================
+// HOTELS
+// ============================================================
+
+function getHotels(quotation) {
+
+    const value = getValue(
+        quotation,
+        [
+            "hotels",
+            "hotelDetails",
+            "selectedHotels",
+            "hotelData",
+            "hotelSelections",
+            "packageHotels"
+        ],
+        []
+    );
+
+    return normalizeArray(value);
+}
+
+
+// ============================================================
+// TRANSPORT
+// ============================================================
+
+function getTransport(quotation) {
+
+    const value = getValue(
+        quotation,
+        [
+            "transportation",
+            "transport",
+            "cabDetails",
+            "selectedCabs",
+            "selectedCab",
+            "cab",
+            "vehicle",
+            "vehicles"
+        ],
+        []
+    );
+
+
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+
+    if (
+        value &&
+        typeof value === "object"
+    ) {
+
+        return [value];
+    }
+
+
+    if (
+        typeof value === "string" &&
+        value.trim()
+    ) {
+
+        return [
+            {
+                vehicle: value
+            }
+        ];
+    }
+
+
+    return [];
+}
+
+
+// ============================================================
+// INCLUSIONS / EXCLUSIONS
+// ============================================================
 
 function getList(
-  quotation,
-  keys
+    quotation,
+    paths
 ) {
 
-  const value =
-    firstValue(
-      quotation,
-      keys,
-      []
-    );
+    const value =
+        getValue(
+            quotation,
+            paths,
+            []
+        );
 
 
-  if (
-    Array.isArray(value)
-  ) {
-
-    return value;
-
-  }
+    if (Array.isArray(value)) {
+        return value;
+    }
 
 
-  if (
-    typeof value ===
-    "string"
-  ) {
+    if (
+        typeof value === "string"
+    ) {
 
-    return value
-      .split(/\r?\n/)
-      .map(
-        item =>
-          item.trim()
-      )
-      .filter(Boolean);
-
-  }
+        return value
+            .split(/\r?\n/)
+            .map(item => item.trim())
+            .filter(Boolean);
+    }
 
 
-  return [];
-
+    return [];
 }
 
 
-// ======================================================
+// ============================================================
 // LOGO
-// ======================================================
+// ============================================================
 
-function getLogo(
-  settings
-) {
+function getLogo(settings) {
 
-  return firstValue(
-    settings,
-    [
-      "logoDataUrl",
-      "companyLogo",
-      "logo",
-      "logoUrl"
-    ],
-    ""
-  );
-
+    return getValue(
+        settings,
+        [
+            "logoDataUrl",
+            "companyLogo",
+            "logo",
+            "logoUrl"
+        ],
+        ""
+    );
 }
 
 
-// ======================================================
-// QR CODE
-// ======================================================
+// ============================================================
+// QR
+// ============================================================
 
-function getQrCode(
-  settings
-) {
+function getQrCode(settings) {
 
-  return firstValue(
-    settings,
-    [
-      "qrCodeDataUrl",
-      "upiQrCode",
-      "qrCode",
-      "paymentQr"
-    ],
-    ""
-  );
-
+    return getValue(
+        settings,
+        [
+            "qrCodeDataUrl",
+            "upiQrCode",
+            "qrCode",
+            "paymentQr"
+        ],
+        ""
+    );
 }
 
 
-// ======================================================
+// ============================================================
 // COMPANY ADDRESS
-// ======================================================
+// ============================================================
 
-function getCompanyAddress(
-  settings
-) {
+function getCompanyAddress(settings) {
 
-  const parts = [
-
-    settings.address,
-
-    settings.city,
-
-    settings.state,
-
-    settings.pincode,
-
-    settings.country
-
-  ];
-
-
-  return parts
-    .filter(
-      item =>
-        item !== undefined &&
-        item !== null &&
-        String(item).trim() !== ""
-    )
-    .join(", ");
-
+    return [
+        settings.address,
+        settings.city,
+        settings.state,
+        settings.pincode,
+        settings.country
+    ]
+        .filter(
+            value =>
+                value !== undefined &&
+                value !== null &&
+                String(value).trim() !== ""
+        )
+        .join(", ");
 }
 
 
-// ======================================================
-// COMPANY CONTACT LINE
-// ======================================================
+// ============================================================
+// COMPANY CONTACT
+// ============================================================
 
-function getContactLine(
-  settings
-) {
+function getContactLine(settings) {
 
-  const parts = [];
+    const parts = [];
 
+    if (settings.phone) {
+        parts.push(
+            `Phone: ${settings.phone}`
+        );
+    }
 
-  if (
-    settings.phone
-  ) {
+    if (settings.whatsapp) {
+        parts.push(
+            `WhatsApp: ${settings.whatsapp}`
+        );
+    }
 
-    parts.push(
-      `Phone: ${settings.phone}`
-    );
+    if (settings.email) {
+        parts.push(
+            `Email: ${settings.email}`
+        );
+    }
 
-  }
+    if (settings.website) {
+        parts.push(
+            `Website: ${settings.website}`
+        );
+    }
 
-
-  if (
-    settings.whatsapp
-  ) {
-
-    parts.push(
-      `WhatsApp: ${settings.whatsapp}`
-    );
-
-  }
-
-
-  if (
-    settings.email
-  ) {
-
-    parts.push(
-      `Email: ${settings.email}`
-    );
-
-  }
-
-
-  if (
-    settings.website
-  ) {
-
-    parts.push(
-      `Website: ${settings.website}`
-    );
-
-  }
-
-
-  return parts.join(
-    "  |  "
-  );
-
+    return parts.join("  |  ");
 }
 
 
-// ======================================================
+// ============================================================
 // QUOTATION HTML
-// ======================================================
-
-function buildQuotationHTML(
-  quotation
-) {
-
-  const settings =
-    getCompanySettings();
-
-
-  const logo =
-    getLogo(
-      settings
-    );
-
-
-  const qrCode =
-    getQrCode(
-      settings
-    );
-
-
-  const quotationId =
-    firstValue(
-      quotation,
-      [
-        "quotationId",
-        "id"
-      ],
-      "-"
-    );
-
-
-  const customer =
-    firstValue(
-      quotation,
-      [
-        "customer",
-        "customerName",
-        "name"
-      ],
-      "-"
-    );
-
-
-  const enquiry =
-    firstValue(
-      quotation,
-      [
-        "enquiry",
-        "enquiryId",
-        "enquiryReference"
-      ],
-      ""
-    );
-
-
-  const packageName =
-    firstValue(
-      quotation,
-      [
-        "packageName",
-        "package",
-        "tourName"
-      ],
-      "-"
-    );
-
-
-  const destination =
-    firstValue(
-      quotation,
-      [
-        "destination",
-        "destinations"
-      ],
-      "-"
-    );
-
-
-  const startDate =
-    firstValue(
-      quotation,
-      [
-        "startDate",
-        "travelStartDate"
-      ],
-      ""
-    );
-
-
-  const endDate =
-    firstValue(
-      quotation,
-      [
-        "endDate",
-        "travelEndDate"
-      ],
-      ""
-    );
-
-
-  const adults =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "adults"
-        ],
-        0
-      )
-    );
-
-
-  const children =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "children"
-        ],
-        0
-      )
-    );
-
-
-  const rooms =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "rooms"
-        ],
-        0
-      )
-    );
-
-
-  const pax =
-    adults +
-    children;
-
-
-  const packageCost =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "packageCost",
-          "cost",
-          "baseCost",
-          "totalPackageCost"
-        ],
-        0
-      )
-    );
-
-
-  const discount =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "discount"
-        ],
-        0
-      )
-    );
-
-
-  const gst =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "gst",
-          "gstAmount"
-        ],
-        0
-      )
-    );
-
-
-  const grandTotal =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "grandTotal",
-          "total",
-          "totalAmount"
-        ],
-        packageCost -
-        discount +
-        gst
-      )
-    );
-
-
-  const perPerson =
-    Number(
-      firstValue(
-        quotation,
-        [
-          "perPerson",
-          "perPersonAmount"
-        ],
-        pax > 0
-          ? grandTotal / pax
-          : 0
-      )
-    );
-
-
-  const itinerary =
-    getItinerary(
-      quotation
-    );
-
-
-  const hotels =
-    getHotels(
-      quotation
-    );
-
-
-  const transport =
-    getTransport(
-      quotation
-    );
-
-
-  const inclusions =
-    getList(
-      quotation,
-      [
-        "inclusions",
-        "included"
-      ]
-    );
-
-
-  const exclusions =
-    getList(
-      quotation,
-      [
-        "exclusions",
-        "excluded"
-      ]
-    );
-
-
-  const terms =
-    firstValue(
-      quotation,
-      [
-        "terms",
-        "termsAndConditions"
-      ],
-      settings.quotationTerms
-    );
-
-
-  const contactLine =
-    getContactLine(
-      settings
-    );
-
-
-  const companyAddress =
-    getCompanyAddress(
-      settings
-    );
-
-
-  // ==================================================
-  // LOGO HTML
-  // ==================================================
-
-  const logoHTML =
-    logo
-      ? `
-        <img
-          src="${escapeHtml(logo)}"
-          class="company-logo"
-          alt="Company Logo"
-        >
-      `
-      : `
-        <div class="logo-placeholder">
-          ${escapeHtml(
-            settings.companyName ||
-            "My Tour Mitra"
-          )}
-        </div>
-      `;
-
-
-  // ==================================================
-  // HOTEL HTML
-  // ==================================================
-
-  const hotelHTML =
-    hotels.length
-      ? hotels
-          .map(
-            (hotel, index) => {
-
-              if (
-                typeof hotel ===
-                "string"
-              ) {
-
-                return `
-                  <tr>
-                    <td>
-                      ${escapeHtml(
-                        String(index + 1)
-                      )}
-                    </td>
-                    <td colspan="3">
-                      ${escapeHtml(
-                        hotel
-                      )}
-                    </td>
-                  </tr>
-                `;
-
-              }
-
-
-              const city =
-                firstValue(
-                  hotel,
-                  [
-                    "city",
-                    "destination",
-                    "location"
-                  ],
-                  "-"
-                );
-
-
-              const hotelName =
-                firstValue(
-                  hotel,
-                  [
-                    "hotel",
-                    "hotelName",
-                    "name"
-                  ],
-                  "-"
-                );
-
-
-              const room =
-                firstValue(
-                  hotel,
-                  [
-                    "room",
-                    "roomType",
-                    "rooms"
-                  ],
-                  "-"
-                );
-
-
-              const meal =
-                firstValue(
-                  hotel,
-                  [
-                    "meal",
-                    "mealPlan",
-                    "meals"
-                  ],
-                  "-"
-                );
-
-
-              return `
-                <tr>
-
-                  <td>
-                    ${escapeHtml(
-                      city
-                    )}
-                  </td>
-
-                  <td>
-                    <strong>
-                      ${escapeHtml(
-                        hotelName
-                      )}
-                    </strong>
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      room
-                    )}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      meal
-                    )}
-                  </td>
-
-                </tr>
-              `;
-
-            }
-          )
-          .join("")
-      : `
-        <tr>
-          <td
-            colspan="4"
-            class="muted-cell"
-          >
-            No hotel details added.
-          </td>
-        </tr>
-      `;
-
-
-  // ==================================================
-  // TRANSPORT HTML
-  // ==================================================
-
-  const transportHTML =
-    transport.length
-      ? transport
-          .map(
-            (item) => {
-
-              if (
-                typeof item ===
-                "string"
-              ) {
-
-                return `
-                  <tr>
-                    <td colspan="4">
-                      ${escapeHtml(
-                        item
-                      )}
-                    </td>
-                  </tr>
-                `;
-
-              }
-
-
-              const vehicle =
-                firstValue(
-                  item,
-                  [
-                    "vehicle",
-                    "vehicleName",
-                    "cab",
-                    "cabName",
-                    "name"
-                  ],
-                  "-"
-                );
-
-
-              const category =
-                firstValue(
-                  item,
-                  [
-                    "category",
-                    "type",
-                    "vehicleType"
-                  ],
-                  "-"
-                );
-
-
-              const capacity =
-                firstValue(
-                  item,
-                  [
-                    "capacity",
-                    "pax",
-                    "seating"
-                  ],
-                  "-"
-                );
-
-
-              const details =
-                firstValue(
-                  item,
-                  [
-                    "details",
-                    "description"
-                  ],
-                  "-"
-                );
-
-
-              return `
-                <tr>
-
-                  <td>
-                    <strong>
-                      ${escapeHtml(
-                        vehicle
-                      )}
-                    </strong>
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      category
-                    )}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      capacity
-                    )}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      details
-                    )}
-                  </td>
-
-                </tr>
-              `;
-
-            }
-          )
-          .join("")
-      : `
-        <tr>
-          <td
-            colspan="4"
-            class="muted-cell"
-          >
-            No transportation details added.
-          </td>
-        </tr>
-      `;
-
-
-  // ==================================================
-  // ITINERARY HTML
-  // ==================================================
-
-  const itineraryHTML =
-    itinerary.length
-      ? itinerary
-          .map(
-            (day, index) => {
-
-              if (
-                typeof day ===
-                "string"
-              ) {
-
-                return `
-                  <div
-                    class="itinerary-day"
-                  >
-
-                    <div
-                      class="day-heading"
-                    >
-                      Day ${index + 1}
-                    </div>
-
-                    <div
-                      class="day-description"
-                    >
-                      ${renderRichText(
-                        day
-                      )}
-                    </div>
-
-                  </div>
-                `;
-
-              }
-
-
-              const dayNumber =
-                firstValue(
-                  day,
-                  [
-                    "day",
-                    "dayNumber",
-                    "number"
-                  ],
-                  index + 1
-                );
-
-
-              const title =
-                firstValue(
-                  day,
-                  [
-                    "title",
-                    "heading",
-                    "name",
-                    "dayTitle"
-                  ],
-                  ""
-                );
-
-
-              const description =
-                firstValue(
-                  day,
-                  [
-                    "description",
-                    "details",
-                    "content",
-                    "itinerary"
-                  ],
-                  ""
-                );
-
-
-              return `
-                <div
-                  class="itinerary-day"
+// ============================================================
+
+function buildQuotationHTML(quotation) {
+
+    const settings =
+        getCompanySettings();
+
+
+    // --------------------------------------------------------
+    // BASIC DETAILS
+    // --------------------------------------------------------
+
+    const quotationId =
+        getValue(
+            quotation,
+            [
+                "quotationId",
+                "quotationID",
+                "id"
+            ],
+            "-"
+        );
+
+
+    const customer =
+        getValue(
+            quotation,
+            [
+                "customerName",
+                "customer",
+                "customer.name",
+                "name"
+            ],
+            "-"
+        );
+
+
+    const enquiry =
+        getValue(
+            quotation,
+            [
+                "enquiryReference",
+                "enquiryId",
+                "enquiry",
+                "enquiry.id",
+                "enquiry.reference"
+            ],
+            "-"
+        );
+
+
+    const packageName =
+        getValue(
+            quotation,
+            [
+                "packageName",
+                "package",
+                "tourName",
+                "package.name"
+            ],
+            "-"
+        );
+
+
+    const destination =
+        getValue(
+            quotation,
+            [
+                "destination",
+                "destinations",
+                "packageDestination",
+                "package.destination"
+            ],
+            "-"
+        );
+
+
+    const startDate =
+        getValue(
+            quotation,
+            [
+                "travelStartDate",
+                "startDate",
+                "travel.startDate"
+            ],
+            ""
+        );
+
+
+    const endDate =
+        getValue(
+            quotation,
+            [
+                "travelEndDate",
+                "endDate",
+                "travel.endDate"
+            ],
+            ""
+        );
+
+
+    const adults =
+        getNumber(
+            quotation,
+            [
+                "adults",
+                "adultCount",
+                "pax.adults",
+                "travel.adults"
+            ],
+            0
+        );
+
+
+    const children =
+        getNumber(
+            quotation,
+            [
+                "children",
+                "childCount",
+                "pax.children",
+                "travel.children"
+            ],
+            0
+        );
+
+
+    const rooms =
+        getNumber(
+            quotation,
+            [
+                "rooms",
+                "roomCount",
+                "travel.rooms"
+            ],
+            0
+        );
+
+
+    const pax =
+        getNumber(
+            quotation,
+            [
+                "pax",
+                "totalPax",
+                "passengers"
+            ],
+            adults + children
+        );
+
+
+    // --------------------------------------------------------
+    // PRICING
+    // --------------------------------------------------------
+
+    const packageCost =
+        getNumber(
+            quotation,
+            [
+                "packageCost",
+                "package_cost",
+                "cost",
+                "baseCost",
+                "totalPackageCost",
+                "pricing.packageCost",
+                "pricing.package_cost",
+                "pricing.cost",
+                "pricing.baseCost",
+                "costing.packageCost",
+                "costing.package_cost",
+                "amount.packageCost"
+            ],
+            0
+        );
+
+
+    const discount =
+        getNumber(
+            quotation,
+            [
+                "discount",
+                "discountAmount",
+                "pricing.discount",
+                "pricing.discountAmount",
+                "costing.discount"
+            ],
+            0
+        );
+
+
+    const gst =
+        getNumber(
+            quotation,
+            [
+                "gst",
+                "gstAmount",
+                "gstValue",
+                "pricing.gst",
+                "pricing.gstAmount",
+                "costing.gst"
+            ],
+            0
+        );
+
+
+    const grandTotal =
+        getNumber(
+            quotation,
+            [
+                "grandTotal",
+                "totalAmount",
+                "total",
+                "finalAmount",
+                "pricing.grandTotal",
+                "pricing.totalAmount",
+                "pricing.total",
+                "costing.grandTotal"
+            ],
+            packageCost - discount + gst
+        );
+
+
+    const perPerson =
+        getNumber(
+            quotation,
+            [
+                "perPerson",
+                "perPersonAmount",
+                "pricePerPerson",
+                "pricing.perPerson",
+                "pricing.perPersonAmount"
+            ],
+            pax > 0
+                ? grandTotal / pax
+                : 0
+        );
+
+
+    // --------------------------------------------------------
+    // DATA
+    // --------------------------------------------------------
+
+    const itinerary =
+        getItinerary(quotation);
+
+
+    const hotels =
+        getHotels(quotation);
+
+
+    const transport =
+        getTransport(quotation);
+
+
+    const inclusions =
+        getList(
+            quotation,
+            [
+                "inclusions",
+                "included",
+                "packageInclusions"
+            ]
+        );
+
+
+    const exclusions =
+        getList(
+            quotation,
+            [
+                "exclusions",
+                "excluded",
+                "packageExclusions"
+            ]
+        );
+
+
+    const terms =
+        getValue(
+            quotation,
+            [
+                "terms",
+                "termsAndConditions"
+            ],
+            settings.quotationTerms
+        );
+
+
+    const logo =
+        getLogo(settings);
+
+
+    const qrCode =
+        getQrCode(settings);
+
+
+    const companyAddress =
+        getCompanyAddress(settings);
+
+
+    const contactLine =
+        getContactLine(settings);
+
+
+    // ========================================================
+    // LOGO
+    // ========================================================
+
+    const logoHTML =
+        logo
+            ? `
+                <img
+                    src="${escapeHtml(logo)}"
+                    class="company-logo"
+                    alt="My Tour Mitra Logo"
                 >
+            `
+            : `
+                <div class="logo-placeholder">
+                    My Tour<br>Mitra
+                </div>
+            `;
 
-                  <div
-                    class="day-heading"
-                  >
 
-                    Day ${escapeHtml(
-                      dayNumber
-                    )}
+    // ========================================================
+    // TRANSPORT HTML
+    // ========================================================
 
-                    ${
-                      title
-                        ? `
-                          <span>
-                            — ${escapeHtml(
-                              title
-                            )}
-                          </span>
-                        `
-                        : ""
+    const transportHTML =
+        transport.length
+            ? transport
+                .map(item => {
+
+                    if (
+                        typeof item === "string"
+                    ) {
+
+                        return `
+                            <tr>
+                                <td>
+                                    ${escapeHtml(item)}
+                                </td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        `;
                     }
 
-                  </div>
+
+                    const vehicle =
+                        getValue(
+                            item,
+                            [
+                                "vehicleName",
+                                "vehicle",
+                                "cabName",
+                                "cab",
+                                "name",
+                                "vehicle.name"
+                            ],
+                            "-"
+                        );
 
 
-                  <div
-                    class="day-description"
-                  >
+                    const type =
+                        getValue(
+                            item,
+                            [
+                                "vehicleType",
+                                "type",
+                                "category",
+                                "cabType",
+                                "vehicleCategory"
+                            ],
+                            "-"
+                        );
 
-                    ${renderRichText(
-                      description
-                    )}
 
-                  </div>
+                    const capacity =
+                        getValue(
+                            item,
+                            [
+                                "capacity",
+                                "seatingCapacity",
+                                "pax",
+                                "seating",
+                                "vehicleCapacity"
+                            ],
+                            "-"
+                        );
+
+
+                    const details =
+                        getValue(
+                            item,
+                            [
+                                "details",
+                                "description",
+                                "remarks",
+                                "note"
+                            ],
+                            "-"
+                        );
+
+
+                    return `
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    ${escapeHtml(vehicle)}
+                                </strong>
+                            </td>
+
+                            <td>
+                                ${escapeHtml(type)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(capacity)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(details)}
+                            </td>
+
+                        </tr>
+                    `;
+
+                })
+                .join("")
+            : `
+                <tr>
+                    <td colspan="4" class="muted">
+                        Transportation details not added.
+                    </td>
+                </tr>
+            `;
+
+
+    // ========================================================
+    // HOTEL HTML
+    // ========================================================
+
+    const hotelHTML =
+        hotels.length
+            ? hotels
+                .map(hotel => {
+
+                    if (
+                        typeof hotel === "string"
+                    ) {
+
+                        return `
+                            <tr>
+
+                                <td>-</td>
+
+                                <td>
+                                    <strong>
+                                        ${escapeHtml(hotel)}
+                                    </strong>
+                                </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            </tr>
+                        `;
+                    }
+
+
+                    const city =
+                        getValue(
+                            hotel,
+                            [
+                                "destination",
+                                "city",
+                                "location",
+                                "place",
+                                "destinationName"
+                            ],
+                            "-"
+                        );
+
+
+                    const hotelName =
+                        getValue(
+                            hotel,
+                            [
+                                "hotelName",
+                                "hotel",
+                                "name",
+                                "propertyName",
+                                "selectedHotel",
+                                "hotel.name"
+                            ],
+                            "-"
+                        );
+
+
+                    const room =
+                        getValue(
+                            hotel,
+                            [
+                                "roomType",
+                                "room",
+                                "roomCategory",
+                                "rooms",
+                                "category"
+                            ],
+                            "-"
+                        );
+
+
+                    const meal =
+                        getValue(
+                            hotel,
+                            [
+                                "mealPlan",
+                                "meal",
+                                "meals",
+                                "mealType"
+                            ],
+                            "-"
+                        );
+
+
+                    return `
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(city)}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    ${escapeHtml(hotelName)}
+                                </strong>
+                            </td>
+
+                            <td>
+                                ${escapeHtml(room)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(meal)}
+                            </td>
+
+                        </tr>
+                    `;
+
+                })
+                .join("")
+            : `
+                <tr>
+                    <td colspan="4" class="muted">
+                        Hotel details not added.
+                    </td>
+                </tr>
+            `;
+
+
+    // ========================================================
+    // ITINERARY HTML
+    // ========================================================
+
+    const itineraryHTML =
+        itinerary.length
+            ? itinerary
+                .map((day, index) => {
+
+                    if (
+                        typeof day === "string"
+                    ) {
+
+                        return `
+                            <div class="itinerary-day">
+
+                                <div class="day-heading">
+                                    Day ${index + 1}
+                                </div>
+
+                                <div class="day-description">
+                                    ${renderRichText(day)}
+                                </div>
+
+                            </div>
+                        `;
+                    }
+
+
+                    const dayNumber =
+                        getValue(
+                            day,
+                            [
+                                "dayNumber",
+                                "day",
+                                "number"
+                            ],
+                            index + 1
+                        );
+
+
+                    const title =
+                        getValue(
+                            day,
+                            [
+                                "title",
+                                "heading",
+                                "name",
+                                "dayTitle"
+                            ],
+                            ""
+                        );
+
+
+                    const description =
+                        getValue(
+                            day,
+                            [
+                                "description",
+                                "details",
+                                "content",
+                                "itinerary",
+                                "activities",
+                                "plan"
+                            ],
+                            ""
+                        );
+
+
+                    return `
+                        <div class="itinerary-day">
+
+                            <div class="day-heading">
+
+                                Day ${escapeHtml(dayNumber)}
+
+                                ${
+                                    title
+                                        ? `
+                                            <span>
+                                                — ${escapeHtml(title)}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+                            <div class="day-description">
+
+                                ${renderRichText(description)}
+
+                            </div>
+
+                        </div>
+                    `;
+
+                })
+                .join("")
+            : `
+                <div class="empty-box">
+                    Itinerary details are not available.
+                </div>
+            `;
+
+
+    // ========================================================
+    // INCLUSIONS
+    // ========================================================
+
+    const inclusionHTML =
+        inclusions.length
+            ? `
+                <ul>
+                    ${
+                        inclusions
+                            .map(
+                                item =>
+                                    `<li>${escapeHtml(item)}</li>`
+                            )
+                            .join("")
+                    }
+                </ul>
+            `
+            : `<div class="muted">-</div>`;
+
+
+    // ========================================================
+    // EXCLUSIONS
+    // ========================================================
+
+    const exclusionHTML =
+        exclusions.length
+            ? `
+                <ul>
+                    ${
+                        exclusions
+                            .map(
+                                item =>
+                                    `<li>${escapeHtml(item)}</li>`
+                            )
+                            .join("")
+                    }
+                </ul>
+            `
+            : `<div class="muted">-</div>`;
+
+
+    // ========================================================
+    // PAYMENT DETAILS
+    // ========================================================
+
+    const paymentAvailable =
+        settings.bankName ||
+        settings.accountName ||
+        settings.accountNumber ||
+        settings.ifsc ||
+        settings.upiId ||
+        qrCode;
+
+
+    const paymentHTML =
+        paymentAvailable
+            ? `
+                <div class="payment-grid">
+
+                    <div class="payment-info">
+
+                        ${
+                            settings.bankName
+                                ? `
+                                    <div>
+                                        <strong>Bank:</strong>
+                                        ${escapeHtml(settings.bankName)}
+                                    </div>
+                                `
+                                : ""
+                        }
+
+                        ${
+                            settings.accountName
+                                ? `
+                                    <div>
+                                        <strong>Account Name:</strong>
+                                        ${escapeHtml(settings.accountName)}
+                                    </div>
+                                `
+                                : ""
+                        }
+
+                        ${
+                            settings.accountNumber
+                                ? `
+                                    <div>
+                                        <strong>Account Number:</strong>
+                                        ${escapeHtml(settings.accountNumber)}
+                                    </div>
+                                `
+                                : ""
+                        }
+
+                        ${
+                            settings.ifsc
+                                ? `
+                                    <div>
+                                        <strong>IFSC:</strong>
+                                        ${escapeHtml(settings.ifsc)}
+                                    </div>
+                                `
+                                : ""
+                        }
+
+                        ${
+                            settings.upiId
+                                ? `
+                                    <div>
+                                        <strong>UPI ID:</strong>
+                                        ${escapeHtml(settings.upiId)}
+                                    </div>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    ${
+                        qrCode
+                            ? `
+                                <div class="qr-box">
+
+                                    <div class="qr-title">
+                                        Scan & Pay
+                                    </div>
+
+                                    <img
+                                        src="${escapeHtml(qrCode)}"
+                                        class="qr-image"
+                                        alt="Payment QR"
+                                    >
+
+                                </div>
+                            `
+                            : ""
+                    }
 
                 </div>
-              `;
-
-            }
-          )
-          .join("")
-      : `
-        <div class="empty-section">
-          Itinerary details are not available.
-        </div>
-      `;
-
-
-  // ==================================================
-  // INCLUSIONS
-  // ==================================================
-
-  const inclusionHTML =
-    inclusions.length
-      ? `
-        <ul>
-          ${inclusions
-            .map(
-              item =>
-                `<li>${escapeHtml(item)}</li>`
-            )
-            .join("")}
-        </ul>
-      `
-      : `
-        <p class="muted-cell">
-          -
-        </p>
-      `;
-
-
-  // ==================================================
-  // EXCLUSIONS
-  // ==================================================
-
-  const exclusionHTML =
-    exclusions.length
-      ? `
-        <ul>
-          ${exclusions
-            .map(
-              item =>
-                `<li>${escapeHtml(item)}</li>`
-            )
-            .join("")}
-        </ul>
-      `
-      : `
-        <p class="muted-cell">
-          -
-        </p>
-      `;
-
-
-  // ==================================================
-  // PAYMENT DETAILS
-  // ==================================================
-
-  const paymentHTML =
-    (
-      settings.bankName ||
-      settings.accountName ||
-      settings.accountNumber ||
-      settings.ifsc ||
-      settings.upiId
-    )
-      ? `
-        <div class="payment-grid">
-
-          <div>
-
-            ${
-              settings.bankName
-                ? `
-                  <div>
-                    <strong>
-                      Bank:
-                    </strong>
-                    ${escapeHtml(
-                      settings.bankName
-                    )}
-                  </div>
-                `
-                : ""
-            }
-
-
-            ${
-              settings.accountName
-                ? `
-                  <div>
-                    <strong>
-                      Account Name:
-                    </strong>
-                    ${escapeHtml(
-                      settings.accountName
-                    )}
-                  </div>
-                `
-                : ""
-            }
-
-
-            ${
-              settings.accountNumber
-                ? `
-                  <div>
-                    <strong>
-                      Account Number:
-                    </strong>
-                    ${escapeHtml(
-                      settings.accountNumber
-                    )}
-                  </div>
-                `
-                : ""
-            }
-
-
-            ${
-              settings.ifsc
-                ? `
-                  <div>
-                    <strong>
-                      IFSC:
-                    </strong>
-                    ${escapeHtml(
-                      settings.ifsc
-                    )}
-                  </div>
-                `
-                : ""
-            }
-
-
-            ${
-              settings.upiId
-                ? `
-                  <div>
-                    <strong>
-                      UPI ID:
-                    </strong>
-                    ${escapeHtml(
-                      settings.upiId
-                    )}
-                  </div>
-                `
-                : ""
-            }
-
-          </div>
-
-
-          ${
-            qrCode
-              ? `
-                <div
-                  class="qr-box"
-                >
-
-                  <div>
-                    Scan to Pay
-                  </div>
-
-                  <img
-                    src="${escapeHtml(
-                      qrCode
-                    )}"
-                    class="qr-image"
-                    alt="Payment QR"
-                  >
-
+            `
+            : `
+                <div class="muted">
+                    Payment details will appear here once configured in Settings.
                 </div>
-              `
-              : ""
-          }
-
-        </div>
-      `
-      : `
-        <p class="muted-cell">
-          Payment details will appear here once configured in Settings.
-        </p>
-      `;
+            `;
 
 
-  // ==================================================
-  // TERMS
-  // ==================================================
+    // ========================================================
+    // TERMS
+    // ========================================================
 
-  const termsHTML =
-    terms
-      ? renderRichText(
-          terms
-        )
-      : `
-        <p>
-          Package is subject to availability.
-          Hotel and transportation are subject to confirmation.
-          Final booking is confirmed only after receipt of the required advance payment.
-        </p>
-      `;
+    const termsHTML =
+        terms
+            ? renderRichText(terms)
+            : `
+                <p>
+                    Package is subject to availability.
+                    Hotel and transportation are subject to confirmation.
+                    Final booking is confirmed only after receipt
+                    of the required advance payment.
+                </p>
+            `;
 
 
-  // ==================================================
-  // FINAL HTML
-  // ==================================================
+    // ========================================================
+    // FINAL DOCUMENT
+    // ========================================================
 
-  return `
-
+    return `
 <!DOCTYPE html>
 
 <html>
@@ -1745,877 +1506,768 @@ function buildQuotationHTML(
 <meta charset="UTF-8">
 
 <title>
-Quotation ${escapeHtml(
-  quotationId
-)}
+    Quotation ${escapeHtml(quotationId)}
 </title>
 
 
 <style>
 
-/* ==================================================
+/* ==========================================================
    PAGE
-================================================== */
+========================================================== */
 
 @page {
-
-  size: A4;
-
-  margin: 12mm 12mm 14mm 12mm;
-
+    size: A4;
+    margin: 12mm;
 }
 
 
+/* ==========================================================
+   GLOBAL
+========================================================== */
+
 * {
+    box-sizing: border-box;
+}
 
-  box-sizing:
-    border-box;
 
+html,
+body {
+    margin: 0;
+    padding: 0;
 }
 
 
 body {
 
-  margin:
-    0;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-  padding:
-    0;
+    color: #1f2937;
 
-  background:
-    #ffffff;
+    background: #ffffff;
 
-  color:
-    #1f2937;
+    font-size: 10px;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  font-size:
-    10.5px;
-
-  line-height:
-    1.5;
-
+    line-height: 1.45;
 }
 
-
-/* ==================================================
-   DOCUMENT
-================================================== */
 
 .quotation-document {
 
-  width:
-    100%;
+    width: 100%;
 
-  max-width:
-    100%;
+    max-width: 100%;
 
-  background:
-    #ffffff;
-
+    background: #ffffff;
 }
 
 
-/* ==================================================
+/* ==========================================================
    HEADER
-================================================== */
+========================================================== */
 
 .company-header {
 
-  display:
-    flex;
+    display: flex;
 
-  justify-content:
-    space-between;
+    justify-content: space-between;
 
-  align-items:
-    flex-start;
+    align-items: flex-start;
 
-  gap:
-    20px;
+    gap: 20px;
 
-  padding-bottom:
-    12px;
+    padding-bottom: 10px;
 
-  border-bottom:
-    3px solid #2563eb;
+    border-bottom:
+        3px solid #2563eb;
 
+    page-break-inside: avoid;
 }
 
 
 .company-left {
 
-  display:
-    flex;
+    display: flex;
 
-  align-items:
-    center;
+    align-items: center;
 
-  gap:
-    12px;
+    gap: 10px;
 
-  min-width:
-    0;
-
+    min-width: 0;
 }
 
 
 .company-logo {
 
-  width:
-    70px;
+    width: 62px;
 
-  height:
-    70px;
+    height: 62px;
 
-  object-fit:
-    contain;
+    object-fit: contain;
 
+    flex-shrink: 0;
 }
 
 
 .logo-placeholder {
 
-  width:
-    70px;
+    width: 62px;
 
-  height:
-    70px;
+    height: 62px;
 
-  border:
-    2px solid #2563eb;
+    border:
+        2px solid #2563eb;
 
-  border-radius:
-    10px;
+    border-radius: 8px;
 
-  display:
-    flex;
+    display: flex;
 
-  align-items:
-    center;
+    align-items: center;
 
-  justify-content:
-    center;
+    justify-content: center;
 
-  text-align:
-    center;
+    text-align: center;
 
-  font-size:
-    10px;
+    font-size: 9px;
 
-  font-weight:
-    bold;
+    font-weight: bold;
 
-  color:
-    #2563eb;
+    color: #2563eb;
 
-  padding:
-    5px;
-
+    flex-shrink: 0;
 }
 
 
 .company-name {
 
-  font-size:
-    22px;
+    font-size: 20px;
 
-  font-weight:
-    800;
+    font-weight: 800;
 
-  color:
-    #111827;
+    color: #111827;
 
-  margin:
-    0 0 2px 0;
-
+    margin-bottom: 2px;
 }
 
 
 .company-tagline {
 
-  font-size:
-    10px;
+    font-size: 9px;
 
-  color:
-    #6b7280;
+    color: #6b7280;
 
-  margin-bottom:
-    3px;
-
+    margin-bottom: 2px;
 }
 
 
 .company-address {
 
-  font-size:
-    9px;
+    font-size: 8px;
 
-  color:
-    #4b5563;
-
-  max-width:
-    360px;
-
+    color: #4b5563;
 }
 
 
 .company-contact {
 
-  font-size:
-    8.5px;
+    font-size: 8px;
 
-  color:
-    #4b5563;
+    color: #4b5563;
 
-  margin-top:
-    2px;
-
+    margin-top: 2px;
 }
 
 
 .quotation-title {
 
-  text-align:
-    right;
+    text-align: right;
 
-  min-width:
-    150px;
-
+    min-width: 145px;
 }
 
 
 .quotation-title h1 {
 
-  margin:
-    0;
+    margin: 0;
 
-  font-size:
-    24px;
+    color: #2563eb;
 
-  letter-spacing:
-    1px;
+    font-size: 23px;
 
-  color:
-    #2563eb;
-
+    letter-spacing: 1px;
 }
 
 
 .quotation-meta {
 
-  font-size:
-    9px;
+    font-size: 8px;
 
-  color:
-    #374151;
+    color: #374151;
 
-  margin-top:
-    4px;
-
+    margin-top: 3px;
 }
 
 
-/* ==================================================
-   SECTION
-================================================== */
+/* ==========================================================
+   SECTIONS
+========================================================== */
 
 .section {
 
-  margin-top:
-    14px;
-
+    margin-top: 10px;
 }
 
 
 .section-title {
 
-  margin:
-    0 0 7px 0;
+    padding:
+        5px 8px;
 
-  padding:
-    6px 9px;
+    margin-bottom: 5px;
 
-  background:
-    #eff6ff;
+    background: #eff6ff;
 
-  border-left:
-    4px solid #2563eb;
+    border-left:
+        4px solid #2563eb;
 
-  color:
-    #1d4ed8;
+    color: #1d4ed8;
 
-  font-size:
-    12px;
+    font-size: 10.5px;
 
-  font-weight:
-    800;
+    font-weight: 800;
 
+    page-break-after: avoid;
 }
 
 
 .section-subtitle {
 
-  font-size:
-    10px;
+    font-size: 8px;
 
-  color:
-    #6b7280;
+    color: #6b7280;
 
-  margin:
-    -2px 0 7px 0;
-
+    margin:
+        0 0 5px 0;
 }
 
 
-/* ==================================================
+/* ==========================================================
    CUSTOMER DETAILS
-================================================== */
+========================================================== */
 
 .details-table {
 
-  width:
-    100%;
+    width: 100%;
 
-  border-collapse:
-    collapse;
+    border-collapse: collapse;
 
+    table-layout: fixed;
 }
 
 
 .details-table td {
 
-  padding:
-    5px 7px;
+    border:
+        1px solid #dbe2ea;
 
-  border:
-    1px solid #e5e7eb;
+    padding:
+        5px 6px;
 
-  vertical-align:
-    top;
+    vertical-align: top;
 
+    word-break: break-word;
 }
 
 
 .details-label {
 
-  width:
-    17%;
+    width: 14%;
 
-  background:
-    #f8fafc;
+    background: #f8fafc;
 
-  color:
-    #4b5563;
+    font-weight: 700;
 
-  font-weight:
-    700;
-
+    color: #4b5563;
 }
 
 
 .details-value {
 
-  width:
-    33%;
+    width: 36%;
 
-  color:
-    #111827;
-
+    color: #111827;
 }
 
 
-/* ==================================================
+/* ==========================================================
    STANDARD TABLE
-================================================== */
+========================================================== */
 
 .data-table {
 
-  width:
-    100%;
+    width: 100%;
 
-  border-collapse:
-    collapse;
+    border-collapse: collapse;
 
+    table-layout: fixed;
 }
 
 
 .data-table th {
 
-  background:
-    #2563eb;
+    background: #2563eb;
 
-  color:
-    #ffffff;
+    color: white;
 
-  text-align:
-    left;
+    text-align: left;
 
-  padding:
-    7px;
+    padding:
+        5px 6px;
 
-  font-size:
-    9px;
+    font-size: 8px;
 
-  font-weight:
-    700;
-
+    font-weight: 700;
 }
 
 
 .data-table td {
 
-  border:
-    1px solid #dbe2ea;
+    border:
+        1px solid #dbe2ea;
 
-  padding:
-    6px 7px;
+    padding:
+        5px 6px;
 
-  vertical-align:
-    top;
+    vertical-align: top;
 
+    word-break: break-word;
 }
 
 
 .data-table tr {
 
-  page-break-inside:
-    avoid;
-
+    page-break-inside: avoid;
 }
 
 
-.muted-cell {
+.muted {
 
-  color:
-    #6b7280;
-
+    color: #6b7280;
 }
 
 
-/* ==================================================
+/* ==========================================================
+   HOTEL WIDTHS
+========================================================== */
+
+.data-table.hotel-table th:nth-child(1),
+.data-table.hotel-table td:nth-child(1) {
+
+    width: 24%;
+}
+
+
+.data-table.hotel-table th:nth-child(2),
+.data-table.hotel-table td:nth-child(2) {
+
+    width: 36%;
+}
+
+
+.data-table.hotel-table th:nth-child(3),
+.data-table.hotel-table td:nth-child(3) {
+
+    width: 20%;
+}
+
+
+.data-table.hotel-table th:nth-child(4),
+.data-table.hotel-table td:nth-child(4) {
+
+    width: 20%;
+}
+
+
+/* ==========================================================
+   TRANSPORT WIDTHS
+========================================================== */
+
+.transport-table th:nth-child(1),
+.transport-table td:nth-child(1) {
+
+    width: 25%;
+}
+
+
+.transport-table th:nth-child(2),
+.transport-table td:nth-child(2) {
+
+    width: 20%;
+}
+
+
+.transport-table th:nth-child(3),
+.transport-table td:nth-child(3) {
+
+    width: 15%;
+}
+
+
+.transport-table th:nth-child(4),
+.transport-table td:nth-child(4) {
+
+    width: 40%;
+}
+
+
+/* ==========================================================
    ITINERARY
-================================================== */
+========================================================== */
 
 .itinerary-day {
 
-  border:
-    1px solid #e2e8f0;
+    border:
+        1px solid #dbe2ea;
 
-  border-radius:
-    7px;
+    border-radius: 6px;
 
-  margin-bottom:
-    8px;
+    padding:
+        7px 9px;
 
-  padding:
-    8px 10px;
+    margin-bottom: 7px;
 
-  page-break-inside:
-    avoid;
+    page-break-inside: avoid;
 
+    background: #ffffff;
 }
 
 
 .day-heading {
 
-  color:
-    #1d4ed8;
+    color: #1d4ed8;
 
-  font-weight:
-    800;
+    font-size: 10px;
 
-  font-size:
-    11px;
+    font-weight: 800;
 
-  margin-bottom:
-    4px;
-
+    margin-bottom: 4px;
 }
 
 
 .day-heading span {
 
-  color:
-    #111827;
-
+    color: #111827;
 }
 
 
 .day-description {
 
-  color:
-    #374151;
+    color: #374151;
 
+    font-size: 9px;
 }
 
 
 .day-description p {
 
-  margin:
-    2px 0 5px 0;
-
+    margin:
+        2px 0 4px 0;
 }
 
 
 .day-description ul {
 
-  margin:
-    3px 0 5px 18px;
+    margin:
+        3px 0 4px 17px;
 
-  padding:
-    0;
-
+    padding: 0;
 }
 
 
 .day-description ol {
 
-  margin:
-    3px 0 5px 18px;
+    margin:
+        3px 0 4px 17px;
 
-  padding:
-    0;
-
+    padding: 0;
 }
 
 
 .day-description li {
 
-  margin-bottom:
-    2px;
-
+    margin-bottom: 2px;
 }
 
 
 .day-description strong {
 
-  color:
-    #111827;
-
+    color: #111827;
 }
 
 
-.empty-section {
+.day-description span {
 
-  color:
-    #6b7280;
-
-  border:
-    1px dashed #d1d5db;
-
-  padding:
-    10px;
-
+    color: inherit;
 }
 
 
-/* ==================================================
-   PRICING
-================================================== */
+.empty-box {
 
-.pricing-table {
+    border:
+        1px dashed #cbd5e1;
 
-  width:
-    100%;
+    padding: 8px;
 
-  border-collapse:
-    collapse;
-
+    color: #6b7280;
 }
 
 
-.pricing-table td {
-
-  border:
-    1px solid #d1d5db;
-
-  padding:
-    7px 9px;
-
-}
-
-
-.pricing-label {
-
-  width:
-    65%;
-
-  color:
-    #374151;
-
-}
-
-
-.pricing-value {
-
-  text-align:
-    right;
-
-  font-weight:
-    600;
-
-}
-
-
-.grand-total td {
-
-  background:
-    #eff6ff;
-
-  color:
-    #1d4ed8;
-
-  font-size:
-    12px;
-
-  font-weight:
-    800;
-
-}
-
-
-.per-person td {
-
-  background:
-    #f8fafc;
-
-  font-weight:
-    700;
-
-}
-
-
-/* ==================================================
-   PAYMENT
-================================================== */
-
-.payment-box {
-
-  border:
-    1px solid #dbe2ea;
-
-  border-radius:
-    8px;
-
-  padding:
-    10px;
-
-  page-break-inside:
-    avoid;
-
-}
-
-
-.payment-grid {
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    flex-start;
-
-  gap:
-    20px;
-
-}
-
-
-.payment-grid > div:first-child {
-
-  line-height:
-    1.8;
-
-}
-
-
-.qr-box {
-
-  text-align:
-    center;
-
-  min-width:
-    110px;
-
-  font-weight:
-    700;
-
-  color:
-    #374151;
-
-}
-
-
-.qr-image {
-
-  width:
-    95px;
-
-  height:
-    95px;
-
-  object-fit:
-    contain;
-
-  margin-top:
-    5px;
-
-}
-
-
-/* ==================================================
-   LISTS
-================================================== */
+/* ==========================================================
+   INCLUSIONS / EXCLUSIONS
+========================================================== */
 
 .list-columns {
 
-  display:
-    flex;
+    display: flex;
 
-  gap:
-    20px;
+    gap: 8px;
 
+    width: 100%;
 }
 
 
 .list-column {
 
-  flex:
-    1;
+    flex: 1;
 
-  border:
-    1px solid #e5e7eb;
+    border:
+        1px solid #dbe2ea;
 
-  border-radius:
-    7px;
+    border-radius: 6px;
 
-  padding:
-    8px 10px;
+    padding:
+        7px 9px;
 
-  page-break-inside:
-    avoid;
-
+    page-break-inside: avoid;
 }
 
 
 .list-column h4 {
 
-  margin:
-    0 0 5px 0;
+    margin:
+        0 0 4px 0;
 
-  color:
-    #1d4ed8;
+    color: #1d4ed8;
 
-  font-size:
-    10px;
-
+    font-size: 9px;
 }
 
 
 .list-column ul {
 
-  margin:
-    3px 0 0 16px;
+    margin:
+        2px 0 0 16px;
 
-  padding:
-    0;
-
+    padding: 0;
 }
 
 
 .list-column li {
 
-  margin-bottom:
-    2px;
+    margin-bottom: 2px;
 
+    font-size: 8.5px;
 }
 
 
-/* ==================================================
+/* ==========================================================
+   PRICING
+========================================================== */
+
+.pricing-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+.pricing-table td {
+
+    border:
+        1px solid #d1d5db;
+
+    padding:
+        6px 8px;
+}
+
+
+.pricing-label {
+
+    width: 70%;
+
+    color: #374151;
+}
+
+
+.pricing-value {
+
+    width: 30%;
+
+    text-align: right;
+
+    font-weight: 600;
+}
+
+
+.grand-total td {
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+.per-person td {
+
+    background: #f8fafc;
+
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   PAYMENT
+========================================================== */
+
+.payment-box {
+
+    border:
+        1px solid #dbe2ea;
+
+    border-radius: 6px;
+
+    padding: 8px;
+
+    page-break-inside: avoid;
+}
+
+
+.payment-grid {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+}
+
+
+.payment-info {
+
+    line-height: 1.8;
+
+    font-size: 9px;
+}
+
+
+.qr-box {
+
+    text-align: center;
+
+    min-width: 100px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    color: #374151;
+}
+
+
+.qr-title {
+
+    margin-bottom: 3px;
+}
+
+
+.qr-image {
+
+    width: 85px;
+
+    height: 85px;
+
+    object-fit: contain;
+}
+
+
+/* ==========================================================
    TERMS
-================================================== */
+========================================================== */
 
 .terms-box {
 
-  border:
-    1px solid #e5e7eb;
+    border:
+        1px solid #e5e7eb;
 
-  border-radius:
-    7px;
+    border-radius: 6px;
 
-  padding:
-    9px 10px;
+    padding:
+        7px 9px;
 
-  font-size:
-    9px;
+    font-size: 8px;
 
-  color:
-    #4b5563;
+    color: #4b5563;
 
-  page-break-inside:
-    avoid;
-
+    page-break-inside: avoid;
 }
 
 
 .terms-box p {
 
-  margin:
-    3px 0 5px 0;
-
+    margin:
+        2px 0 4px 0;
 }
 
 
 .terms-box ul {
 
-  margin:
-    3px 0 5px 16px;
+    margin:
+        2px 0 4px 16px;
 
-  padding:
-    0;
-
+    padding: 0;
 }
 
 
-/* ==================================================
+/* ==========================================================
    FOOTER
-================================================== */
+========================================================== */
 
 .document-footer {
 
-  margin-top:
-    18px;
+    margin-top: 12px;
 
-  padding-top:
-    8px;
+    padding-top: 6px;
 
-  border-top:
-    1px solid #dbe2ea;
+    border-top:
+        1px solid #dbe2ea;
 
-  text-align:
-    center;
+    text-align: center;
 
-  font-size:
-    8.5px;
+    font-size: 7.5px;
 
-  color:
-    #6b7280;
+    color: #6b7280;
 
-}
-
-
-.gst-line {
-
-  margin-top:
-    3px;
-
+    page-break-inside: avoid;
 }
 
 
@@ -2626,1317 +2278,1122 @@ body {
 
 <body>
 
-
-<div
-  class="quotation-document"
->
+<div class="quotation-document">
 
 
-  <!-- ==================================================
-       COMPANY HEADER
-  ================================================== -->
+    <!-- ======================================================
+         HEADER
+    ====================================================== -->
 
-  <div
-    class="company-header"
-  >
+    <div class="company-header">
 
-    <div
-      class="company-left"
-    >
+        <div class="company-left">
 
-      ${logoHTML}
+            ${logoHTML}
+
+            <div>
+
+                <div class="company-name">
+                    ${escapeHtml(
+                        settings.companyName ||
+                        "My Tour Mitra"
+                    )}
+                </div>
 
 
-      <div>
+                ${
+                    settings.tagline
+                        ? `
+                            <div class="company-tagline">
+                                ${escapeHtml(
+                                    settings.tagline
+                                )}
+                            </div>
+                        `
+                        : ""
+                }
 
-        <div
-          class="company-name"
-        >
-          ${escapeHtml(
-            settings.companyName ||
-            "My Tour Mitra"
-          )}
+
+                ${
+                    companyAddress
+                        ? `
+                            <div class="company-address">
+                                ${escapeHtml(
+                                    companyAddress
+                                )}
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${
+                    contactLine
+                        ? `
+                            <div class="company-contact">
+                                ${escapeHtml(
+                                    contactLine
+                                )}
+                            </div>
+                        `
+                        : ""
+                }
+
+
+                ${
+                    settings.gstNumber
+                        ? `
+                            <div class="company-contact">
+                                GSTIN:
+                                ${escapeHtml(
+                                    settings.gstNumber
+                                )}
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+
         </div>
 
 
-        ${
-          settings.tagline
-            ? `
-              <div
-                class="company-tagline"
-              >
-                ${escapeHtml(
-                  settings.tagline
-                )}
-              </div>
-            `
-            : ""
-        }
+        <div class="quotation-title">
+
+            <h1>
+                QUOTATION
+            </h1>
 
 
-        ${
-          companyAddress
-            ? `
-              <div
-                class="company-address"
-              >
-                ${escapeHtml(
-                  companyAddress
-                )}
-              </div>
-            `
-            : ""
-        }
+            <div class="quotation-meta">
+
+                <strong>
+                    Quotation ID:
+                </strong>
+
+                ${escapeHtml(quotationId)}
+
+            </div>
 
 
-        ${
-          contactLine
-            ? `
-              <div
-                class="company-contact"
-              >
-                ${escapeHtml(
-                  contactLine
-                )}
-              </div>
-            `
-            : ""
-        }
+            <div class="quotation-meta">
 
+                <strong>
+                    Date:
+                </strong>
 
-        ${
-          settings.gstNumber
-            ? `
-              <div
-                class="company-contact"
-              >
-                GSTIN:
-                ${escapeHtml(
-                  settings.gstNumber
-                )}
-              </div>
-            `
-            : ""
-        }
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="quotation-title"
-    >
-
-      <h1>
-        QUOTATION
-      </h1>
-
-
-      <div
-        class="quotation-meta"
-      >
-
-        <strong>
-          Quotation ID:
-        </strong>
-
-        ${escapeHtml(
-          quotationId
-        )}
-
-      </div>
-
-
-      <div
-        class="quotation-meta"
-      >
-
-        <strong>
-          Date:
-        </strong>
-
-        ${formatDate(
-          new Date()
-            .toISOString()
-            .slice(0, 10)
-        )}
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ==================================================
-       CUSTOMER DETAILS
-  ================================================== -->
-
-  <div
-    class="section"
-  >
-
-    <div
-      class="section-title"
-    >
-      Customer & Tour Details
-    </div>
-
-
-    <table
-      class="details-table"
-    >
-
-      <tr>
-
-        <td
-          class="details-label"
-        >
-          Customer
-        </td>
-
-        <td
-          class="details-value"
-        >
-          ${escapeHtml(
-            customer
-          )}
-        </td>
-
-
-        <td
-          class="details-label"
-        >
-          Enquiry
-        </td>
-
-        <td
-          class="details-value"
-        >
-          ${escapeHtml(
-            enquiry || "-"
-          )}
-        </td>
-
-      </tr>
-
-
-      <tr>
-
-        <td
-          class="details-label"
-        >
-          Package
-        </td>
-
-        <td
-          class="details-value"
-        >
-          <strong>
-            ${escapeHtml(
-              packageName
-            )}
-          </strong>
-        </td>
-
-
-        <td
-          class="details-label"
-        >
-          Destination
-        </td>
-
-        <td
-          class="details-value"
-        >
-          ${escapeHtml(
-            destination
-          )}
-        </td>
-
-      </tr>
-
-
-      <tr>
-
-        <td
-          class="details-label"
-        >
-          Travel Date
-        </td>
-
-        <td
-          class="details-value"
-        >
-
-          ${formatDate(
-            startDate
-          )}
-
-          ${
-            endDate
-              ? `
-                &nbsp;–&nbsp;
                 ${formatDate(
-                  endDate
+                    new Date()
+                        .toISOString()
+                        .slice(0, 10)
                 )}
-              `
-              : ""
-          }
-
-        </td>
-
-
-        <td
-          class="details-label"
-        >
-          Pax
-        </td>
-
-        <td
-          class="details-value"
-        >
-
-          ${pax}
-
-          ${
-            adults
-              ? ` (${adults} Adult${adults > 1 ? "s" : ""}`
-              : ""
-          }
-
-          ${
-            children
-              ? `, ${children} Child${children > 1 ? "ren" : ""})`
-              : adults
-                ? ")"
-                : ""
-          }
-
-        </td>
-
-      </tr>
-
-
-      <tr>
-
-        <td
-          class="details-label"
-        >
-          Rooms
-        </td>
-
-        <td
-          class="details-value"
-        >
-          ${rooms || "-"}
-        </td>
-
-
-        <td
-          class="details-label"
-        >
-          Valid Until
-        </td>
-
-        <td
-          class="details-value"
-        >
-          ${formatDate(
-            quotation.validUntil
-          )}
-        </td>
-
-      </tr>
-
-    </table>
-
-  </div>
-
-
-  <!-- ==================================================
-       TRANSPORT
-  ================================================== -->
-
-  <div
-    class="section"
-  >
-
-    <div
-      class="section-title"
-    >
-      Transportation
-    </div>
-
-
-    <table
-      class="data-table"
-    >
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Vehicle
-          </th>
-
-          <th>
-            Type
-          </th>
-
-          <th>
-            Capacity
-          </th>
-
-          <th>
-            Details
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody>
-
-        ${transportHTML}
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-
-  <!-- ==================================================
-       HOTELS
-  ================================================== -->
-
-  <div
-    class="section"
-  >
-
-    <div
-      class="section-title"
-    >
-      Hotel Details
-    </div>
-
-
-    <table
-      class="data-table"
-    >
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Destination
-          </th>
-
-          <th>
-            Hotel
-          </th>
-
-          <th>
-            Room
-          </th>
-
-          <th>
-            Meal Plan
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody>
-
-        ${hotelHTML}
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-
-  <!-- ==================================================
-       ITINERARY
-  ================================================== -->
-
-  <div
-    class="section"
-  >
-
-    <div
-      class="section-title"
-    >
-      Tour Itinerary
-    </div>
-
-
-    <div
-      class="section-subtitle"
-    >
-      Day-wise tour plan
-    </div>
-
-
-    ${itineraryHTML}
-
-  </div>
-
-
-  <!-- ==================================================
-       INCLUSIONS / EXCLUSIONS
-  ================================================== -->
-
-  ${
-    inclusions.length ||
-    exclusions.length
-      ? `
-
-        <div
-          class="section"
-        >
-
-          <div
-            class="section-title"
-          >
-            Package Inclusions & Exclusions
-          </div>
-
-
-          <div
-            class="list-columns"
-          >
-
-            <div
-              class="list-column"
-            >
-
-              <h4>
-                Inclusions
-              </h4>
-
-              ${inclusionHTML}
 
             </div>
-
-
-            <div
-              class="list-column"
-            >
-
-              <h4>
-                Exclusions
-              </h4>
-
-              ${exclusionHTML}
-
-            </div>
-
-          </div>
 
         </div>
 
-      `
-      : ""
-  }
-
-
-  <!-- ==================================================
-       PRICING
-  ================================================== -->
-
-  <div
-    class="section"
-  >
-
-    <div
-      class="section-title"
-    >
-      Quotation Summary
     </div>
 
 
-    <table
-      class="pricing-table"
-    >
 
-      <tr>
+    <!-- ======================================================
+         CUSTOMER DETAILS
+    ====================================================== -->
 
-        <td
-          class="pricing-label"
-        >
-          Package Cost
-        </td>
+    <div class="section">
 
-        <td
-          class="pricing-value"
-        >
-          ${formatCurrency(
-            packageCost
-          )}
-        </td>
-
-      </tr>
+        <div class="section-title">
+            Customer & Tour Details
+        </div>
 
 
-      <tr>
+        <table class="details-table">
 
-        <td
-          class="pricing-label"
-        >
-          Discount
-        </td>
+            <tr>
 
-        <td
-          class="pricing-value"
-        >
-          ${formatCurrency(
-            discount
-          )}
-        </td>
+                <td class="details-label">
+                    Customer
+                </td>
 
-      </tr>
+                <td class="details-value">
+                    ${escapeHtml(customer)}
+                </td>
 
 
-      <tr>
+                <td class="details-label">
+                    Enquiry
+                </td>
 
-        <td
-          class="pricing-label"
-        >
-          GST
-        </td>
+                <td class="details-value">
+                    ${escapeHtml(enquiry)}
+                </td>
 
-        <td
-          class="pricing-value"
-        >
-          ${formatCurrency(
-            gst
-          )}
-        </td>
-
-      </tr>
+            </tr>
 
 
-      <tr
-        class="grand-total"
-      >
+            <tr>
 
-        <td>
-          GRAND TOTAL
-        </td>
+                <td class="details-label">
+                    Package
+                </td>
 
-        <td
-          class="pricing-value"
-        >
-          ${formatCurrency(
-            grandTotal
-          )}
-        </td>
+                <td class="details-value">
 
-      </tr>
+                    <strong>
+                        ${escapeHtml(packageName)}
+                    </strong>
+
+                </td>
 
 
-      <tr
-        class="per-person"
-      >
+                <td class="details-label">
+                    Destination
+                </td>
 
-        <td>
-          Total Package Cost / Per Person
-        </td>
+                <td class="details-value">
+                    ${escapeHtml(destination)}
+                </td>
 
-        <td
-          class="pricing-value"
-        >
-          ${formatCurrency(
-            perPerson
-          )}
-        </td>
-
-      </tr>
-
-    </table>
-
-  </div>
+            </tr>
 
 
-  <!-- ==================================================
-       PAYMENT DETAILS
-  ================================================== -->
+            <tr>
 
-  <div
-    class="section"
-  >
+                <td class="details-label">
+                    Travel Date
+                </td>
 
-    <div
-      class="section-title"
-    >
-      Payment Details
-    </div>
+                <td class="details-value">
 
+                    ${formatDate(startDate)}
 
-    <div
-      class="payment-box"
-    >
+                    ${
+                        endDate
+                            ? `
+                                &nbsp;–&nbsp;
+                                ${formatDate(endDate)}
+                            `
+                            : ""
+                    }
 
-      ${paymentHTML}
-
-    </div>
-
-  </div>
+                </td>
 
 
-  <!-- ==================================================
-       TERMS
-  ================================================== -->
+                <td class="details-label">
+                    Pax
+                </td>
 
-  <div
-    class="section"
-  >
+                <td class="details-value">
 
-    <div
-      class="section-title"
-    >
-      Terms & Conditions
-    </div>
+                    ${pax}
+
+                    ${
+                        adults
+                            ? ` (${adults} Adult${adults > 1 ? "s" : ""}`
+                            : ""
+                    }
+
+                    ${
+                        children
+                            ? `, ${children} Child${children > 1 ? "ren" : ""})`
+                            : adults
+                                ? ")"
+                                : ""
+                    }
+
+                </td>
+
+            </tr>
 
 
-    <div
-      class="terms-box"
-    >
+            <tr>
 
-      ${termsHTML}
+                <td class="details-label">
+                    Rooms
+                </td>
+
+                <td class="details-value">
+                    ${rooms || "-"}
+                </td>
+
+
+                <td class="details-label">
+                    Valid Until
+                </td>
+
+                <td class="details-value">
+
+                    ${formatDate(
+                        getValue(
+                            quotation,
+                            [
+                                "validUntil",
+                                "validityDate"
+                            ],
+                            ""
+                        )
+                    )}
+
+                </td>
+
+            </tr>
+
+        </table>
 
     </div>
 
-  </div>
 
 
-  <!-- ==================================================
-       FOOTER
-  ================================================== -->
+    <!-- ======================================================
+         TRANSPORTATION
+    ====================================================== -->
 
-  <div
-    class="document-footer"
-  >
+    <div class="section">
+
+        <div class="section-title">
+            Transportation
+        </div>
+
+
+        <table class="data-table transport-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Vehicle
+                    </th>
+
+                    <th>
+                        Type
+                    </th>
+
+                    <th>
+                        Capacity
+                    </th>
+
+                    <th>
+                        Details
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                ${transportHTML}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         HOTELS
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Hotel Details
+        </div>
+
+
+        <table class="data-table hotel-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Destination
+                    </th>
+
+                    <th>
+                        Hotel
+                    </th>
+
+                    <th>
+                        Room
+                    </th>
+
+                    <th>
+                        Meal Plan
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                ${hotelHTML}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         ITINERARY
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Tour Itinerary
+        </div>
+
+
+        <div class="section-subtitle">
+            Day-wise tour plan
+        </div>
+
+
+        ${itineraryHTML}
+
+    </div>
+
+
+
+    <!-- ======================================================
+         INCLUSIONS / EXCLUSIONS
+    ====================================================== -->
 
     ${
-      settings.quotationFooter
-        ? `
-          <div>
-            ${renderRichText(
-              settings.quotationFooter
-            )}
-          </div>
-        `
-        : `
-          <div>
-            Thank you for choosing
-            ${escapeHtml(
-              settings.companyName ||
-              "My Tour Mitra"
-            )}.
-          </div>
-        `
+        inclusions.length ||
+        exclusions.length
+            ? `
+
+                <div class="section">
+
+                    <div class="section-title">
+                        Package Inclusions & Exclusions
+                    </div>
+
+
+                    <div class="list-columns">
+
+                        <div class="list-column">
+
+                            <h4>
+                                Inclusions
+                            </h4>
+
+                            ${inclusionHTML}
+
+                        </div>
+
+
+                        <div class="list-column">
+
+                            <h4>
+                                Exclusions
+                            </h4>
+
+                            ${exclusionHTML}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `
+            : ""
     }
 
 
-    ${
-      settings.panNumber
-        ? `
-          <div
-            class="gst-line"
-          >
-            PAN:
-            ${escapeHtml(
-              settings.panNumber
-            )}
-          </div>
-        `
-        : ""
-    }
 
-  </div>
+    <!-- ======================================================
+         PRICING
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Quotation Summary
+        </div>
+
+
+        <table class="pricing-table">
+
+            <tr>
+
+                <td class="pricing-label">
+                    Package Cost
+                </td>
+
+                <td class="pricing-value">
+                    ${formatCurrency(packageCost)}
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td class="pricing-label">
+                    Discount
+                </td>
+
+                <td class="pricing-value">
+                    ${formatCurrency(discount)}
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td class="pricing-label">
+                    GST
+                </td>
+
+                <td class="pricing-value">
+                    ${formatCurrency(gst)}
+                </td>
+
+            </tr>
+
+
+            <tr class="grand-total">
+
+                <td>
+                    GRAND TOTAL
+                </td>
+
+                <td class="pricing-value">
+                    ${formatCurrency(grandTotal)}
+                </td>
+
+            </tr>
+
+
+            <tr class="per-person">
+
+                <td>
+                    Total Package Cost / Per Person
+                </td>
+
+                <td class="pricing-value">
+                    ${formatCurrency(perPerson)}
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         PAYMENT
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Payment Details
+        </div>
+
+
+        <div class="payment-box">
+
+            ${paymentHTML}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         TERMS
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Terms & Conditions
+        </div>
+
+
+        <div class="terms-box">
+
+            ${termsHTML}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="document-footer">
+
+        ${
+            settings.quotationFooter
+                ? renderRichText(
+                    settings.quotationFooter
+                )
+                : `
+                    Thank you for choosing
+                    ${escapeHtml(
+                        settings.companyName ||
+                        "My Tour Mitra"
+                    )}.
+                `
+        }
+
+
+        ${
+            settings.panNumber
+                ? `
+                    <div>
+                        PAN:
+                        ${escapeHtml(
+                            settings.panNumber
+                        )}
+                    </div>
+                `
+                : ""
+        }
+
+    </div>
 
 
 </div>
 
-
 </body>
 
 </html>
-
 `;
-
 }
 
 
-// ======================================================
-// CREATE TEMPORARY PDF CONTAINER
-// ======================================================
+// ============================================================
+// CREATE PDF CONTAINER
+// ============================================================
 
-function createPdfContainer(
-  html
-) {
+function createPdfContainer(html) {
 
-  const wrapper =
-    document.createElement(
-      "div"
-    );
+    const wrapper =
+        document.createElement("div");
 
 
-  wrapper.innerHTML =
-    html;
+    wrapper.innerHTML = html;
 
 
-  wrapper.style.position =
-    "fixed";
+    wrapper.style.position = "fixed";
+
+    wrapper.style.left = "-100000px";
+
+    wrapper.style.top = "0";
+
+    wrapper.style.width = "794px";
+
+    wrapper.style.background = "#ffffff";
+
+    wrapper.style.zIndex = "-1";
 
 
-  wrapper.style.left =
-    "-100000px";
+    document.body.appendChild(wrapper);
 
 
-  wrapper.style.top =
-    "0";
-
-
-  wrapper.style.width =
-    "794px";
-
-
-  wrapper.style.background =
-    "#ffffff";
-
-
-  wrapper.style.zIndex =
-    "-1";
-
-
-  document.body.appendChild(
-    wrapper
-  );
-
-
-  return wrapper;
-
+    return wrapper;
 }
 
 
-// ======================================================
-// GENERATE PDF
-// ======================================================
+// ============================================================
+// FILENAME
+// ============================================================
 
-async function generateQuotationPDF(
-  quotation
-) {
-
-  if (!quotation) {
-
-    alert(
-      "Quotation data not found."
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    const html2pdf =
-      await loadHtml2Pdf();
-
-
-    const html =
-      buildQuotationHTML(
-        quotation
-      );
-
-
-    const container =
-      createPdfContainer(
-        html
-      );
-
-
-    const element =
-      container.querySelector(
-        ".quotation-document"
-      );
-
+function getPdfFilename(quotation) {
 
     const quotationId =
-      firstValue(
-        quotation,
-        [
-          "quotationId",
-          "id"
-        ],
-        "Quotation"
-      );
+        getValue(
+            quotation,
+            [
+                "quotationId",
+                "id"
+            ],
+            "Quotation"
+        );
 
 
     const customer =
-      firstValue(
-        quotation,
-        [
-          "customer",
-          "customerName"
-        ],
-        "Customer"
-      );
-
-
-    const safeCustomer =
-      String(customer)
-        .replace(
-          /[^a-z0-9]+/gi,
-          "-"
-        )
-        .replace(
-          /^-+|-+$/g,
-          ""
+        getValue(
+            quotation,
+            [
+                "customerName",
+                "customer"
+            ],
+            "Customer"
         );
 
 
-    const filename =
-      `My-Tour-Mitra-Quotation-${quotationId}-${safeCustomer}.pdf`;
+    const safeCustomer =
+        String(customer)
+            .replace(
+                /[^a-z0-9]+/gi,
+                "-"
+            )
+            .replace(
+                /^-+|-+$/g,
+                ""
+            );
 
 
-    const options = {
-
-      margin: [
-        10,
-        10,
-        12,
-        10
-      ],
-
-      filename:
-        filename,
-
-      image: {
-
-        type:
-          "jpeg",
-
-        quality:
-          0.98
-
-      },
-
-      html2canvas: {
-
-        scale:
-          2,
-
-        useCORS:
-          true,
-
-        backgroundColor:
-          "#ffffff",
-
-        logging:
-          false
-
-      },
-
-      jsPDF: {
-
-        unit:
-          "mm",
-
-        format:
-          "a4",
-
-        orientation:
-          "portrait",
-
-        compress:
-          true
-
-      },
-
-      pagebreak: {
-
-        mode: [
-          "css",
-          "legacy"
-        ]
-
-      }
-
-    };
-
-
-    await html2pdf()
-      .set(options)
-      .from(element)
-      .save();
-
-
-    container.remove();
-
-
-  } catch (error) {
-
-    console.error(
-      "Quotation PDF generation error:",
-      error
+    return (
+        `My-Tour-Mitra-Quotation-${quotationId}-${safeCustomer}.pdf`
     );
-
-
-    alert(
-      "Could not generate quotation PDF. Please check the browser console."
-    );
-
-  }
-
 }
 
 
-// ======================================================
-// SHARE QUOTATION PDF
-// ======================================================
+// ============================================================
+// PDF OPTIONS
+// ============================================================
 
-async function shareQuotationPDF(
-  quotation
-) {
+function getPdfOptions(filename) {
 
-  if (!quotation) {
+    return {
 
-    alert(
-      "Quotation data not found."
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    const html2pdf =
-      await loadHtml2Pdf();
-
-
-    const html =
-      buildQuotationHTML(
-        quotation
-      );
-
-
-    const container =
-      createPdfContainer(
-        html
-      );
-
-
-    const element =
-      container.querySelector(
-        ".quotation-document"
-      );
-
-
-    const quotationId =
-      firstValue(
-        quotation,
-        [
-          "quotationId",
-          "id"
+        margin: [
+            8,
+            8,
+            10,
+            8
         ],
-        "Quotation"
-      );
 
+        filename: filename,
 
-    const customer =
-      firstValue(
-        quotation,
-        [
-          "customer",
-          "customerName"
-        ],
-        "Customer"
-      );
+        image: {
 
+            type: "jpeg",
 
-    const safeCustomer =
-      String(customer)
-        .replace(
-          /[^a-z0-9]+/gi,
-          "-"
-        )
-        .replace(
-          /^-+|-+$/g,
-          ""
-        );
+            quality: 0.98
+        },
 
+        html2canvas: {
 
-    const filename =
-      `My-Tour-Mitra-Quotation-${quotationId}-${safeCustomer}.pdf`;
+            scale: 2,
 
+            useCORS: true,
 
-    const options = {
+            allowTaint: true,
 
-      margin: [
-        10,
-        10,
-        12,
-        10
-      ],
+            backgroundColor: "#ffffff",
 
-      filename:
-        filename,
+            logging: false
+        },
 
-      image: {
+        jsPDF: {
 
-        type:
-          "jpeg",
+            unit: "mm",
 
-        quality:
-          0.98
+            format: "a4",
 
-      },
+            orientation: "portrait",
 
-      html2canvas: {
+            compress: true
+        },
 
-        scale:
-          2,
+        pagebreak: {
 
-        useCORS:
-          true,
+            mode: [
+                "css",
+                "legacy"
+            ],
 
-        backgroundColor:
-          "#ffffff",
-
-        logging:
-          false
-
-      },
-
-      jsPDF: {
-
-        unit:
-          "mm",
-
-        format:
-          "a4",
-
-        orientation:
-          "portrait",
-
-        compress:
-          true
-
-      },
-
-      pagebreak: {
-
-        mode: [
-          "css",
-          "legacy"
-        ]
-
-      }
-
+            avoid: [
+                ".itinerary-day",
+                ".data-table tr",
+                ".payment-box",
+                ".list-column",
+                ".terms-box"
+            ]
+        }
     };
+}
 
 
-    const worker =
-      html2pdf()
-        .set(options)
-        .from(element);
+// ============================================================
+// GENERATE / DOWNLOAD PDF
+// ============================================================
 
+async function generateQuotationPDF(quotation) {
 
-    const pdfBlob =
-      await worker.output(
-        "blob"
-      );
+    if (!quotation) {
 
-
-    container.remove();
-
-
-    // ==================================================
-    // MOBILE / SUPPORTED WEB SHARE
-    // ==================================================
-
-    if (
-      navigator.share &&
-      navigator.canShare
-    ) {
-
-      const file =
-        new File(
-          [
-            pdfBlob
-          ],
-          filename,
-          {
-            type:
-              "application/pdf"
-          }
+        alert(
+            "Quotation data not found."
         );
-
-
-      if (
-        navigator.canShare({
-          files: [
-            file
-          ]
-        })
-      ) {
-
-        await navigator.share({
-
-          title:
-            `Quotation ${quotationId}`,
-
-          text:
-            `Quotation from My Tour Mitra`,
-
-          files: [
-            file
-          ]
-
-        });
-
 
         return;
-
-      }
-
     }
 
 
-    // ==================================================
-    // DESKTOP FALLBACK
-    // ==================================================
-
-    const url =
-      URL.createObjectURL(
-        pdfBlob
-      );
+    let container = null;
 
 
-    const anchor =
-      document.createElement(
-        "a"
-      );
+    try {
+
+        const html2pdf =
+            await loadHtml2Pdf();
 
 
-    anchor.href =
-      url;
+        const html =
+            buildQuotationHTML(
+                quotation
+            );
 
 
-    anchor.download =
-      filename;
+        container =
+            createPdfContainer(
+                html
+            );
 
 
-    document.body.appendChild(
-      anchor
-    );
+        const element =
+            container.querySelector(
+                ".quotation-document"
+            );
 
 
-    anchor.click();
+        if (!element) {
+
+            throw new Error(
+                "Quotation document element not found."
+            );
+        }
 
 
-    anchor.remove();
+        const filename =
+            getPdfFilename(
+                quotation
+            );
 
 
-    setTimeout(
-      () => {
+        const options =
+            getPdfOptions(
+                filename
+            );
 
-        URL.revokeObjectURL(
-          url
+
+        await html2pdf()
+            .set(options)
+            .from(element)
+            .save();
+
+
+    } catch (error) {
+
+        console.error(
+            "Quotation PDF Error:",
+            error
         );
 
-      },
-      3000
-    );
+
+        alert(
+            "Could not generate quotation PDF. Please check browser console."
+        );
 
 
-    const phone =
-      getCompanySettings()
-        .whatsapp;
+    } finally {
 
-
-    const message =
-      encodeURIComponent(
-        `Hello ${customer},\n\nPlease find your quotation ${quotationId} from My Tour Mitra.\n\nThank you.`
-      );
-
-
-    if (phone) {
-
-      const whatsappUrl =
-        `https://wa.me/${String(phone).replace(/\D/g, "")}?text=${message}`;
-
-
-      window.open(
-        whatsappUrl,
-        "_blank"
-      );
-
+        if (container) {
+            container.remove();
+        }
     }
-
-
-  } catch (error) {
-
-    console.error(
-      "Quotation sharing error:",
-      error
-    );
-
-
-    alert(
-      "Could not prepare quotation for sharing."
-    );
-
-  }
-
 }
 
 
-// ======================================================
+// ============================================================
+// SHARE PDF
+// ============================================================
+
+async function shareQuotationPDF(quotation) {
+
+    if (!quotation) {
+
+        alert(
+            "Quotation data not found."
+        );
+
+        return;
+    }
+
+
+    let container = null;
+
+
+    try {
+
+        const html2pdf =
+            await loadHtml2Pdf();
+
+
+        const html =
+            buildQuotationHTML(
+                quotation
+            );
+
+
+        container =
+            createPdfContainer(
+                html
+            );
+
+
+        const element =
+            container.querySelector(
+                ".quotation-document"
+            );
+
+
+        const filename =
+            getPdfFilename(
+                quotation
+            );
+
+
+        const options =
+            getPdfOptions(
+                filename
+            );
+
+
+        const worker =
+            html2pdf()
+                .set(options)
+                .from(element);
+
+
+        const pdfBlob =
+            await worker.output(
+                "blob"
+            );
+
+
+        // ====================================================
+        // WEB SHARE
+        // ====================================================
+
+        if (
+            navigator.share &&
+            navigator.canShare
+        ) {
+
+            const file =
+                new File(
+                    [
+                        pdfBlob
+                    ],
+                    filename,
+                    {
+                        type:
+                            "application/pdf"
+                    }
+                );
+
+
+            if (
+                navigator.canShare({
+                    files: [file]
+                })
+            ) {
+
+                await navigator.share({
+
+                    title:
+                        `Quotation ${getValue(
+                            quotation,
+                            [
+                                "quotationId",
+                                "id"
+                            ],
+                            ""
+                        )}`,
+
+                    text:
+                        "Quotation from My Tour Mitra",
+
+                    files: [file]
+                });
+
+
+                return;
+            }
+        }
+
+
+        // ====================================================
+        // DESKTOP DOWNLOAD FALLBACK
+        // ====================================================
+
+        const url =
+            URL.createObjectURL(
+                pdfBlob
+            );
+
+
+        const anchor =
+            document.createElement("a");
+
+
+        anchor.href = url;
+
+        anchor.download = filename;
+
+
+        document.body.appendChild(anchor);
+
+
+        anchor.click();
+
+
+        anchor.remove();
+
+
+        setTimeout(
+            () => {
+                URL.revokeObjectURL(url);
+            },
+            3000
+        );
+
+
+        // ====================================================
+        // WHATSAPP
+        // ====================================================
+
+        const settings =
+            getCompanySettings();
+
+
+        const phone =
+            settings.whatsapp ||
+            settings.phone;
+
+
+        const customer =
+            getValue(
+                quotation,
+                [
+                    "customerName",
+                    "customer"
+                ],
+                "Customer"
+            );
+
+
+        const quotationId =
+            getValue(
+                quotation,
+                [
+                    "quotationId",
+                    "id"
+                ],
+                ""
+            );
+
+
+        if (phone) {
+
+            const cleanPhone =
+                String(phone)
+                    .replace(/\D/g, "");
+
+
+            const message =
+                encodeURIComponent(
+                    `Hello ${customer},
+
+Please find your quotation ${quotationId} from My Tour Mitra.
+
+Thank you.`
+                );
+
+
+            const whatsappUrl =
+                `https://wa.me/${cleanPhone}?text=${message}`;
+
+
+            window.open(
+                whatsappUrl,
+                "_blank"
+            );
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Quotation Share Error:",
+            error
+        );
+
+
+        alert(
+            "Could not prepare quotation for sharing."
+        );
+
+
+    } finally {
+
+        if (container) {
+            container.remove();
+        }
+    }
+}
+
+
+// ============================================================
 // GLOBAL FUNCTIONS
-// ======================================================
+// ============================================================
 //
-// quotations.js currently calls:
+// quotations.js can call:
 //
 // generateQuotationPDF(quotation)
 // shareQuotationPDF(quotation)
 //
-// Therefore expose them globally.
-// ======================================================
+// ============================================================
 
 window.generateQuotationPDF =
-  generateQuotationPDF;
+    generateQuotationPDF;
 
 
 window.shareQuotationPDF =
-  shareQuotationPDF;
+    shareQuotationPDF;
 
 
-// ======================================================
-// EXPORTS
-// ======================================================
+// ============================================================
+// EXPORT
+// ============================================================
 
 export {
 
-  generateQuotationPDF,
+    generateQuotationPDF,
 
-  shareQuotationPDF,
+    shareQuotationPDF,
 
-  getCompanySettings
+    getCompanySettings,
+
+    buildQuotationHTML
 
 };
