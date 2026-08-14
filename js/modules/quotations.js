@@ -15,8 +15,14 @@ import {
 
 import { db, auth } from "../firebase.js";
 
-let quotations = [];
-let initialized = false;
+
+// ======================================================
+// STATE
+// ======================================================
+
+let allQuotations = [];
+let allEnquiries = [];
+let allPackages = [];
 
 
 // ======================================================
@@ -25,103 +31,110 @@ let initialized = false;
 
 export function initQuotations() {
 
-  if (initialized) return;
+  setupQuotationButtons();
 
-  initialized = true;
+  setupQuotationForm();
 
-  console.log("Quotations module starting...");
+  setupQuotationSearch();
 
-  bindEvents();
-  loadQuotations();
+  setupPricingCalculation();
+
+  setupHotelButton();
+
+  loadQuotationData();
 
 }
 
 
 // ======================================================
-// ELEMENT
+// ELEMENT HELPER
 // ======================================================
 
-function $(id) {
+function getElement(id) {
   return document.getElementById(id);
 }
 
 
 // ======================================================
-// EVENTS
+// INITIAL DATA
 // ======================================================
 
-function bindEvents() {
+async function loadQuotationData() {
 
-  const addBtn = $("addQuotationBtn");
-  const form = $("quotationForm");
-  const closeBtn = $("closeQuotationModal");
-  const cancelBtn = $("cancelQuotationBtn");
-  const search = $("quotationSearch");
-  const modal = $("quotationModal");
+  await Promise.all([
+    loadEnquiries(),
+    loadPackages(),
+    loadQuotations()
+  ]);
 
-  if (addBtn) {
-    addBtn.addEventListener("click", () => {
-      openQuotation();
-    });
+}
+
+
+// ======================================================
+// BUTTONS
+// ======================================================
+
+function setupQuotationButtons() {
+
+  const addButton = getElement("addQuotationBtn");
+
+  const closeButton = getElement("closeQuotationModal");
+
+  const cancelButton = getElement("cancelQuotationBtn");
+
+
+  if (addButton) {
+
+    addButton.addEventListener(
+      "click",
+      () => openQuotationModal()
+    );
+
   }
 
-  if (form) {
-    form.addEventListener("submit", saveQuotation);
+
+  if (closeButton) {
+
+    closeButton.addEventListener(
+      "click",
+      closeQuotationModal
+    );
+
   }
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeQuotation);
+
+  if (cancelButton) {
+
+    cancelButton.addEventListener(
+      "click",
+      closeQuotationModal
+    );
+
   }
 
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", closeQuotation);
+
+  const enquirySelect =
+    getElement("quotationEnquiry");
+
+  if (enquirySelect) {
+
+    enquirySelect.addEventListener(
+      "change",
+      handleEnquiryChange
+    );
+
   }
 
-  if (modal) {
-    modal.addEventListener("click", (e) => {
 
-      if (e.target === modal) {
-        closeQuotation();
-      }
+  const packageSelect =
+    getElement("quotationPackage");
 
-    });
-  }
+  if (packageSelect) {
 
-  if (search) {
-
-    search.addEventListener("input", () => {
-
-      const value =
-        search.value.toLowerCase().trim();
-
-      if (!value) {
-        renderQuotations(quotations);
-        return;
-      }
-
-      const filtered =
-        quotations.filter(q => {
-
-          const text = [
-
-            q.quotationId,
-            q.customer,
-            q.enquiry,
-            q.packageName,
-            q.destination,
-            q.status
-
-          ]
-            .map(v => String(v || "").toLowerCase())
-            .join(" ");
-
-          return text.includes(value);
-
-        });
-
-      renderQuotations(filtered);
-
-    });
+    packageSelect.addEventListener(
+      "change",
+      handlePackageChange
+    );
 
   }
 
@@ -129,254 +142,1605 @@ function bindEvents() {
 
 
 // ======================================================
-// OPEN
+// FORM
 // ======================================================
 
-function openQuotation(data = null) {
+function setupQuotationForm() {
 
-  const modal = $("quotationModal");
-  const form = $("quotationForm");
-  const title = $("quotationModalTitle");
-  const message = $("quotationFormMessage");
+  const form =
+    getElement("quotationForm");
 
-  if (!modal || !form) {
+  if (!form) return;
+
+  form.addEventListener(
+    "submit",
+    saveQuotation
+  );
+
+}
+
+
+// ======================================================
+// PRICING
+// ======================================================
+
+function setupPricingCalculation() {
+
+  const fields = [
+    "quotationPackageCost",
+    "quotationDiscount",
+    "quotationGST",
+    "quotationAdults",
+    "quotationChildren"
+  ];
+
+
+  fields.forEach((id) => {
+
+    const element =
+      getElement(id);
+
+    if (!element) return;
+
+    element.addEventListener(
+      "input",
+      calculateQuotationPricing
+    );
+
+    element.addEventListener(
+      "change",
+      calculateQuotationPricing
+    );
+
+  });
+
+
+  calculateQuotationPricing();
+
+}
+
+
+// ======================================================
+// CALCULATE PRICING
+// ======================================================
+
+function calculateQuotationPricing() {
+
+  const packageCost =
+    Number(
+      getValue("quotationPackageCost")
+    ) || 0;
+
+
+  const discount =
+    Number(
+      getValue("quotationDiscount")
+    ) || 0;
+
+
+  const gst =
+    Number(
+      getValue("quotationGST")
+    ) || 0;
+
+
+  const adults =
+    Number(
+      getValue("quotationAdults")
+    ) || 0;
+
+
+  const children =
+    Number(
+      getValue("quotationChildren")
+    ) || 0;
+
+
+  const totalPax =
+    adults + children;
+
+
+  const grandTotal =
+    Math.max(
+      0,
+      packageCost - discount + gst
+    );
+
+
+  const perPerson =
+    totalPax > 0
+      ? grandTotal / totalPax
+      : 0;
+
+
+  setValue(
+    "quotationGrandTotal",
+    roundMoney(grandTotal)
+  );
+
+
+  setValue(
+    "quotationTotalPackageCost",
+    roundMoney(grandTotal)
+  );
+
+
+  setValue(
+    "quotationPerPerson",
+    roundMoney(perPerson)
+  );
+
+}
+
+
+// ======================================================
+// HOTEL BUTTON
+// ======================================================
+
+function setupHotelButton() {
+
+  const button =
+    getElement(
+      "addQuotationHotelBtn"
+    );
+
+  if (!button) return;
+
+
+  button.addEventListener(
+    "click",
+    addHotelRow
+  );
+
+}
+
+
+// ======================================================
+// ADD HOTEL ROW
+// ======================================================
+
+function addHotelRow() {
+
+  const container =
+    getElement(
+      "quotationHotels"
+    );
+
+  if (!container) return;
+
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "quotation-hotel-row";
+
+
+  row.innerHTML = `
+
+    <div class="form-group">
+
+      <label>
+        Destination
+      </label>
+
+      <input
+        type="text"
+        class="quotation-hotel-destination"
+        placeholder="e.g. Shillong"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Hotel Name
+      </label>
+
+      <input
+        type="text"
+        class="quotation-hotel-name"
+        placeholder="ABC Hotel or Similar"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Nights
+      </label>
+
+      <input
+        type="number"
+        class="quotation-hotel-nights"
+        min="0"
+        value="1"
+      >
+
+    </div>
+
+  `;
+
+
+  container.appendChild(row);
+
+}
+
+
+// ======================================================
+// LOAD ENQUIRIES
+// ======================================================
+
+async function loadEnquiries() {
+
+  const select =
+    getElement(
+      "quotationEnquiry"
+    );
+
+  if (!select) return;
+
+
+  try {
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "enquiries"
+        )
+      );
+
+
+    allEnquiries =
+      snapshot.docs.map(
+        (item) => ({
+
+          id: item.id,
+
+          ...item.data()
+
+        })
+      );
+
+
+    select.innerHTML = `
+      <option value="">
+        Select enquiry
+      </option>
+    `;
+
+
+    allEnquiries.forEach(
+      (enquiry) => {
+
+        const option =
+          document.createElement("option");
+
+
+        option.value =
+          enquiry.id;
+
+
+        option.textContent =
+          getEnquiryDisplayName(
+            enquiry
+          );
+
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
+
+
+  } catch (error) {
 
     console.error(
-      "Quotation form/modal not found."
+      "Enquiry loading error:",
+      error
     );
+
+  }
+
+}
+
+
+// ======================================================
+// ENQUIRY DISPLAY NAME
+// ======================================================
+
+function getEnquiryDisplayName(
+  enquiry
+) {
+
+  const id =
+    enquiry.enquiryId ||
+    enquiry.id ||
+    "";
+
+
+  const customer =
+    enquiry.customerName ||
+    enquiry.customer ||
+    enquiry.name ||
+    "Unknown Customer";
+
+
+  return `${id} - ${customer}`;
+
+}
+
+
+// ======================================================
+// ENQUIRY CHANGE
+// ======================================================
+
+function handleEnquiryChange() {
+
+  const enquiryId =
+    getValue(
+      "quotationEnquiry"
+    );
+
+
+  if (!enquiryId) return;
+
+
+  const enquiry =
+    allEnquiries.find(
+      (item) =>
+        item.id === enquiryId
+    );
+
+
+  if (!enquiry) return;
+
+
+  const customer =
+    enquiry.customerName ||
+    enquiry.customer ||
+    enquiry.name ||
+    "";
+
+
+  const mobile =
+    enquiry.mobile ||
+    enquiry.phone ||
+    enquiry.contactNumber ||
+    "";
+
+
+  const email =
+    enquiry.email ||
+    enquiry.customerEmail ||
+    "";
+
+
+  setValue(
+    "quotationCustomer",
+    customer
+  );
+
+
+  setValue(
+    "quotationCustomerMobile",
+    mobile
+  );
+
+
+  setValue(
+    "quotationCustomerEmail",
+    email
+  );
+
+
+  // Try to connect enquiry package
+  const enquiryPackage =
+    enquiry.package ||
+    enquiry.packageName ||
+    enquiry.tourPackage ||
+    "";
+
+
+  if (enquiryPackage) {
+
+    selectPackageByName(
+      enquiryPackage
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// LOAD PACKAGES
+// ======================================================
+
+async function loadPackages() {
+
+  const select =
+    getElement(
+      "quotationPackage"
+    );
+
+  if (!select) return;
+
+
+  try {
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "packages"
+        )
+      );
+
+
+    allPackages =
+      snapshot.docs.map(
+        (item) => ({
+
+          id: item.id,
+
+          ...item.data()
+
+        })
+      );
+
+
+    select.innerHTML = `
+      <option value="">
+        Select package
+      </option>
+    `;
+
+
+    allPackages.forEach(
+      (pkg) => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          pkg.id;
+
+
+        option.textContent =
+          getPackageDisplayName(
+            pkg
+          );
+
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Package loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// PACKAGE DISPLAY NAME
+// ======================================================
+
+function getPackageDisplayName(
+  pkg
+) {
+
+  return (
+    pkg.packageName ||
+    pkg.name ||
+    pkg.title ||
+    pkg.packageTitle ||
+    "Unnamed Package"
+  );
+
+}
+
+
+// ======================================================
+// SELECT PACKAGE BY NAME
+// ======================================================
+
+function selectPackageByName(
+  packageName
+) {
+
+  const select =
+    getElement(
+      "quotationPackage"
+    );
+
+
+  if (!select) return;
+
+
+  const search =
+    String(packageName)
+      .toLowerCase()
+      .trim();
+
+
+  const match =
+    allPackages.find(
+      (pkg) => {
+
+        const name =
+          getPackageDisplayName(
+            pkg
+          )
+            .toLowerCase()
+            .trim();
+
+
+        return (
+          name === search ||
+          name.includes(search) ||
+          search.includes(name)
+        );
+
+      }
+    );
+
+
+  if (!match) return;
+
+
+  select.value =
+    match.id;
+
+
+  handlePackageChange();
+
+}
+
+
+// ======================================================
+// PACKAGE CHANGE
+// ======================================================
+
+function handlePackageChange() {
+
+  const packageId =
+    getValue(
+      "quotationPackage"
+    );
+
+
+  if (!packageId) {
+
+    clearPackageInformation();
 
     return;
+
   }
 
-  form.reset();
 
-  if (message) {
-    message.textContent = "";
-  }
+  const pkg =
+    allPackages.find(
+      (item) =>
+        item.id === packageId
+    );
 
-  if (data) {
 
-    title.textContent = "Edit Quotation";
+  if (!pkg) return;
 
-    setValue("quotationDocId", data.id);
+
+  // Destination
+
+  setValue(
+    "quotationDestination",
+    pkg.destination ||
+    pkg.destinations ||
+    pkg.location ||
+    ""
+  );
+
+
+  // Duration
+
+  setValue(
+    "quotationDuration",
+    getPackageDuration(
+      pkg
+    )
+  );
+
+
+  // Package cost
+
+  const packageCost =
+    pkg.packageCost ??
+    pkg.totalCost ??
+    pkg.cost ??
+    pkg.price ??
+    pkg.totalPrice;
+
+
+  if (
+    packageCost !== undefined &&
+    packageCost !== null &&
+    packageCost !== ""
+  ) {
 
     setValue(
-      "quotationCustomer",
-      data.customer
+      "quotationPackageCost",
+      packageCost
     );
+
+  }
+
+
+  // Itinerary
+
+  renderPackageItinerary(
+    pkg
+  );
+
+
+  calculateQuotationPricing();
+
+}
+
+
+// ======================================================
+// CLEAR PACKAGE
+// ======================================================
+
+function clearPackageInformation() {
+
+  setValue(
+    "quotationDestination",
+    ""
+  );
+
+  setValue(
+    "quotationDuration",
+    ""
+  );
+
+
+  const itinerary =
+    getElement(
+      "quotationItinerary"
+    );
+
+
+  if (itinerary) {
+
+    itinerary.innerHTML = `
+
+      <div class="quotation-empty-box">
+
+        Select a package to load the itinerary.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+// ======================================================
+// PACKAGE DURATION
+// ======================================================
+
+function getPackageDuration(
+  pkg
+) {
+
+  if (pkg.duration) {
+    return pkg.duration;
+  }
+
+
+  if (
+    pkg.nights !== undefined &&
+    pkg.days !== undefined
+  ) {
+
+    return `${pkg.nights} Nights / ${pkg.days} Days`;
+
+  }
+
+
+  if (
+    pkg.numberOfNights !== undefined &&
+    pkg.numberOfDays !== undefined
+  ) {
+
+    return `${pkg.numberOfNights} Nights / ${pkg.numberOfDays} Days`;
+
+  }
+
+
+  return "";
+
+}
+
+
+// ======================================================
+// RENDER PACKAGE ITINERARY
+// ======================================================
+
+function renderPackageItinerary(
+  pkg
+) {
+
+  const container =
+    getElement(
+      "quotationItinerary"
+    );
+
+
+  const hidden =
+    getElement(
+      "quotationItineraryData"
+    );
+
+
+  if (!container) return;
+
+
+  const itinerary =
+    extractItinerary(
+      pkg
+    );
+
+
+  if (!itinerary.length) {
+
+    container.innerHTML = `
+
+      <div class="quotation-empty-box">
+
+        No itinerary found in this package.
+
+      </div>
+
+    `;
+
+
+    if (hidden) {
+
+      hidden.value = "";
+
+    }
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    itinerary
+      .map(
+        (day, index) => {
+
+          const title =
+            day.title ||
+            day.dayTitle ||
+            day.heading ||
+            `Day ${index + 1}`;
+
+
+          const description =
+            day.description ||
+            day.details ||
+            day.activities ||
+            day.activity ||
+            day.plan ||
+            "";
+
+
+          return `
+
+            <div class="quotation-itinerary-day">
+
+              <h5>
+                ${escapeHtml(title)}
+              </h5>
+
+              <p>
+                ${escapeHtml(description)}
+              </p>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  if (hidden) {
+
+    hidden.value =
+      JSON.stringify(
+        itinerary
+      );
+
+  }
+
+}
+
+
+// ======================================================
+// EXTRACT ITINERARY
+// ======================================================
+
+function extractItinerary(
+  pkg
+) {
+
+  let itinerary =
+    pkg.itinerary ||
+    pkg.itineraries ||
+    pkg.dayWiseItinerary ||
+    pkg.daywiseItinerary ||
+    pkg.days ||
+    [];
+
+
+  // If itinerary is JSON string
+
+  if (
+    typeof itinerary ===
+    "string"
+  ) {
+
+    try {
+
+      itinerary =
+        JSON.parse(
+          itinerary
+        );
+
+    } catch {
+
+      return [];
+
+    }
+
+  }
+
+
+  // If Firestore map/object
+
+  if (
+    itinerary &&
+    !Array.isArray(itinerary) &&
+    typeof itinerary === "object"
+  ) {
+
+    itinerary =
+      Object.keys(
+        itinerary
+      )
+        .sort(
+          naturalSort
+        )
+        .map(
+          (key) => {
+
+            const value =
+              itinerary[key];
+
+
+            if (
+              typeof value ===
+              "string"
+            ) {
+
+              return {
+
+                title: key,
+
+                description: value
+
+              };
+
+            }
+
+
+            return {
+
+              title:
+                value?.title ||
+                value?.day ||
+                key,
+
+              description:
+                value?.description ||
+                value?.details ||
+                value?.activities ||
+                ""
+
+            };
+
+          }
+        );
+
+  }
+
+
+  if (!Array.isArray(itinerary)) {
+
+    return [];
+
+  }
+
+
+  return itinerary;
+
+}
+
+
+// ======================================================
+// NATURAL SORT
+// ======================================================
+
+function naturalSort(
+  a,
+  b
+) {
+
+  return String(a)
+    .localeCompare(
+      String(b),
+      undefined,
+      {
+        numeric: true
+      }
+    );
+
+}
+
+
+// ======================================================
+// OPEN MODAL
+// ======================================================
+
+function openQuotationModal(
+  quotation = null
+) {
+
+  const modal =
+    getElement(
+      "quotationModal"
+    );
+
+
+  const form =
+    getElement(
+      "quotationForm"
+    );
+
+
+  const title =
+    getElement(
+      "quotationModalTitle"
+    );
+
+
+  const message =
+    getElement(
+      "quotationFormMessage"
+    );
+
+
+  if (!modal || !form) return;
+
+
+  modal.style.display =
+    "flex";
+
+
+  if (message) {
+
+    message.textContent =
+      "";
+
+  }
+
+
+  if (quotation) {
+
+    if (title) {
+
+      title.textContent =
+        "Edit Quotation";
+
+    }
+
+
+    setValue(
+      "quotationDocId",
+      quotation.id
+    );
+
 
     setValue(
       "quotationEnquiry",
-      data.enquiry
+      quotation.enquiryId ||
+      quotation.enquiry ||
+      ""
     );
+
+
+    setValue(
+      "quotationCustomer",
+      quotation.customer ||
+      ""
+    );
+
+
+    setValue(
+      "quotationCustomerMobile",
+      quotation.customerMobile ||
+      ""
+    );
+
+
+    setValue(
+      "quotationCustomerEmail",
+      quotation.customerEmail ||
+      ""
+    );
+
 
     setValue(
       "quotationPackage",
-      data.packageName
+      quotation.packageId ||
+      ""
     );
+
 
     setValue(
       "quotationDestination",
-      data.destination
+      quotation.destination ||
+      ""
     );
+
+
+    setValue(
+      "quotationDuration",
+      quotation.duration ||
+      ""
+    );
+
 
     setValue(
       "quotationStartDate",
-      data.startDate
+      quotation.startDate ||
+      ""
     );
+
 
     setValue(
       "quotationEndDate",
-      data.endDate
+      quotation.endDate ||
+      ""
     );
+
 
     setValue(
       "quotationAdults",
-      data.adults ?? 2
+      quotation.adults ??
+      2
     );
+
 
     setValue(
       "quotationChildren",
-      data.children ?? 0
+      quotation.children ??
+      0
     );
+
 
     setValue(
       "quotationRooms",
-      data.rooms ?? 1
+      quotation.rooms ??
+      1
     );
+
 
     setValue(
       "quotationValidUntil",
-      data.validUntil
+      quotation.validUntil ||
+      ""
     );
 
+
     setValue(
-      "quotationTotal",
-      data.total ?? ""
+      "quotationVehicle",
+      quotation.vehicle ||
+      ""
     );
+
+
+    setValue(
+      "quotationVehicleType",
+      quotation.vehicleType ||
+      ""
+    );
+
+
+    setValue(
+      "quotationPackageCost",
+      quotation.packageCost ??
+      0
+    );
+
+
+    setValue(
+      "quotationDiscount",
+      quotation.discount ??
+      0
+    );
+
+
+    setValue(
+      "quotationGST",
+      quotation.gst ??
+      0
+    );
+
+
+    setValue(
+      "quotationGrandTotal",
+      quotation.grandTotal ??
+      0
+    );
+
+
+    setValue(
+      "quotationTotalPackageCost",
+      quotation.totalPackageCost ??
+      0
+    );
+
 
     setValue(
       "quotationPerPerson",
-      data.perPerson ?? ""
+      quotation.perPerson ??
+      0
     );
+
 
     setValue(
       "quotationStatus",
-      data.status || "Draft"
+      quotation.status ||
+      "Draft"
     );
+
 
     setValue(
       "quotationNotes",
-      data.notes
+      quotation.notes ||
+      ""
     );
+
+
+    renderPackageItinerary(
+      {
+        itinerary:
+          quotation.itinerary ||
+          []
+      }
+    );
+
+
+    loadSavedHotels(
+      quotation.hotels ||
+      []
+    );
+
 
   } else {
 
-    title.textContent = "Add Quotation";
+    if (title) {
 
-    setValue("quotationDocId", "");
+      title.textContent =
+        "Add Quotation";
 
-    setValue("quotationAdults", 2);
+    }
 
-    setValue("quotationChildren", 0);
 
-    setValue("quotationRooms", 1);
+    form.reset();
 
-    setValue("quotationStatus", "Draft");
+
+    setValue(
+      "quotationDocId",
+      ""
+    );
+
+
+    setValue(
+      "quotationAdults",
+      2
+    );
+
+
+    setValue(
+      "quotationChildren",
+      0
+    );
+
+
+    setValue(
+      "quotationRooms",
+      1
+    );
+
+
+    setValue(
+      "quotationStatus",
+      "Draft"
+    );
+
+
+    setValue(
+      "quotationPackageCost",
+      0
+    );
+
+
+    setValue(
+      "quotationDiscount",
+      0
+    );
+
+
+    setValue(
+      "quotationGST",
+      0
+    );
+
+
+    clearHotelRows();
+
+
+    clearPackageInformation();
 
   }
 
-  modal.style.display = "flex";
+
+  calculateQuotationPricing();
 
 }
 
 
 // ======================================================
-// CLOSE
+// CLOSE MODAL
 // ======================================================
 
-function closeQuotation() {
+function closeQuotationModal() {
 
-  const modal = $("quotationModal");
-  const form = $("quotationForm");
+  const modal =
+    getElement(
+      "quotationModal"
+    );
+
+
+  const form =
+    getElement(
+      "quotationForm"
+    );
+
 
   if (modal) {
-    modal.style.display = "none";
+
+    modal.style.display =
+      "none";
+
   }
+
 
   if (form) {
+
     form.reset();
+
   }
 
-  setValue("quotationDocId", "");
-  setValue("quotationAdults", 2);
-  setValue("quotationChildren", 0);
-  setValue("quotationRooms", 1);
-  setValue("quotationStatus", "Draft");
+
+  setValue(
+    "quotationDocId",
+    ""
+  );
+
+
+  setValue(
+    "quotationAdults",
+    2
+  );
+
+
+  setValue(
+    "quotationChildren",
+    0
+  );
+
+
+  setValue(
+    "quotationRooms",
+    1
+  );
+
+
+  setValue(
+    "quotationStatus",
+    "Draft"
+  );
+
+
+  clearHotelRows();
 
 }
 
 
 // ======================================================
-// SAVE
+// SAVE QUOTATION
 // ======================================================
 
-async function saveQuotation(e) {
+async function saveQuotation(
+  event
+) {
 
-  e.preventDefault();
+  event.preventDefault();
+
 
   const customer =
-    getValue("quotationCustomer");
+    getValue(
+      "quotationCustomer"
+    );
 
-  const packageName =
-    getValue("quotationPackage");
 
-  const total =
-    Number(getValue("quotationTotal") || 0);
+  const packageId =
+    getValue(
+      "quotationPackage"
+    );
+
 
   if (!customer) {
 
-    message(
+    showQuotationMessage(
       "Customer name is required.",
-      "error"
+      "#dc2626"
     );
 
     return;
+
   }
 
-  if (!packageName) {
 
-    message(
-      "Package / Tour Name is required.",
-      "error"
+  if (!packageId) {
+
+    showQuotationMessage(
+      "Please select a package.",
+      "#dc2626"
     );
 
     return;
+
   }
 
-  if (total <= 0) {
 
-    message(
-      "Please enter a valid quotation amount.",
-      "error"
-    );
+  calculateQuotationPricing();
 
-    return;
-  }
 
-  message(
+  showQuotationMessage(
     "Saving quotation...",
-    "info"
+    "#2563eb"
   );
 
-  const data = {
 
-    customer,
+  const itinerary =
+    getSavedItinerary();
 
-    enquiry:
-      getValue("quotationEnquiry"),
 
-    packageName,
+  const hotels =
+    getHotelData();
+
+
+  const quotationData = {
+
+    quotationId:
+      getValue(
+        "quotationId"
+      ) || "",
+
+
+    enquiryId:
+      getValue(
+        "quotationEnquiry"
+      ),
+
+
+    customer:
+      customer,
+
+
+    customerMobile:
+      getValue(
+        "quotationCustomerMobile"
+      ),
+
+
+    customerEmail:
+      getValue(
+        "quotationCustomerEmail"
+      ),
+
+
+    packageId:
+      packageId,
+
+
+    packageName:
+      getSelectedPackageName(),
+
 
     destination:
-      getValue("quotationDestination"),
+      getValue(
+        "quotationDestination"
+      ),
+
+
+    duration:
+      getValue(
+        "quotationDuration"
+      ),
+
 
     startDate:
-      getValue("quotationStartDate"),
+      getValue(
+        "quotationStartDate"
+      ),
+
 
     endDate:
-      getValue("quotationEndDate"),
+      getValue(
+        "quotationEndDate"
+      ),
+
 
     adults:
       Number(
-        getValue("quotationAdults") || 0
+        getValue(
+          "quotationAdults"
+        ) || 0
       ),
+
 
     children:
       Number(
-        getValue("quotationChildren") || 0
+        getValue(
+          "quotationChildren"
+        ) || 0
       ),
+
 
     rooms:
       Number(
-        getValue("quotationRooms") || 0
+        getValue(
+          "quotationRooms"
+        ) || 0
       ),
 
-    validUntil:
-      getValue("quotationValidUntil"),
 
-    total,
+    validUntil:
+      getValue(
+        "quotationValidUntil"
+      ),
+
+
+    itinerary:
+      itinerary,
+
+
+    hotels:
+      hotels,
+
+
+    vehicle:
+      getValue(
+        "quotationVehicle"
+      ),
+
+
+    vehicleType:
+      getValue(
+        "quotationVehicleType"
+      ),
+
+
+    packageCost:
+      Number(
+        getValue(
+          "quotationPackageCost"
+        ) || 0
+      ),
+
+
+    discount:
+      Number(
+        getValue(
+          "quotationDiscount"
+        ) || 0
+      ),
+
+
+    gst:
+      Number(
+        getValue(
+          "quotationGST"
+        ) || 0
+      ),
+
+
+    grandTotal:
+      Number(
+        getValue(
+          "quotationGrandTotal"
+        ) || 0
+      ),
+
+
+    totalPackageCost:
+      Number(
+        getValue(
+          "quotationTotalPackageCost"
+        ) || 0
+      ),
+
 
     perPerson:
       Number(
-        getValue("quotationPerPerson") || 0
+        getValue(
+          "quotationPerPerson"
+        ) || 0
       ),
 
+
     status:
-      getValue("quotationStatus") || "Draft",
+      getValue(
+        "quotationStatus"
+      ) || "Draft",
+
 
     notes:
-      getValue("quotationNotes"),
+      getValue(
+        "quotationNotes"
+      ),
+
 
     updatedAt:
       serverTimestamp()
@@ -387,7 +1751,9 @@ async function saveQuotation(e) {
   try {
 
     const existingId =
-      getValue("quotationDocId");
+      getValue(
+        "quotationDocId"
+      );
 
 
     // ==================================================
@@ -397,17 +1763,21 @@ async function saveQuotation(e) {
     if (existingId) {
 
       await updateDoc(
+
         doc(
           db,
           "quotations",
           existingId
         ),
-        data
+
+        quotationData
+
       );
 
-      message(
+
+      showQuotationMessage(
         "Quotation updated successfully.",
-        "success"
+        "#15803d"
       );
 
     }
@@ -419,39 +1789,50 @@ async function saveQuotation(e) {
 
     else {
 
-      data.createdAt =
+      quotationData.createdAt =
         serverTimestamp();
 
-      data.createdBy =
+
+      quotationData.createdBy =
         auth.currentUser
           ? auth.currentUser.email
           : "";
 
-      const ref =
+
+      const quotationRef =
         await addDoc(
+
           collection(
             db,
             "quotations"
           ),
-          data
+
+          quotationData
+
         );
 
+
       const quotationId =
-        "QT-" +
-        ref.id
-          .substring(0, 6)
-          .toUpperCase();
+        createQuotationId(
+          quotationRef.id
+        );
+
 
       await updateDoc(
-        ref,
+
+        quotationRef,
+
         {
-          quotationId
+          quotationId:
+            quotationId
         }
+
       );
 
-      message(
-        `Quotation ${quotationId} saved successfully.`,
-        "success"
+
+      showQuotationMessage(
+        "Quotation saved successfully.",
+        "#15803d"
       );
 
     }
@@ -460,9 +1841,10 @@ async function saveQuotation(e) {
     await loadQuotations();
 
 
-    setTimeout(() => {
-      closeQuotation();
-    }, 700);
+    setTimeout(
+      closeQuotationModal,
+      700
+    );
 
 
   } catch (error) {
@@ -472,9 +1854,10 @@ async function saveQuotation(e) {
       error
     );
 
-    message(
-      "Could not save quotation. Check Firestore permissions.",
-      "error"
+
+    showQuotationMessage(
+      "Could not save quotation. Check Firestore rules.",
+      "#dc2626"
     );
 
   }
@@ -483,29 +1866,81 @@ async function saveQuotation(e) {
 
 
 // ======================================================
-// LOAD
+// QUOTATION ID
+// ======================================================
+
+function createQuotationId(
+  firestoreId
+) {
+
+  return (
+    "QT-" +
+    String(
+      firestoreId
+    )
+      .substring(0, 6)
+      .toUpperCase()
+  );
+
+}
+
+
+// ======================================================
+// SELECTED PACKAGE NAME
+// ======================================================
+
+function getSelectedPackageName() {
+
+  const select =
+    getElement(
+      "quotationPackage"
+    );
+
+
+  if (!select) return "";
+
+
+  const option =
+    select.options[
+      select.selectedIndex
+    ];
+
+
+  return option
+    ? option.textContent.trim()
+    : "";
+
+}
+
+
+// ======================================================
+// LOAD QUOTATIONS
 // ======================================================
 
 async function loadQuotations() {
 
-  const tbody =
-    $("quotationsTableBody");
-
-  if (!tbody) {
-
-    console.error(
-      "quotationsTableBody not found."
+  const table =
+    getElement(
+      "quotationsTableBody"
     );
 
-    return;
-  }
 
-  tbody.innerHTML = `
+  if (!table) return;
+
+
+  table.innerHTML = `
+
     <tr>
-      <td colspan="8" class="empty-table">
+
+      <td
+        colspan="8"
+        class="empty-table"
+      >
         Loading quotations...
       </td>
+
     </tr>
+
   `;
 
 
@@ -519,16 +1954,22 @@ async function loadQuotations() {
         )
       );
 
-    quotations =
+
+    allQuotations =
       snapshot.docs.map(
-        d => ({
-          id: d.id,
-          ...d.data()
+        (item) => ({
+
+          id:
+            item.id,
+
+          ...item.data()
+
         })
       );
 
+
     renderQuotations(
-      quotations
+      allQuotations
     );
 
 
@@ -539,14 +1980,20 @@ async function loadQuotations() {
       error
     );
 
-    tbody.innerHTML = `
+
+    table.innerHTML = `
+
       <tr>
-        <td colspan="8" class="empty-table">
+
+        <td
+          colspan="8"
+          class="empty-table"
+        >
           Unable to load quotations.
-          <br>
-          Check Firestore permissions.
         </td>
+
       </tr>
+
     `;
 
   }
@@ -558,173 +2005,266 @@ async function loadQuotations() {
 // RENDER
 // ======================================================
 
-function renderQuotations(list) {
+function renderQuotations(
+  quotations
+) {
 
-  const tbody =
-    $("quotationsTableBody");
+  const table =
+    getElement(
+      "quotationsTableBody"
+    );
 
-  if (!tbody) return;
+
+  if (!table) return;
 
 
-  if (!list.length) {
+  if (!quotations.length) {
 
-    tbody.innerHTML = `
+    table.innerHTML = `
+
       <tr>
-        <td colspan="8" class="empty-table">
+
+        <td
+          colspan="8"
+          class="empty-table"
+        >
           No quotations found.
         </td>
+
       </tr>
+
     `;
 
     return;
+
   }
 
 
-  tbody.innerHTML =
-    list.map(q => {
+  table.innerHTML =
+    quotations
+      .map(
+        (quotation) => {
 
-      const pax =
-        Number(q.adults || 0) +
-        Number(q.children || 0);
-
-      return `
-
-        <tr>
-
-          <td>
-            <strong>
-              ${escapeHtml(
-                q.quotationId || "-"
-              )}
-            </strong>
-          </td>
-
-          <td>
-            ${escapeHtml(
-              q.customer || "-"
-            )}
-          </td>
-
-          <td>
-
-            <strong>
-              ${escapeHtml(
-                q.packageName || "-"
-              )}
-            </strong>
-
-            ${
-              q.destination
-                ? `
-                  <br>
-                  <small>
-                    ${escapeHtml(
-                      q.destination
-                    )}
-                  </small>
-                `
-                : ""
-            }
-
-          </td>
-
-          <td>
-            ${escapeHtml(
-              q.startDate || "-"
-            )}
-          </td>
-
-          <td>
-            ${pax}
-          </td>
-
-          <td>
-            ₹${Number(
-              q.total || 0
-            ).toLocaleString("en-IN")}
-          </td>
-
-          <td>
-
-            <span class="status-badge">
-              ${escapeHtml(
-                q.status || "Draft"
-              )}
-            </span>
-
-          </td>
-
-          <td>
-
-            <button
-              type="button"
-              class="edit-btn"
-              data-edit="${q.id}"
-            >
-              Edit
-            </button>
-
-            <button
-              type="button"
-              class="danger-btn"
-              data-delete="${q.id}"
-            >
-              Delete
-            </button>
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }).join("");
+          const pax =
+            Number(
+              quotation.adults || 0
+            ) +
+            Number(
+              quotation.children || 0
+            );
 
 
-  bindRowButtons();
+          const total =
+            Number(
+              quotation.grandTotal ??
+              quotation.totalPackageCost ??
+              0
+            );
+
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <strong>
+                  ${escapeHtml(
+                    quotation.quotationId ||
+                    "-"
+                  )}
+                </strong>
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  quotation.customer ||
+                  "-"
+                )}
+
+                ${
+                  quotation.customerMobile
+                    ? `
+                      <br>
+                      <small>
+                        ${escapeHtml(
+                          quotation.customerMobile
+                        )}
+                      </small>
+                    `
+                    : ""
+                }
+
+              </td>
+
+
+              <td>
+
+                <strong>
+                  ${escapeHtml(
+                    quotation.packageName ||
+                    "-"
+                  )}
+                </strong>
+
+                ${
+                  quotation.destination
+                    ? `
+                      <br>
+                      <small>
+                        ${escapeHtml(
+                          quotation.destination
+                        )}
+                      </small>
+                    `
+                    : ""
+                }
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  quotation.startDate ||
+                  "-"
+                )}
+
+              </td>
+
+
+              <td>
+                ${pax}
+              </td>
+
+
+              <td>
+
+                ₹${total.toLocaleString(
+                  "en-IN",
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }
+                )}
+
+              </td>
+
+
+              <td>
+
+                <span class="status-badge">
+
+                  ${escapeHtml(
+                    quotation.status ||
+                    "Draft"
+                  )}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <button
+                  type="button"
+                  class="edit-btn"
+                  data-quotation-edit-id="${quotation.id}"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  type="button"
+                  class="danger-btn"
+                  data-quotation-delete-id="${quotation.id}"
+                >
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  setupQuotationRowActions();
 
 }
 
 
 // ======================================================
-// ROW BUTTONS
+// ROW ACTIONS
 // ======================================================
 
-function bindRowButtons() {
+function setupQuotationRowActions() {
 
   document
-    .querySelectorAll("[data-edit]")
-    .forEach(btn => {
+    .querySelectorAll(
+      "[data-quotation-edit-id]"
+    )
+    .forEach(
+      (button) => {
 
-      btn.onclick = () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-        const item =
-          quotations.find(
-            q => q.id === btn.dataset.edit
-          );
-
-        if (item) {
-          openQuotation(item);
-        }
-
-      };
-
-    });
+            const quotation =
+              allQuotations.find(
+                (item) =>
+                  item.id ===
+                  button.dataset
+                    .quotationEditId
+              );
 
 
-  document
-    .querySelectorAll("[data-delete]")
-    .forEach(btn => {
+            if (quotation) {
 
-      btn.onclick = () => {
+              openQuotationModal(
+                quotation
+              );
 
-        deleteQuotation(
-          btn.dataset.delete
+            }
+
+          }
         );
 
-      };
+      }
+    );
 
-    });
+
+  document
+    .querySelectorAll(
+      "[data-quotation-delete-id]"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            deleteQuotation(
+              button.dataset
+                .quotationDeleteId
+            );
+
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -733,22 +2273,24 @@ function bindRowButtons() {
 // DELETE
 // ======================================================
 
-async function deleteQuotation(id) {
+async function deleteQuotation(
+  id
+) {
 
-  const item =
-    quotations.find(
-      q => q.id === id
+  const quotation =
+    allQuotations.find(
+      (item) =>
+        item.id === id
     );
 
-  if (!item) return;
 
-
-  const ok =
+  const confirmed =
     confirm(
-      `Delete quotation "${item.quotationId || id}"?`
+      `Delete quotation "${quotation?.quotationId || ""}"?`
     );
 
-  if (!ok) return;
+
+  if (!confirmed) return;
 
 
   try {
@@ -761,7 +2303,9 @@ async function deleteQuotation(id) {
       )
     );
 
+
     await loadQuotations();
+
 
   } catch (error) {
 
@@ -769,6 +2313,7 @@ async function deleteQuotation(id) {
       "Quotation delete error:",
       error
     );
+
 
     alert(
       "Could not delete quotation."
@@ -780,20 +2325,387 @@ async function deleteQuotation(id) {
 
 
 // ======================================================
+// SEARCH
+// ======================================================
+
+function setupQuotationSearch() {
+
+  const searchBox =
+    getElement(
+      "quotationSearch"
+    );
+
+
+  if (!searchBox) return;
+
+
+  searchBox.addEventListener(
+    "input",
+    () => {
+
+      const search =
+        searchBox.value
+          .toLowerCase()
+          .trim();
+
+
+      if (!search) {
+
+        renderQuotations(
+          allQuotations
+        );
+
+        return;
+
+      }
+
+
+      const filtered =
+        allQuotations.filter(
+          (quotation) => {
+
+            return [
+
+              quotation.quotationId,
+
+              quotation.customer,
+
+              quotation.packageName,
+
+              quotation.destination,
+
+              quotation.status,
+
+              quotation.customerMobile,
+
+              quotation.customerEmail
+
+            ]
+              .filter(Boolean)
+              .some(
+                (value) =>
+                  String(value)
+                    .toLowerCase()
+                    .includes(search)
+              );
+
+          }
+        );
+
+
+      renderQuotations(
+        filtered
+      );
+
+    }
+  );
+
+}
+
+
+// ======================================================
+// HOTEL DATA
+// ======================================================
+
+function getHotelData() {
+
+  const rows =
+    document.querySelectorAll(
+      ".quotation-hotel-row"
+    );
+
+
+  return Array.from(rows)
+    .map(
+      (row) => ({
+
+        destination:
+          row.querySelector(
+            ".quotation-hotel-destination"
+          )?.value
+          ?.trim() || "",
+
+
+        hotelName:
+          row.querySelector(
+            ".quotation-hotel-name"
+          )?.value
+          ?.trim() || "",
+
+
+        nights:
+          Number(
+            row.querySelector(
+              ".quotation-hotel-nights"
+            )?.value || 0
+          )
+
+      })
+    )
+    .filter(
+      (hotel) =>
+        hotel.destination ||
+        hotel.hotelName
+    );
+
+}
+
+
+// ======================================================
+// SAVED ITINERARY
+// ======================================================
+
+function getSavedItinerary() {
+
+  const hidden =
+    getElement(
+      "quotationItineraryData"
+    );
+
+
+  if (!hidden?.value) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    return JSON.parse(
+      hidden.value
+    );
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+// ======================================================
+// LOAD SAVED HOTELS
+// ======================================================
+
+function loadSavedHotels(
+  hotels
+) {
+
+  const container =
+    getElement(
+      "quotationHotels"
+    );
+
+
+  if (!container) return;
+
+
+  clearHotelRows();
+
+
+  if (
+    !Array.isArray(hotels) ||
+    !hotels.length
+  ) {
+
+    return;
+
+  }
+
+
+  const first =
+    hotels[0];
+
+
+  setHotelRow(
+    container.querySelector(
+      ".quotation-hotel-row"
+    ),
+    first
+  );
+
+
+  hotels
+    .slice(1)
+    .forEach(
+      (hotel) => {
+
+        addHotelRow();
+
+
+        const rows =
+          container.querySelectorAll(
+            ".quotation-hotel-row"
+          );
+
+
+        setHotelRow(
+          rows[rows.length - 1],
+          hotel
+        );
+
+      }
+    );
+
+}
+
+
+// ======================================================
+// SET HOTEL ROW
+// ======================================================
+
+function setHotelRow(
+  row,
+  hotel
+) {
+
+  if (!row || !hotel) return;
+
+
+  const destination =
+    row.querySelector(
+      ".quotation-hotel-destination"
+    );
+
+
+  const name =
+    row.querySelector(
+      ".quotation-hotel-name"
+    );
+
+
+  const nights =
+    row.querySelector(
+      ".quotation-hotel-nights"
+    );
+
+
+  if (destination) {
+
+    destination.value =
+      hotel.destination ||
+      "";
+
+  }
+
+
+  if (name) {
+
+    name.value =
+      hotel.hotelName ||
+      "";
+
+  }
+
+
+  if (nights) {
+
+    nights.value =
+      hotel.nights ??
+      1;
+
+  }
+
+}
+
+
+// ======================================================
+// CLEAR HOTEL ROWS
+// ======================================================
+
+function clearHotelRows() {
+
+  const container =
+    getElement(
+      "quotationHotels"
+    );
+
+
+  if (!container) return;
+
+
+  container.innerHTML = `
+
+    <div class="quotation-hotel-row">
+
+      <div class="form-group">
+
+        <label>
+          Destination
+        </label>
+
+        <input
+          type="text"
+          class="quotation-hotel-destination"
+          placeholder="e.g. Shillong"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Hotel Name
+        </label>
+
+        <input
+          type="text"
+          class="quotation-hotel-name"
+          placeholder="ABC Hotel or Similar"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Nights
+        </label>
+
+        <input
+          type="number"
+          class="quotation-hotel-nights"
+          min="0"
+          value="1"
+        >
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+// ======================================================
 // MESSAGE
 // ======================================================
 
-function message(text, type) {
+function showQuotationMessage(
+  text,
+  color
+) {
 
-  const box =
-    $("quotationFormMessage");
+  const message =
+    getElement(
+      "quotationFormMessage"
+    );
 
-  if (!box) return;
 
-  box.textContent = text;
+  if (!message) return;
 
-  box.className =
-    "form-message " + type;
+
+  message.style.color =
+    color;
+
+
+  message.textContent =
+    text;
 
 }
 
@@ -804,22 +2716,49 @@ function message(text, type) {
 
 function getValue(id) {
 
-  const element = $(id);
+  const element =
+    getElement(id);
 
-  return element
-    ? String(element.value || "").trim()
-    : "";
+
+  if (!element) return "";
+
+
+  return String(
+    element.value ?? ""
+  ).trim();
 
 }
 
 
-function setValue(id, value) {
+function setValue(
+  id,
+  value
+) {
 
-  const element = $(id);
+  const element =
+    getElement(id);
 
-  if (element) {
-    element.value = value ?? "";
-  }
+
+  if (!element) return;
+
+
+  element.value =
+    value ?? "";
+
+}
+
+
+// ======================================================
+// MONEY ROUND
+// ======================================================
+
+function roundMoney(
+  value
+) {
+
+  return Math.round(
+    Number(value || 0) * 100
+  ) / 100;
 
 }
 
@@ -828,13 +2767,37 @@ function setValue(id, value) {
 // HTML ESCAPE
 // ======================================================
 
-function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(
+    value ?? ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
