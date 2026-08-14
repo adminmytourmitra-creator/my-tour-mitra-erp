@@ -1,116 +1,612 @@
 /* =========================================================
    MY TOUR MITRA ERP
-   APPLICATION CONFIGURATION
+   CONFIGURATION
+   File: /js/config.js
    ========================================================= */
 
-/**
- * Central configuration file.
- *
- * IMPORTANT:
- * - Do not put passwords here.
- * - Do not put service-account private keys here.
- * - Firebase Web App configuration is safe to use in frontend.
- * - Firestore Security Rules and Firebase Authentication
- *   are responsible for actual access protection.
- */
+"use strict";
 
 
 /* =========================================================
    1. APPLICATION INFORMATION
    ========================================================= */
 
-export const APP_CONFIG = Object.freeze({
+window.MTM_CONFIG = {
 
-    name: "My Tour Mitra",
+    APP_NAME: "My Tour Mitra ERP",
 
-    shortName: "MTM",
+    APP_SHORT_NAME: "MTM ERP",
 
-    productName: "My Tour Mitra ERP",
+    VERSION: "1.0.0",
 
-    version: "1.0.0",
+    CURRENCY: "INR",
 
-    environment: "production",
+    CURRENCY_SYMBOL: "₹",
 
-    currency: "INR",
+    DATE_FORMAT: "DD-MM-YYYY",
 
-    currencySymbol: "₹",
+    TIMEZONE: "Asia/Kolkata",
 
-    country: "India",
+    COUNTRY: "India",
 
-    timezone: "Asia/Kolkata",
+    DEFAULT_PAGE: "dashboard"
 
-    dateFormat: "DD/MM/YYYY",
-
-    timeFormat: "12-hour"
-
-});
+};
 
 
 /* =========================================================
-   2. FIREBASE CONFIGURATION
+   2. FIRESTORE COLLECTION NAMES
    ========================================================= */
 
-/**
- * Replace these placeholder values with the Firebase Web App
- * configuration from:
- *
- * Firebase Console
- * → Project Settings
- * → Your apps
- * → Web App
- * → SDK setup and configuration
- *
- * Do NOT add:
- * - Firebase Admin SDK private key
- * - Service account JSON
- * - API secrets
- * - Private credentials
- */
+window.MTM_COLLECTIONS = {
 
-export const FIREBASE_CONFIG = Object.freeze({
+    USERS: "users",
 
-    apiKey: "YOUR_FIREBASE_API_KEY",
+    CUSTOMERS: "customers",
 
-    authDomain:
-        "YOUR_PROJECT_ID.firebaseapp.com",
+    ENQUIRIES: "enquiries",
 
-    projectId:
-        "YOUR_PROJECT_ID",
+    FOLLOWUPS: "followups",
 
-    storageBucket:
-        "YOUR_PROJECT_ID.firebasestorage.app",
+    PACKAGES: "packages",
 
-    messagingSenderId:
-        "YOUR_MESSAGING_SENDER_ID",
+    HOTELS: "hotels",
 
-    appId:
-        "YOUR_FIREBASE_APP_ID"
+    CABS: "cabs",
 
-});
+    AGENCIES: "agencies",
+
+    QUOTATIONS: "quotations",
+
+    BOOKINGS: "bookings",
+
+    INVOICES: "invoices",
+
+    VOUCHERS: "vouchers",
+
+    PAYMENTS: "payments",
+
+    EXPENSES: "expenses",
+
+    PROFIT_LOSS: "profit_loss",
+
+    TEAM: "team",
+
+    SETTINGS: "settings",
+
+    SUPPLIERS: "suppliers",
+
+    ACTIVITIES: "activities"
+
+};
 
 
 /* =========================================================
-   3. FIRESTORE COLLECTION NAMES
+   3. STANDARD DOCUMENT ID PREFIXES
    ========================================================= */
 
-/**
- * Central collection registry.
- *
- * Never hard-code collection names throughout modules.
- * All modules will import COLLECTIONS from this file.
- */
+window.MTM_ID_PREFIXES = {
 
-export const COLLECTIONS = Object.freeze({
+    CUSTOMER: "CUS",
+
+    ENQUIRY: "ENQ",
+
+    FOLLOWUP: "FUP",
+
+    PACKAGE: "PKG",
+
+    HOTEL: "HTL",
+
+    CAB: "CAB",
+
+    AGENCY: "AGN",
+
+    QUOTATION: "QUO",
+
+    BOOKING: "BKG",
+
+    INVOICE: "INV",
+
+    VOUCHER: "VCH",
+
+    PAYMENT: "PAY",
+
+    EXPENSE: "EXP",
+
+    SUPPLIER: "SUP",
+
+    TEAM: "TM"
+
+};
+
+
+/* =========================================================
+   4. ID NUMBER FORMAT
+   =========================================================
+   
+   Examples:
+
+   CUS0001
+   ENQ0001
+   FUP0001
+   PKG0001
+   QUO0001
+   BKG0001
+   INV0001
+   VCH0001
+   PAY0001
+   EXP0001
+   SUP0001
+   ========================================================= */
+
+window.MTM_ID_SETTINGS = {
+
+    DIGITS: 4,
+
+    START_NUMBER: 1
+
+};
+
+
+/* =========================================================
+   5. MODULE DEFINITIONS
+   ========================================================= */
+
+window.MTM_MODULES = {
+
+    dashboard: {
+        name: "Dashboard",
+        collection: null
+    },
+
+    customers: {
+        name: "Customers",
+        collection: MTM_COLLECTIONS.CUSTOMERS
+    },
+
+    enquiries: {
+        name: "Enquiries",
+        collection: MTM_COLLECTIONS.ENQUIRIES
+    },
+
+    followups: {
+        name: "Follow-ups",
+        collection: MTM_COLLECTIONS.FOLLOWUPS
+    },
+
+    packages: {
+        name: "Packages",
+        collection: MTM_COLLECTIONS.PACKAGES
+    },
+
+    hotels: {
+        name: "Hotels",
+        collection: MTM_COLLECTIONS.HOTELS
+    },
+
+    cabs: {
+        name: "Cabs",
+        collection: MTM_COLLECTIONS.CABS
+    },
+
+    agencies: {
+        name: "Agencies",
+        collection: MTM_COLLECTIONS.AGENCIES
+    },
+
+    quotations: {
+        name: "Quotations",
+        collection: MTM_COLLECTIONS.QUOTATIONS
+    },
+
+    bookings: {
+        name: "Bookings",
+        collection: MTM_COLLECTIONS.BOOKINGS
+    },
+
+    invoices: {
+        name: "Invoices",
+        collection: MTM_COLLECTIONS.INVOICES
+    },
+
+    vouchers: {
+        name: "Vouchers",
+        collection: MTM_COLLECTIONS.VOUCHERS
+    },
+
+    payments: {
+        name: "Payments",
+        collection: MTM_COLLECTIONS.PAYMENTS
+    },
+
+    expenses: {
+        name: "Expenses",
+        collection: MTM_COLLECTIONS.EXPENSES
+    },
+
+    profitLoss: {
+        name: "Profit & Loss",
+        collection: MTM_COLLECTIONS.PROFIT_LOSS
+    },
+
+    team: {
+        name: "Team",
+        collection: MTM_COLLECTIONS.TEAM
+    },
+
+    settings: {
+        name: "Settings",
+        collection: MTM_COLLECTIONS.SETTINGS
+    }
+
+};
+
+
+/* =========================================================
+   6. STATUS VALUES
+   ========================================================= */
+
+window.MTM_STATUS = {
+
+    ACTIVE: "active",
+
+    INACTIVE: "inactive",
+
+    PENDING: "pending",
+
+    CONFIRMED: "confirmed",
+
+    CANCELLED: "cancelled",
+
+    COMPLETED: "completed",
+
+    DRAFT: "draft",
+
+    SENT: "sent",
+
+    ACCEPTED: "accepted",
+
+    REJECTED: "rejected",
+
+    PAID: "paid",
+
+    PARTIAL: "partial",
+
+    UNPAID: "unpaid"
+
+};
+
+
+/* =========================================================
+   7. ENQUIRY STATUS
+   ========================================================= */
+
+window.MTM_ENQUIRY_STATUS = [
+
+    "New",
+
+    "Contacted",
+
+    "Follow-up",
+
+    "Quotation Sent",
+
+    "Negotiation",
+
+    "Converted",
+
+    "Lost",
+
+    "Cancelled"
+
+];
+
+
+/* =========================================================
+   8. BOOKING STATUS
+   ========================================================= */
+
+window.MTM_BOOKING_STATUS = [
+
+    "Draft",
+
+    "Confirmed",
+
+    "Partially Paid",
+
+    "Fully Paid",
+
+    "Cancelled",
+
+    "Completed"
+
+];
+
+
+/* =========================================================
+   9. QUOTATION STATUS
+   ========================================================= */
+
+window.MTM_QUOTATION_STATUS = [
+
+    "Draft",
+
+    "Sent",
+
+    "Accepted",
+
+    "Rejected",
+
+    "Expired",
+
+    "Converted"
+
+];
+
+
+/* =========================================================
+   10. PAYMENT STATUS
+   ========================================================= */
+
+window.MTM_PAYMENT_STATUS = [
+
+    "Pending",
+
+    "Partial",
+
+    "Paid",
+
+    "Overdue",
+
+    "Cancelled"
+
+];
+
+
+/* =========================================================
+   11. SUPPLIER TYPES
+   ========================================================= */
+
+window.MTM_SUPPLIER_TYPES = [
+
+    "Hotel",
+
+    "Cab",
+
+    "Flight",
+
+    "Activity",
+
+    "Visa",
+
+    "DMC",
+
+    "Other"
+
+];
+
+
+/* =========================================================
+   12. CUSTOMER TYPES
+   ========================================================= */
+
+window.MTM_CUSTOMER_TYPES = [
+
+    "Individual",
+
+    "Family",
+
+    "Corporate",
+
+    "Group",
+
+    "B2B"
+
+];
+
+
+/* =========================================================
+   13. PAYMENT METHODS
+   ========================================================= */
+
+window.MTM_PAYMENT_METHODS = [
+
+    "Cash",
+
+    "UPI",
+
+    "Bank Transfer",
+
+    "Credit Card",
+
+    "Debit Card",
+
+    "Cheque",
+
+    "Other"
+
+];
+
+
+/* =========================================================
+   14. ID GENERATOR
+   =========================================================
+   
+   This function only creates the DISPLAY FORMAT.
+
+   Actual sequential number generation will be handled
+   centrally through Firestore so duplicate IDs are avoided.
+
+   Example:
+   
+   generateDocumentId("CUS", 1)
+   => CUS0001
+   ========================================================= */
+
+window.generateDocumentId = function (prefix, number) {
+
+    const safePrefix = String(prefix || "").toUpperCase();
+
+    const numericNumber = Number(number);
+
+    if (!safePrefix) {
+        throw new Error("Document ID prefix is required.");
+    }
+
+    if (!Number.isFinite(numericNumber)) {
+        throw new Error("Valid document number is required.");
+    }
+
+    const paddedNumber = String(
+        Math.floor(numericNumber)
+    ).padStart(
+        MTM_ID_SETTINGS.DIGITS,
+        "0"
+    );
+
+    return safePrefix + paddedNumber;
+
+};
+
+
+/* =========================================================
+   15. FORMAT STANDARD IDS
+   ========================================================= */
+
+window.MTM_ID = {
+
+    customer: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.CUSTOMER,
+            number
+        );
+    },
+
+    enquiry: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.ENQUIRY,
+            number
+        );
+    },
+
+    followup: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.FOLLOWUP,
+            number
+        );
+    },
+
+    package: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.PACKAGE,
+            number
+        );
+    },
+
+    hotel: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.HOTEL,
+            number
+        );
+    },
+
+    cab: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.CAB,
+            number
+        );
+    },
+
+    agency: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.AGENCY,
+            number
+        );
+    },
+
+    quotation: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.QUOTATION,
+            number
+        );
+    },
+
+    booking: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.BOOKING,
+            number
+        );
+    },
+
+    invoice: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.INVOICE,
+            number
+        );
+    },
+
+    voucher: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.VOUCHER,
+            number
+        );
+    },
+
+    payment: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.PAYMENT,
+            number
+        );
+    },
+
+    expense: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.EXPENSE,
+            number
+        );
+    },
+
+    supplier: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.SUPPLIER,
+            number
+        );
+
+    },
+
+    team: function (number) {
+        return generateDocumentId(
+            MTM_ID_PREFIXES.TEAM,
+            number
+        );
+    }
+
+};
+
+
+/* =========================================================
+   16. APPLICATION ROUTES
+   ========================================================= */
+
+window.MTM_ROUTES = {
+
+    dashboard: "dashboard",
 
     customers: "customers",
 
     enquiries: "enquiries",
 
+    followups: "followups",
+
     packages: "packages",
 
-    quotations: "quotations",
+    hotels: "hotels",
 
-    followups: "followups",
+    cabs: "cabs",
+
+    agencies: "agencies",
+
+    quotations: "quotations",
 
     bookings: "bookings",
 
@@ -122,572 +618,96 @@ export const COLLECTIONS = Object.freeze({
 
     expenses: "expenses",
 
-    users: "users",
+    profitLoss: "profit-loss",
 
-    settings: "settings",
+    team: "team",
 
-    counters: "counters"
+    settings: "settings"
 
-});
-
-
-/* =========================================================
-   4. BUSINESS ID PREFIXES
-   ========================================================= */
-
-/**
- * Every business record receives a human-readable ID.
- *
- * Examples:
- *
- * CUS0001
- * ENQ0001
- * PKG0001
- * QTN0001
- * FUP0001
- * BKG0001
- * INV0001
- * VCH0001
- * PAY0001
- * EXP0001
- * USR0001
- *
- * IDs will be generated centrally using Firestore
- * transactions. Modules must NOT generate IDs themselves.
- */
-
-export const ID_PREFIXES = Object.freeze({
-
-    customers: "CUS",
-
-    enquiries: "ENQ",
-
-    packages: "PKG",
-
-    quotations: "QTN",
-
-    followups: "FUP",
-
-    bookings: "BKG",
-
-    invoices: "INV",
-
-    vouchers: "VCH",
-
-    payments: "PAY",
-
-    expenses: "EXP",
-
-    users: "USR"
-
-});
+};
 
 
 /* =========================================================
-   5. ID FORMAT SETTINGS
+   17. DATE / TIME HELPERS
    ========================================================= */
 
-export const ID_CONFIG = Object.freeze({
+window.MTM_DATE = {
 
-    digits: 4,
+    today: function () {
 
-    separator: "",
+        const now = new Date();
 
-    startingNumber: 1
+        return now.toISOString()
+            .split("T")[0];
 
-});
+    },
+
+    timestamp: function () {
+
+        return new Date();
+
+    }
+
+};
 
 
 /* =========================================================
-   6. USER ROLES
+   18. CURRENCY FORMATTER
    ========================================================= */
 
-/**
- * Roles will be enforced through application permissions
- * AND Firestore Security Rules.
- */
+window.formatCurrency = function (value) {
 
-export const USER_ROLES = Object.freeze({
+    const amount = Number(value) || 0;
 
-    ADMIN: "admin",
+    return new Intl.NumberFormat(
+        "en-IN",
+        {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 2
+        }
+    ).format(amount);
 
-    MANAGER: "manager",
-
-    STAFF: "staff",
-
-    ACCOUNTS: "accounts",
-
-    VIEWER: "viewer"
-
-});
+};
 
 
 /* =========================================================
-   7. RECORD STATUS
+   19. NUMBER FORMATTER
    ========================================================= */
 
-export const RECORD_STATUS = Object.freeze({
+window.formatNumber = function (value) {
 
-    ACTIVE: "active",
+    const number = Number(value) || 0;
 
-    INACTIVE: "inactive",
+    return new Intl.NumberFormat(
+        "en-IN"
+    ).format(number);
 
-    DRAFT: "draft",
-
-    CANCELLED: "cancelled",
-
-    DELETED: "deleted"
-
-});
+};
 
 
 /* =========================================================
-   8. ENQUIRY STATUS
+   20. APPLICATION ERROR LOGGER
    ========================================================= */
 
-export const ENQUIRY_STATUS = Object.freeze({
-
-    NEW: "new",
-
-    CONTACTED: "contacted",
-
-    PACKAGE_CREATED: "package_created",
-
-    QUOTED: "quoted",
-
-    FOLLOW_UP: "follow_up",
-
-    WON: "won",
-
-    LOST: "lost",
-
-    CANCELLED: "cancelled"
-
-});
-
-
-/* =========================================================
-   9. QUOTATION STATUS
-   ========================================================= */
-
-export const QUOTATION_STATUS = Object.freeze({
-
-    DRAFT: "draft",
-
-    SENT: "sent",
-
-    FOLLOW_UP: "follow_up",
-
-    ACCEPTED: "accepted",
-
-    REJECTED: "rejected",
-
-    EXPIRED: "expired",
-
-    CANCELLED: "cancelled"
-
-});
-
-
-/* =========================================================
-   10. BOOKING STATUS
-   ========================================================= */
-
-export const BOOKING_STATUS = Object.freeze({
-
-    PENDING: "pending",
-
-    CONFIRMED: "confirmed",
-
-    PARTIALLY_PAID: "partially_paid",
-
-    FULLY_PAID: "fully_paid",
-
-    CANCELLED: "cancelled",
-
-    COMPLETED: "completed"
-
-});
-
-
-/* =========================================================
-   11. PAYMENT STATUS
-   ========================================================= */
-
-export const PAYMENT_STATUS = Object.freeze({
-
-    PENDING: "pending",
-
-    PARTIAL: "partial",
-
-    PAID: "paid",
-
-    REFUNDED: "refunded",
-
-    CANCELLED: "cancelled"
-
-});
-
-
-/* =========================================================
-   12. PAYMENT METHODS
-   ========================================================= */
-
-export const PAYMENT_METHODS = Object.freeze({
-
-    CASH: "cash",
-
-    UPI: "upi",
-
-    BANK_TRANSFER: "bank_transfer",
-
-    CARD: "card",
-
-    CHEQUE: "cheque",
-
-    ONLINE: "online",
-
-    OTHER: "other"
-
-});
-
-
-/* =========================================================
-   13. VOUCHER TYPES
-   ========================================================= */
-
-export const VOUCHER_TYPES = Object.freeze({
-
-    TOUR: "tour",
-
-    HOTEL: "hotel",
-
-    CAB: "cab",
-
-    ACTIVITY: "activity",
-
-    OTHER: "other"
-
-});
-
-
-/* =========================================================
-   14. EXPENSE TYPES
-   ========================================================= */
-
-export const EXPENSE_TYPES = Object.freeze({
-
-    HOTEL: "hotel",
-
-    CAB: "cab",
-
-    ACTIVITY: "activity",
-
-    FLIGHT: "flight",
-
-    TRAIN: "train",
-
-    VISA: "visa",
-
-    DMC: "dmc",
-
-    FOOD: "food",
-
-    OFFICE: "office",
-
-    MARKETING: "marketing",
-
-    SALARY: "salary",
-
-    OTHER: "other"
-
-});
-
-
-/* =========================================================
-   15. DATE / TIME SETTINGS
-   ========================================================= */
-
-export const DATE_TIME_CONFIG = Object.freeze({
-
-    locale: "en-IN",
-
-    timezone: "Asia/Kolkata",
-
-    dateOptions: Object.freeze({
-
-        day: "2-digit",
-
-        month: "2-digit",
-
-        year: "numeric"
-
-    }),
-
-    dateTimeOptions: Object.freeze({
-
-        day: "2-digit",
-
-        month: "2-digit",
-
-        year: "numeric",
-
-        hour: "2-digit",
-
-        minute: "2-digit"
-
-    })
-
-});
-
-
-/* =========================================================
-   16. PAGINATION
-   ========================================================= */
-
-export const PAGINATION = Object.freeze({
-
-    defaultPageSize: 25,
-
-    pageSizeOptions: Object.freeze([
-        10,
-        25,
-        50,
-        100
-    ])
-
-});
-
-
-/* =========================================================
-   17. FILE UPLOAD SETTINGS
-   ========================================================= */
-
-export const FILE_CONFIG = Object.freeze({
-
-    maxFileSizeMB: 10,
-
-    allowedImageTypes: Object.freeze([
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ]),
-
-    allowedDocumentTypes: Object.freeze([
-        "application/pdf",
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ])
-
-});
-
-
-/* =========================================================
-   18. PDF SETTINGS
-   ========================================================= */
-
-export const PDF_CONFIG = Object.freeze({
-
-    quotationFilePrefix: "Quotation",
-
-    invoiceFilePrefix: "Invoice",
-
-    voucherFilePrefix: "Voucher",
-
-    paperSize: "A4",
-
-    orientation: "portrait"
-
-});
-
-
-/* =========================================================
-   19. DASHBOARD SETTINGS
-   ========================================================= */
-
-export const DASHBOARD_CONFIG = Object.freeze({
-
-    recentRecordsLimit: 10,
-
-    upcomingFollowupsLimit: 10,
-
-    pendingPaymentsLimit: 10,
-
-    pendingExpensesLimit: 10
-
-});
-
-
-/* =========================================================
-   20. APPLICATION FEATURES
-   ========================================================= */
-
-export const FEATURES = Object.freeze({
-
-    quotations: true,
-
-    quotationPDF: true,
-
-    followups: true,
-
-    bookings: true,
-
-    invoices: true,
-
-    invoicePDF: true,
-
-    vouchers: true,
-
-    voucherPDF: true,
-
-    payments: true,
-
-    expenses: true,
-
-    profitLoss: true,
-
-    teamManagement: true,
-
-    companySettings: true
-
-});
-
-
-/* =========================================================
-   21. VALIDATION
-   ========================================================= */
-
-/**
- * Checks whether Firebase configuration has been replaced
- * with real project values.
- *
- * This prevents the application from silently trying to
- * connect with placeholder configuration.
- */
-
-export function isFirebaseConfigured() {
-
-    const placeholderValues = [
-
-        "YOUR_FIREBASE_API_KEY",
-
-        "YOUR_PROJECT_ID",
-
-        "YOUR_MESSAGING_SENDER_ID",
-
-        "YOUR_FIREBASE_APP_ID"
-
-    ];
-
-
-    return !Object.values(FIREBASE_CONFIG).some(
-        value => placeholderValues.includes(value)
+window.mtmLogError = function (error, context) {
+
+    console.error(
+        "[MTM ERP ERROR]",
+        context || "Unknown Context",
+        error
     );
 
-}
+};
 
 
 /* =========================================================
-   22. ENVIRONMENT HELPERS
+   21. CONFIGURATION READY FLAG
    ========================================================= */
 
-export function isProduction() {
-
-    return APP_CONFIG.environment === "production";
-
-}
-
-
-export function isDevelopment() {
-
-    return APP_CONFIG.environment === "development";
-
-}
+window.MTM_CONFIG_READY = true;
 
 
 /* =========================================================
-   23. ID FORMATTER
+   END OF CONFIGURATION
    ========================================================= */
-
-/**
- * Converts a number into the required ERP ID.
- *
- * Example:
- *
- * formatBusinessId("CUS", 1)
- * → CUS0001
- *
- * formatBusinessId("BKG", 25)
- * → BKG0025
- */
-
-export function formatBusinessId(prefix, number) {
-
-    const numericValue = Number(number);
-
-
-    if (
-        !prefix ||
-        !Number.isInteger(numericValue) ||
-        numericValue < 1
-    ) {
-        throw new Error(
-            "Invalid business ID parameters."
-        );
-    }
-
-
-    const paddedNumber = String(numericValue)
-        .padStart(ID_CONFIG.digits, "0");
-
-
-    return `${prefix}${ID_CONFIG.separator}${paddedNumber}`;
-
-}
-
-
-/* =========================================================
-   24. GET PREFIX
-   ========================================================= */
-
-export function getIdPrefix(collectionName) {
-
-    const prefix = ID_PREFIXES[collectionName];
-
-
-    if (!prefix) {
-
-        throw new Error(
-            `No ID prefix configured for collection: ${collectionName}`
-        );
-
-    }
-
-
-    return prefix;
-
-}
-
-
-/* =========================================================
-   25. GET COLLECTION
-   ========================================================= */
-
-export function getCollectionName(moduleName) {
-
-    const collection = COLLECTIONS[moduleName];
-
-
-    if (!collection) {
-
-        throw new Error(
-            `No Firestore collection configured for module: ${moduleName}`
-        );
-
-    }
-
-
-    return collection;
-
-}
