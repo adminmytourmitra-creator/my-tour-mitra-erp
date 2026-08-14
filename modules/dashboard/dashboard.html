@@ -1,1 +1,1053 @@
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     DASHBOARD MODULE
+     ========================================================= -->
 
+<section class="dashboard-page" id="dashboard-page">
+
+    <!-- =====================================================
+         DASHBOARD HEADER
+         ===================================================== -->
+
+    <div class="dashboard-header">
+
+        <div class="dashboard-header-left">
+
+            <h2 class="dashboard-heading">
+                Dashboard
+            </h2>
+
+            <p class="dashboard-description">
+                Manage your travel agency operations from one place.
+            </p>
+
+        </div>
+
+        <div class="dashboard-header-right">
+
+            <button
+                type="button"
+                class="dashboard-refresh-btn"
+                id="dashboard-refresh-btn"
+                title="Refresh Dashboard"
+            >
+                <span class="refresh-icon">↻</span>
+                <span>Refresh</span>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUICK ACTIONS
+         ===================================================== -->
+
+    <div class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <div>
+
+                <h3>
+                    Quick Actions
+                </h3>
+
+                <p>
+                    Create and manage your daily operations quickly.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="quick-actions-grid">
+
+            <!-- New Customer -->
+
+            <button
+                type="button"
+                class="quick-action-card"
+                data-dashboard-action="customer"
+            >
+
+                <span class="quick-action-icon">
+                    +
+                </span>
+
+                <span class="quick-action-content">
+
+                    <strong>
+                        New Customer
+                    </strong>
+
+                    <small>
+                        Add a customer
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- New Enquiry -->
+
+            <button
+                type="button"
+                class="quick-action-card"
+                data-dashboard-action="enquiry"
+            >
+
+                <span class="quick-action-icon">
+                    ?
+                </span>
+
+                <span class="quick-action-content">
+
+                    <strong>
+                        New Enquiry
+                    </strong>
+
+                    <small>
+                        Add travel enquiry
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- New Package -->
+
+            <button
+                type="button"
+                class="quick-action-card"
+                data-dashboard-action="package"
+            >
+
+                <span class="quick-action-icon">
+                    ✦
+                </span>
+
+                <span class="quick-action-content">
+
+                    <strong>
+                        New Package
+                    </strong>
+
+                    <small>
+                        Create customer package
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- New Quotation -->
+
+            <button
+                type="button"
+                class="quick-action-card"
+                data-dashboard-action="quotation"
+            >
+
+                <span class="quick-action-icon">
+                    ₹
+                </span>
+
+                <span class="quick-action-content">
+
+                    <strong>
+                        New Quotation
+                    </strong>
+
+                    <small>
+                        Prepare quotation
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- New Booking -->
+
+            <button
+                type="button"
+                class="quick-action-card"
+                data-dashboard-action="booking"
+            >
+
+                <span class="quick-action-icon">
+                    ✓
+                </span>
+
+                <span class="quick-action-content">
+
+                    <strong>
+                        New Booking
+                    </strong>
+
+                    <small>
+                        Create booking
+                    </small>
+
+                </span>
+
+            </button>
+
+
+            <!-- New Invoice -->
+
+            <button
+                type="button"
+                class="quick-action-card"
+                data-dashboard-action="invoice"
+            >
+
+                <span class="quick-action-icon">
+                    #
+                </span>
+
+                <span class="quick-action-content">
+
+                    <strong>
+                        New Invoice
+                    </strong>
+
+                    <small>
+                        Create invoice
+                    </small>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         KPI CARDS
+         ===================================================== -->
+
+    <div class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <div>
+
+                <h3>
+                    Business Overview
+                </h3>
+
+                <p>
+                    Current status of your travel business.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-kpi-grid">
+
+
+            <!-- Customers -->
+
+            <div
+                class="dashboard-kpi-card"
+                data-kpi="customers"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Customers
+                    </span>
+
+                    <span class="kpi-icon">
+                        C
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="kpi-customers"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Total customers
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Enquiries -->
+
+            <div
+                class="dashboard-kpi-card"
+                data-kpi="enquiries"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Enquiries
+                    </span>
+
+                    <span class="kpi-icon">
+                        E
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="kpi-enquiries"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Active enquiries
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Packages -->
+
+            <div
+                class="dashboard-kpi-card"
+                data-kpi="packages"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Packages
+                    </span>
+
+                    <span class="kpi-icon">
+                        P
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="kpi-packages"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Customer packages
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quotations -->
+
+            <div
+                class="dashboard-kpi-card"
+                data-kpi="quotations"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Quotations
+                    </span>
+
+                    <span class="kpi-icon">
+                        Q
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="kpi-quotations"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Total quotations
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Follow-ups -->
+
+            <div
+                class="dashboard-kpi-card dashboard-kpi-warning"
+                data-kpi="followups"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Follow-ups
+                    </span>
+
+                    <span class="kpi-icon">
+                        F
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="kpi-followups"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Pending follow-ups
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Bookings -->
+
+            <div
+                class="dashboard-kpi-card dashboard-kpi-success"
+                data-kpi="bookings"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Bookings
+                    </span>
+
+                    <span class="kpi-icon">
+                        B
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="kpi-bookings"
+                >
+                    0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Confirmed bookings
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pending Customer Payments -->
+
+            <div
+                class="dashboard-kpi-card dashboard-kpi-warning"
+                data-kpi="pending-payments"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Receivables
+                    </span>
+
+                    <span class="kpi-icon">
+                        ₹
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value currency-value"
+                    id="kpi-receivables"
+                >
+                    ₹0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Customer balance
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Supplier Expenses -->
+
+            <div
+                class="dashboard-kpi-card"
+                data-kpi="expenses"
+            >
+
+                <div class="kpi-card-top">
+
+                    <span class="kpi-label">
+                        Expenses
+                    </span>
+
+                    <span class="kpi-icon">
+                        E
+                    </span>
+
+                </div>
+
+                <div
+                    class="kpi-value currency-value"
+                    id="kpi-expenses"
+                >
+                    ₹0
+                </div>
+
+                <div class="kpi-footer">
+
+                    <span>
+                        Total expenses
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FINANCIAL OVERVIEW
+         ===================================================== -->
+
+    <div class="dashboard-two-column">
+
+
+        <!-- Revenue -->
+
+        <div class="dashboard-financial-card">
+
+            <div class="financial-card-header">
+
+                <div>
+
+                    <h3>
+                        Revenue
+                    </h3>
+
+                    <p>
+                        Invoice and payment overview
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="financial-summary-grid">
+
+                <div class="financial-summary-item">
+
+                    <span>
+                        Invoice Value
+                    </span>
+
+                    <strong
+                        id="financial-invoice-value"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="financial-summary-item">
+
+                    <span>
+                        Received
+                    </span>
+
+                    <strong
+                        id="financial-received"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="financial-summary-item">
+
+                    <span>
+                        Outstanding
+                    </span>
+
+                    <strong
+                        id="financial-outstanding"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Profit -->
+
+        <div class="dashboard-financial-card">
+
+            <div class="financial-card-header">
+
+                <div>
+
+                    <h3>
+                        Profit & Loss
+                    </h3>
+
+                    <p>
+                        Current financial position
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profit-loss-summary">
+
+                <div class="profit-summary-item">
+
+                    <span>
+                        Revenue
+                    </span>
+
+                    <strong
+                        id="profit-revenue"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="profit-summary-item">
+
+                    <span>
+                        Expenses
+                    </span>
+
+                    <strong
+                        id="profit-expenses"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="profit-summary-item profit-total">
+
+                    <span>
+                        Net Profit
+                    </span>
+
+                    <strong
+                        id="profit-net"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOLLOW-UP + PAYMENT AREA
+         ===================================================== -->
+
+    <div class="dashboard-two-column">
+
+
+        <!-- Upcoming Follow-ups -->
+
+        <div class="dashboard-data-card">
+
+            <div class="dashboard-data-header">
+
+                <div>
+
+                    <h3>
+                        Upcoming Follow-ups
+                    </h3>
+
+                    <p>
+                        Customers requiring attention
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="dashboard-view-all"
+                    data-dashboard-navigation="followups"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                class="dashboard-list"
+                id="dashboard-followups-list"
+            >
+
+                <div class="dashboard-empty">
+
+                    <span class="dashboard-empty-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        No pending follow-ups.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pending Payments -->
+
+        <div class="dashboard-data-card">
+
+            <div class="dashboard-data-header">
+
+                <div>
+
+                    <h3>
+                        Pending Payments
+                    </h3>
+
+                    <p>
+                        Customer balances
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="dashboard-view-all"
+                    data-dashboard-navigation="payments"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                class="dashboard-list"
+                id="dashboard-payments-list"
+            >
+
+                <div class="dashboard-empty">
+
+                    <span class="dashboard-empty-icon">
+                        ₹
+                    </span>
+
+                    <p>
+                        No pending payments.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RECENT ACTIVITY
+         ===================================================== -->
+
+    <div class="dashboard-section">
+
+        <div class="dashboard-data-card">
+
+            <div class="dashboard-data-header">
+
+                <div>
+
+                    <h3>
+                        Recent Activity
+                    </h3>
+
+                    <p>
+                        Latest ERP activity
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="dashboard-activity-list"
+                id="dashboard-activity-list"
+            >
+
+                <div class="dashboard-empty">
+
+                    <span class="dashboard-empty-icon">
+                        —
+                    </span>
+
+                    <p>
+                        No recent activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUICK STATUS
+         ===================================================== -->
+
+    <div class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <div>
+
+                <h3>
+                    Operations Status
+                </h3>
+
+                <p>
+                    Overview of your current workflow.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="operations-status-grid">
+
+
+            <button
+                type="button"
+                class="operation-status-card"
+                data-dashboard-navigation="enquiries"
+            >
+
+                <span class="operation-status-number"
+                      id="status-new-enquiries">
+                    0
+                </span>
+
+                <span class="operation-status-title">
+                    New Enquiries
+                </span>
+
+                <span class="operation-status-description">
+                    Require action
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="operation-status-card"
+                data-dashboard-navigation="quotations"
+            >
+
+                <span class="operation-status-number"
+                      id="status-sent-quotations">
+                    0
+                </span>
+
+                <span class="operation-status-title">
+                    Quotations Sent
+                </span>
+
+                <span class="operation-status-description">
+                    Awaiting response
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="operation-status-card"
+                data-dashboard-navigation="followups"
+            >
+
+                <span class="operation-status-number"
+                      id="status-today-followups">
+                    0
+                </span>
+
+                <span class="operation-status-title">
+                    Today's Follow-ups
+                </span>
+
+                <span class="operation-status-description">
+                    Scheduled today
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="operation-status-card"
+                data-dashboard-navigation="bookings"
+            >
+
+                <span class="operation-status-number"
+                      id="status-upcoming-bookings">
+                    0
+                </span>
+
+                <span class="operation-status-title">
+                    Upcoming Bookings
+                </span>
+
+                <span class="operation-status-description">
+                    Active trips
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="operation-status-card"
+                data-dashboard-navigation="payments"
+            >
+
+                <span class="operation-status-number"
+                      id="status-pending-receivables">
+                    ₹0
+                </span>
+
+                <span class="operation-status-title">
+                    Receivables
+                </span>
+
+                <span class="operation-status-description">
+                    Amount to collect
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="operation-status-card"
+                data-dashboard-navigation="expenses"
+            >
+
+                <span class="operation-status-number"
+                      id="status-pending-expenses">
+                    ₹0
+                </span>
+
+                <span class="operation-status-title">
+                    Expenses
+                </span>
+
+                <span class="operation-status-description">
+                    Business expenses
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DASHBOARD LOADING OVERLAY
+         ===================================================== -->
+
+    <div
+        class="dashboard-loading hidden"
+        id="dashboard-loading"
+        aria-hidden="true"
+    >
+
+        <div class="dashboard-loading-spinner"></div>
+
+        <p>
+            Loading dashboard...
+        </p>
+
+    </div>
+
+</section>
