@@ -1,1 +1,2495 @@
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     SETTINGS MODULE
+     File: modules/settings/settings.html
+     ========================================================= -->
 
+<div class="settings-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="page-header settings-page-header">
+
+        <div class="page-header-content">
+
+            <div>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Manage company, taxation, documents,
+                    payments and ERP preferences.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SETTINGS LAYOUT
+         ===================================================== -->
+
+    <div class="settings-layout">
+
+
+        <!-- =================================================
+             SETTINGS SIDEBAR
+             ================================================= -->
+
+        <aside class="settings-sidebar">
+
+            <button
+                type="button"
+                class="settings-nav-item active"
+                data-settings-tab="company"
+            >
+
+                <span class="settings-nav-icon">
+                    🏢
+                </span>
+
+                <span>
+                    Company
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="taxation"
+            >
+
+                <span class="settings-nav-icon">
+                    🧾
+                </span>
+
+                <span>
+                    Taxation
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="gst"
+            >
+
+                <span class="settings-nav-icon">
+                    %
+                </span>
+
+                <span>
+                    GST
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="tds"
+            >
+
+                <span class="settings-nav-icon">
+                    T
+                </span>
+
+                <span>
+                    TDS
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="vat"
+            >
+
+                <span class="settings-nav-icon">
+                    V
+                </span>
+
+                <span>
+                    VAT
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="documents"
+            >
+
+                <span class="settings-nav-icon">
+                    📄
+                </span>
+
+                <span>
+                    Documents
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="numbering"
+            >
+
+                <span class="settings-nav-icon">
+                    #
+                </span>
+
+                <span>
+                    Numbering
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="payments"
+            >
+
+                <span class="settings-nav-icon">
+                    💳
+                </span>
+
+                <span>
+                    Payments
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="currency"
+            >
+
+                <span class="settings-nav-icon">
+                    ₹
+                </span>
+
+                <span>
+                    Currency
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="system"
+            >
+
+                <span class="settings-nav-icon">
+                    ⚙
+                </span>
+
+                <span>
+                    System
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="settings-nav-item"
+                data-settings-tab="security"
+            >
+
+                <span class="settings-nav-icon">
+                    🔐
+                </span>
+
+                <span>
+                    Security & Access
+                </span>
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- =================================================
+             SETTINGS CONTENT
+             ================================================= -->
+
+        <main class="settings-content">
+
+
+            <!-- =================================================
+                 COMPANY SETTINGS
+                 ================================================= -->
+
+            <section
+                class="settings-section active"
+                data-settings-section="company"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Company Details
+                        </h2>
+
+                        <p>
+                            Basic information used across
+                            quotations, invoices and vouchers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Business Information
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group full-width">
+
+                            <label for="companyName">
+                                Company / Agency Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyName"
+                                name="companyName"
+                                placeholder="My Tour Mitra"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyEmail">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="companyEmail"
+                                name="companyEmail"
+                                placeholder="info@example.com"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyPhone">
+                                Phone
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="companyPhone"
+                                name="companyPhone"
+                                placeholder="+91"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyWhatsApp">
+                                WhatsApp
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="companyWhatsApp"
+                                name="companyWhatsApp"
+                                placeholder="+91"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyWebsite">
+                                Website
+                            </label>
+
+                            <input
+                                type="url"
+                                id="companyWebsite"
+                                name="companyWebsite"
+                                placeholder="https://"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group full-width">
+
+                            <label for="companyAddress">
+                                Address
+                            </label>
+
+                            <textarea
+                                id="companyAddress"
+                                name="companyAddress"
+                                rows="3"
+                                placeholder="Business address"
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyCity">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyCity"
+                                name="companyCity"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyState">
+                                State
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyState"
+                                name="companyState"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyCountry">
+                                Country
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyCountry"
+                                name="companyCountry"
+                                value="India"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyPincode">
+                                PIN Code
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyPincode"
+                                name="companyPincode"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Company Registration
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-form-grid">
+
+                        <div class="form-group">
+
+                            <label for="companyGSTIN">
+                                GSTIN
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyGSTIN"
+                                name="companyGSTIN"
+                                placeholder="GST Number"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyPAN">
+                                PAN
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyPAN"
+                                name="companyPAN"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyCIN">
+                                CIN
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyCIN"
+                                name="companyCIN"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="companyRegNumber">
+                                Registration Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="companyRegNumber"
+                                name="companyRegNumber"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Company Logo
+                        </h3>
+
+                    </div>
+
+
+                    <div class="logo-upload-area">
+
+                        <div
+                            class="company-logo-preview"
+                            id="companyLogoPreview"
+                        >
+                            <span>
+                                Logo
+                            </span>
+                        </div>
+
+
+                        <div>
+
+                            <input
+                                type="file"
+                                id="companyLogo"
+                                name="companyLogo"
+                                accept="image/png,image/jpeg,image/webp"
+                            >
+
+                            <small>
+                                Recommended: PNG with transparent background.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveCompanySettingsBtn"
+                    >
+                        Save Company Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TAXATION
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="taxation"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Taxation Settings
+                        </h2>
+
+                        <p>
+                            Configure how taxes are handled
+                            throughout the ERP.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="taxSystem">
+                                Tax System
+                            </label>
+
+                            <select
+                                id="taxSystem"
+                                name="taxSystem"
+                            >
+
+                                <option value="GST">
+                                    GST
+                                </option>
+
+                                <option value="VAT">
+                                    VAT
+                                </option>
+
+                                <option value="NONE">
+                                    No Tax
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="taxInclusive">
+                                Default Price Type
+                            </label>
+
+                            <select
+                                id="taxInclusive"
+                                name="taxInclusive"
+                            >
+
+                                <option value="exclusive">
+                                    Tax Exclusive
+                                </option>
+
+                                <option value="inclusive">
+                                    Tax Inclusive
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="defaultTaxRate">
+                                Default Tax Rate (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="defaultTaxRate"
+                                name="defaultTaxRate"
+                                min="0"
+                                step="0.01"
+                                value="5"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="serviceTaxRate">
+                                Service Tax Rate (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="serviceTaxRate"
+                                name="serviceTaxRate"
+                                min="0"
+                                step="0.01"
+                                value="18"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Tax Behaviour
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-toggle-list">
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Enable Tax
+                                </strong>
+
+                                <small>
+                                    Apply taxation to applicable transactions.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="enableTax"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Tax Breakdown
+                                </strong>
+
+                                <small>
+                                    Show CGST, SGST and IGST separately.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="showTaxBreakdown"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Tax Number on Documents
+                                </strong>
+
+                                <small>
+                                    Display GSTIN and applicable tax details.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="showTaxNumber"
+                                checked
+                            >
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveTaxSettingsBtn"
+                    >
+                        Save Tax Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 GST
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="gst"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            GST Settings
+                        </h2>
+
+                        <p>
+                            Configure GST rates and transaction rules.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="gstRegistrationType">
+                                GST Registration Type
+                            </label>
+
+                            <select
+                                id="gstRegistrationType"
+                            >
+
+                                <option value="regular">
+                                    Regular
+                                </option>
+
+                                <option value="composition">
+                                    Composition
+                                </option>
+
+                                <option value="unregistered">
+                                    Unregistered
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="gstinSettings">
+                                GSTIN
+                            </label>
+
+                            <input
+                                type="text"
+                                id="gstinSettings"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="defaultCGST">
+                                Default CGST (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="defaultCGST"
+                                value="2.5"
+                                step="0.01"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="defaultSGST">
+                                Default SGST (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="defaultSGST"
+                                value="2.5"
+                                step="0.01"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="defaultIGST">
+                                Default IGST (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="defaultIGST"
+                                value="5"
+                                step="0.01"
+                                min="0"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            GST Rate Presets
+                        </h3>
+
+                    </div>
+
+
+                    <div class="tax-rate-table-wrapper">
+
+                        <table class="settings-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Name
+                                    </th>
+
+                                    <th>
+                                        GST %
+                                    </th>
+
+                                    <th>
+                                        CGST %
+                                    </th>
+
+                                    <th>
+                                        SGST %
+                                    </th>
+
+                                    <th>
+                                        IGST %
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="gstRateTableBody">
+
+                                <tr>
+
+                                    <td>
+                                        Standard 5%
+                                    </td>
+
+                                    <td>
+                                        5%
+                                    </td>
+
+                                    <td>
+                                        2.5%
+                                    </td>
+
+                                    <td>
+                                        2.5%
+                                    </td>
+
+                                    <td>
+                                        5%
+                                    </td>
+
+                                    <td>
+                                        Active
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+                                        Standard 18%
+                                    </td>
+
+                                    <td>
+                                        18%
+                                    </td>
+
+                                    <td>
+                                        9%
+                                    </td>
+
+                                    <td>
+                                        9%
+                                    </td>
+
+                                    <td>
+                                        18%
+                                    </td>
+
+                                    <td>
+                                        Active
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveGSTSettingsBtn"
+                    >
+                        Save GST Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TDS
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="tds"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            TDS Settings
+                        </h2>
+
+                        <p>
+                            Configure TDS related settings for
+                            applicable supplier and payment transactions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="enableTDS">
+                                TDS
+                            </label>
+
+                            <select
+                                id="enableTDS"
+                            >
+
+                                <option value="disabled">
+                                    Disabled
+                                </option>
+
+                                <option value="enabled">
+                                    Enabled
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="tdsRate">
+                                Default TDS Rate (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="tdsRate"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="tdsSection">
+                                Default TDS Section
+                            </label>
+
+                            <input
+                                type="text"
+                                id="tdsSection"
+                                placeholder="Enter section"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="tdsThreshold">
+                                Threshold Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="tdsThreshold"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveTDSSettingsBtn"
+                    >
+                        Save TDS Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 VAT
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="vat"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            VAT Settings
+                        </h2>
+
+                        <p>
+                            VAT configuration for applicable
+                            transactions or international operations.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="enableVAT">
+                                VAT
+                            </label>
+
+                            <select
+                                id="enableVAT"
+                            >
+
+                                <option value="disabled">
+                                    Disabled
+                                </option>
+
+                                <option value="enabled">
+                                    Enabled
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="vatRegistrationNumber">
+                                VAT Registration Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="vatRegistrationNumber"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="defaultVATRate">
+                                Default VAT Rate (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="defaultVATRate"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveVATSettingsBtn"
+                    >
+                        Save VAT Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DOCUMENT SETTINGS
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="documents"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Document Settings
+                        </h2>
+
+                        <p>
+                            Control information displayed on
+                            quotations, invoices and vouchers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-toggle-list">
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Company Logo
+                                </strong>
+
+                                <small>
+                                    Display logo on generated documents.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="documentShowLogo"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Company Address
+                                </strong>
+
+                                <small>
+                                    Display registered business address.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="documentShowAddress"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Contact Information
+                                </strong>
+
+                                <small>
+                                    Display phone, WhatsApp and email.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="documentShowContact"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show GST Details
+                                </strong>
+
+                                <small>
+                                    Display GST information on documents.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="documentShowGST"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Bank Details
+                                </strong>
+
+                                <small>
+                                    Display bank details where applicable.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="documentShowBank"
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Show Terms & Conditions
+                                </strong>
+
+                                <small>
+                                    Add standard terms to generated documents.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="documentShowTerms"
+                                checked
+                            >
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Default Terms & Conditions
+                        </h3>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <textarea
+                            id="defaultTermsConditions"
+                            rows="8"
+                            placeholder="Enter default terms and conditions..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveDocumentSettingsBtn"
+                    >
+                        Save Document Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NUMBERING
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="numbering"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Document Numbering
+                        </h2>
+
+                        <p>
+                            Configure prefixes and starting numbers
+                            for ERP documents.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="quotationPrefix">
+                                Quotation Prefix
+                            </label>
+
+                            <input
+                                type="text"
+                                id="quotationPrefix"
+                                value="QT"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="quotationNextNumber">
+                                Next Quotation Number
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quotationNextNumber"
+                                value="1"
+                                min="1"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="bookingPrefix">
+                                Booking Prefix
+                            </label>
+
+                            <input
+                                type="text"
+                                id="bookingPrefix"
+                                value="BK"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="bookingNextNumber">
+                                Next Booking Number
+                            </label>
+
+                            <input
+                                type="number"
+                                id="bookingNextNumber"
+                                value="1"
+                                min="1"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="invoicePrefix">
+                                Invoice Prefix
+                            </label>
+
+                            <input
+                                type="text"
+                                id="invoicePrefix"
+                                value="INV"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="invoiceNextNumber">
+                                Next Invoice Number
+                            </label>
+
+                            <input
+                                type="number"
+                                id="invoiceNextNumber"
+                                value="1"
+                                min="1"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="voucherPrefix">
+                                Voucher Prefix
+                            </label>
+
+                            <input
+                                type="text"
+                                id="voucherPrefix"
+                                value="VCH"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="voucherNextNumber">
+                                Next Voucher Number
+                            </label>
+
+                            <input
+                                type="number"
+                                id="voucherNextNumber"
+                                value="1"
+                                min="1"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="paymentPrefix">
+                                Payment Receipt Prefix
+                            </label>
+
+                            <input
+                                type="text"
+                                id="paymentPrefix"
+                                value="PAY"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="paymentNextNumber">
+                                Next Payment Number
+                            </label>
+
+                            <input
+                                type="number"
+                                id="paymentNextNumber"
+                                value="1"
+                                min="1"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveNumberingSettingsBtn"
+                    >
+                        Save Numbering Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PAYMENT SETTINGS
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="payments"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Payment Settings
+                        </h2>
+
+                        <p>
+                            Configure supported payment methods
+                            and payment behaviour.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Payment Methods
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-checkbox-grid">
+
+
+                        <label class="checkbox-card">
+
+                            <input
+                                type="checkbox"
+                                data-payment-method="cash"
+                                checked
+                            >
+
+                            <span>
+                                Cash
+                            </span>
+
+                        </label>
+
+
+                        <label class="checkbox-card">
+
+                            <input
+                                type="checkbox"
+                                data-payment-method="bank"
+                                checked
+                            >
+
+                            <span>
+                                Bank Transfer
+                            </span>
+
+                        </label>
+
+
+                        <label class="checkbox-card">
+
+                            <input
+                                type="checkbox"
+                                data-payment-method="upi"
+                                checked
+                            >
+
+                            <span>
+                                UPI
+                            </span>
+
+                        </label>
+
+
+                        <label class="checkbox-card">
+
+                            <input
+                                type="checkbox"
+                                data-payment-method="card"
+                                checked
+                            >
+
+                            <span>
+                                Card
+                            </span>
+
+                        </label>
+
+
+                        <label class="checkbox-card">
+
+                            <input
+                                type="checkbox"
+                                data-payment-method="cheque"
+                            >
+
+                            <span>
+                                Cheque
+                            </span>
+
+                        </label>
+
+
+                        <label class="checkbox-card">
+
+                            <input
+                                type="checkbox"
+                                data-payment-method="other"
+                            >
+
+                            <span>
+                                Other
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="paymentDueDays">
+                                Default Payment Due Days
+                            </label>
+
+                            <input
+                                type="number"
+                                id="paymentDueDays"
+                                value="0"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="defaultPaymentTerms">
+                                Default Payment Terms
+                            </label>
+
+                            <select
+                                id="defaultPaymentTerms"
+                            >
+
+                                <option value="advance">
+                                    Full Advance
+                                </option>
+
+                                <option value="partial">
+                                    Partial Advance
+                                </option>
+
+                                <option value="post">
+                                    Post Payment
+                                </option>
+
+                                <option value="custom">
+                                    Custom
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="savePaymentSettingsBtn"
+                    >
+                        Save Payment Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CURRENCY
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="currency"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Currency & Regional Settings
+                        </h2>
+
+                        <p>
+                            Configure currency and date preferences
+                            used by the ERP.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="defaultCurrency">
+                                Default Currency
+                            </label>
+
+                            <select
+                                id="defaultCurrency"
+                            >
+
+                                <option value="INR">
+                                    INR — Indian Rupee
+                                </option>
+
+                                <option value="USD">
+                                    USD — US Dollar
+                                </option>
+
+                                <option value="EUR">
+                                    EUR — Euro
+                                </option>
+
+                                <option value="GBP">
+                                    GBP — Pound Sterling
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="currencySymbol">
+                                Currency Symbol
+                            </label>
+
+                            <input
+                                type="text"
+                                id="currencySymbol"
+                                value="₹"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="decimalPlaces">
+                                Decimal Places
+                            </label>
+
+                            <select
+                                id="decimalPlaces"
+                            >
+
+                                <option value="0">
+                                    0
+                                </option>
+
+                                <option value="2" selected>
+                                    2
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="dateFormat">
+                                Date Format
+                            </label>
+
+                            <select
+                                id="dateFormat"
+                            >
+
+                                <option value="DD-MM-YYYY">
+                                    DD-MM-YYYY
+                                </option>
+
+                                <option value="DD/MM/YYYY">
+                                    DD/MM/YYYY
+                                </option>
+
+                                <option value="YYYY-MM-DD">
+                                    YYYY-MM-DD
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveCurrencySettingsBtn"
+                    >
+                        Save Currency Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SYSTEM SETTINGS
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="system"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            System Preferences
+                        </h2>
+
+                        <p>
+                            General ERP behaviour and preferences.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-toggle-list">
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Auto Save Forms
+                                </strong>
+
+                                <small>
+                                    Save temporary form data automatically.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="autoSaveForms"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Confirm Before Delete
+                                </strong>
+
+                                <small>
+                                    Ask for confirmation before deleting records.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="confirmBeforeDelete"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Activity Logging
+                                </strong>
+
+                                <small>
+                                    Keep track of important ERP activities.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="activityLogging"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <small>
+                                    Enable ERP notifications.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="systemNotifications"
+                                checked
+                            >
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Default Follow-up Settings
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="defaultFollowupDays">
+                                Default Follow-up Days
+                            </label>
+
+                            <input
+                                type="number"
+                                id="defaultFollowupDays"
+                                value="2"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="followupReminder">
+                                Reminder
+                            </label>
+
+                            <select
+                                id="followupReminder"
+                            >
+
+                                <option value="same-day">
+                                    Same Day
+                                </option>
+
+                                <option value="one-day">
+                                    1 Day Before
+                                </option>
+
+                                <option value="two-days">
+                                    2 Days Before
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveSystemSettingsBtn"
+                    >
+                        Save System Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY & ACCESS
+                 ================================================= -->
+
+            <section
+                class="settings-section"
+                data-settings-section="security"
+            >
+
+                <div class="settings-section-header">
+
+                    <div>
+
+                        <h2>
+                            Security & Access
+                        </h2>
+
+                        <p>
+                            Control login, session and access behaviour.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-toggle-list">
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Require Approved Account
+                                </strong>
+
+                                <small>
+                                    Users cannot access the ERP until
+                                    their account is approved.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="requireApprovedAccount"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Block Inactive Users
+                                </strong>
+
+                                <small>
+                                    Disabled team members cannot log in.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="blockInactiveUsers"
+                                checked
+                            >
+
+                        </label>
+
+
+                        <label class="settings-toggle-row">
+
+                            <span>
+
+                                <strong>
+                                    Restrict Team Management
+                                </strong>
+
+                                <small>
+                                    Users can manage only accounts within
+                                    their permitted hierarchy.
+                                </small>
+
+                            </span>
+
+                            <input
+                                type="checkbox"
+                                id="restrictTeamManagement"
+                                checked
+                            >
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+                    <div class="settings-card-title">
+
+                        <h3>
+                            Session Settings
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="sessionTimeout">
+                                Session Timeout
+                            </label>
+
+                            <select
+                                id="sessionTimeout"
+                            >
+
+                                <option value="30">
+                                    30 Minutes
+                                </option>
+
+                                <option value="60" selected>
+                                    1 Hour
+                                </option>
+
+                                <option value="120">
+                                    2 Hours
+                                </option>
+
+                                <option value="240">
+                                    4 Hours
+                                </option>
+
+                                <option value="480">
+                                    8 Hours
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-info-box">
+
+                    <strong>
+                        Access hierarchy
+                    </strong>
+
+                    <p>
+
+                        Admin → Manager → Employee / Staff
+
+                        <br>
+
+                        Admin can approve Manager accounts.
+
+                        <br>
+
+                        Manager or Admin can approve
+                        Employee / Staff accounts.
+
+                        <br>
+
+                        Inactive users can be removed from
+                        ERP access without deleting their records.
+
+                    </p>
+
+                </div>
+
+
+                <div class="settings-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="saveSecuritySettingsBtn"
+                    >
+                        Save Security Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         GLOBAL SETTINGS SAVE MESSAGE
+         ===================================================== -->
+
+    <div
+        class="settings-save-message"
+        id="settingsSaveMessage"
+        hidden
+    >
+        Settings saved successfully.
+    </div>
+
+</div>
