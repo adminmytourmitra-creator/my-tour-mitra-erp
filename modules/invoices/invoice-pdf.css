@@ -1,1 +1,842 @@
+/* =========================================================
+   MY TOUR MITRA ERP
+   INVOICE PDF / PRINT STYLES
+   File:
+   modules/invoices/invoice-pdf.css
 
+   Purpose:
+   - Professional customer invoice PDF
+   - A4 print layout
+   - Invoice header
+   - Customer details
+   - Invoice items
+   - Tax / totals
+   - Payment summary
+   - Terms & conditions
+   - Print-friendly layout
+   ========================================================= */
+
+
+/* =========================================================
+   PDF CONTAINER
+   ========================================================= */
+
+.invoice-pdf {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 14mm;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #1f2937;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   PDF PAGE
+   ========================================================= */
+
+.invoice-pdf-page {
+    width: 100%;
+    min-height: 269mm;
+    position: relative;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.invoice-pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #1e3a8a;
+}
+
+
+.invoice-pdf-company {
+    flex: 1;
+}
+
+
+.invoice-pdf-logo {
+    max-width: 180px;
+    max-height: 70px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 8px;
+}
+
+
+.invoice-pdf-company-name {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+
+.invoice-pdf-company-tagline {
+    margin: 0;
+    font-size: 11px;
+    color: #6b7280;
+}
+
+
+.invoice-pdf-company-details {
+    margin-top: 8px;
+    font-size: 10.5px;
+    color: #4b5563;
+}
+
+
+.invoice-pdf-company-details p {
+    margin: 2px 0;
+}
+
+
+/* =========================================================
+   INVOICE TITLE
+   ========================================================= */
+
+.invoice-pdf-title-box {
+    min-width: 180px;
+    text-align: right;
+}
+
+
+.invoice-pdf-title {
+    margin: 0;
+    font-size: 27px;
+    line-height: 1;
+    font-weight: 700;
+    color: #1e3a8a;
+    letter-spacing: 0.5px;
+}
+
+
+.invoice-pdf-number {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #111827;
+}
+
+
+.invoice-pdf-date {
+    margin-top: 3px;
+    font-size: 10.5px;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.invoice-pdf-status {
+    display: inline-block;
+    margin-top: 9px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+.invoice-pdf-status-paid {
+    color: #166534;
+    background: #dcfce7;
+}
+
+
+.invoice-pdf-status-partial {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+
+.invoice-pdf-status-unpaid {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+
+.invoice-pdf-status-overdue {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+
+.invoice-pdf-status-draft {
+    color: #374151;
+    background: #f3f4f6;
+}
+
+
+.invoice-pdf-status-cancelled {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+
+/* =========================================================
+   CUSTOMER + TRIP INFORMATION
+   ========================================================= */
+
+.invoice-pdf-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+
+.invoice-pdf-info-box {
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+}
+
+
+.invoice-pdf-info-title {
+    margin: 0 0 7px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1e3a8a;
+    letter-spacing: 0.4px;
+}
+
+
+.invoice-pdf-info-box p {
+    margin: 3px 0;
+    font-size: 10.5px;
+}
+
+
+.invoice-pdf-info-label {
+    display: inline-block;
+    min-width: 75px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+
+.invoice-pdf-info-value {
+    color: #111827;
+}
+
+
+/* =========================================================
+   INVOICE ITEMS TABLE
+   ========================================================= */
+
+.invoice-pdf-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    margin-bottom: 15px;
+    table-layout: fixed;
+}
+
+
+.invoice-pdf-items thead {
+    display: table-header-group;
+}
+
+
+.invoice-pdf-items th {
+    padding: 8px 7px;
+    background: #1e3a8a;
+    color: #ffffff;
+    border: 1px solid #1e3a8a;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+}
+
+
+.invoice-pdf-items td {
+    padding: 7px;
+    border: 1px solid #d1d5db;
+    font-size: 10px;
+    vertical-align: top;
+    color: #1f2937;
+}
+
+
+.invoice-pdf-items tbody tr {
+    page-break-inside: avoid;
+}
+
+
+.invoice-pdf-items tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+
+/* =========================================================
+   TABLE COLUMNS
+   ========================================================= */
+
+.invoice-pdf-items .col-description {
+    width: 38%;
+}
+
+
+.invoice-pdf-items .col-hsn {
+    width: 12%;
+}
+
+
+.invoice-pdf-items .col-qty {
+    width: 8%;
+    text-align: center;
+}
+
+
+.invoice-pdf-items .col-rate {
+    width: 14%;
+    text-align: right;
+}
+
+
+.invoice-pdf-items .col-tax {
+    width: 12%;
+    text-align: right;
+}
+
+
+.invoice-pdf-items .col-amount {
+    width: 16%;
+    text-align: right;
+}
+
+
+.invoice-pdf-items th:nth-child(3),
+.invoice-pdf-items td:nth-child(3) {
+    text-align: center;
+}
+
+
+.invoice-pdf-items th:nth-child(4),
+.invoice-pdf-items td:nth-child(4),
+.invoice-pdf-items th:nth-child(5),
+.invoice-pdf-items td:nth-child(5),
+.invoice-pdf-items th:nth-child(6),
+.invoice-pdf-items td:nth-child(6) {
+    text-align: right;
+}
+
+
+/* =========================================================
+   TOTALS AREA
+   ========================================================= */
+
+.invoice-pdf-summary-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+
+.invoice-pdf-summary {
+    width: 290px;
+    border-collapse: collapse;
+}
+
+
+.invoice-pdf-summary td {
+    padding: 5px 8px;
+    font-size: 10.5px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.invoice-pdf-summary td:first-child {
+    text-align: left;
+    color: #4b5563;
+}
+
+
+.invoice-pdf-summary td:last-child {
+    text-align: right;
+    font-weight: 600;
+    color: #111827;
+}
+
+
+.invoice-pdf-summary .discount-row td:last-child {
+    color: #b91c1c;
+}
+
+
+.invoice-pdf-summary .grand-total-row td {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    border-top: 2px solid #1e3a8a;
+    border-bottom: 2px solid #1e3a8a;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.invoice-pdf-summary .received-row td:last-child {
+    color: #166534;
+}
+
+
+.invoice-pdf-summary .balance-row td {
+    background: #fef3c7;
+    font-weight: 700;
+}
+
+
+.invoice-pdf-summary .balance-row td:last-child {
+    color: #92400e;
+}
+
+
+/* =========================================================
+   PAYMENT INFORMATION
+   ========================================================= */
+
+.invoice-pdf-payment-box {
+    margin-top: 18px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+}
+
+
+.invoice-pdf-payment-title {
+    margin: 0 0 7px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1e3a8a;
+    text-transform: uppercase;
+}
+
+
+.invoice-pdf-payment-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 10px;
+}
+
+
+.invoice-pdf-payment-item {
+    min-width: 0;
+}
+
+
+.invoice-pdf-payment-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 9px;
+    color: #6b7280;
+}
+
+
+.invoice-pdf-payment-value {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #111827;
+}
+
+
+/* =========================================================
+   BANK DETAILS
+   ========================================================= */
+
+.invoice-pdf-bank-box {
+    margin-top: 16px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+}
+
+
+.invoice-pdf-bank-title {
+    margin: 0 0 7px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1e3a8a;
+}
+
+
+.invoice-pdf-bank-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, 1fr);
+    gap: 4px 20px;
+}
+
+
+.invoice-pdf-bank-grid p {
+    margin: 2px 0;
+    font-size: 10px;
+}
+
+
+.invoice-pdf-bank-label {
+    display: inline-block;
+    min-width: 90px;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+.invoice-pdf-notes {
+    margin-top: 16px;
+}
+
+
+.invoice-pdf-section-title {
+    margin: 0 0 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1e3a8a;
+    text-transform: uppercase;
+}
+
+
+.invoice-pdf-notes-content {
+    padding: 8px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 10px;
+    color: #4b5563;
+    white-space: pre-line;
+}
+
+
+/* =========================================================
+   TERMS & CONDITIONS
+   ========================================================= */
+
+.invoice-pdf-terms {
+    margin-top: 16px;
+}
+
+
+.invoice-pdf-terms ol,
+.invoice-pdf-terms ul {
+    margin: 5px 0 0;
+    padding-left: 18px;
+}
+
+
+.invoice-pdf-terms li {
+    margin-bottom: 3px;
+    font-size: 9px;
+    color: #4b5563;
+}
+
+
+/* =========================================================
+   SIGNATURE
+   ========================================================= */
+
+.invoice-pdf-signature-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 35px;
+}
+
+
+.invoice-pdf-signature {
+    width: 180px;
+    text-align: center;
+}
+
+
+.invoice-pdf-signature-image {
+    max-width: 150px;
+    max-height: 55px;
+    object-fit: contain;
+    margin-bottom: 4px;
+}
+
+
+.invoice-pdf-signature-line {
+    border-top: 1px solid #374151;
+    padding-top: 5px;
+    font-size: 9.5px;
+    font-weight: 600;
+}
+
+
+.invoice-pdf-signature-designation {
+    margin-top: 2px;
+    font-size: 9px;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.invoice-pdf-footer {
+    margin-top: 25px;
+    padding-top: 8px;
+    border-top: 1px solid #d1d5db;
+    text-align: center;
+}
+
+
+.invoice-pdf-footer p {
+    margin: 2px 0;
+    font-size: 8.5px;
+    color: #6b7280;
+}
+
+
+.invoice-pdf-footer .thank-you {
+    font-size: 10px;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+
+/* =========================================================
+   PAGE NUMBER
+   ========================================================= */
+
+.invoice-pdf-page-number {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 8px;
+    color: #9ca3af;
+}
+
+
+/* =========================================================
+   UTILITY
+   ========================================================= */
+
+.invoice-pdf-text-right {
+    text-align: right !important;
+}
+
+
+.invoice-pdf-text-center {
+    text-align: center !important;
+}
+
+
+.invoice-pdf-text-left {
+    text-align: left !important;
+}
+
+
+.invoice-pdf-bold {
+    font-weight: 700 !important;
+}
+
+
+.invoice-pdf-muted {
+    color: #6b7280 !important;
+}
+
+
+.invoice-pdf-no-border {
+    border: none !important;
+}
+
+
+/* =========================================================
+   PRINT SETTINGS
+   ========================================================= */
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+
+@media print {
+
+    html,
+    body {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+    }
+
+
+    body * {
+        visibility: hidden;
+    }
+
+
+    .invoice-pdf,
+    .invoice-pdf * {
+        visibility: visible;
+    }
+
+
+    .invoice-pdf {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 14mm;
+        box-shadow: none;
+    }
+
+
+    .no-print,
+    .invoice-pdf .no-print {
+        display: none !important;
+    }
+
+
+    .invoice-pdf-items thead {
+        display: table-header-group;
+    }
+
+
+    .invoice-pdf-items tr {
+        page-break-inside: avoid;
+    }
+
+
+    .invoice-pdf-info-box,
+    .invoice-pdf-payment-box,
+    .invoice-pdf-bank-box,
+    .invoice-pdf-notes {
+        page-break-inside: avoid;
+    }
+
+
+    .invoice-pdf-footer {
+        page-break-inside: avoid;
+    }
+}
+
+
+/* =========================================================
+   SCREEN PREVIEW
+   ========================================================= */
+
+@media screen {
+
+    .invoice-pdf {
+        margin: 25px auto;
+        box-shadow:
+            0 4px 20px
+            rgba(0, 0, 0, 0.12);
+    }
+}
+
+
+/* =========================================================
+   SMALL SCREEN
+   ========================================================= */
+
+@media screen and (max-width: 800px) {
+
+    .invoice-pdf {
+        width: 100%;
+        min-height: auto;
+        padding: 20px;
+        margin: 0;
+    }
+
+
+    .invoice-pdf-header {
+        flex-direction: column;
+    }
+
+
+    .invoice-pdf-title-box {
+        width: 100%;
+        text-align: left;
+    }
+
+
+    .invoice-pdf-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .invoice-pdf-payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .invoice-pdf-bank-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .invoice-pdf-summary-wrapper {
+        justify-content: stretch;
+    }
+
+
+    .invoice-pdf-summary {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   PDF GENERATION SAFETY
+   ========================================================= */
+
+.invoice-pdf,
+.invoice-pdf * {
+    box-sizing: border-box;
+}
+
+
+.invoice-pdf img {
+    max-width: 100%;
+}
+
+
+.invoice-pdf table {
+    page-break-inside: auto;
+}
+
+
+.invoice-pdf tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+}
+
+
+/* =========================================================
+   END OF INVOICE PDF CSS
+   ========================================================= */
