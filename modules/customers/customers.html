@@ -1,1 +1,1323 @@
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     CUSTOMERS MODULE
+     customers.html
+     ========================================================= -->
 
+<section
+    class="customers-page"
+    id="customers-page"
+    aria-label="Customers"
+>
+
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="customers-header">
+
+        <div class="customers-header-left">
+
+            <span class="customers-eyebrow">
+                CUSTOMER MANAGEMENT
+            </span>
+
+            <h2 class="customers-heading">
+                Customers
+            </h2>
+
+            <p class="customers-description">
+                Manage customer profiles, enquiries, packages and bookings.
+            </p>
+
+        </div>
+
+
+        <div class="customers-header-actions">
+
+            <button
+                type="button"
+                class="customers-btn customers-btn-secondary"
+                id="customers-refresh-btn"
+                title="Refresh customers"
+            >
+                <span class="customers-btn-icon">↻</span>
+                <span>Refresh</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="customers-btn customers-btn-primary"
+                id="customers-add-btn"
+            >
+                <span class="customers-btn-icon">+</span>
+                <span>Add Customer</span>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+
+    <div class="customers-summary-grid">
+
+
+        <!-- TOTAL CUSTOMERS -->
+
+        <article class="customer-summary-card">
+
+            <div class="customer-summary-top">
+
+                <span class="customer-summary-label">
+                    Total Customers
+                </span>
+
+                <span class="customer-summary-icon">
+                    C
+                </span>
+
+            </div>
+
+            <strong
+                class="customer-summary-value"
+                id="customers-total-count"
+            >
+                0
+            </strong>
+
+            <span class="customer-summary-description">
+                All registered customers
+            </span>
+
+        </article>
+
+
+        <!-- ACTIVE CUSTOMERS -->
+
+        <article class="customer-summary-card">
+
+            <div class="customer-summary-top">
+
+                <span class="customer-summary-label">
+                    Active Customers
+                </span>
+
+                <span class="customer-summary-icon">
+                    ✓
+                </span>
+
+            </div>
+
+            <strong
+                class="customer-summary-value"
+                id="customers-active-count"
+            >
+                0
+            </strong>
+
+            <span class="customer-summary-description">
+                Currently active
+            </span>
+
+        </article>
+
+
+        <!-- CUSTOMERS WITH ENQUIRIES -->
+
+        <article class="customer-summary-card">
+
+            <div class="customer-summary-top">
+
+                <span class="customer-summary-label">
+                    With Enquiries
+                </span>
+
+                <span class="customer-summary-icon">
+                    E
+                </span>
+
+            </div>
+
+            <strong
+                class="customer-summary-value"
+                id="customers-enquiry-count"
+            >
+                0
+            </strong>
+
+            <span class="customer-summary-description">
+                Customers with enquiries
+            </span>
+
+        </article>
+
+
+        <!-- CUSTOMERS WITH BOOKINGS -->
+
+        <article class="customer-summary-card">
+
+            <div class="customer-summary-top">
+
+                <span class="customer-summary-label">
+                    With Bookings
+                </span>
+
+                <span class="customer-summary-icon">
+                    B
+                </span>
+
+            </div>
+
+            <strong
+                class="customer-summary-value"
+                id="customers-booking-count"
+            >
+                0
+            </strong>
+
+            <span class="customer-summary-description">
+                Customers with bookings
+            </span>
+
+        </article>
+
+    </div>
+
+
+    <!-- =====================================================
+         CUSTOMER TABLE CARD
+         ===================================================== -->
+
+    <div class="customers-card">
+
+
+        <!-- =================================================
+             TABLE HEADER
+             ================================================= -->
+
+        <div class="customers-card-header">
+
+            <div class="customers-card-title">
+
+                <h3>
+                    Customer List
+                </h3>
+
+                <p>
+                    View and manage all customer records.
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="customers-search-wrapper">
+
+                <span
+                    class="customers-search-icon"
+                    aria-hidden="true"
+                >
+                    ⌕
+                </span>
+
+                <input
+                    type="search"
+                    id="customers-search"
+                    class="customers-search-input"
+                    placeholder="Search by name, mobile, email or customer ID..."
+                    autocomplete="off"
+                />
+
+                <button
+                    type="button"
+                    id="customers-search-clear"
+                    class="customers-search-clear hidden"
+                    aria-label="Clear search"
+                    title="Clear search"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FILTER / TOOLBAR
+             ================================================= -->
+
+        <div class="customers-toolbar">
+
+
+            <div class="customers-filter-group">
+
+                <label
+                    for="customers-status-filter"
+                    class="customers-filter-label"
+                >
+                    Status
+                </label>
+
+                <select
+                    id="customers-status-filter"
+                    class="customers-filter-select"
+                >
+
+                    <option value="all">
+                        All Customers
+                    </option>
+
+                    <option value="active">
+                        Active
+                    </option>
+
+                    <option value="inactive">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="customers-filter-group">
+
+                <label
+                    for="customers-city-filter"
+                    class="customers-filter-label"
+                >
+                    City
+                </label>
+
+                <select
+                    id="customers-city-filter"
+                    class="customers-filter-select"
+                >
+
+                    <option value="all">
+                        All Cities
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="customers-toolbar-spacer"></div>
+
+
+            <div class="customers-result-count">
+
+                <span id="customers-visible-count">
+                    0
+                </span>
+
+                <span>
+                    customers
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LOADING STATE
+             ================================================= -->
+
+        <div
+            class="customers-loading hidden"
+            id="customers-loading"
+            aria-hidden="true"
+        >
+
+            <div class="customers-loading-spinner"></div>
+
+            <p>
+                Loading customers...
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             TABLE WRAPPER
+             ================================================= -->
+
+        <div class="customers-table-wrapper">
+
+            <table
+                class="customers-table"
+                id="customers-table"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th scope="col">
+                            Customer ID
+                        </th>
+
+                        <th scope="col">
+                            Customer
+                        </th>
+
+                        <th scope="col">
+                            Contact
+                        </th>
+
+                        <th scope="col">
+                            Location
+                        </th>
+
+                        <th scope="col">
+                            Enquiries
+                        </th>
+
+                        <th scope="col">
+                            Bookings
+                        </th>
+
+                        <th scope="col">
+                            Status
+                        </th>
+
+                        <th
+                            scope="col"
+                            class="customers-actions-column"
+                        >
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="customers-table-body">
+
+                    <!--
+                        Customer rows will be generated
+                        dynamically by customers.js.
+                    -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =================================================
+             EMPTY STATE
+             ================================================= -->
+
+        <div
+            class="customers-empty hidden"
+            id="customers-empty"
+        >
+
+            <div class="customers-empty-icon">
+                C
+            </div>
+
+            <h3>
+                No Customers Found
+            </h3>
+
+            <p id="customers-empty-message">
+                There are no customer records yet.
+            </p>
+
+            <button
+                type="button"
+                class="customers-btn customers-btn-primary"
+                id="customers-empty-add-btn"
+            >
+                <span class="customers-btn-icon">
+                    +
+                </span>
+
+                <span>
+                    Add First Customer
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             PAGINATION
+             ================================================= -->
+
+        <div class="customers-pagination">
+
+            <div class="customers-pagination-info">
+
+                Showing
+                <strong id="customers-pagination-from">
+                    0
+                </strong>
+
+                -
+                <strong id="customers-pagination-to">
+                    0
+                </strong>
+
+                of
+                <strong id="customers-pagination-total">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="customers-pagination-controls">
+
+                <button
+                    type="button"
+                    id="customers-prev-page"
+                    class="customers-pagination-btn"
+                    disabled
+                    title="Previous page"
+                >
+                    ←
+                </button>
+
+
+                <span
+                    id="customers-page-number"
+                    class="customers-page-number"
+                >
+                    1
+                </span>
+
+
+                <button
+                    type="button"
+                    id="customers-next-page"
+                    class="customers-pagination-btn"
+                    disabled
+                    title="Next page"
+                >
+                    →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ADD / EDIT CUSTOMER MODAL
+         ===================================================== -->
+
+    <div
+        class="customer-modal hidden"
+        id="customer-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="customer-modal-title"
+    >
+
+        <div
+            class="customer-modal-backdrop"
+            data-customer-modal-close
+        ></div>
+
+
+        <div class="customer-modal-dialog">
+
+
+            <!-- =================================================
+                 MODAL HEADER
+                 ================================================= -->
+
+            <div class="customer-modal-header">
+
+                <div>
+
+                    <span class="customer-modal-eyebrow">
+                        CUSTOMER
+                    </span>
+
+                    <h3 id="customer-modal-title">
+                        Add Customer
+                    </h3>
+
+                    <p id="customer-modal-description">
+                        Create a new customer profile.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="customer-modal-close"
+                    id="customer-modal-close"
+                    aria-label="Close customer form"
+                    title="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 CUSTOMER FORM
+                 ================================================= -->
+
+            <form
+                id="customer-form"
+                class="customer-form"
+                novalidate
+            >
+
+
+                <!-- =============================================
+                     SYSTEM INFORMATION
+                     ============================================= -->
+
+                <div class="customer-form-section">
+
+                    <div class="customer-form-section-heading">
+
+                        <h4>
+                            Customer Information
+                        </h4>
+
+                        <p>
+                            Basic customer details.
+                        </p>
+
+                    </div>
+
+
+                    <div class="customer-form-grid">
+
+
+                        <!-- CUSTOMER ID -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-id"
+                            >
+                                Customer ID
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-id"
+                                name="customerId"
+                                readonly
+                                placeholder="Auto-generated"
+                            />
+
+                            <small>
+                                Automatically generated.
+                            </small>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-status"
+                            >
+                                Status
+                            </label>
+
+                            <select
+                                id="customer-status"
+                                name="status"
+                            >
+
+                                <option value="active">
+                                    Active
+                                </option>
+
+                                <option value="inactive">
+                                    Inactive
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- CUSTOMER NAME -->
+
+                        <div
+                            class="customer-form-group customer-form-group-full"
+                        >
+
+                            <label
+                                for="customer-name"
+                            >
+                                Full Name
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-name"
+                                name="name"
+                                placeholder="Enter customer full name"
+                                maxlength="100"
+                                autocomplete="name"
+                                required
+                            />
+
+                            <span
+                                class="customer-field-error"
+                                id="customer-name-error"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- MOBILE -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-mobile"
+                            >
+                                Mobile Number
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="customer-mobile"
+                                name="mobile"
+                                placeholder="Enter mobile number"
+                                maxlength="15"
+                                autocomplete="tel"
+                                required
+                            />
+
+                            <span
+                                class="customer-field-error"
+                                id="customer-mobile-error"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- WHATSAPP -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-whatsapp"
+                            >
+                                WhatsApp Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="customer-whatsapp"
+                                name="whatsapp"
+                                placeholder="WhatsApp number"
+                                maxlength="15"
+                                autocomplete="tel"
+                            />
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-email"
+                            >
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="customer-email"
+                                name="email"
+                                placeholder="customer@example.com"
+                                maxlength="150"
+                                autocomplete="email"
+                            />
+
+                            <span
+                                class="customer-field-error"
+                                id="customer-email-error"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- DATE OF BIRTH -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-dob"
+                            >
+                                Date of Birth
+                            </label>
+
+                            <input
+                                type="date"
+                                id="customer-dob"
+                                name="dateOfBirth"
+                            />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     ADDRESS
+                     ============================================= -->
+
+                <div class="customer-form-section">
+
+                    <div class="customer-form-section-heading">
+
+                        <h4>
+                            Address
+                        </h4>
+
+                        <p>
+                            Customer residential/contact address.
+                        </p>
+
+                    </div>
+
+
+                    <div class="customer-form-grid">
+
+
+                        <!-- ADDRESS -->
+
+                        <div
+                            class="customer-form-group customer-form-group-full"
+                        >
+
+                            <label
+                                for="customer-address"
+                            >
+                                Address
+                            </label>
+
+                            <textarea
+                                id="customer-address"
+                                name="address"
+                                rows="3"
+                                maxlength="500"
+                                placeholder="Enter complete address"
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- CITY -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-city"
+                            >
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-city"
+                                name="city"
+                                placeholder="Enter city"
+                                maxlength="100"
+                                autocomplete="address-level2"
+                            />
+
+                        </div>
+
+
+                        <!-- STATE -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-state"
+                            >
+                                State
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-state"
+                                name="state"
+                                placeholder="Enter state"
+                                maxlength="100"
+                                autocomplete="address-level1"
+                            />
+
+                        </div>
+
+
+                        <!-- COUNTRY -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-country"
+                            >
+                                Country
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-country"
+                                name="country"
+                                value="India"
+                                maxlength="100"
+                                autocomplete="country-name"
+                            />
+
+                        </div>
+
+
+                        <!-- PINCODE -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-pincode"
+                            >
+                                PIN Code
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-pincode"
+                                name="pincode"
+                                placeholder="Enter PIN code"
+                                maxlength="10"
+                                autocomplete="postal-code"
+                            />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     ADDITIONAL INFORMATION
+                     ============================================= -->
+
+                <div class="customer-form-section">
+
+                    <div class="customer-form-section-heading">
+
+                        <h4>
+                            Additional Information
+                        </h4>
+
+                        <p>
+                            Optional information for customer management.
+                        </p>
+
+                    </div>
+
+
+                    <div class="customer-form-grid">
+
+
+                        <!-- CUSTOMER SOURCE -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-source"
+                            >
+                                Customer Source
+                            </label>
+
+                            <select
+                                id="customer-source"
+                                name="source"
+                            >
+
+                                <option value="">
+                                    Select source
+                                </option>
+
+                                <option value="website">
+                                    Website
+                                </option>
+
+                                <option value="whatsapp">
+                                    WhatsApp
+                                </option>
+
+                                <option value="facebook">
+                                    Facebook
+                                </option>
+
+                                <option value="instagram">
+                                    Instagram
+                                </option>
+
+                                <option value="google">
+                                    Google
+                                </option>
+
+                                <option value="referral">
+                                    Referral
+                                </option>
+
+                                <option value="walk-in">
+                                    Walk-in
+                                </option>
+
+                                <option value="phone">
+                                    Phone
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PREFERRED CONTACT -->
+
+                        <div class="customer-form-group">
+
+                            <label
+                                for="customer-preferred-contact"
+                            >
+                                Preferred Contact
+                            </label>
+
+                            <select
+                                id="customer-preferred-contact"
+                                name="preferredContact"
+                            >
+
+                                <option value="">
+                                    Select method
+                                </option>
+
+                                <option value="mobile">
+                                    Mobile
+                                </option>
+
+                                <option value="whatsapp">
+                                    WhatsApp
+                                </option>
+
+                                <option value="email">
+                                    Email
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- NOTES -->
+
+                        <div
+                            class="customer-form-group customer-form-group-full"
+                        >
+
+                            <label
+                                for="customer-notes"
+                            >
+                                Internal Notes
+                            </label>
+
+                            <textarea
+                                id="customer-notes"
+                                name="notes"
+                                rows="4"
+                                maxlength="1000"
+                                placeholder="Add internal notes about this customer..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     FORM ERROR
+                     ============================================= -->
+
+                <div
+                    class="customer-form-error hidden"
+                    id="customer-form-error"
+                    role="alert"
+                ></div>
+
+
+                <!-- =============================================
+                     MODAL FOOTER
+                     ============================================= -->
+
+                <div class="customer-modal-footer">
+
+                    <button
+                        type="button"
+                        class="customers-btn customers-btn-secondary"
+                        id="customer-cancel-btn"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="customers-btn customers-btn-primary"
+                        id="customer-save-btn"
+                    >
+
+                        <span
+                            class="customers-btn-spinner hidden"
+                            id="customer-save-spinner"
+                        ></span>
+
+                        <span id="customer-save-text">
+                            Save Customer
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         VIEW CUSTOMER MODAL
+         ===================================================== -->
+
+    <div
+        class="customer-view-modal hidden"
+        id="customer-view-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="customer-view-title"
+    >
+
+        <div
+            class="customer-view-backdrop"
+            data-customer-view-close
+        ></div>
+
+
+        <div class="customer-view-dialog">
+
+
+            <!-- HEADER -->
+
+            <div class="customer-view-header">
+
+                <div>
+
+                    <span class="customer-modal-eyebrow">
+                        CUSTOMER PROFILE
+                    </span>
+
+                    <h3 id="customer-view-title">
+                        Customer Details
+                    </h3>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="customer-modal-close"
+                    id="customer-view-close"
+                    aria-label="Close customer details"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- CUSTOMER PROFILE -->
+
+            <div
+                class="customer-profile"
+                id="customer-profile"
+            >
+
+                <!-- Dynamic content generated by customers.js -->
+
+            </div>
+
+
+            <!-- VIEW ACTIONS -->
+
+            <div class="customer-view-footer">
+
+                <button
+                    type="button"
+                    class="customers-btn customers-btn-secondary"
+                    id="customer-view-close-btn"
+                >
+                    Close
+                </button>
+
+
+                <button
+                    type="button"
+                    class="customers-btn customers-btn-primary"
+                    id="customer-view-edit-btn"
+                >
+                    Edit Customer
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DELETE CONFIRMATION MODAL
+         ===================================================== -->
+
+    <div
+        class="customer-confirm-modal hidden"
+        id="customer-delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="customer-delete-title"
+    >
+
+        <div
+            class="customer-confirm-backdrop"
+            data-customer-delete-close
+        ></div>
+
+
+        <div class="customer-confirm-dialog">
+
+
+            <div class="customer-confirm-icon">
+                !
+            </div>
+
+
+            <h3 id="customer-delete-title">
+                Delete Customer?
+            </h3>
+
+
+            <p id="customer-delete-message">
+                Are you sure you want to delete this customer?
+                This action cannot be undone.
+            </p>
+
+
+            <div class="customer-confirm-actions">
+
+                <button
+                    type="button"
+                    class="customers-btn customers-btn-secondary"
+                    id="customer-delete-cancel"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    class="customers-btn customers-btn-danger"
+                    id="customer-delete-confirm"
+                >
+                    Delete Customer
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST NOTIFICATION
+         ===================================================== -->
+
+    <div
+        class="customers-toast hidden"
+        id="customers-toast"
+        role="status"
+        aria-live="polite"
+    >
+
+        <span
+            class="customers-toast-icon"
+            id="customers-toast-icon"
+        >
+            ✓
+        </span>
+
+        <span
+            class="customers-toast-message"
+            id="customers-toast-message"
+        >
+            Customer saved successfully.
+        </span>
+
+        <button
+            type="button"
+            class="customers-toast-close"
+            id="customers-toast-close"
+            aria-label="Close notification"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+</section>
