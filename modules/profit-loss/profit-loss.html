@@ -1,1 +1,655 @@
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     PROFIT & LOSS MODULE
+     File: modules/profit-loss/profit-loss.html
+     ========================================================= -->
 
+<section
+    class="module-page profit-loss-module"
+    id="profitLossModule"
+>
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="module-header">
+
+        <div class="module-header-left">
+
+            <h1>
+                Profit & Loss
+            </h1>
+
+            <p>
+                Monitor revenue, expenses and business profitability
+            </p>
+
+        </div>
+
+
+        <div class="module-header-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="refreshProfitLossBtn"
+            >
+                ↻ Refresh
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="generateProfitLossBtn"
+            >
+                Generate Report
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         REPORT FILTER
+         ===================================================== -->
+
+    <section class="module-card profit-loss-filter-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Report Period
+                </h2>
+
+                <p>
+                    Select the period for your Profit & Loss report
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters-grid">
+
+            <div class="form-group">
+
+                <label for="profitLossFromDate">
+                    From Date
+                </label>
+
+                <input
+                    type="date"
+                    id="profitLossFromDate"
+                />
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="profitLossToDate">
+                    To Date
+                </label>
+
+                <input
+                    type="date"
+                    id="profitLossToDate"
+                />
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="profitLossPeriod">
+                    Quick Period
+                </label>
+
+                <select
+                    id="profitLossPeriod"
+                >
+
+                    <option value="">
+                        Custom Period
+                    </option>
+
+                    <option value="today">
+                        Today
+                    </option>
+
+                    <option value="this-week">
+                        This Week
+                    </option>
+
+                    <option value="this-month">
+                        This Month
+                    </option>
+
+                    <option value="last-month">
+                        Last Month
+                    </option>
+
+                    <option value="this-year">
+                        This Year
+                    </option>
+
+                    <option value="last-year">
+                        Last Year
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROFIT & LOSS SUMMARY
+         ===================================================== -->
+
+    <div class="profit-loss-summary-grid">
+
+        <!-- Revenue -->
+
+        <div class="summary-card pl-revenue-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Total Revenue
+                </span>
+
+                <h2 id="plTotalRevenue">
+                    ₹0.00
+                </h2>
+
+                <small>
+                    Payments received
+                </small>
+
+            </div>
+
+            <div class="summary-card-icon">
+                ₹
+            </div>
+
+        </div>
+
+
+        <!-- Expenses -->
+
+        <div class="summary-card pl-expense-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Total Expenses
+                </span>
+
+                <h2 id="plTotalExpenses">
+                    ₹0.00
+                </h2>
+
+                <small>
+                    Business expenses
+                </small>
+
+            </div>
+
+            <div class="summary-card-icon">
+                ₹
+            </div>
+
+        </div>
+
+
+        <!-- Gross Profit -->
+
+        <div class="summary-card pl-profit-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Net Profit
+                </span>
+
+                <h2 id="plNetProfit">
+                    ₹0.00
+                </h2>
+
+                <small id="plProfitStatus">
+                    Calculating...
+                </small>
+
+            </div>
+
+            <div class="summary-card-icon">
+                ✓
+            </div>
+
+        </div>
+
+
+        <!-- Profit Margin -->
+
+        <div class="summary-card pl-margin-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Profit Margin
+                </span>
+
+                <h2 id="plProfitMargin">
+                    0.00%
+                </h2>
+
+                <small>
+                    Net profit / revenue
+                </small>
+
+            </div>
+
+            <div class="summary-card-icon">
+                %
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROFIT & LOSS STATEMENT
+         ===================================================== -->
+
+    <section class="module-card pl-statement-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Profit & Loss Statement
+                </h2>
+
+                <p id="plReportPeriodLabel">
+                    Selected period
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="pl-statement">
+
+            <!-- Revenue Section -->
+
+            <div class="pl-statement-section">
+
+                <div class="pl-section-header">
+
+                    <h3>
+                        Revenue
+                    </h3>
+
+                    <strong id="plRevenueSectionTotal">
+                        ₹0.00
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="pl-line-items"
+                    id="plRevenueItems"
+                >
+
+                    <div class="pl-line-item">
+
+                        <span>
+                            Payments Received
+                        </span>
+
+                        <strong>
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Expenses Section -->
+
+            <div class="pl-statement-section">
+
+                <div class="pl-section-header">
+
+                    <h3>
+                        Operating Expenses
+                    </h3>
+
+                    <strong id="plExpenseSectionTotal">
+                        ₹0.00
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="pl-line-items"
+                    id="plExpenseItems"
+                >
+
+                    <div class="pl-line-item">
+
+                        <span>
+                            No expenses
+                        </span>
+
+                        <strong>
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Net Result -->
+
+            <div class="pl-net-result">
+
+                <div>
+
+                    <span>
+                        Net Profit / Loss
+                    </span>
+
+                    <small>
+                        Revenue minus total expenses
+                    </small>
+
+                </div>
+
+
+                <strong id="plStatementNetProfit">
+                    ₹0.00
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EXPENSE BREAKDOWN
+         ===================================================== -->
+
+    <section class="module-card pl-breakdown-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Expense Breakdown
+                </h2>
+
+                <p>
+                    Category-wise business expenses
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table
+                class="data-table profit-loss-table"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Transactions
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            % of Total Expense
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="plExpenseBreakdownBody">
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="empty-state"
+                        >
+
+                            No expense data available.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+
+                <tfoot>
+
+                    <tr>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th id="plExpenseTransactionTotal">
+                            0
+                        </th>
+
+                        <th id="plExpenseBreakdownTotal">
+                            ₹0.00
+                        </th>
+
+                        <th>
+                            100%
+                        </th>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MONTHLY PERFORMANCE
+         ===================================================== -->
+
+    <section class="module-card pl-monthly-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Monthly Performance
+                </h2>
+
+                <p>
+                    Revenue, expenses and profit by month
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table
+                class="data-table profit-loss-monthly-table"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Month
+                        </th>
+
+                        <th>
+                            Revenue
+                        </th>
+
+                        <th>
+                            Expenses
+                        </th>
+
+                        <th>
+                            Net Profit / Loss
+                        </th>
+
+                        <th>
+                            Margin
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="plMonthlyPerformanceBody">
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="empty-state"
+                        >
+
+                            No monthly data available.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         REPORT STATUS / LOADING
+         ===================================================== -->
+
+    <div
+        id="profitLossLoading"
+        class="module-loading"
+        hidden
+    >
+
+        <div class="loading-spinner"></div>
+
+        <span>
+            Generating Profit & Loss report...
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         REPORT FOOTER
+         ===================================================== -->
+
+    <section class="module-card pl-report-footer">
+
+        <div class="report-information">
+
+            <div>
+
+                <span>
+                    Report Period
+                </span>
+
+                <strong id="plFooterPeriod">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Generated On
+                </span>
+
+                <strong id="plGeneratedDate">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Report Status
+                </span>
+
+                <strong id="plReportStatus">
+                    Not Generated
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
