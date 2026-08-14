@@ -1,1 +1,860 @@
+/* =========================================================
+   MY TOUR MITRA ERP
+   ENQUIRIES MODULE STYLES
+   ========================================================= */
 
+.enquiries-page {
+    width: 100%;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.enquiries-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.enquiries-header-left {
+    min-width: 0;
+}
+
+.enquiries-header-left h2 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 24px;
+    font-weight: 750;
+    letter-spacing: -0.3px;
+}
+
+.enquiries-header-left p {
+    margin: 6px 0 0;
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.enquiries-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.enquiries-btn {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+        color .2s ease,
+        background-color .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+}
+
+.enquiries-btn:hover {
+    transform: translateY(-1px);
+}
+
+.enquiries-btn-primary {
+    color: #fff;
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.enquiries-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.enquiries-btn-secondary {
+    color: var(--text);
+    background: #fff;
+}
+
+.enquiries-btn-secondary:hover {
+    background: var(--bg-secondary);
+}
+
+.enquiries-btn-danger {
+    color: #b91c1c;
+    background: #fff;
+    border-color: #fecaca;
+}
+
+.enquiries-btn-danger:hover {
+    background: #fef2f2;
+}
+
+
+/* =========================================================
+   SUMMARY / KPI
+   ========================================================= */
+
+.enquiries-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.enquiry-summary-card {
+    min-width: 0;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .04);
+}
+
+.enquiry-summary-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.enquiry-summary-label {
+    color: var(--text-light);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+}
+
+.enquiry-summary-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    background: var(--primary-light);
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.enquiry-summary-value {
+    margin-top: 12px;
+    color: var(--dark);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.enquiry-summary-card.new .enquiry-summary-icon {
+    color: #2563eb;
+    background: #dbeafe;
+}
+
+.enquiry-summary-card.pending .enquiry-summary-icon {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.enquiry-summary-card.converted .enquiry-summary-icon {
+    color: #047857;
+    background: #d1fae5;
+}
+
+
+/* =========================================================
+   FILTER CARD
+   ========================================================= */
+
+.enquiries-filter-card {
+    margin-bottom: 18px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.enquiries-filter-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(200px, 1.5fr)
+        minmax(145px, 1fr)
+        minmax(145px, 1fr)
+        minmax(145px, 1fr)
+        auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.enquiries-field {
+    min-width: 0;
+}
+
+.enquiries-field label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.enquiries-field input,
+.enquiries-field select,
+.enquiries-field textarea {
+    width: 100%;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 9px 11px;
+    color: var(--text);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    font-size: 12px;
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.enquiries-field textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.enquiries-field input:focus,
+.enquiries-field select:focus,
+.enquiries-field textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+}
+
+.enquiries-filter-actions {
+    display: flex;
+    gap: 8px;
+}
+
+
+/* =========================================================
+   DATA CARD
+   ========================================================= */
+
+.enquiries-data-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .04);
+    overflow: hidden;
+}
+
+.enquiries-data-header {
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 0 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.enquiries-data-title h3 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.enquiries-data-title p {
+    margin: 3px 0 0;
+    color: var(--text-light);
+    font-size: 10px;
+}
+
+.enquiries-result-count {
+    color: var(--text-light);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.enquiries-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.enquiries-table {
+    width: 100%;
+    min-width: 1050px;
+    border-collapse: collapse;
+}
+
+.enquiries-table th {
+    padding: 12px 14px;
+    color: var(--text-light);
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .35px;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.enquiries-table td {
+    padding: 13px 14px;
+    color: var(--text);
+    border-bottom: 1px solid #eef2f7;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.enquiries-table tbody tr {
+    transition: background-color .15s ease;
+}
+
+.enquiries-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.enquiries-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   ENQUIRY ID
+   ========================================================= */
+
+.enquiry-id {
+    color: var(--primary);
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CUSTOMER
+   ========================================================= */
+
+.enquiry-customer {
+    display: flex;
+    flex-direction: column;
+    min-width: 130px;
+}
+
+.enquiry-customer-name {
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.enquiry-customer-contact {
+    margin-top: 3px;
+    color: var(--text-light);
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   DESTINATION
+   ========================================================= */
+
+.enquiry-destination {
+    max-width: 180px;
+    color: var(--dark);
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   TRAVEL DETAILS
+   ========================================================= */
+
+.enquiry-travel-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.enquiry-travel-details span {
+    color: var(--text-light);
+    font-size: 10px;
+}
+
+.enquiry-travel-details strong {
+    color: var(--text);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+.enquiry-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.enquiry-status-new {
+    color: #1d4ed8;
+    background: #dbeafe;
+}
+
+.enquiry-status-contacted {
+    color: #7c3aed;
+    background: #ede9fe;
+}
+
+.enquiry-status-followup {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.enquiry-status-quoted {
+    color: #0369a1;
+    background: #e0f2fe;
+}
+
+.enquiry-status-converted {
+    color: #047857;
+    background: #d1fae5;
+}
+
+.enquiry-status-lost {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+.enquiry-status-cancelled {
+    color: #64748b;
+    background: #f1f5f9;
+}
+
+
+/* =========================================================
+   PRIORITY
+   ========================================================= */
+
+.enquiry-priority {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.enquiry-priority::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: 50%;
+    background: #94a3b8;
+}
+
+.enquiry-priority-high {
+    color: #dc2626;
+}
+
+.enquiry-priority-high::before {
+    background: #dc2626;
+}
+
+.enquiry-priority-medium {
+    color: #b45309;
+}
+
+.enquiry-priority-medium::before {
+    background: #f59e0b;
+}
+
+.enquiry-priority-low {
+    color: #047857;
+}
+
+.enquiry-priority-low::before {
+    background: #10b981;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.enquiry-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.enquiry-action-btn {
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    transition:
+        color .2s ease,
+        background-color .2s ease,
+        border-color .2s ease;
+}
+
+.enquiry-action-btn:hover {
+    color: var(--primary);
+    background: var(--primary-light);
+    border-color: #bfdbfe;
+}
+
+.enquiry-action-btn.delete:hover {
+    color: #dc2626;
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.enquiry-action-btn.convert:hover {
+    color: #047857;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+
+/* =========================================================
+   FORM / MODAL
+   ========================================================= */
+
+.enquiry-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, .48);
+    backdrop-filter: blur(3px);
+}
+
+.enquiry-modal {
+    width: min(820px, 100%);
+    max-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 25px 60px rgba(15, 23, 42, .20);
+    overflow: hidden;
+}
+
+.enquiry-modal-header {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.enquiry-modal-header h3 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.enquiry-modal-close {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    background: transparent;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.enquiry-modal-close:hover {
+    color: var(--dark);
+    background: var(--bg-secondary);
+}
+
+.enquiry-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.enquiry-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.enquiry-form-full {
+    grid-column: 1 / -1;
+}
+
+.enquiry-form-section {
+    grid-column: 1 / -1;
+    padding-bottom: 8px;
+    color: var(--dark);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.enquiry-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.enquiries-empty {
+    padding: 55px 20px;
+    text-align: center;
+}
+
+.enquiries-empty-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.enquiries-empty h4 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.enquiries-empty p {
+    margin: 5px 0 0;
+    color: var(--text-light);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.enquiries-loading {
+    padding: 45px 20px;
+    text-align: center;
+}
+
+.enquiries-loading-spinner {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 10px;
+    border: 3px solid #e2e8f0;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: enquiries-spin .75s linear infinite;
+}
+
+.enquiries-loading p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 11px;
+}
+
+@keyframes enquiries-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.enquiries-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+}
+
+.enquiries-pagination-info {
+    color: var(--text-light);
+    font-size: 10px;
+}
+
+.enquiries-pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.enquiries-page-btn {
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    color: var(--text);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.enquiries-page-btn:hover {
+    color: var(--primary);
+    background: var(--primary-light);
+    border-color: #bfdbfe;
+}
+
+.enquiries-page-btn.active {
+    color: #fff;
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.enquiries-page-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .enquiries-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .enquiries-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .enquiries-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .enquiries-header-actions {
+        justify-content: flex-start;
+    }
+
+    .enquiries-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .enquiries-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .enquiry-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .enquiry-form-full,
+    .enquiry-form-section {
+        grid-column: auto;
+    }
+
+    .enquiry-modal-overlay {
+        padding: 10px;
+    }
+
+    .enquiry-modal {
+        max-height: calc(100vh - 20px);
+    }
+
+    .enquiries-pagination {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .enquiries-pagination-controls {
+        justify-content: center;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .enquiries-header-left h2 {
+        font-size: 20px;
+    }
+
+    .enquiries-header-actions {
+        width: 100%;
+    }
+
+    .enquiries-btn {
+        flex: 1;
+    }
+
+    .enquiry-modal-header,
+    .enquiry-modal-body,
+    .enquiry-modal-footer {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+}
