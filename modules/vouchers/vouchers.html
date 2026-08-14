@@ -1,1 +1,1376 @@
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     VOUCHERS MODULE
+     File: modules/vouchers/vouchers.html
+     ========================================================= -->
 
+<section
+    class="module-page vouchers-module"
+    id="vouchersModule"
+>
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="module-header">
+
+        <div class="module-header-left">
+
+            <h1>
+                Vouchers
+            </h1>
+
+            <p>
+                Create and manage hotel, cab and tour service vouchers
+            </p>
+
+        </div>
+
+
+        <div class="module-header-actions">
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="addVoucherBtn"
+            >
+                + Create Voucher
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="refreshVouchersBtn"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+
+    <div class="vouchers-summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Total Vouchers
+                </span>
+
+                <h2 id="totalVouchers">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                #
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Hotel Vouchers
+                </span>
+
+                <h2 id="hotelVoucherCount">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                🏨
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Cab Vouchers
+                </span>
+
+                <h2 id="cabVoucherCount">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                🚕
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Tour / Activity
+                </span>
+
+                <h2 id="tourVoucherCount">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                🎫
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CREATE / EDIT VOUCHER FORM
+         ===================================================== -->
+
+    <section
+        class="module-card voucher-form-section"
+        id="voucherFormSection"
+        hidden
+    >
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Create / Edit Voucher
+                </h2>
+
+                <p>
+                    Enter the service and guest details
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="icon-btn"
+                id="closeVoucherFormBtn"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="voucherForm"
+            autocomplete="off"
+        >
+
+            <input
+                type="hidden"
+                id="voucherId"
+            />
+
+
+            <!-- =================================================
+                 VOUCHER INFORMATION
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Voucher Information
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <!-- Voucher Number -->
+
+                    <div class="form-group">
+
+                        <label for="voucherNumber">
+                            Voucher No.
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherNumber"
+                            name="voucherNumber"
+                            placeholder="Auto-generated"
+                            readonly
+                        />
+
+                    </div>
+
+
+                    <!-- Voucher Date -->
+
+                    <div class="form-group">
+
+                        <label for="voucherDate">
+                            Voucher Date
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="date"
+                            id="voucherDate"
+                            name="voucherDate"
+                            required
+                        />
+
+                    </div>
+
+
+                    <!-- Voucher Type -->
+
+                    <div class="form-group">
+
+                        <label for="voucherType">
+                            Voucher Type
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="voucherType"
+                            name="voucherType"
+                            required
+                        >
+
+                            <option value="">
+                                Select Voucher Type
+                            </option>
+
+                            <option value="Hotel">
+                                Hotel Voucher
+                            </option>
+
+                            <option value="Cab">
+                                Cab Voucher
+                            </option>
+
+                            <option value="Tour">
+                                Tour / Activity Voucher
+                            </option>
+
+                            <option value="Other">
+                                Other Service Voucher
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Booking ID -->
+
+                    <div class="form-group">
+
+                        <label for="voucherBookingId">
+                            Booking ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherBookingId"
+                            name="voucherBookingId"
+                            placeholder="Booking ID"
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CUSTOMER INFORMATION
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Customer Information
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <!-- Customer -->
+
+                    <div class="form-group">
+
+                        <label for="voucherCustomer">
+                            Customer
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="voucherCustomer"
+                            name="voucherCustomer"
+                            required
+                        >
+
+                            <option value="">
+                                Select Customer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Guest Name -->
+
+                    <div class="form-group">
+
+                        <label for="voucherGuestName">
+                            Guest / Lead Traveller
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherGuestName"
+                            name="voucherGuestName"
+                            placeholder="Guest name"
+                        />
+
+                    </div>
+
+
+                    <!-- Mobile -->
+
+                    <div class="form-group">
+
+                        <label for="voucherGuestMobile">
+                            Guest Mobile
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="voucherGuestMobile"
+                            name="voucherGuestMobile"
+                            placeholder="Mobile number"
+                        />
+
+                    </div>
+
+
+                    <!-- Number of Guests -->
+
+                    <div class="form-group">
+
+                        <label for="voucherPax">
+                            No. of Guests
+                        </label>
+
+                        <input
+                            type="number"
+                            id="voucherPax"
+                            name="voucherPax"
+                            min="1"
+                            placeholder="1"
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SERVICE DETAILS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Service Details
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <!-- Service Provider -->
+
+                    <div class="form-group">
+
+                        <label for="voucherSupplier">
+                            Service Provider / Supplier
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherSupplier"
+                            name="voucherSupplier"
+                            placeholder="Hotel / Cab operator / Supplier"
+                        />
+
+                    </div>
+
+
+                    <!-- Contact -->
+
+                    <div class="form-group">
+
+                        <label for="voucherSupplierContact">
+                            Supplier Contact
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherSupplierContact"
+                            name="voucherSupplierContact"
+                            placeholder="Contact number"
+                        />
+
+                    </div>
+
+
+                    <!-- Service Name -->
+
+                    <div class="form-group form-group-full">
+
+                        <label for="voucherServiceName">
+                            Service Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherServiceName"
+                            name="voucherServiceName"
+                            placeholder="Hotel name / Vehicle / Activity"
+                            required
+                        />
+
+                    </div>
+
+
+                    <!-- Location -->
+
+                    <div class="form-group">
+
+                        <label for="voucherLocation">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherLocation"
+                            name="voucherLocation"
+                            placeholder="City / Destination"
+                        />
+
+                    </div>
+
+
+                    <!-- Confirmation Number -->
+
+                    <div class="form-group">
+
+                        <label for="voucherConfirmationNo">
+                            Confirmation No.
+                        </label>
+
+                        <input
+                            type="text"
+                            id="voucherConfirmationNo"
+                            name="voucherConfirmationNo"
+                            placeholder="Supplier confirmation number"
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HOTEL DETAILS
+                 ================================================= -->
+
+            <div
+                class="form-section voucher-type-section"
+                id="hotelVoucherSection"
+                hidden
+            >
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Hotel Details
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="hotelCheckIn">
+                            Check-in
+                        </label>
+
+                        <input
+                            type="date"
+                            id="hotelCheckIn"
+                            name="hotelCheckIn"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="hotelCheckOut">
+                            Check-out
+                        </label>
+
+                        <input
+                            type="date"
+                            id="hotelCheckOut"
+                            name="hotelCheckOut"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="hotelNights">
+                            No. of Nights
+                        </label>
+
+                        <input
+                            type="number"
+                            id="hotelNights"
+                            name="hotelNights"
+                            min="0"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="hotelRooms">
+                            No. of Rooms
+                        </label>
+
+                        <input
+                            type="number"
+                            id="hotelRooms"
+                            name="hotelRooms"
+                            min="1"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="hotelRoomType">
+                            Room Type
+                        </label>
+
+                        <input
+                            type="text"
+                            id="hotelRoomType"
+                            name="hotelRoomType"
+                            placeholder="Deluxe / Executive / Suite"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="hotelMealPlan">
+                            Meal Plan
+                        </label>
+
+                        <select
+                            id="hotelMealPlan"
+                            name="hotelMealPlan"
+                        >
+
+                            <option value="">
+                                Select Meal Plan
+                            </option>
+
+                            <option value="EP">
+                                EP - Room Only
+                            </option>
+
+                            <option value="CP">
+                                CP - Breakfast
+                            </option>
+
+                            <option value="MAP">
+                                MAP - Breakfast + Dinner
+                            </option>
+
+                            <option value="AP">
+                                AP - Breakfast + Lunch + Dinner
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="hotelAddress">
+                            Hotel Address
+                        </label>
+
+                        <textarea
+                            id="hotelAddress"
+                            name="hotelAddress"
+                            rows="3"
+                            placeholder="Complete hotel address"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CAB DETAILS
+                 ================================================= -->
+
+            <div
+                class="form-section voucher-type-section"
+                id="cabVoucherSection"
+                hidden
+            >
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Cab / Transport Details
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="cabPickupDate">
+                            Pickup Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="cabPickupDate"
+                            name="cabPickupDate"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="cabPickupTime">
+                            Pickup Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="cabPickupTime"
+                            name="cabPickupTime"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="cabPickupLocation">
+                            Pickup Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cabPickupLocation"
+                            name="cabPickupLocation"
+                            placeholder="Pickup point"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="cabDropLocation">
+                            Drop Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cabDropLocation"
+                            name="cabDropLocation"
+                            placeholder="Drop point"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="cabVehicle">
+                            Vehicle Type
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cabVehicle"
+                            name="cabVehicle"
+                            placeholder="Sedan / SUV / Tempo Traveller"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="cabVehicleNumber">
+                            Vehicle Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cabVehicleNumber"
+                            name="cabVehicleNumber"
+                            placeholder="Vehicle registration number"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="cabDriverName">
+                            Driver Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cabDriverName"
+                            name="cabDriverName"
+                            placeholder="Driver name"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="cabDriverMobile">
+                            Driver Mobile
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="cabDriverMobile"
+                            name="cabDriverMobile"
+                            placeholder="Driver mobile number"
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 TOUR / ACTIVITY DETAILS
+                 ================================================= -->
+
+            <div
+                class="form-section voucher-type-section"
+                id="tourVoucherSection"
+                hidden
+            >
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Tour / Activity Details
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="tourStartDate">
+                            Start Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="tourStartDate"
+                            name="tourStartDate"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="tourEndDate">
+                            End Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="tourEndDate"
+                            name="tourEndDate"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="tourDuration">
+                            Duration
+                        </label>
+
+                        <input
+                            type="text"
+                            id="tourDuration"
+                            name="tourDuration"
+                            placeholder="e.g. 3 Nights / 4 Days"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="tourGuide">
+                            Guide / Coordinator
+                        </label>
+
+                        <input
+                            type="text"
+                            id="tourGuide"
+                            name="tourGuide"
+                            placeholder="Guide / Trip Leader"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="tourDetails">
+                            Tour / Activity Details
+                        </label>
+
+                        <textarea
+                            id="tourDetails"
+                            name="tourDetails"
+                            rows="4"
+                            placeholder="Enter tour or activity details..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SPECIAL INSTRUCTIONS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Special Instructions
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group form-group-full">
+
+                        <label for="voucherInstructions">
+                            Instructions / Remarks
+                        </label>
+
+                        <textarea
+                            id="voucherInstructions"
+                            name="voucherInstructions"
+                            rows="4"
+                            placeholder="Special instructions, inclusions, exclusions or remarks..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 VOUCHER STATUS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Status
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="voucherStatus">
+                            Voucher Status
+                        </label>
+
+                        <select
+                            id="voucherStatus"
+                            name="voucherStatus"
+                        >
+
+                            <option value="Draft">
+                                Draft
+                            </option>
+
+                            <option value="Confirmed">
+                                Confirmed
+                            </option>
+
+                            <option value="Issued">
+                                Issued
+                            </option>
+
+                            <option value="Cancelled">
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM ACTIONS
+                 ================================================= -->
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelVoucherBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveVoucherBtn"
+                >
+                    Save Voucher
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         FILTERS
+         ===================================================== -->
+
+    <section class="module-card vouchers-filter-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Voucher Records
+                </h2>
+
+                <p>
+                    Search and filter vouchers
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters-grid">
+
+            <div class="form-group">
+
+                <label for="voucherSearch">
+                    Search
+                </label>
+
+                <input
+                    type="search"
+                    id="voucherSearch"
+                    placeholder="Search voucher, customer, booking..."
+                />
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="voucherTypeFilter">
+                    Voucher Type
+                </label>
+
+                <select
+                    id="voucherTypeFilter"
+                >
+
+                    <option value="">
+                        All Types
+                    </option>
+
+                    <option value="Hotel">
+                        Hotel
+                    </option>
+
+                    <option value="Cab">
+                        Cab
+                    </option>
+
+                    <option value="Tour">
+                        Tour / Activity
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="voucherStatusFilter">
+                    Status
+                </label>
+
+                <select
+                    id="voucherStatusFilter"
+                >
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="Draft">
+                        Draft
+                    </option>
+
+                    <option value="Confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="Issued">
+                        Issued
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="voucherFromDate">
+                    From Date
+                </label>
+
+                <input
+                    type="date"
+                    id="voucherFromDate"
+                />
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="voucherToDate">
+                    To Date
+                </label>
+
+                <input
+                    type="date"
+                    id="voucherToDate"
+                />
+
+            </div>
+
+
+            <div class="filter-action">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="clearVoucherFiltersBtn"
+                >
+                    Clear Filters
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <div
+        id="vouchersLoading"
+        class="module-loading"
+        hidden
+    >
+
+        <div class="loading-spinner"></div>
+
+        <span>
+            Loading vouchers...
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         VOUCHER TABLE
+         ===================================================== -->
+
+    <section class="module-card vouchers-table-card">
+
+        <div class="table-wrapper">
+
+            <table
+                class="data-table vouchers-table"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Voucher No.
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Service
+                        </th>
+
+                        <th>
+                            Supplier
+                        </th>
+
+                        <th>
+                            Booking ID
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="vouchersTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            class="empty-state"
+                        >
+                            No vouchers found.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         VOUCHER DETAILS MODAL
+         ===================================================== -->
+
+    <div
+        class="modal"
+        id="voucherDetailsModal"
+        hidden
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-container">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Voucher Details
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="icon-btn"
+                    id="closeVoucherDetailsModal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="modal-body"
+                id="voucherDetailsContent"
+            >
+                <!-- JS will render voucher details here -->
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="closeVoucherDetailsBtn"
+                >
+                    Close
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="generateVoucherPdfBtn"
+                >
+                    Generate PDF
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
