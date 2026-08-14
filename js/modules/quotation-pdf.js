@@ -1005,61 +1005,58 @@ function buildQuotationHTML(quotation) {
                     }
 
 
-                    const vehicle =
-                        getValue(
-                            item,
-                            [
-                                "vehicleName",
-                                "vehicle",
-                                "cabName",
-                                "cab",
-                                "name",
-                                "vehicle.name"
-                            ],
-                            "-"
-                        );
+                    const vehicle = firstValue(
+    item,
+    [
+        "vehicle",
+        "vehicleName",
+        "cab",
+        "cabName",
+        "name",
+        "selectedVehicle",
+        "vehicle_name"
+    ],
+    "-"
+);
 
+const category = firstValue(
+    item,
+    [
+        "category",
+        "type",
+        "vehicleType",
+        "cabType",
+        "vehicleCategory",
+        "typeName"
+    ],
+    "-"
+);
 
-                    const type =
-                        getValue(
-                            item,
-                            [
-                                "vehicleType",
-                                "type",
-                                "category",
-                                "cabType",
-                                "vehicleCategory"
-                            ],
-                            "-"
-                        );
+const capacity = firstValue(
+    item,
+    [
+        "capacity",
+        "pax",
+        "seating",
+        "seatingCapacity",
+        "seatCapacity",
+        "maxPax"
+    ],
+    "-"
+);
 
-
-                    const capacity =
-                        getValue(
-                            item,
-                            [
-                                "capacity",
-                                "seatingCapacity",
-                                "pax",
-                                "seating",
-                                "vehicleCapacity"
-                            ],
-                            "-"
-                        );
-
-
-                    const details =
-                        getValue(
-                            item,
-                            [
-                                "details",
-                                "description",
-                                "remarks",
-                                "note"
-                            ],
-                            "-"
-                        );
-
+const details = firstValue(
+    item,
+    [
+        "details",
+        "description",
+        "remarks",
+        "note",
+        "vehicleDetails",
+        "cabDetails"
+    ],
+    "-"
+);
 
                     return `
                         <tr>
@@ -1518,7 +1515,7 @@ function buildQuotationHTML(quotation) {
 
 @page {
     size: A4;
-    margin: 12mm;
+    margin: 10mm;
 }
 
 
@@ -1556,14 +1553,12 @@ body {
 
 
 .quotation-document {
-
-    width: 100%;
-
-    max-width: 100%;
-
+    width: 190mm;
+    max-width: 190mm;
+    margin: 0 auto;
+    padding: 0;
     background: #ffffff;
 }
-
 
 /* ==========================================================
    HEADER
