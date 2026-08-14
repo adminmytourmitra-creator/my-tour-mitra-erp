@@ -54,25 +54,18 @@
       >
 
         <thead>
+
           <tr>
-
             <th>Quotation ID</th>
-
             <th>Customer</th>
-
             <th>Package</th>
-
             <th>Travel Date</th>
-
             <th>Pax</th>
-
             <th>Grand Total</th>
-
             <th>Status</th>
-
             <th>Actions</th>
-
           </tr>
+
         </thead>
 
         <tbody id="quotationsTableBody">
@@ -82,7 +75,7 @@
               colspan="8"
               class="empty-table"
             >
-              No quotations found.
+              Loading quotations...
             </td>
           </tr>
 
@@ -160,11 +153,11 @@
 
           <div class="quotation-section-title">
 
-            <h4>Enquiry & Customer</h4>
+            <div>
+              <h4>Enquiry & Customer</h4>
+            </div>
 
-            <span>
-              Step 1
-            </span>
+            <span>Step 1</span>
 
           </div>
 
@@ -189,7 +182,7 @@
               </select>
 
               <small>
-                Customer details will be linked to the enquiry.
+                Select an enquiry to automatically load customer details.
               </small>
 
             </div>
@@ -259,11 +252,11 @@
 
           <div class="quotation-section-title">
 
-            <h4>Package Details</h4>
+            <div>
+              <h4>Package Details</h4>
+            </div>
 
-            <span>
-              Step 2
-            </span>
+            <span>Step 2</span>
 
           </div>
 
@@ -289,6 +282,10 @@
                 </option>
 
               </select>
+
+              <small>
+                Package is loaded from Package Master.
+              </small>
 
             </div>
 
@@ -327,7 +324,7 @@
             </div>
 
 
-            <!-- Quotation Status -->
+            <!-- Status -->
 
             <div class="form-group">
 
@@ -337,25 +334,11 @@
 
               <select id="quotationStatus">
 
-                <option value="Draft">
-                  Draft
-                </option>
-
-                <option value="Sent">
-                  Sent
-                </option>
-
-                <option value="Accepted">
-                  Accepted
-                </option>
-
-                <option value="Rejected">
-                  Rejected
-                </option>
-
-                <option value="Expired">
-                  Expired
-                </option>
+                <option value="Draft">Draft</option>
+                <option value="Sent">Sent</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Expired">Expired</option>
 
               </select>
 
@@ -374,19 +357,17 @@
 
           <div class="quotation-section-title">
 
-            <h4>Travel Details</h4>
+            <div>
+              <h4>Travel Details</h4>
+            </div>
 
-            <span>
-              Step 3
-            </span>
+            <span>Step 3</span>
 
           </div>
 
 
           <div class="quotation-grid">
 
-
-            <!-- Start Date -->
 
             <div class="form-group">
 
@@ -402,8 +383,6 @@
             </div>
 
 
-            <!-- End Date -->
-
             <div class="form-group">
 
               <label for="quotationEndDate">
@@ -417,8 +396,6 @@
 
             </div>
 
-
-            <!-- Adults -->
 
             <div class="form-group">
 
@@ -436,8 +413,6 @@
             </div>
 
 
-            <!-- Children -->
-
             <div class="form-group">
 
               <label for="quotationChildren">
@@ -454,8 +429,6 @@
             </div>
 
 
-            <!-- Rooms -->
-
             <div class="form-group">
 
               <label for="quotationRooms">
@@ -471,8 +444,6 @@
 
             </div>
 
-
-            <!-- Valid Until -->
 
             <div class="form-group">
 
@@ -502,17 +473,17 @@
 
             <div>
 
-              <h4>Day-wise Itinerary</h4>
+              <h4>
+                Day-wise Itinerary
+              </h4>
 
               <small>
-                Package itinerary will appear here.
+                This itinerary is imported directly from Package Master.
               </small>
 
             </div>
 
-            <span>
-              Step 4
-            </span>
+            <span>Step 4</span>
 
           </div>
 
@@ -523,15 +494,11 @@
           >
 
             <div class="quotation-empty-box">
-
               Select a package to load the itinerary.
-
             </div>
 
           </div>
 
-
-          <!-- Hidden field for saved itinerary -->
 
           <input
             type="hidden"
@@ -551,17 +518,17 @@
 
             <div>
 
-              <h4>Hotel Details</h4>
+              <h4>
+                Hotel Details
+              </h4>
 
               <small>
-                Mention selected hotel or similar property.
+                Select hotels from Hotel Master. Hotel rates are not included here.
               </small>
 
             </div>
 
-            <span>
-              Step 5
-            </span>
+            <span>Step 5</span>
 
           </div>
 
@@ -570,55 +537,6 @@
             id="quotationHotels"
             class="quotation-hotel-list"
           >
-
-            <div class="quotation-hotel-row">
-
-              <div class="form-group">
-
-                <label>
-                  Destination
-                </label>
-
-                <input
-                  type="text"
-                  class="quotation-hotel-destination"
-                  placeholder="e.g. Shillong"
-                >
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label>
-                  Hotel Name
-                </label>
-
-                <input
-                  type="text"
-                  class="quotation-hotel-name"
-                  placeholder="ABC Hotel or Similar"
-                >
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label>
-                  Nights
-                </label>
-
-                <input
-                  type="number"
-                  class="quotation-hotel-nights"
-                  min="0"
-                  value="1"
-                >
-
-              </div>
-
-            </div>
 
           </div>
 
@@ -635,7 +553,7 @@
 
 
         <!-- =====================================================
-             6. VEHICLE
+             6. TRANSPORTATION
         ====================================================== -->
 
         <div class="quotation-section">
@@ -644,17 +562,17 @@
 
             <div>
 
-              <h4>Transportation</h4>
+              <h4>
+                Transportation
+              </h4>
 
               <small>
-                Vehicle details for the quotation.
+                Select vehicle from Cab Master. Cab rates are not included here.
               </small>
 
             </div>
 
-            <span>
-              Step 6
-            </span>
+            <span>Step 6</span>
 
           </div>
 
@@ -662,20 +580,26 @@
           <div class="quotation-grid">
 
 
+            <!-- Vehicle -->
+
             <div class="form-group">
 
               <label for="quotationVehicle">
                 Vehicle
               </label>
 
-              <input
-                type="text"
-                id="quotationVehicle"
-                placeholder="e.g. 12 Seater Tempo Traveller"
-              >
+              <select id="quotationVehicle">
+
+                <option value="">
+                  Select vehicle
+                </option>
+
+              </select>
 
             </div>
 
+
+            <!-- Vehicle Type -->
 
             <div class="form-group">
 
@@ -683,21 +607,48 @@
                 Vehicle Type
               </label>
 
-              <select id="quotationVehicleType">
+              <input
+                type="text"
+                id="quotationVehicleType"
+                readonly
+                placeholder="Auto-filled"
+              >
 
-                <option value="">
-                  Select type
-                </option>
+            </div>
 
-                <option value="Private">
-                  Private
-                </option>
 
-                <option value="Shared">
-                  Shared
-                </option>
+            <!-- Capacity -->
 
-              </select>
+            <div class="form-group">
+
+              <label for="quotationVehicleCapacity">
+                Capacity
+              </label>
+
+              <input
+                type="text"
+                id="quotationVehicleCapacity"
+                readonly
+                placeholder="Auto-filled"
+              >
+
+            </div>
+
+
+            <!-- Vehicle Number -->
+
+            <div class="form-group">
+
+              <label for="quotationVehicleNumber">
+                Vehicle Number
+              </label>
+
+              <input
+                type="text"
+                id="quotationVehicleNumber"
+                readonly
+                placeholder="Auto-filled"
+              >
 
             </div>
 
@@ -716,17 +667,17 @@
 
             <div>
 
-              <h4>Pricing</h4>
+              <h4>
+                Pricing
+              </h4>
 
               <small>
-                Final quotation amount.
+                Enter the final package selling price.
               </small>
 
             </div>
 
-            <span>
-              Step 7
-            </span>
+            <span>Step 7</span>
 
           </div>
 
@@ -856,7 +807,9 @@
 
             <div>
 
-              <h4>Additional Information</h4>
+              <h4>
+                Additional Information
+              </h4>
 
               <small>
                 Internal notes for this quotation.
@@ -864,9 +817,7 @@
 
             </div>
 
-            <span>
-              Step 8
-            </span>
+            <span>Step 8</span>
 
           </div>
 
