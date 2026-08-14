@@ -1,1 +1,2274 @@
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     QUOTATION MODULE
+     File: modules/quotations/quotations.html
+     ========================================================= -->
 
+<section id="quotations-page" class="erp-module-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="module-page-header">
+
+        <div class="module-page-title">
+
+            <div class="module-title-icon">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+
+            <div>
+                <h1>Quotations</h1>
+
+                <p>
+                    Create, manage and share professional
+                    tour quotations.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="module-page-actions">
+
+            <button
+                type="button"
+                id="quotation-refresh-btn"
+                class="btn btn-secondary">
+
+                <i class="fa-solid fa-rotate"></i>
+                Refresh
+
+            </button>
+
+            <button
+                type="button"
+                id="quotation-new-btn"
+                class="btn btn-primary">
+
+                <i class="fa-solid fa-plus"></i>
+                New Quotation
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+
+    <div class="quotation-summary-grid">
+
+        <div class="quotation-summary-card">
+
+            <div class="summary-card-icon">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+
+            <div class="summary-card-content">
+
+                <span>Total Quotations</span>
+
+                <strong id="quotation-total-count">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="quotation-summary-card">
+
+            <div class="summary-card-icon">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+
+            <div class="summary-card-content">
+
+                <span>Sent</span>
+
+                <strong id="quotation-sent-count">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="quotation-summary-card">
+
+            <div class="summary-card-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div class="summary-card-content">
+
+                <span>Accepted</span>
+
+                <strong id="quotation-accepted-count">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="quotation-summary-card">
+
+            <div class="summary-card-icon">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div class="summary-card-content">
+
+                <span>Pending</span>
+
+                <strong id="quotation-pending-count">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUOTATION LIST
+         ===================================================== -->
+
+    <div
+        id="quotations-list-card"
+        class="module-card">
+
+        <div class="module-card-header">
+
+            <div>
+
+                <h2>Quotation List</h2>
+
+                <p>
+                    View and manage all quotations.
+                </p>
+
+            </div>
+
+            <span
+                id="quotation-record-count"
+                class="record-count">
+                0 records
+            </span>
+
+        </div>
+
+
+        <!-- FILTER BAR -->
+
+        <div class="quotation-filter-bar">
+
+            <div class="form-group">
+
+                <label for="quotation-search">
+                    Search
+                </label>
+
+                <div class="input-with-icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        id="quotation-search"
+                        placeholder="Quotation ID, customer, package..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="quotation-status-filter">
+                    Status
+                </label>
+
+                <select id="quotation-status-filter">
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="Draft">
+                        Draft
+                    </option>
+
+                    <option value="Sent">
+                        Sent
+                    </option>
+
+                    <option value="Accepted">
+                        Accepted
+                    </option>
+
+                    <option value="Rejected">
+                        Rejected
+                    </option>
+
+                    <option value="Expired">
+                        Expired
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="quotation-date-filter">
+                    Date
+                </label>
+
+                <select id="quotation-date-filter">
+
+                    <option value="all">
+                        All Dates
+                    </option>
+
+                    <option value="today">
+                        Today
+                    </option>
+
+                    <option value="7">
+                        Last 7 Days
+                    </option>
+
+                    <option value="30">
+                        Last 30 Days
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-responsive">
+
+            <table class="erp-table quotation-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Quotation ID
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Package
+                        </th>
+
+                        <th>
+                            Travel Date
+                        </th>
+
+                        <th>
+                            Pax
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="quotations-table-body">
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            class="table-empty">
+
+                            No quotations found.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUOTATION FORM
+         ===================================================== -->
+
+    <div
+        id="quotation-form-card"
+        class="module-card quotation-form-card hidden">
+
+        <!-- FORM HEADER -->
+
+        <div class="module-card-header">
+
+            <div>
+
+                <h2 id="quotation-form-title">
+                    New Quotation
+                </h2>
+
+                <p>
+                    Prepare a complete quotation
+                    for your customer.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                id="quotation-close-btn"
+                class="icon-btn"
+                title="Close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form id="quotation-form">
+
+            <input
+                type="hidden"
+                id="quotation-id"
+            >
+
+
+            <!-- =================================================
+                 SECTION 1 — QUOTATION INFORMATION
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            01
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Quotation Information
+                            </h3>
+
+                            <p>
+                                Basic quotation details.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Quotation ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-display-id"
+                            readonly
+                            placeholder="Auto Generated"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-date">
+                            Quotation Date
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotation-date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-valid-until">
+                            Valid Until
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotation-valid-until"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-status">
+                            Status
+                        </label>
+
+                        <select id="quotation-status">
+
+                            <option value="Draft">
+                                Draft
+                            </option>
+
+                            <option value="Sent">
+                                Sent
+                            </option>
+
+                            <option value="Accepted">
+                                Accepted
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                            <option value="Expired">
+                                Expired
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-prepared-by">
+                            Prepared By
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-prepared-by"
+                            placeholder="Team member"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 2 — CUSTOMER
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            02
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Customer Details
+                            </h3>
+
+                            <p>
+                                Select an existing customer
+                                or use customer information.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group form-group-wide">
+
+                        <label for="quotation-customer">
+
+                            Customer
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <select
+                            id="quotation-customer"
+                            required>
+
+                            <option value="">
+                                Select Customer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Customer ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-customer-id"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Customer Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-customer-name"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Mobile
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-customer-mobile"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            WhatsApp
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-customer-whatsapp"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="quotation-customer-email"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group form-group-wide">
+
+                        <label>
+                            Address
+                        </label>
+
+                        <textarea
+                            id="quotation-customer-address"
+                            rows="2"
+                            readonly></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 3 — TRIP DETAILS
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            03
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Trip Details
+                            </h3>
+
+                            <p>
+                                Select package and enter
+                                travel requirements.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group form-group-wide">
+
+                        <label for="quotation-package">
+
+                            Package
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <select
+                            id="quotation-package"
+                            required>
+
+                            <option value="">
+                                Select Package
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Package ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-package-id"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Destination
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-destination"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-travel-date">
+
+                            Travel Date
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotation-travel-date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-return-date">
+                            Return Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="quotation-return-date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-days">
+                            Days
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-days"
+                            min="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-nights">
+                            Nights
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-nights"
+                            min="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-adults">
+                            Adults
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-adults"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-children">
+                            Children
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-children"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-infants">
+                            Infants
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-infants"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-total-pax">
+                            Total Pax
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-total-pax"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-start-city">
+                            Starting Point
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-start-city"
+                            placeholder="Guwahati"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-end-city">
+                            Ending Point
+                        </label>
+
+                        <input
+                            type="text"
+                            id="quotation-end-city"
+                            placeholder="Guwahati"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 4 — ITINERARY
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            04
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Tour Itinerary
+                            </h3>
+
+                            <p>
+                                Day-wise itinerary for the
+                                quotation and PDF.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="quotation-add-day-btn"
+                        class="btn btn-secondary">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add Day
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quotation-itinerary-container"
+                    class="quotation-itinerary-container">
+
+                    <div
+                        id="quotation-itinerary-empty"
+                        class="nested-empty-state">
+
+                        <div class="empty-icon">
+                            🗓️
+                        </div>
+
+                        <strong>
+                            No itinerary added
+                        </strong>
+
+                        <p>
+                            Select a package or add
+                            itinerary days manually.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ITINERARY TEMPLATE -->
+
+                <template
+                    id="quotation-itinerary-template">
+
+                    <div class="quotation-itinerary-day">
+
+                        <div class="itinerary-day-header">
+
+                            <div>
+
+                                <span>
+                                    Day
+                                </span>
+
+                                <strong
+                                    class="quotation-day-number">
+                                    1
+                                </strong>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="icon-btn danger quotation-remove-day-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Day Number
+                                </label>
+
+                                <input
+                                    type="number"
+                                    class="quotation-itinerary-day-number"
+                                    min="1"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group form-group-wide">
+
+                                <label>
+                                    Day Title
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="quotation-itinerary-title"
+                                    placeholder="Arrival & Local Sightseeing"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group form-group-wide">
+
+                                <label>
+                                    Route
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="quotation-itinerary-route"
+                                    placeholder="Guwahati → Shillong"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group form-group-wide">
+
+                                <label>
+                                    Sightseeing / Activities
+                                </label>
+
+                                <textarea
+                                    class="quotation-itinerary-sightseeing"
+                                    rows="3"
+                                    placeholder="Mention sightseeing and activities..."></textarea>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Overnight
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="quotation-itinerary-overnight"
+                                    placeholder="Shillong"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Meals
+                                </label>
+
+                                <div class="meal-checkboxes">
+
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            class="quotation-meal-breakfast">
+                                        Breakfast
+                                    </label>
+
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            class="quotation-meal-lunch">
+                                        Lunch
+                                    </label>
+
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            class="quotation-meal-dinner">
+                                        Dinner
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group form-group-wide">
+
+                                <label>
+                                    Day Notes
+                                </label>
+
+                                <textarea
+                                    class="quotation-itinerary-notes"
+                                    rows="2"></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 5 — HOTEL
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            05
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Hotel Details
+                            </h3>
+
+                            <p>
+                                Accommodation included
+                                in this quotation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="quotation-add-hotel-btn"
+                        class="btn btn-secondary">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add Hotel
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="erp-table quotation-nested-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    City
+                                </th>
+
+                                <th>
+                                    Hotel
+                                </th>
+
+                                <th>
+                                    Room
+                                </th>
+
+                                <th>
+                                    Meal Plan
+                                </th>
+
+                                <th>
+                                    Nights
+                                </th>
+
+                                <th>
+                                    Rooms
+                                </th>
+
+                                <th>
+                                    Remarks
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="quotation-hotels-body">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="quotation-hotels-empty"
+                    class="nested-empty-state">
+
+                    <strong>
+                        No hotel added
+                    </strong>
+
+                </div>
+
+
+                <template id="quotation-hotel-template">
+
+                    <tr class="quotation-hotel-row">
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-hotel-city"
+                                placeholder="Shillong"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-hotel-name"
+                                placeholder="Hotel Name"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-hotel-room"
+                                placeholder="Deluxe"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <select
+                                class="quotation-hotel-meal">
+
+                                <option value="EP">
+                                    EP
+                                </option>
+
+                                <option value="CP">
+                                    CP
+                                </option>
+
+                                <option value="MAP">
+                                    MAP
+                                </option>
+
+                                <option value="AP">
+                                    AP
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="quotation-hotel-nights"
+                                min="0"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="quotation-hotel-rooms"
+                                min="0"
+                                value="1"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-hotel-remarks"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="icon-btn danger quotation-remove-hotel-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </template>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 6 — TRANSPORT / CAB
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            06
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Transportation
+                            </h3>
+
+                            <p>
+                                Vehicle and transfer details.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="quotation-add-cab-btn"
+                        class="btn btn-secondary">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add Vehicle
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="erp-table quotation-nested-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Day
+                                </th>
+
+                                <th>
+                                    Route
+                                </th>
+
+                                <th>
+                                    Vehicle
+                                </th>
+
+                                <th>
+                                    Capacity
+                                </th>
+
+                                <th>
+                                    Pickup
+                                </th>
+
+                                <th>
+                                    Drop
+                                </th>
+
+                                <th>
+                                    Remarks
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="quotation-cabs-body">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="quotation-cabs-empty"
+                    class="nested-empty-state">
+
+                    <strong>
+                        No transportation added
+                    </strong>
+
+                </div>
+
+
+                <template id="quotation-cab-template">
+
+                    <tr class="quotation-cab-row">
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="quotation-cab-day"
+                                min="1"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-cab-route"
+                                placeholder="Guwahati → Shillong"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <select
+                                class="quotation-cab-vehicle">
+
+                                <option value="">
+                                    Select Vehicle
+                                </option>
+
+                                <option value="Sedan">
+                                    Sedan
+                                </option>
+
+                                <option value="SUV">
+                                    SUV
+                                </option>
+
+                                <option value="Innova">
+                                    Innova
+                                </option>
+
+                                <option value="Tempo Traveller">
+                                    Tempo Traveller
+                                </option>
+
+                                <option value="Bus">
+                                    Bus
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="quotation-cab-capacity"
+                                min="1"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-cab-pickup"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-cab-drop"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-cab-remarks"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="icon-btn danger quotation-remove-cab-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </template>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 7 — PRICING
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            07
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Pricing
+                            </h3>
+
+                            <p>
+                                Complete package costing
+                                and customer quotation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="quotation-base-price">
+                            Base Package Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-base-price"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-extra-charges">
+                            Extra Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-extra-charges"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-discount">
+                            Discount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-discount"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-taxable-amount">
+                            Taxable Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-taxable-amount"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-gst-rate">
+                            GST %
+                        </label>
+
+                        <select id="quotation-gst-rate">
+
+                            <option value="0">
+                                No GST
+                            </option>
+
+                            <option value="5">
+                                5%
+                            </option>
+
+                            <option value="18">
+                                18%
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-gst-amount">
+                            GST Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-gst-amount"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-round-off">
+                            Round Off
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-round-off"
+                            value="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group quotation-grand-total-group">
+
+                        <label for="quotation-grand-total">
+                            Grand Total
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quotation-grand-total"
+                            readonly
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRICE SUMMARY -->
+
+                <div class="quotation-price-summary">
+
+                    <div>
+
+                        <span>
+                            Base Price
+                        </span>
+
+                        <strong
+                            id="quotation-summary-base">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <strong
+                            id="quotation-summary-discount">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            GST
+                        </span>
+
+                        <strong
+                            id="quotation-summary-gst">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+                    <div class="grand-total">
+
+                        <span>
+                            Grand Total
+                        </span>
+
+                        <strong
+                            id="quotation-summary-total">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 8 — PAYMENT SCHEDULE
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            08
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Payment Schedule
+                            </h3>
+
+                            <p>
+                                Define advance and balance
+                                payment requirements.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="quotation-add-payment-btn"
+                        class="btn btn-secondary">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add Payment Milestone
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table class="erp-table quotation-nested-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Milestone
+                                </th>
+
+                                <th>
+                                    Due Date
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+
+                                <th>
+                                    Percentage
+                                </th>
+
+                                <th>
+                                    Remarks
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="quotation-payments-body">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="quotation-payments-empty"
+                    class="nested-empty-state">
+
+                    <strong>
+                        No payment milestones added
+                    </strong>
+
+                </div>
+
+
+                <template id="quotation-payment-template">
+
+                    <tr class="quotation-payment-row">
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-payment-milestone"
+                                placeholder="Advance"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="date"
+                                class="quotation-payment-due-date"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="quotation-payment-amount"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="quotation-payment-percentage"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="quotation-payment-remarks"
+                            >
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="icon-btn danger quotation-remove-payment-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </template>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 9 — INCLUSIONS / EXCLUSIONS
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            09
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Inclusions & Exclusions
+                            </h3>
+
+                            <p>
+                                Clearly mention what is and
+                                isn't included.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="quotation-inclusions">
+                            Inclusions
+                        </label>
+
+                        <textarea
+                            id="quotation-inclusions"
+                            rows="7"
+                            placeholder="• Accommodation
+• Breakfast
+• Transportation
+• Sightseeing..."></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quotation-exclusions">
+                            Exclusions
+                        </label>
+
+                        <textarea
+                            id="quotation-exclusions"
+                            rows="7"
+                            placeholder="• Airfare
+• Personal expenses
+• Lunch/Dinner
+• Entry tickets..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 10 — TERMS
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            10
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Terms & Conditions
+                            </h3>
+
+                            <p>
+                                Terms that will appear
+                                on the quotation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="quotation-terms">
+                        Terms & Conditions
+                    </label>
+
+                    <textarea
+                        id="quotation-terms"
+                        rows="8"
+                        placeholder="Enter quotation terms and conditions..."></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 11 — INTERNAL NOTES
+                 ================================================= -->
+
+            <div class="quotation-section">
+
+                <div class="quotation-section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            11
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Internal Notes
+                            </h3>
+
+                            <p>
+                                These notes are for internal
+                                use and should not appear
+                                in customer PDF.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="quotation-internal-notes">
+                        Internal Notes
+                    </label>
+
+                    <textarea
+                        id="quotation-internal-notes"
+                        rows="5"
+                        placeholder="Internal notes..."></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM ACTIONS
+                 ================================================= -->
+
+            <div class="quotation-form-actions">
+
+                <button
+                    type="button"
+                    id="quotation-cancel-btn"
+                    class="btn btn-secondary">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="quotation-preview-btn"
+                    class="btn btn-secondary">
+
+                    <i class="fa-solid fa-eye"></i>
+                    Preview
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="quotation-save-btn"
+                    class="btn btn-primary">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Quotation
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         DELETE MODAL
+         ===================================================== -->
+
+    <div
+        id="quotation-delete-modal"
+        class="module-modal hidden"
+        aria-hidden="true">
+
+        <div class="module-modal-backdrop"></div>
+
+        <div class="module-modal-dialog">
+
+            <div class="module-modal-icon danger">
+
+                <i class="fa-solid fa-trash"></i>
+
+            </div>
+
+            <h3>
+                Delete Quotation?
+            </h3>
+
+            <p>
+                This quotation will be permanently
+                deleted. This action cannot be undone.
+            </p>
+
+            <div class="module-modal-actions">
+
+                <button
+                    type="button"
+                    id="quotation-delete-cancel"
+                    class="btn btn-secondary">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    type="button"
+                    id="quotation-delete-confirm"
+                    class="btn btn-danger">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <div
+        id="quotations-loading"
+        class="module-loading hidden"
+        aria-hidden="true">
+
+        <div class="module-loading-box">
+
+            <div class="loading-spinner"></div>
+
+            <p>
+                Loading quotations...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
