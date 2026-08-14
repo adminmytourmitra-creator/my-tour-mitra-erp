@@ -837,23 +837,19 @@ tbody tr:hover {
   display: flex;
 }
 
-/* =========================================================
+/* =====================================================
    QUOTATION MODULE
-========================================================= */
-
-.quotation-toolbar {
-  margin: 20px 0;
-}
+===================================================== */
 
 .quotation-modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 99999;
+  z-index: 9999;
   background: rgba(0, 0, 0, 0.55);
-  padding: 20px;
   align-items: center;
   justify-content: center;
+  padding: 20px;
   overflow-y: auto;
 }
 
@@ -872,8 +868,8 @@ tbody tr:hover {
   top: 0;
   z-index: 20;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
   gap: 20px;
   padding: 22px 28px;
   background: #ffffff;
@@ -881,22 +877,21 @@ tbody tr:hover {
 }
 
 .quotation-modal-header h3 {
-  font-size: 23px;
+  font-size: 25px;
   margin-bottom: 5px;
 }
 
 .quotation-modal-header p {
   color: #6b7280;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .quotation-close-btn {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border: none;
-  border-radius: 8px;
   background: #f3f4f6;
-  color: #374151;
+  border-radius: 9px;
   font-size: 25px;
   cursor: pointer;
 }
@@ -906,10 +901,10 @@ tbody tr:hover {
 }
 
 .quotation-form-message {
-  margin: 15px 28px 0;
   min-height: 20px;
+  padding: 10px 28px 0;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .quotation-section {
@@ -917,37 +912,35 @@ tbody tr:hover {
   padding: 20px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
 .quotation-section-title {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
   gap: 15px;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .quotation-section-title h4 {
-  font-size: 17px;
-  color: #111827;
+  font-size: 19px;
   margin-bottom: 4px;
 }
 
 .quotation-section-title small {
   color: #6b7280;
-  font-size: 12px;
 }
 
 .quotation-section-title > span {
-  padding: 5px 9px;
-  background: #eff6ff;
-  color: #2563eb;
+  padding: 6px 11px;
   border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 12px;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -959,73 +952,107 @@ tbody tr:hover {
 
 .quotation-pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 
-.quotation-section .form-group {
-  margin-bottom: 0;
-}
-
-.quotation-section .form-group small {
-  display: block;
-  margin-top: 5px;
-  color: #9ca3af;
-  font-size: 11px;
-}
-
-.quotation-itinerary {
-  width: 100%;
-}
-
 .quotation-empty-box {
-  padding: 20px;
-  border: 1px dashed #cbd5e1;
-  border-radius: 8px;
-  background: #f8fafc;
+  padding: 30px;
   text-align: center;
   color: #6b7280;
-  font-size: 14px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 10px;
 }
 
 .quotation-itinerary-day {
-  padding: 15px;
-  margin-bottom: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 9px;
-  background: #f9fafb;
+  margin-bottom: 16px;
+  padding: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
 }
 
-.quotation-itinerary-day h5 {
-  margin-bottom: 7px;
-  font-size: 15px;
+.quotation-itinerary-day:last-child {
+  margin-bottom: 0;
+}
+
+.quotation-itinerary-day-header {
+  margin-bottom: 12px;
+}
+
+.quotation-itinerary-day-header h5 {
+  font-size: 17px;
   color: #111827;
 }
 
-.quotation-itinerary-day p {
-  color: #4b5563;
-  line-height: 1.6;
+.quotation-itinerary-description {
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.quotation-itinerary-description ul,
+.quotation-itinerary-description ol {
+  margin: 8px 0 8px 22px;
+}
+
+.quotation-itinerary-description li {
+  margin-bottom: 4px;
+}
+
+.quotation-itinerary-description p {
+  margin-bottom: 8px;
+}
+
+.quotation-itinerary-description b,
+.quotation-itinerary-description strong {
+  font-weight: 700;
+}
+
+.quotation-itinerary-meta {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
   font-size: 13px;
+  color: #4b5563;
 }
 
 .quotation-hotel-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
 }
 
 .quotation-hotel-row {
   display: grid;
-  grid-template-columns: 1.2fr 2fr 100px;
+  grid-template-columns:
+    1fr
+    1.5fr
+    1.5fr
+    1fr
+    1fr
+    1fr
+    0.7fr
+    auto;
   gap: 12px;
-  padding: 14px;
+  padding: 16px;
   background: #f8fafc;
   border: 1px solid #e5e7eb;
-  border-radius: 9px;
+  border-radius: 12px;
+}
+
+.quotation-hotel-row .form-group {
+  margin-bottom: 0;
+}
+
+.quotation-hotel-remove-wrap {
+  display: flex;
+  flex-direction: column;
 }
 
 .quotation-add-row-btn {
-  margin-top: 14px;
+  margin-top: 15px;
 }
 
 .quotation-form-actions {
@@ -1040,21 +1067,22 @@ tbody tr:hover {
   border-top: 1px solid #e5e7eb;
 }
 
-#quotationGrandTotal,
-#quotationTotalPackageCost,
-#quotationPerPerson {
-  background: #f8fafc;
-  font-weight: 700;
+@media (max-width: 900px) {
+
+  .quotation-hotel-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
 
   .quotation-modal-overlay {
-    padding: 10px;
+    padding: 8px;
   }
 
   .quotation-modal {
-    max-height: 96vh;
+    max-height: 97vh;
   }
 
   .quotation-modal-header {
@@ -1076,7 +1104,8 @@ tbody tr:hover {
   }
 
   .quotation-form-actions {
-    padding: 15px;
+    padding: 15px 18px;
   }
 
+}
 }
