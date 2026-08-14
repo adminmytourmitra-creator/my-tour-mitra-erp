@@ -1,1 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Payments | My Tour Mitra ERP
+    </title>
+
+    <!-- Global / Application CSS -->
+    <link
+        rel="stylesheet"
+        href="../../CSS/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../CSS/app.css"
+    >
+
+    <!-- Payments CSS -->
+    <link
+        rel="stylesheet"
+        href="../../CSS/payments.css"
+    >
+</head>
+
+
+<body>
+
+    <div
+        class="payments-module"
+        id="paymentsModule"
+    >
+
+
+        <!-- =================================================
+             PAGE HEADER
+             ================================================= -->
+
+        <div class="page-header payments-page-header">
+
+            <div class="page-header-left">
+
+                <h1>
+                    Payments
+                </h1>
+
+                <p>
+                    Monitor customer payments,
+                    received amounts and outstanding balances.
+                </p>
+
+            </div>
+
+
+            <div class="page-header-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="refreshPaymentsBtn"
+                >
+                    ↻ Refresh
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="addPaymentBtn"
+                >
+                    + Add Payment
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PAYMENT SUMMARY CARDS
+             ================================================= -->
+
+        <section
+            class="payment-summary-grid"
+            id="paymentSummary"
+        >
+
+
+            <!-- Total Invoice / Booking Value -->
+
+            <div class="payment-summary-card">
+
+                <div class="payment-summary-icon">
+                    ₹
+                </div>
+
+                <div class="payment-summary-content">
+
+                    <span class="payment-summary-label">
+                        Total Receivable
+                    </span>
+
+                    <strong
+                        id="totalReceivable"
+                    >
+                        ₹0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Total Received -->
+
+            <div class="payment-summary-card">
+
+                <div class="payment-summary-icon">
+                    ✓
+                </div>
+
+                <div class="payment-summary-content">
+
+                    <span class="payment-summary-label">
+                        Total Received
+                    </span>
+
+                    <strong
+                        id="totalReceived"
+                    >
+                        ₹0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Balance -->
+
+            <div class="payment-summary-card">
+
+                <div class="payment-summary-icon">
+                    !
+                </div>
+
+                <div class="payment-summary-content">
+
+                    <span class="payment-summary-label">
+                        Total Balance
+                    </span>
+
+                    <strong
+                        id="totalBalance"
+                    >
+                        ₹0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Number of Transactions -->
+
+            <div class="payment-summary-card">
+
+                <div class="payment-summary-icon">
+                    #
+                </div>
+
+                <div class="payment-summary-content">
+
+                    <span class="payment-summary-label">
+                        Transactions
+                    </span>
+
+                    <strong
+                        id="totalTransactions"
+                    >
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PAYMENT STATUS SUMMARY
+             ================================================= -->
+
+        <section
+            class="payment-status-grid"
+            id="paymentStatusSummary"
+        >
+
+
+            <div class="payment-status-card received">
+
+                <span>
+                    Paid
+                </span>
+
+                <strong
+                    id="paidCount"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-status-card partial">
+
+                <span>
+                    Partially Paid
+                </span>
+
+                <strong
+                    id="partialPaidCount"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-status-card pending">
+
+                <span>
+                    Pending
+                </span>
+
+                <strong
+                    id="pendingPaymentCount"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-status-card overdue">
+
+                <span>
+                    Overdue
+                </span>
+
+                <strong
+                    id="overduePaymentCount"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ADD PAYMENT FORM
+             ================================================= -->
+
+        <section
+            class="payment-form-section"
+            id="paymentFormSection"
+            hidden
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Record Payment
+                    </h2>
+
+                    <p>
+                        Enter the amount received from the customer.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="closePaymentFormBtn"
+                >
+                    Close
+                </button>
+
+            </div>
+
+
+            <form
+                id="paymentForm"
+                autocomplete="off"
+            >
+
+
+                <input
+                    type="hidden"
+                    id="paymentId"
+                    name="paymentId"
+                >
+
+
+                <!-- =========================================
+                     CUSTOMER / BOOKING
+                     ========================================= -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Customer & Booking
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentCustomer"
+                            >
+                                Customer
+                                <span>*</span>
+                            </label>
+
+                            <select
+                                id="paymentCustomer"
+                                name="customerId"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Customer
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentBooking"
+                            >
+                                Booking
+                            </label>
+
+                            <select
+                                id="paymentBooking"
+                                name="bookingId"
+                            >
+
+                                <option value="">
+                                    Select Booking
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentInvoice"
+                            >
+                                Invoice
+                            </label>
+
+                            <select
+                                id="paymentInvoice"
+                                name="invoiceId"
+                            >
+
+                                <option value="">
+                                    Select Invoice
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentPackage"
+                            >
+                                Package
+                            </label>
+
+                            <input
+                                type="text"
+                                id="paymentPackage"
+                                name="packageName"
+                                placeholder="Package name"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     AMOUNT DETAILS
+                     ========================================= -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Amount Details
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentTotalAmount"
+                            >
+                                Total Invoice / Booking Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="paymentTotalAmount"
+                                name="totalAmount"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                                readonly
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentPreviouslyReceived"
+                            >
+                                Previously Received
+                            </label>
+
+                            <input
+                                type="number"
+                                id="paymentPreviouslyReceived"
+                                name="previouslyReceived"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                                readonly
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentAmount"
+                            >
+                                Amount Received
+                                <span>*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="paymentAmount"
+                                name="amount"
+                                min="0"
+                                step="0.01"
+                                placeholder="Enter received amount"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentBalance"
+                            >
+                                Balance After Payment
+                            </label>
+
+                            <input
+                                type="number"
+                                id="paymentBalance"
+                                name="balance"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     PAYMENT DETAILS
+                     ========================================= -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Payment Details
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentDate"
+                            >
+                                Payment Date
+                                <span>*</span>
+                            </label>
+
+                            <input
+                                type="date"
+                                id="paymentDate"
+                                name="paymentDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentMethod"
+                            >
+                                Payment Method
+                                <span>*</span>
+                            </label>
+
+                            <select
+                                id="paymentMethod"
+                                name="paymentMethod"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Method
+                                </option>
+
+                                <option value="Cash">
+                                    Cash
+                                </option>
+
+                                <option value="UPI">
+                                    UPI
+                                </option>
+
+                                <option value="Bank Transfer">
+                                    Bank Transfer
+                                </option>
+
+                                <option value="NEFT">
+                                    NEFT
+                                </option>
+
+                                <option value="RTGS">
+                                    RTGS
+                                </option>
+
+                                <option value="IMPS">
+                                    IMPS
+                                </option>
+
+                                <option value="Cheque">
+                                    Cheque
+                                </option>
+
+                                <option value="Card">
+                                    Card
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentReference"
+                            >
+                                Transaction / Reference No.
+                            </label>
+
+                            <input
+                                type="text"
+                                id="paymentReference"
+                                name="reference"
+                                placeholder="Transaction ID / UTR / Cheque No."
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="paymentReceivedBy"
+                            >
+                                Received By
+                            </label>
+
+                            <input
+                                type="text"
+                                id="paymentReceivedBy"
+                                name="receivedBy"
+                                placeholder="Staff / Team member"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     NOTES
+                     ========================================= -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Notes
+                    </h3>
+
+
+                    <div class="form-group">
+
+                        <label
+                            for="paymentNotes"
+                        >
+                            Payment Notes
+                        </label>
+
+                        <textarea
+                            id="paymentNotes"
+                            name="notes"
+                            rows="3"
+                            placeholder="Any additional payment details..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     FORM ACTIONS
+                     ========================================= -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="cancelPaymentBtn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="reset"
+                        class="btn btn-secondary"
+                        id="resetPaymentBtn"
+                    >
+                        Reset
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="savePaymentBtn"
+                    >
+                        Save Payment
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FILTERS
+             ================================================= -->
+
+        <section
+            class="payment-filters-section"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Payment Records
+                    </h2>
+
+                    <p>
+                        Track all customer payment transactions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="payment-filters"
+            >
+
+
+                <div class="filter-group">
+
+                    <label
+                        for="paymentSearch"
+                    >
+                        Search
+                    </label>
+
+                    <input
+                        type="search"
+                        id="paymentSearch"
+                        placeholder="Customer, invoice, booking, transaction..."
+                    >
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label
+                        for="paymentStatusFilter"
+                    >
+                        Status
+                    </label>
+
+                    <select
+                        id="paymentStatusFilter"
+                    >
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="paid">
+                            Paid
+                        </option>
+
+                        <option value="partial">
+                            Partially Paid
+                        </option>
+
+                        <option value="pending">
+                            Pending
+                        </option>
+
+                        <option value="overdue">
+                            Overdue
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label
+                        for="paymentMethodFilter"
+                    >
+                        Payment Method
+                    </label>
+
+                    <select
+                        id="paymentMethodFilter"
+                    >
+
+                        <option value="">
+                            All Methods
+                        </option>
+
+                        <option value="Cash">
+                            Cash
+                        </option>
+
+                        <option value="UPI">
+                            UPI
+                        </option>
+
+                        <option value="Bank Transfer">
+                            Bank Transfer
+                        </option>
+
+                        <option value="NEFT">
+                            NEFT
+                        </option>
+
+                        <option value="RTGS">
+                            RTGS
+                        </option>
+
+                        <option value="IMPS">
+                            IMPS
+                        </option>
+
+                        <option value="Cheque">
+                            Cheque
+                        </option>
+
+                        <option value="Card">
+                            Card
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label
+                        for="paymentFromDate"
+                    >
+                        From
+                    </label>
+
+                    <input
+                        type="date"
+                        id="paymentFromDate"
+                    >
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label
+                        for="paymentToDate"
+                    >
+                        To
+                    </label>
+
+                    <input
+                        type="date"
+                        id="paymentToDate"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="clearPaymentFiltersBtn"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PAYMENT TABLE
+             ================================================= -->
+
+        <section
+            class="payment-table-section"
+        >
+
+            <div
+                class="table-wrapper"
+            >
+
+                <table
+                    class="data-table payments-table"
+                    id="paymentsTable"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Payment ID
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Booking
+                            </th>
+
+                            <th>
+                                Invoice
+                            </th>
+
+                            <th>
+                                Total Amount
+                            </th>
+
+                            <th>
+                                Received
+                            </th>
+
+                            <th>
+                                Balance
+                            </th>
+
+                            <th>
+                                Method
+                            </th>
+
+                            <th>
+                                Reference
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="paymentsTableBody"
+                    >
+
+                        <tr
+                            id="paymentsEmptyState"
+                        >
+
+                            <td
+                                colspan="12"
+                                class="empty-state"
+                            >
+
+                                <div>
+
+                                    <strong>
+                                        No payment records found
+                                    </strong>
+
+                                    <p>
+                                        Payment transactions
+                                        will appear here.
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CUSTOMER PAYMENT MONITOR
+             ================================================= -->
+
+        <section
+            class="customer-payment-monitor"
+            id="customerPaymentMonitor"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Customer Payment Monitor
+                    </h2>
+
+                    <p>
+                        View customer-wise receivable,
+                        received and outstanding amount.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table
+                    class="data-table customer-payment-table"
+                    id="customerPaymentTable"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Total Booking Value
+                            </th>
+
+                            <th>
+                                Total Received
+                            </th>
+
+                            <th>
+                                Balance
+                            </th>
+
+                            <th>
+                                Last Payment
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="customerPaymentTableBody"
+                    >
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="empty-state"
+                            >
+
+                                No customer payment data available.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PAYMENT DETAILS MODAL
+             ================================================= -->
+
+        <div
+            class="modal"
+            id="paymentDetailsModal"
+            hidden
+        >
+
+            <div
+                class="modal-overlay"
+                data-close-payment-modal
+            ></div>
+
+
+            <div
+                class="modal-content payment-details-modal"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <h2>
+                            Payment Details
+                        </h2>
+
+                        <p>
+                            Complete payment information
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="modal-close"
+                        id="closePaymentDetailsModal"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="payment-details-content"
+                    id="paymentDetailsContent"
+                >
+
+                    <!-- JS will populate this -->
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="closePaymentDetailsBtn"
+                    >
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+             ================================================= -->
+
+        <div
+            id="paymentsLoading"
+            class="module-loading"
+            hidden
+        >
+
+            <div class="loading-spinner"></div>
+
+            <span>
+                Loading payments...
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Payments JavaScript will be loaded by app.js -->
+    <!-- Do not add inline JS here -->
+
+</body>
+
+</html>
