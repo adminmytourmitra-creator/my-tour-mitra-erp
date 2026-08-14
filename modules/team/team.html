@@ -1,1 +1,1800 @@
+# My Tour Mitra ERP — Team Module HTML
 
+```html
+<!-- =========================================================
+     MY TOUR MITRA ERP
+     TEAM / USER ACCESS MANAGEMENT MODULE
+
+     File:
+     modules/team/team.html
+
+     Purpose:
+     - Team member management
+     - Role hierarchy
+     - Parent / reporting manager
+     - Access request
+     - Admin approval
+     - Manager approval
+     - Account activation / deactivation
+     - Permission management
+     ========================================================= -->
+
+<section
+    class="module-page team-module"
+    id="teamModule"
+>
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="module-header">
+
+        <div class="module-header-left">
+
+            <h1>
+                Team & Access Management
+            </h1>
+
+            <p>
+                Manage team hierarchy, user accounts,
+                approvals and ERP access
+            </p>
+
+        </div>
+
+
+        <div class="module-header-actions">
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="addTeamMemberBtn"
+            >
+                + Add Team Member
+            </button>
+
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="refreshTeamBtn"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACCESS HIERARCHY INFORMATION
+         ===================================================== -->
+
+    <section class="module-card team-hierarchy-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Access Hierarchy
+                </h2>
+
+                <p>
+                    User access follows the reporting hierarchy
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="team-hierarchy">
+
+            <div class="hierarchy-level hierarchy-admin">
+
+                <div class="hierarchy-node">
+
+                    <span class="hierarchy-icon">
+                        👑
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Admin
+                        </strong>
+
+                        <small>
+                            Full ERP control
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hierarchy-arrow">
+                    ↓
+                </div>
+
+            </div>
+
+
+            <div class="hierarchy-level hierarchy-manager">
+
+                <div class="hierarchy-node">
+
+                    <span class="hierarchy-icon">
+                        👔
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Manager
+                        </strong>
+
+                        <small>
+                            Approved by Admin
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hierarchy-arrow">
+                    ↓
+                </div>
+
+            </div>
+
+
+            <div class="hierarchy-level hierarchy-employee">
+
+                <div class="hierarchy-node">
+
+                    <span class="hierarchy-icon">
+                        👤
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Employee
+                        </strong>
+
+                        <small>
+                            Approved by Manager / Admin
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hierarchy-arrow">
+                    ↓
+                </div>
+
+            </div>
+
+
+            <div class="hierarchy-level hierarchy-staff">
+
+                <div class="hierarchy-node">
+
+                    <span class="hierarchy-icon">
+                        🧑‍💼
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Staff / Other
+                        </strong>
+
+                        <small>
+                            Controlled by parent role
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+
+    <div class="team-summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Total Members
+                </span>
+
+                <h2 id="totalTeamMembers">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                👥
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Admins
+                </span>
+
+                <h2 id="totalAdmins">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                👑
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Managers
+                </span>
+
+                <h2 id="totalManagers">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                👔
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Employees
+                </span>
+
+                <h2 id="totalEmployees">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                👤
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Pending Approvals
+                </span>
+
+                <h2 id="pendingTeamApprovals">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                ⏳
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-card-content">
+
+                <span class="summary-label">
+                    Active Users
+                </span>
+
+                <h2 id="activeTeamMembers">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="summary-card-icon">
+                ✓
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PENDING APPROVALS
+         ===================================================== -->
+
+    <section
+        class="module-card team-approval-card"
+        id="teamApprovalSection"
+    >
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Pending Access Requests
+                </h2>
+
+                <p>
+                    Review and approve new team accounts
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="approval-list"
+            id="teamApprovalList"
+        >
+
+            <div class="empty-state">
+
+                No pending access requests.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ADD / EDIT TEAM MEMBER
+         ===================================================== -->
+
+    <section
+        class="module-card team-form-section"
+        id="teamFormSection"
+        hidden
+    >
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Add / Edit Team Member
+                </h2>
+
+                <p>
+                    Create a team access request
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="icon-btn"
+                id="closeTeamFormBtn"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="teamMemberForm"
+            autocomplete="off"
+        >
+
+            <input
+                type="hidden"
+                id="teamMemberId"
+            />
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Personal Information
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="teamFirstName">
+                            First Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamFirstName"
+                            name="firstName"
+                            placeholder="First name"
+                            required
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamLastName">
+                            Last Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamLastName"
+                            name="lastName"
+                            placeholder="Last name"
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamMobile">
+                            Mobile
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="teamMobile"
+                            name="mobile"
+                            placeholder="Mobile number"
+                            required
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamEmail">
+                            Email
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="teamEmail"
+                            name="email"
+                            placeholder="Email address"
+                            required
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ROLE & HIERARCHY
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Role & Reporting Hierarchy
+                    </h3>
+
+                    <p>
+                        The user can only be assigned within
+                        the current user's permitted hierarchy.
+                    </p>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <!-- Role -->
+
+                    <div class="form-group">
+
+                        <label for="teamRole">
+                            Role
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="teamRole"
+                            name="role"
+                            required
+                        >
+
+                            <option value="">
+                                Select Role
+                            </option>
+
+                            <option value="Admin">
+                                Admin
+                            </option>
+
+                            <option value="Manager">
+                                Manager
+                            </option>
+
+                            <option value="Employee">
+                                Employee
+                            </option>
+
+                            <option value="Staff">
+                                Staff
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Reports To -->
+
+                    <div class="form-group">
+
+                        <label for="teamReportsTo">
+                            Reports To
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="teamReportsTo"
+                            name="reportsTo"
+                            required
+                        >
+
+                            <option value="">
+                                Select Reporting Manager
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Department -->
+
+                    <div class="form-group">
+
+                        <label for="teamDepartment">
+                            Department
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamDepartment"
+                            name="department"
+                            placeholder="Sales / Operations / Accounts"
+                        />
+
+                    </div>
+
+
+                    <!-- Designation -->
+
+                    <div class="form-group">
+
+                        <label for="teamDesignation">
+                            Designation
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamDesignation"
+                            name="designation"
+                            placeholder="Designation"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="hierarchy-warning"
+                    id="teamHierarchyWarning"
+                    hidden
+                >
+
+                    ⚠️
+                    The selected role cannot be assigned
+                    outside your permitted hierarchy.
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACCOUNT ACCESS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Account Access
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="teamAccountStatus">
+                            Account Status
+                        </label>
+
+                        <select
+                            id="teamAccountStatus"
+                            name="accountStatus"
+                        >
+
+                            <option value="Pending">
+                                Pending Approval
+                            </option>
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                            <option value="Suspended">
+                                Suspended
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamAccessLevel">
+                            Access Level
+                        </label>
+
+                        <select
+                            id="teamAccessLevel"
+                            name="accessLevel"
+                        >
+
+                            <option value="Restricted">
+                                Restricted
+                            </option>
+
+                            <option value="Standard">
+                                Standard
+                            </option>
+
+                            <option value="Manager">
+                                Manager
+                            </option>
+
+                            <option value="Full">
+                                Full
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="access-info-box"
+                >
+
+                    <strong>
+                        Approval Rule
+                    </strong>
+
+                    <p id="teamApprovalRuleText">
+                        Account access will remain pending
+                        until the required parent user approves it.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MODULE PERMISSIONS
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Module Permissions
+                    </h3>
+
+                    <p>
+                        Permissions can be restricted according
+                        to the user's role.
+                    </p>
+
+                </div>
+
+
+                <div class="permissions-grid">
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionDashboard"
+                            value="dashboard"
+                            data-permission="dashboard"
+                        />
+
+                        <span>
+                            Dashboard
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionCustomers"
+                            value="customers"
+                            data-permission="customers"
+                        />
+
+                        <span>
+                            Customers
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionEnquiries"
+                            value="enquiries"
+                            data-permission="enquiries"
+                        />
+
+                        <span>
+                            Enquiries
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionFollowups"
+                            value="followups"
+                            data-permission="followups"
+                        />
+
+                        <span>
+                            Follow-ups
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionPackages"
+                            value="packages"
+                            data-permission="packages"
+                        />
+
+                        <span>
+                            Packages
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionHotels"
+                            value="hotels"
+                            data-permission="hotels"
+                        />
+
+                        <span>
+                            Hotels
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionCabs"
+                            value="cabs"
+                            data-permission="cabs"
+                        />
+
+                        <span>
+                            Cabs
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionAgencies"
+                            value="agencies"
+                            data-permission="agencies"
+                        />
+
+                        <span>
+                            Agencies
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionQuotations"
+                            value="quotations"
+                            data-permission="quotations"
+                        />
+
+                        <span>
+                            Quotations
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionBookings"
+                            value="bookings"
+                            data-permission="bookings"
+                        />
+
+                        <span>
+                            Bookings
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionInvoices"
+                            value="invoices"
+                            data-permission="invoices"
+                        />
+
+                        <span>
+                            Invoices
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionVouchers"
+                            value="vouchers"
+                            data-permission="vouchers"
+                        />
+
+                        <span>
+                            Vouchers
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionPayments"
+                            value="payments"
+                            data-permission="payments"
+                        />
+
+                        <span>
+                            Payments
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionExpenses"
+                            value="expenses"
+                            data-permission="expenses"
+                        />
+
+                        <span>
+                            Expenses
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionProfitLoss"
+                            value="profit-loss"
+                            data-permission="profit-loss"
+                        />
+
+                        <span>
+                            Profit & Loss
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionTeam"
+                            value="team"
+                            data-permission="team"
+                        />
+
+                        <span>
+                            Team Management
+                        </span>
+
+                    </label>
+
+
+                    <label class="permission-item">
+
+                        <input
+                            type="checkbox"
+                            id="permissionSettings"
+                            value="settings"
+                            data-permission="settings"
+                        />
+
+                        <span>
+                            Settings
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 APPROVAL INFORMATION
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Approval Information
+                    </h3>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="teamRequestedBy">
+                            Requested By
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamRequestedBy"
+                            readonly
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamApprovedBy">
+                            Approved By
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamApprovedBy"
+                            readonly
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamApprovalDate">
+                            Approval Date
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamApprovalDate"
+                            readonly
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="teamCreatedDate">
+                            Account Created
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teamCreatedDate"
+                            readonly
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NOTES
+                 ================================================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <h3>
+                        Internal Notes
+                    </h3>
+
+                </div>
+
+
+                <div class="form-group form-group-full">
+
+                    <textarea
+                        id="teamNotes"
+                        name="notes"
+                        rows="4"
+                        placeholder="Internal notes about this team member..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM ACTIONS
+                 ================================================= -->
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelTeamMemberBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveTeamMemberBtn"
+                >
+                    Submit Access Request
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         FILTERS
+         ===================================================== -->
+
+    <section class="module-card team-filter-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Team Members
+                </h2>
+
+                <p>
+                    Search and manage user accounts
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters-grid">
+
+            <div class="form-group">
+
+                <label for="teamSearch">
+                    Search
+                </label>
+
+                <input
+                    type="search"
+                    id="teamSearch"
+                    placeholder="Search name, email, mobile..."
+                />
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="teamRoleFilter">
+                    Role
+                </label>
+
+                <select
+                    id="teamRoleFilter"
+                >
+
+                    <option value="">
+                        All Roles
+                    </option>
+
+                    <option value="Admin">
+                        Admin
+                    </option>
+
+                    <option value="Manager">
+                        Manager
+                    </option>
+
+                    <option value="Employee">
+                        Employee
+                    </option>
+
+                    <option value="Staff">
+                        Staff
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="teamStatusFilter">
+                    Account Status
+                </label>
+
+                <select
+                    id="teamStatusFilter"
+                >
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="Active">
+                        Active
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="Inactive">
+                        Inactive
+                    </option>
+
+                    <option value="Suspended">
+                        Suspended
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="teamManagerFilter">
+                    Reports To
+                </label>
+
+                <select
+                    id="teamManagerFilter"
+                >
+
+                    <option value="">
+                        All Managers
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-action">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="clearTeamFiltersBtn"
+                >
+                    Clear Filters
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <div
+        id="teamLoading"
+        class="module-loading"
+        hidden
+    >
+
+        <div class="loading-spinner"></div>
+
+        <span>
+            Loading team members...
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         TEAM TABLE
+         ===================================================== -->
+
+    <section class="module-card team-table-card">
+
+        <div class="table-wrapper">
+
+            <table
+                class="data-table team-table"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Member
+                        </th>
+
+                        <th>
+                            Role
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Reports To
+                        </th>
+
+                        <th>
+                            Access Level
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Approval
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="teamTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="empty-state"
+                        >
+                            No team members found.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TEAM MEMBER DETAILS MODAL
+         ===================================================== -->
+
+    <div
+        class="modal"
+        id="teamDetailsModal"
+        hidden
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-container">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Team Member Details
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="icon-btn"
+                    id="closeTeamDetailsModal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="modal-body"
+                id="teamDetailsContent"
+            >
+
+                <!-- JS will render details -->
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="closeTeamDetailsBtn"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         APPROVAL MODAL
+         ===================================================== -->
+
+    <div
+        class="modal"
+        id="teamApprovalModal"
+        hidden
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-container">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Approve Access
+                    </h2>
+
+                    <p>
+                        Confirm this user's ERP access
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="icon-btn"
+                    id="closeTeamApprovalModal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="modal-body"
+                id="teamApprovalContent"
+            >
+
+                <!-- JS will render approval information -->
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="rejectTeamApprovalBtn"
+                >
+                    Reject
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="approveTeamApprovalBtn"
+                >
+                    Approve & Activate
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DEACTIVATE ACCESS MODAL
+         ===================================================== -->
+
+    <div
+        class="modal"
+        id="deactivateTeamModal"
+        hidden
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-container">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Remove ERP Access
+                    </h2>
+
+                    <p>
+                        Deactivate this team member's login
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="icon-btn"
+                    id="closeDeactivateTeamModal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="danger-warning">
+
+                    <strong>
+                        ⚠️ Deactivate Account
+                    </strong>
+
+                    <p>
+                        This will remove the user's active
+                        ERP access. The team member's data
+                        and previous records will remain
+                        in the system.
+                    </p>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="deactivationReason">
+                        Reason
+                    </label>
+
+                    <textarea
+                        id="deactivationReason"
+                        rows="4"
+                        placeholder="Reason for deactivating access..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelDeactivateTeamBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="confirmDeactivateTeamBtn"
+                >
+                    Deactivate Access
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACCESS AUDIT INFORMATION
+         ===================================================== -->
+
+    <section class="module-card team-audit-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Access Control Rules
+                </h2>
+
+                <p>
+                    Current ERP hierarchy
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="access-rules-list">
+
+            <div class="access-rule">
+
+                <span class="access-rule-role">
+                    Admin
+                </span>
+
+                <span class="access-rule-arrow">
+                    →
+                </span>
+
+                <span>
+                    Can create / approve Managers
+                </span>
+
+            </div>
+
+
+            <div class="access-rule">
+
+                <span class="access-rule-role">
+                    Manager
+                </span>
+
+                <span class="access-rule-arrow">
+                    →
+                </span>
+
+                <span>
+                    Can request / manage Employees
+                    under permitted hierarchy
+                </span>
+
+            </div>
+
+
+            <div class="access-rule">
+
+                <span class="access-rule-role">
+                    Employee
+                </span>
+
+                <span class="access-rule-arrow">
+                    →
+                </span>
+
+                <span>
+                    Can manage only assigned work
+                </span>
+
+            </div>
+
+
+            <div class="access-rule">
+
+                <span class="access-rule-role">
+                    Inactive
+                </span>
+
+                <span class="access-rule-arrow">
+                    →
+                </span>
+
+                <span>
+                    Login access disabled
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+```
