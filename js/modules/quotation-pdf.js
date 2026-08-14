@@ -2891,29 +2891,25 @@ body {
 // ============================================================
 
 function createPdfContainer(html) {
-
-    const wrapper =
-        document.createElement("div");
-
+    const wrapper = document.createElement("div");
 
     wrapper.innerHTML = html;
 
-
     wrapper.style.position = "fixed";
-
     wrapper.style.left = "-100000px";
-
     wrapper.style.top = "0";
 
-    wrapper.style.width = "794px";
+    // IMPORTANT:
+    // A4 width = 210mm
+    // 10mm left + 10mm right margin
+    // Content width = 190mm
+    wrapper.style.width = "190mm";
+    wrapper.style.maxWidth = "190mm";
 
     wrapper.style.background = "#ffffff";
-
     wrapper.style.zIndex = "-1";
 
-
     document.body.appendChild(wrapper);
-
 
     return wrapper;
 }
@@ -3039,89 +3035,129 @@ function getPdfOptions(filename) {
 async function generateQuotationPDF(quotation) {
 
     if (!quotation) {
-
-        alert(
-            "Quotation data not found."
-        );
-
+        alert("Quotation data not found.");
         return;
     }
 
-
     let container = null;
-
 
     try {
 
-        const html2pdf =
-            await loadHtml2Pdf();
+        const html2pdf = await loadHtml2Pdf();
 
+        const html = buildQuotationHTML(quotation);
 
-        const html =
-            buildQuotationHTML(
-                quotation
-            );
+        container = createPdfContainer(html);
 
-
-        container =
-            createPdfContainer(
-                html
-            );
-
-
-        const element =
-            container.querySelector(
-                ".quotation-document"
-            );
-
+        const element = container.querySelector(".quotation-document");
 
         if (!element) {
-
-            throw new Error(
-                "Quotation document element not found."
-            );
+            throw new Error("Quotation document element not found.");
         }
 
+        const quotationId = firstValue(
+            quotation,
+            ["quotationId", "id"],
+            "Quotation"
+        );
+
+        const customer = firstValue(
+            quotation,
+            ["customer", "customerName", "name"],
+            "Customer"
+        );
+
+        const safeCustomer = String(customer)
+            .replace(/[^a-z0-9]+/gi, "-")
+            .replace(/^-+|-+$/g, "");
 
         const filename =
-            getPdfFilename(
-                quotation
-            );
+            `My-Tour-Mitra-Quotation-${quotationId}-${safeCustomer}.pdf`;
 
+        const options = {
 
-        const options =
-            getPdfOptions(
-                filename
-            );
+            // IMPORTANT:
+            // Container already has the correct 190mm content width.
+            // Therefore html2pdf margin must be ZERO.
+            margin: 0,
 
+            filename: filename,
+
+            image: {
+                type: "jpeg",
+                quality: 0.98
+            },
+
+            html2canvas: {
+
+                scale: 2,
+
+                useCORS: true,
+
+                allowTaint: true,
+
+                backgroundColor: "#ffffff",
+
+                logging: false,
+
+                // A4 CSS width
+                windowWidth: 794
+            },
+
+            jsPDF: {
+
+                unit: "mm",
+
+                format: "a4",
+
+                orientation: "portrait",
+
+                compress: true
+            },
+
+            pagebreak: {
+
+                mode: [
+                    "css",
+                    "legacy"
+                ],
+
+                avoid: [
+                    ".itinerary-day",
+                    ".payment-box",
+                    ".list-column",
+                    ".terms-box",
+                    "tr"
+                ]
+            }
+        };
 
         await html2pdf()
             .set(options)
             .from(element)
             .save();
 
+        if (container) {
+            container.remove();
+            container = null;
+        }
 
     } catch (error) {
 
         console.error(
-            "Quotation PDF Error:",
+            "Quotation PDF generation error:",
             error
         );
-
-
-        alert(
-            "Could not generate quotation PDF. Please check browser console."
-        );
-
-
-    } finally {
 
         if (container) {
             container.remove();
         }
+
+        alert(
+            "Could not generate quotation PDF. Please check the browser console."
+        );
     }
 }
-
 
 // ============================================================
 // SHARE PDF
@@ -3130,87 +3166,130 @@ async function generateQuotationPDF(quotation) {
 async function shareQuotationPDF(quotation) {
 
     if (!quotation) {
-
-        alert(
-            "Quotation data not found."
-        );
-
+        alert("Quotation data not found.");
         return;
     }
 
-
     let container = null;
-
 
     try {
 
-        const html2pdf =
-            await loadHtml2Pdf();
+        const html2pdf = await loadHtml2Pdf();
 
+        const html = buildQuotationHTML(quotation);
 
-        const html =
-            buildQuotationHTML(
-                quotation
-            );
-
-
-        container =
-            createPdfContainer(
-                html
-            );
-
+        container = createPdfContainer(html);
 
         const element =
-            container.querySelector(
-                ".quotation-document"
-            );
+            container.querySelector(".quotation-document");
 
+        if (!element) {
+            throw new Error(
+                "Quotation document element not found."
+            );
+        }
+
+        const quotationId = firstValue(
+            quotation,
+            ["quotationId", "id"],
+            "Quotation"
+        );
+
+        const customer = firstValue(
+            quotation,
+            ["customer", "customerName", "name"],
+            "Customer"
+        );
+
+        const safeCustomer = String(customer)
+            .replace(/[^a-z0-9]+/gi, "-")
+            .replace(/^-+|-+$/g, "");
 
         const filename =
-            getPdfFilename(
-                quotation
-            );
+            `My-Tour-Mitra-Quotation-${quotationId}-${safeCustomer}.pdf`;
 
+        const options = {
 
-        const options =
-            getPdfOptions(
-                filename
-            );
+            margin: 0,
 
+            filename: filename,
 
-        const worker =
-            html2pdf()
-                .set(options)
-                .from(element);
+            image: {
+                type: "jpeg",
+                quality: 0.98
+            },
 
+            html2canvas: {
+
+                scale: 2,
+
+                useCORS: true,
+
+                allowTaint: true,
+
+                backgroundColor: "#ffffff",
+
+                logging: false,
+
+                windowWidth: 794
+            },
+
+            jsPDF: {
+
+                unit: "mm",
+
+                format: "a4",
+
+                orientation: "portrait",
+
+                compress: true
+            },
+
+            pagebreak: {
+
+                mode: [
+                    "css",
+                    "legacy"
+                ],
+
+                avoid: [
+                    ".itinerary-day",
+                    ".payment-box",
+                    ".list-column",
+                    ".terms-box",
+                    "tr"
+                ]
+            }
+        };
+
+        const worker = html2pdf()
+            .set(options)
+            .from(element);
 
         const pdfBlob =
-            await worker.output(
-                "blob"
-            );
+            await worker.output("blob");
 
+        if (container) {
+            container.remove();
+            container = null;
+        }
 
-        // ====================================================
-        // WEB SHARE
-        // ====================================================
+        // ==================================================
+        // MOBILE / WEB SHARE
+        // ==================================================
 
         if (
             navigator.share &&
             navigator.canShare
         ) {
 
-            const file =
-                new File(
-                    [
-                        pdfBlob
-                    ],
-                    filename,
-                    {
-                        type:
-                            "application/pdf"
-                    }
-                );
-
+            const file = new File(
+                [pdfBlob],
+                filename,
+                {
+                    type: "application/pdf"
+                }
+            );
 
             if (
                 navigator.canShare({
@@ -3221,104 +3300,57 @@ async function shareQuotationPDF(quotation) {
                 await navigator.share({
 
                     title:
-                        `Quotation ${getValue(
-                            quotation,
-                            [
-                                "quotationId",
-                                "id"
-                            ],
-                            ""
-                        )}`,
+                        `Quotation ${quotationId}`,
 
                     text:
-                        "Quotation from My Tour Mitra",
+                        `Quotation from My Tour Mitra`,
 
                     files: [file]
                 });
-
 
                 return;
             }
         }
 
-
-        // ====================================================
-        // DESKTOP DOWNLOAD FALLBACK
-        // ====================================================
+        // ==================================================
+        // DESKTOP DOWNLOAD
+        // ==================================================
 
         const url =
-            URL.createObjectURL(
-                pdfBlob
-            );
-
+            URL.createObjectURL(pdfBlob);
 
         const anchor =
             document.createElement("a");
-
 
         anchor.href = url;
 
         anchor.download = filename;
 
-
         document.body.appendChild(anchor);
-
 
         anchor.click();
 
-
         anchor.remove();
 
+        setTimeout(() => {
 
-        setTimeout(
-            () => {
-                URL.revokeObjectURL(url);
-            },
-            3000
-        );
+            URL.revokeObjectURL(url);
 
+        }, 3000);
 
-        // ====================================================
+        // ==================================================
         // WHATSAPP
-        // ====================================================
+        // ==================================================
 
         const settings =
             getCompanySettings();
 
-
         const phone =
             settings.whatsapp ||
-            settings.phone;
-
-
-        const customer =
-            getValue(
-                quotation,
-                [
-                    "customerName",
-                    "customer"
-                ],
-                "Customer"
-            );
-
-
-        const quotationId =
-            getValue(
-                quotation,
-                [
-                    "quotationId",
-                    "id"
-                ],
-                ""
-            );
-
+            settings.phone ||
+            "";
 
         if (phone) {
-
-            const cleanPhone =
-                String(phone)
-                    .replace(/\D/g, "");
-
 
             const message =
                 encodeURIComponent(
@@ -3329,10 +3361,8 @@ Please find your quotation ${quotationId} from My Tour Mitra.
 Thank you.`
                 );
 
-
             const whatsappUrl =
-                `https://wa.me/${cleanPhone}?text=${message}`;
-
+                `https://wa.me/${String(phone).replace(/\D/g, "")}?text=${message}`;
 
             window.open(
                 whatsappUrl,
@@ -3340,28 +3370,22 @@ Thank you.`
             );
         }
 
-
     } catch (error) {
 
         console.error(
-            "Quotation Share Error:",
+            "Quotation sharing error:",
             error
         );
-
-
-        alert(
-            "Could not prepare quotation for sharing."
-        );
-
-
-    } finally {
 
         if (container) {
             container.remove();
         }
+
+        alert(
+            "Could not prepare quotation for sharing."
+        );
     }
 }
-
 
 // ============================================================
 // GLOBAL FUNCTIONS
