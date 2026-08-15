@@ -636,4 +636,63 @@
     }
 
 }
-```
+
+/* =========================================================
+   PASSWORD TOGGLE FIX
+   ========================================================= */
+
+.password-input-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.password-input-wrapper input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-right: 80px !important;
+}
+
+.password-toggle {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 10px !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+
+    height: 34px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    outline: none !important;
+
+    background: transparent !important;
+
+    color: #2563eb !important;
+
+    cursor: pointer !important;
+
+    z-index: 5 !important;
+
+    box-sizing: border-box !important;
+}
+
+.password-toggle:hover {
+    background: #eff6ff !important;
+    border-radius: 7px !important;
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) !important;
+}
+
+
