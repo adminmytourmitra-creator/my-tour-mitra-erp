@@ -1,796 +1,689 @@
+```javascript
 /* =========================================================
    MY TOUR MITRA ERP
-   FIREBASE / FIRESTORE CORE
+   FIREBASE INITIALIZATION
    File: /js/firebase.js
+
+   Handles:
+   - Firebase SDK loading
+   - Firebase App initialization
+   - Firebase Authentication
+   - Cloud Firestore
+   - Global Firebase instances
+
+   Configuration:
+   /js/config.js
    ========================================================= */
 
-"use strict";
+
+// =========================================================
+// FIREBASE SDK URLS
+// =========================================================
+
+const FIREBASE_APP_SDK =
+    "https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js";
+
+const FIREBASE_AUTH_SDK =
+    "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js";
+
+const FIREBASE_FIRESTORE_SDK =
+    "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js";
 
 
-/* =========================================================
-   1. FIREBASE IMPORTS
-   ========================================================= */
+// =========================================================
+// GLOBAL FIREBASE STATE
+// =========================================================
 
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-    getAuth
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-    getFirestore,
-    collection,
-    doc,
-    getDoc,
-    getDocs,
-    addDoc,
-    setDoc,
-    updateDoc,
-    deleteDoc,
-    query,
-    where,
-    orderBy,
-    limit,
-    onSnapshot,
-    serverTimestamp,
-    Timestamp,
-    writeBatch
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+window.MyTourMitraFirebase =
+    window.MyTourMitraFirebase || {};
 
 
-/* =========================================================
-   2. FIREBASE CONFIGURATION
-   =========================================================
-   
-   IMPORTANT:
-   Keep the configuration from your existing Firebase
-   project "My Tour Mitra ERP".
+window.MyTourMitraFirebase.state = {
 
-   Project ID:
-   my-tour-mitra-erp
-   ========================================================= */
+    initialized: false,
 
-const firebaseConfig = {
+    sdkLoaded: false,
 
-    apiKey: "YOUR_FIREBASE_API_KEY",
+    authReady: false,
 
-    authDomain: "my-tour-mitra-erp.firebaseapp.com",
+    firestoreReady: false,
 
-    projectId: "my-tour-mitra-erp",
-
-    storageBucket: "my-tour-mitra-erp.firebasestorage.app",
-
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-
-    appId: "YOUR_FIREBASE_APP_ID"
+    error: null
 
 };
 
 
-/* =========================================================
-   3. INITIALIZE FIREBASE
-   ========================================================= */
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-
-/* =========================================================
-   4. INITIALIZE AUTHENTICATION
-   ========================================================= */
-
-const firebaseAuth = getAuth(firebaseApp);
-
-
-/* =========================================================
-   5. INITIALIZE FIRESTORE
-   ========================================================= */
-
-const firestoreDB = getFirestore(firebaseApp);
-
-
-/* =========================================================
-   6. GLOBAL FIREBASE REFERENCES
-   ========================================================= */
-
-window.MTM_FIREBASE = {
-
-    app: firebaseApp,
-
-    auth: firebaseAuth,
-
-    db: firestoreDB
-
-};
-
-
-/* =========================================================
-   7. COLLECTION REFERENCE
-   ========================================================= */
-
-window.mtmCollection = function (collectionName) {
-
-    if (!collectionName) {
-        throw new Error(
-            "Firestore collection name is required."
-        );
-    }
-
-    return collection(
-        firestoreDB,
-        collectionName
-    );
-
-};
-
-
-/* =========================================================
-   8. DOCUMENT REFERENCE
-   ========================================================= */
-
-window.mtmDocument = function (
-    collectionName,
-    documentId
-) {
-
-    if (!collectionName) {
-        throw new Error(
-            "Firestore collection name is required."
-        );
-    }
-
-    if (!documentId) {
-        throw new Error(
-            "Firestore document ID is required."
-        );
-    }
-
-    return doc(
-        firestoreDB,
-        collectionName,
-        documentId
-    );
-
-};
-
-
-/* =========================================================
-   9. GET SINGLE DOCUMENT
-   ========================================================= */
-
-window.mtmGetDocument = async function (
-    collectionName,
-    documentId
-) {
-
-    try {
-
-        const documentReference =
-            mtmDocument(
-                collectionName,
-                documentId
-            );
-
-        const snapshot =
-            await getDoc(
-                documentReference
-            );
-
-        if (!snapshot.exists()) {
-            return null;
-        }
-
-        return {
-
-            id: snapshot.id,
-
-            ...snapshot.data()
-
-        };
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmGetDocument"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   10. GET ALL DOCUMENTS
-   ========================================================= */
-
-window.mtmGetCollection = async function (
-    collectionName
-) {
-
-    try {
-
-        const collectionReference =
-            mtmCollection(
-                collectionName
-            );
-
-        const snapshot =
-            await getDocs(
-                collectionReference
-            );
-
-        return snapshot.docs.map(
-            document => ({
-
-                id: document.id,
-
-                ...document.data()
-
-            })
-        );
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmGetCollection"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   11. ADD DOCUMENT
-   ========================================================= */
-
-window.mtmAddDocument = async function (
-    collectionName,
-    data
-) {
-
-    try {
-
-        if (!data || typeof data !== "object") {
-
-            throw new Error(
-                "Document data must be an object."
-            );
-
-        }
-
-        const collectionReference =
-            mtmCollection(
-                collectionName
-            );
-
-        const documentData = {
-
-            ...data,
-
-            createdAt:
-                data.createdAt ||
-                serverTimestamp(),
-
-            updatedAt:
-                serverTimestamp()
-
-        };
-
-        const documentReference =
-            await addDoc(
-                collectionReference,
-                documentData
-            );
-
-        return {
-
-            id: documentReference.id,
-
-            ...data
-
-        };
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmAddDocument"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   12. SET DOCUMENT
-   =========================================================
-   
-   Used when we already have our own document ID.
-
-   Example:
-
-   CUS0001
-   ENQ0001
-   PKG0001
-   BKG0001
-   ========================================================= */
-
-window.mtmSetDocument = async function (
-    collectionName,
-    documentId,
-    data,
-    merge = false
-) {
-
-    try {
-
-        if (!data || typeof data !== "object") {
-
-            throw new Error(
-                "Document data must be an object."
-            );
-
-        }
-
-        const documentReference =
-            mtmDocument(
-                collectionName,
-                documentId
-            );
-
-        const documentData = {
-
-            ...data,
-
-            updatedAt:
-                serverTimestamp()
-
-        };
-
-        if (!merge) {
-
-            documentData.createdAt =
-                data.createdAt ||
-                serverTimestamp();
-
-        }
-
-        await setDoc(
-            documentReference,
-            documentData,
-            {
-                merge
-            }
-        );
-
-        return {
-
-            id: documentId,
-
-            ...data
-
-        };
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmSetDocument"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   13. UPDATE DOCUMENT
-   ========================================================= */
-
-window.mtmUpdateDocument = async function (
-    collectionName,
-    documentId,
-    data
-) {
-
-    try {
-
-        if (!data || typeof data !== "object") {
-
-            throw new Error(
-                "Update data must be an object."
-            );
-
-        }
-
-        const documentReference =
-            mtmDocument(
-                collectionName,
-                documentId
-            );
-
-        await updateDoc(
-            documentReference,
-            {
-
-                ...data,
-
-                updatedAt:
-                    serverTimestamp()
-
-            }
-        );
-
-        return true;
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmUpdateDocument"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   14. DELETE DOCUMENT
-   ========================================================= */
-
-window.mtmDeleteDocument = async function (
-    collectionName,
-    documentId
-) {
-
-    try {
-
-        const documentReference =
-            mtmDocument(
-                collectionName,
-                documentId
-            );
-
-        await deleteDoc(
-            documentReference
-        );
-
-        return true;
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmDeleteDocument"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   15. QUERY DOCUMENTS
-   ========================================================= */
-
-window.mtmQuery = async function (
-    collectionName,
-    constraints = []
-) {
-
-    try {
-
-        const collectionReference =
-            mtmCollection(
-                collectionName
-            );
-
-        const firestoreQuery =
-            query(
-                collectionReference,
-                ...constraints
-            );
-
-        const snapshot =
-            await getDocs(
-                firestoreQuery
-            );
-
-        return snapshot.docs.map(
-            document => ({
-
-                id: document.id,
-
-                ...document.data()
-
-            })
-        );
-
-    } catch (error) {
-
-        mtmLogError(
-            error,
-            "mtmQuery"
-        );
-
-        throw error;
-
-    }
-
-};
-
-
-/* =========================================================
-   16. REAL-TIME COLLECTION LISTENER
-   ========================================================= */
-
-window.mtmListenCollection = function (
-    collectionName,
-    callback
-) {
-
-    if (typeof callback !== "function") {
-
-        throw new Error(
-            "Callback function is required."
-        );
-
-    }
-
-    const collectionReference =
-        mtmCollection(
-            collectionName
-        );
-
-    return onSnapshot(
-
-        collectionReference,
-
-        snapshot => {
-
-            const records =
-                snapshot.docs.map(
-                    document => ({
-
-                        id: document.id,
-
-                        ...document.data()
-
-                    })
+// =========================================================
+// LOAD SCRIPT
+// =========================================================
+
+function loadFirebaseScript(src) {
+
+    return new Promise(
+        function (resolve, reject) {
+
+            /*
+               Check whether this script has already
+               been loaded.
+            */
+
+            const existing =
+                document.querySelector(
+                    `script[src="${src}"]`
                 );
 
-            callback(
-                records
-            );
 
-        },
+            if (existing) {
 
-        error => {
+                /*
+                   If Firebase SDK is already available,
+                   continue immediately.
+                */
 
-            mtmLogError(
-                error,
-                "mtmListenCollection"
-            );
+                if (
+                    window.firebase
+                ) {
 
-        }
+                    resolve();
 
-    );
+                    return;
 
-};
+                }
 
 
-/* =========================================================
-   17. REAL-TIME SINGLE DOCUMENT LISTENER
-   ========================================================= */
+                existing.addEventListener(
+                    "load",
+                    function () {
 
-window.mtmListenDocument = function (
-    collectionName,
-    documentId,
-    callback
-) {
+                        resolve();
 
-    if (typeof callback !== "function") {
+                    }
+                );
 
-        throw new Error(
-            "Callback function is required."
-        );
 
-    }
+                existing.addEventListener(
+                    "error",
+                    function () {
 
-    const documentReference =
-        mtmDocument(
-            collectionName,
-            documentId
-        );
+                        reject(
+                            new Error(
+                                "Failed to load Firebase SDK."
+                            )
+                        );
 
-    return onSnapshot(
+                    }
+                );
 
-        documentReference,
-
-        snapshot => {
-
-            if (!snapshot.exists()) {
-
-                callback(null);
 
                 return;
 
             }
 
-            callback({
 
-                id: snapshot.id,
+            const script =
+                document.createElement(
+                    "script"
+                );
 
-                ...snapshot.data()
 
-            });
+            script.src =
+                src;
 
-        },
+            script.async =
+                true;
 
-        error => {
 
-            mtmLogError(
-                error,
-                "mtmListenDocument"
+            script.onload =
+                function () {
+
+                    resolve();
+
+                };
+
+
+            script.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Unable to load Firebase SDK: "
+                            + src
+                        )
+                    );
+
+                };
+
+
+            document.head.appendChild(
+                script
             );
 
         }
-
     );
 
-};
+}
 
 
-/* =========================================================
-   18. FIRESTORE TIMESTAMP HELPERS
-   ========================================================= */
+// =========================================================
+// GET FIREBASE CONFIG
+// =========================================================
 
-window.MTM_SERVER_TIMESTAMP =
-    serverTimestamp;
+function getFirebaseConfig() {
 
+    /*
+       config.js should expose:
 
-window.MTM_TIMESTAMP =
-    Timestamp;
+       window.MyTourMitraConfig.firebase
 
+       Example:
 
-/* =========================================================
-   19. FIRESTORE QUERY HELPERS
-   ========================================================= */
-
-window.MTM_QUERY = {
-
-    where,
-
-    orderBy,
-
-    limit
-
-};
-
-
-/* =========================================================
-   20. BATCH WRITE
-   ========================================================= */
-
-window.mtmCreateBatch = function () {
-
-    return writeBatch(
-        firestoreDB
-    );
-
-};
+       window.MyTourMitraConfig = {
+           firebase: {
+               apiKey: "...",
+               authDomain: "...",
+               projectId: "...",
+               storageBucket: "...",
+               messagingSenderId: "...",
+               appId: "..."
+           }
+       };
+    */
 
 
-/* =========================================================
-   21. CREATE STANDARD ERP DOCUMENT
-   =========================================================
-   
-   This helper is used by modules when creating records
-   with our own business ID.
-
-   Example:
-
-   await mtmCreateERPDocument(
-       "customers",
-       "CUS0001",
-       {
-           name: "Rahul",
-           mobile: "..."
-       }
-   );
-   ========================================================= */
-
-window.mtmCreateERPDocument =
-    async function (
-        collectionName,
-        businessId,
-        data
+    if (
+        window.MyTourMitraConfig &&
+        window.MyTourMitraConfig.firebase
     ) {
 
-        if (!businessId) {
+        return (
+            window.MyTourMitraConfig.firebase
+        );
 
-            throw new Error(
-                "Business ID is required."
-            );
+    }
+
+
+    /*
+       Compatibility fallback.
+
+       This allows config.js to expose
+       window.firebaseConfig instead.
+    */
+
+    if (
+        window.firebaseConfig
+    ) {
+
+        return (
+            window.firebaseConfig
+        );
+
+    }
+
+
+    return null;
+
+}
+
+
+// =========================================================
+// VALIDATE FIREBASE CONFIG
+// =========================================================
+
+function validateFirebaseConfig(config) {
+
+    if (!config) {
+
+        return {
+            valid: false,
+            message:
+                "Firebase configuration was not found."
+        };
+
+    }
+
+
+    const requiredFields = [
+
+        "apiKey",
+
+        "authDomain",
+
+        "projectId",
+
+        "appId"
+
+    ];
+
+
+    for (
+        const field of requiredFields
+    ) {
+
+        if (
+            !config[field]
+        ) {
+
+            return {
+                valid: false,
+
+                message:
+                    `Firebase configuration is missing: ${field}`
+            };
 
         }
 
-        const documentData = {
+    }
 
-            ...data,
 
-            recordId: businessId,
+    return {
+        valid: true
+    };
 
-            createdAt:
-                serverTimestamp(),
+}
 
-            updatedAt:
-                serverTimestamp()
 
-        };
+// =========================================================
+// INITIALIZE FIREBASE
+// =========================================================
 
-        await setDoc(
+window.MyTourMitraFirebase.init =
+    async function () {
 
-            doc(
-                firestoreDB,
-                collectionName,
-                businessId
-            ),
+        if (
+            window.MyTourMitraFirebase.state.initialized
+        ) {
 
-            documentData
+            return true;
 
-        );
+        }
 
-        return {
 
-            id: businessId,
+        try {
 
-            ...data
+            console.log(
+                "[FIREBASE] Loading Firebase SDK..."
+            );
 
-        };
+
+            // -------------------------------------------------
+            // LOAD FIREBASE APP
+            // -------------------------------------------------
+
+            await loadFirebaseScript(
+                FIREBASE_APP_SDK
+            );
+
+
+            // -------------------------------------------------
+            // LOAD AUTH
+            // -------------------------------------------------
+
+            await loadFirebaseScript(
+                FIREBASE_AUTH_SDK
+            );
+
+
+            // -------------------------------------------------
+            // LOAD FIRESTORE
+            // -------------------------------------------------
+
+            await loadFirebaseScript(
+                FIREBASE_FIRESTORE_SDK
+            );
+
+
+            window.MyTourMitraFirebase.state.sdkLoaded =
+                true;
+
+
+            console.log(
+                "[FIREBASE] SDK loaded."
+            );
+
+
+            // -------------------------------------------------
+            // CHECK FIREBASE GLOBAL
+            // -------------------------------------------------
+
+            if (
+                !window.firebase
+            ) {
+
+                throw new Error(
+                    "Firebase SDK loaded but firebase object is unavailable."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // GET CONFIG
+            // -------------------------------------------------
+
+            const config =
+                getFirebaseConfig();
+
+
+            const validation =
+                validateFirebaseConfig(
+                    config
+                );
+
+
+            if (
+                !validation.valid
+            ) {
+
+                throw new Error(
+                    validation.message
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // INITIALIZE FIREBASE APP
+            // -------------------------------------------------
+
+            let firebaseApp;
+
+
+            if (
+                window.firebase.apps &&
+                window.firebase.apps.length > 0
+            ) {
+
+                firebaseApp =
+                    window.firebase.app();
+
+            } else {
+
+                firebaseApp =
+                    window.firebase.initializeApp(
+                        config
+                    );
+
+            }
+
+
+            window.firebaseApp =
+                firebaseApp;
+
+
+            window.MyTourMitraFirebase.app =
+                firebaseApp;
+
+
+            console.log(
+                "[FIREBASE] Firebase App initialized."
+            );
+
+
+            // -------------------------------------------------
+            // AUTH
+            // -------------------------------------------------
+
+            if (
+                typeof window.firebase.auth
+                === "function"
+            ) {
+
+                window.firebaseAuth =
+                    window.firebase.auth();
+
+
+                window.MyTourMitraFirebase.auth =
+                    window.firebaseAuth;
+
+
+                window.MyTourMitraFirebase.state.authReady =
+                    true;
+
+
+                console.log(
+                    "[FIREBASE] Authentication ready."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // FIRESTORE
+            // -------------------------------------------------
+
+            if (
+                typeof window.firebase.firestore
+                === "function"
+            ) {
+
+                window.firebaseDB =
+                    window.firebase.firestore();
+
+
+                window.MyTourMitraFirebase.db =
+                    window.firebaseDB;
+
+
+                window.MyTourMitraFirebase.state.firestoreReady =
+                    true;
+
+
+                console.log(
+                    "[FIREBASE] Firestore ready."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // VALIDATE SERVICES
+            // -------------------------------------------------
+
+            if (
+                !window.firebaseAuth
+            ) {
+
+                console.warn(
+                    "[FIREBASE] Firebase Auth is unavailable."
+                );
+
+            }
+
+
+            if (
+                !window.firebaseDB
+            ) {
+
+                console.warn(
+                    "[FIREBASE] Firestore is unavailable."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // MARK INITIALIZED
+            // -------------------------------------------------
+
+            window.MyTourMitraFirebase.state.initialized =
+                true;
+
+
+            window.MyTourMitraFirebase.state.error =
+                null;
+
+
+            // -------------------------------------------------
+            // DISPATCH READY EVENT
+            // -------------------------------------------------
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "mytourmitra:firebase-ready",
+                    {
+                        detail: {
+
+                            app:
+                                window.firebaseApp,
+
+                            auth:
+                                window.firebaseAuth
+                                || null,
+
+                            db:
+                                window.firebaseDB
+                                || null
+
+                        }
+                    }
+                )
+            );
+
+
+            console.log(
+                "[FIREBASE] Firebase initialization completed."
+            );
+
+
+            return true;
+
+
+        } catch (error) {
+
+            console.error(
+                "[FIREBASE] Initialization failed:",
+                error
+            );
+
+
+            window.MyTourMitraFirebase.state.error =
+                error;
+
+
+            window.MyTourMitraFirebase.state.initialized =
+                false;
+
+
+            /*
+               Dispatch error event.
+
+               The application can continue loading
+               and show the login screen instead of
+               becoming completely blank.
+            */
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "mytourmitra:firebase-error",
+                    {
+                        detail: {
+                            error: error
+                        }
+                    }
+                )
+            );
+
+
+            return false;
+
+        }
 
     };
 
 
-/* =========================================================
-   22. FIREBASE READY FLAG
-   ========================================================= */
+// =========================================================
+// GET AUTH
+// =========================================================
 
-window.MTM_FIREBASE_READY = true;
+window.MyTourMitraFirebase.getAuth =
+    function () {
+
+        return (
+            window.firebaseAuth
+            || null
+        );
+
+    };
 
 
-/* =========================================================
-   23. DEBUG INFORMATION
-   ========================================================= */
+// =========================================================
+// GET FIRESTORE
+// =========================================================
 
-console.log(
-    "My Tour Mitra ERP Firebase initialized."
+window.MyTourMitraFirebase.getFirestore =
+    function () {
+
+        return (
+            window.firebaseDB
+            || null
+        );
+
+    };
+
+
+// =========================================================
+// FIREBASE READY EVENT
+// =========================================================
+
+window.addEventListener(
+    "mytourmitra:firebase-ready",
+    function () {
+
+        console.log(
+            "[FIREBASE] Ready event received."
+        );
+
+    }
 );
 
-console.log(
-    "Firestore:",
-    firestoreDB
+
+// =========================================================
+// FIREBASE ERROR EVENT
+// =========================================================
+
+window.addEventListener(
+    "mytourmitra:firebase-error",
+    function (event) {
+
+        console.error(
+            "[FIREBASE] Firebase error:",
+            event.detail
+                ? event.detail.error
+                : "Unknown error"
+        );
+
+    }
 );
 
 
-/* =========================================================
-   END OF FIREBASE.JS
-   ========================================================= */
+// =========================================================
+// START FIREBASE
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+        console.log(
+            "[FIREBASE] Starting Firebase..."
+        );
+
+
+        /*
+           config.js must be loaded before this file.
+        */
+
+        await window.MyTourMitraFirebase.init();
+
+    }
+);
+
+
+// =========================================================
+// FINAL MESSAGE
+// =========================================================
+
+console.log(
+    "[My Tour Mitra ERP] firebase.js loaded successfully."
+);
+```
