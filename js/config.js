@@ -72,7 +72,7 @@ window.MyTourMitraConfig = {
     firebase: {
 
         apiKey:
-            "PASTE_YOUR_FIREBASE_API_KEY_HERE",
+            "AIzaSyA7yV96KZ5w4tjRy2c_bwtFYTu8r-mNzU4",
 
         authDomain:
             "my-tour-mitra-erp.firebaseapp.com",
@@ -81,13 +81,13 @@ window.MyTourMitraConfig = {
             "my-tour-mitra-erp",
 
         storageBucket:
-            "PASTE_YOUR_FIREBASE_STORAGE_BUCKET_HERE",
+            "my-tour-mitra-erp.firebasestorage.app",
 
         messagingSenderId:
-            "PASTE_YOUR_FIREBASE_MESSAGING_SENDER_ID_HERE",
+            "104596097197",
 
         appId:
-            "PASTE_YOUR_FIREBASE_APP_ID_HERE"
+            "1:104596097197:web:7abcc59c6feee02fe05e24"
 
     },
 
