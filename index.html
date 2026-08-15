@@ -1,11 +1,13 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        content="width=device-width, initial-scale=1.0"
     >
 
     <meta
@@ -20,43 +22,62 @@
 
     <title>My Tour Mitra ERP</title>
 
-    <!-- =========================================================
-         GLOBAL CSS
-         ========================================================= -->
-    <link rel="stylesheet" href="./CSS/global.css">
 
-    <!-- =========================================================
-         LOGIN CSS
-         ========================================================= -->
-    <link rel="stylesheet" href="./CSS/login.css">
+    <!-- =====================================================
+         GLOBAL STYLES
+         ===================================================== -->
 
-    <!-- =========================================================
-         APPLICATION CSS
-         ========================================================= -->
-    <link rel="stylesheet" href="./CSS/app.css">
+    <link
+        rel="stylesheet"
+        href="./CSS/global.css"
+    >
 
-    <!-- =========================================================
-         DASHBOARD CSS
-         ========================================================= -->
-    <link rel="stylesheet" href="./CSS/dashboard.css">
+    <!-- =====================================================
+         LOGIN STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="./CSS/login.css"
+    >
+
+    <!-- =====================================================
+         APPLICATION STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="./CSS/app.css"
+    >
+
+    <!-- =====================================================
+         DASHBOARD STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="./CSS/dashboard.css"
+    >
 
 </head>
 
+
 <body>
 
-    <!-- =========================================================
+    <!-- =====================================================
          APPLICATION ROOT
-         ========================================================= -->
+         ===================================================== -->
 
     <div id="app">
 
-        <!-- =====================================================
+
+        <!-- =================================================
              LOGIN SCREEN
-             ===================================================== -->
+             ================================================= -->
 
         <section
-            id="login-screen"
-            class="screen screen-login hidden"
+            id="screen-login"
+            class="screen screen-login"
             aria-label="Login"
         >
 
@@ -64,12 +85,18 @@
 
                 <div class="login-card">
 
+
+                    <!-- =====================================
+                         BRAND
+                         ===================================== -->
+
                     <div class="login-brand">
 
                         <div
                             id="login-logo-wrapper"
                             class="login-logo-wrapper"
                         >
+
                             <img
                                 id="login-logo"
                                 class="login-logo hidden"
@@ -83,7 +110,9 @@
                             >
                                 MTM
                             </div>
+
                         </div>
+
 
                         <h1 id="login-company-name">
                             My Tour Mitra
@@ -96,17 +125,23 @@
                     </div>
 
 
+                    <!-- =====================================
+                         LOGIN FORM
+                         ===================================== -->
+
                     <form
                         id="login-form"
                         class="login-form"
                         autocomplete="on"
-                        novalidate
                     >
+
+
+                        <!-- EMAIL -->
 
                         <div class="form-group">
 
                             <label for="login-email">
-                                Email
+                                Email Address
                             </label>
 
                             <input
@@ -120,6 +155,8 @@
 
                         </div>
 
+
+                        <!-- PASSWORD -->
 
                         <div class="form-group">
 
@@ -152,6 +189,8 @@
                         </div>
 
 
+                        <!-- ERROR -->
+
                         <div
                             id="login-error"
                             class="form-message form-error hidden"
@@ -159,11 +198,14 @@
                         ></div>
 
 
+                        <!-- LOGIN BUTTON -->
+
                         <button
                             type="submit"
                             id="login-button"
                             class="btn btn-primary btn-full"
                         >
+
                             <span id="login-button-text">
                                 Login
                             </span>
@@ -173,9 +215,33 @@
                                 class="button-loader hidden"
                                 aria-hidden="true"
                             ></span>
+
                         </button>
 
+
                     </form>
+
+
+                    <!-- =====================================
+                         LOGIN FOOTER
+                         ===================================== -->
+
+                    <div class="login-footer">
+
+                        <span>
+                            My Tour Mitra
+                        </span>
+
+                        <span>
+                            •
+                        </span>
+
+                        <span>
+                            Travel Agency ERP
+                        </span>
+
+                    </div>
+
 
                 </div>
 
@@ -184,25 +250,29 @@
         </section>
 
 
-        <!-- =====================================================
+        <!-- =================================================
              MAIN APPLICATION
-             ===================================================== -->
+             ================================================= -->
 
         <section
-            id="main-app"
+            id="screen-app"
             class="screen screen-app hidden"
             aria-label="ERP Application"
         >
 
-            <!-- =================================================
+
+            <!-- =============================================
                  SIDEBAR
-                 ================================================= -->
+                 ============================================= -->
 
             <aside
                 id="sidebar"
                 class="sidebar"
                 aria-label="Main Navigation"
             >
+
+
+                <!-- SIDEBAR HEADER -->
 
                 <div class="sidebar-header">
 
@@ -257,9 +327,9 @@
                 </div>
 
 
-                <!-- =============================================
+                <!-- =========================================
                      NAVIGATION
-                     ============================================= -->
+                     ========================================= -->
 
                 <nav
                     id="main-navigation"
@@ -267,7 +337,6 @@
                     aria-label="ERP Modules"
                 >
 
-                    <!-- Dashboard -->
 
                     <button
                         type="button"
@@ -280,8 +349,6 @@
                     </button>
 
 
-                    <!-- Customers -->
-
                     <button
                         type="button"
                         class="nav-item"
@@ -292,8 +359,6 @@
                         <span class="nav-label">Customers</span>
                     </button>
 
-
-                    <!-- Enquiries -->
 
                     <button
                         type="button"
@@ -306,7 +371,16 @@
                     </button>
 
 
-                    <!-- Packages -->
+                    <button
+                        type="button"
+                        class="nav-item"
+                        data-module="followups"
+                        data-title="Follow-ups"
+                    >
+                        <span class="nav-icon">◷</span>
+                        <span class="nav-label">Follow-ups</span>
+                    </button>
+
 
                     <button
                         type="button"
@@ -319,8 +393,6 @@
                     </button>
 
 
-                    <!-- Quotations -->
-
                     <button
                         type="button"
                         class="nav-item"
@@ -331,21 +403,6 @@
                         <span class="nav-label">Quotations</span>
                     </button>
 
-
-                    <!-- Follow-ups -->
-
-                    <button
-                        type="button"
-                        class="nav-item"
-                        data-module="followups"
-                        data-title="Follow-ups"
-                    >
-                        <span class="nav-icon">◷</span>
-                        <span class="nav-label">Follow-ups</span>
-                    </button>
-
-
-                    <!-- Bookings -->
 
                     <button
                         type="button"
@@ -358,8 +415,6 @@
                     </button>
 
 
-                    <!-- Invoices -->
-
                     <button
                         type="button"
                         class="nav-item"
@@ -371,33 +426,16 @@
                     </button>
 
 
-                    <!-- Vouchers -->
-
-                    <button
-                        type="button"
-                        class="nav-item"
-                        data-module="vouchers"
-                        data-title="Vouchers"
-                    >
-                        <span class="nav-icon">▧</span>
-                        <span class="nav-label">Vouchers</span>
-                    </button>
-
-
-                    <!-- Payments -->
-
                     <button
                         type="button"
                         class="nav-item"
                         data-module="payments"
                         data-title="Payments"
                     >
-                        <span class="nav-icon">₽</span>
+                        <span class="nav-icon">₹</span>
                         <span class="nav-label">Payments</span>
                     </button>
 
-
-                    <!-- Expenses -->
 
                     <button
                         type="button"
@@ -410,8 +448,6 @@
                     </button>
 
 
-                    <!-- Profit & Loss -->
-
                     <button
                         type="button"
                         class="nav-item"
@@ -423,12 +459,19 @@
                     </button>
 
 
-                    <!-- Divider -->
+                    <button
+                        type="button"
+                        class="nav-item"
+                        data-module="vouchers"
+                        data-title="Vouchers"
+                    >
+                        <span class="nav-icon">▧</span>
+                        <span class="nav-label">Vouchers</span>
+                    </button>
+
 
                     <div class="nav-divider"></div>
 
-
-                    <!-- Team -->
 
                     <button
                         type="button"
@@ -441,8 +484,6 @@
                     </button>
 
 
-                    <!-- Settings -->
-
                     <button
                         type="button"
                         class="nav-item"
@@ -453,12 +494,13 @@
                         <span class="nav-label">Settings</span>
                     </button>
 
+
                 </nav>
 
 
-                <!-- =============================================
+                <!-- =========================================
                      SIDEBAR USER
-                     ============================================= -->
+                     ========================================= -->
 
                 <div class="sidebar-user">
 
@@ -494,21 +536,21 @@
 
                 </div>
 
+
             </aside>
 
 
-            <!-- =================================================
-                 MAIN CONTENT AREA
-                 ================================================= -->
+            <!-- =============================================
+                 APPLICATION LAYOUT
+                 ============================================= -->
 
             <div
                 id="app-layout"
                 class="app-layout"
             >
 
-                <!-- =============================================
-                     TOPBAR
-                     ============================================= -->
+
+                <!-- TOPBAR -->
 
                 <header
                     id="topbar"
@@ -544,7 +586,6 @@
 
                     <div class="topbar-right">
 
-                        <!-- Notifications -->
 
                         <button
                             type="button"
@@ -552,6 +593,7 @@
                             class="topbar-action"
                             aria-label="Notifications"
                         >
+
                             <span class="topbar-action-icon">
                                 ♢
                             </span>
@@ -562,10 +604,9 @@
                             >
                                 0
                             </span>
+
                         </button>
 
-
-                        <!-- User -->
 
                         <div
                             id="topbar-user"
@@ -600,19 +641,12 @@
                 </header>
 
 
-                <!-- =============================================
-                     MODULE CONTAINER
-                     ============================================= -->
+                <!-- MODULE CONTAINER -->
 
                 <main
                     id="module-container"
                     class="module-container"
                 >
-
-                    <!--
-                        Module HTML files will be loaded here
-                        dynamically by app.js.
-                    -->
 
                     <div
                         id="initial-loader"
@@ -629,14 +663,15 @@
 
                 </main>
 
+
             </div>
 
         </section>
 
 
-        <!-- =====================================================
+        <!-- =================================================
              GLOBAL MODAL
-             ===================================================== -->
+             ================================================= -->
 
         <div
             id="global-modal"
@@ -672,24 +707,22 @@
                 <div
                     id="global-modal-body"
                     class="modal-body"
-                >
-                </div>
+                ></div>
 
 
                 <div
                     id="global-modal-footer"
                     class="modal-footer"
-                >
-                </div>
+                ></div>
 
             </div>
 
         </div>
 
 
-        <!-- =====================================================
+        <!-- =================================================
              GLOBAL TOAST
-             ===================================================== -->
+             ================================================= -->
 
         <div
             id="toast-container"
@@ -699,9 +732,9 @@
         ></div>
 
 
-        <!-- =====================================================
-             GLOBAL CONFIRMATION DIALOG
-             ===================================================== -->
+        <!-- =================================================
+             CONFIRMATION DIALOG
+             ================================================= -->
 
         <div
             id="confirm-dialog"
@@ -749,17 +782,21 @@
 
         </div>
 
+
     </div>
 
 
-    <!-- =========================================================
+    <!-- =====================================================
          APPLICATION JAVASCRIPT
-         ========================================================= -->
+         ===================================================== -->
 
     <script
         type="module"
         src="./js/app.js"
     ></script>
 
+
 </body>
+
 </html>
+```
