@@ -287,62 +287,45 @@ function clearAuthError() {
 function setLoginLoading(loading) {
 
     const loginButton =
-        document.getElementById(
-            "login-button"
-        );
-
+        document.getElementById("login-button");
 
     const loginButtonText =
-        document.getElementById(
-            "login-button-text"
-        );
-
+        document.getElementById("login-button-text");
 
     const loginButtonLoader =
-        document.getElementById(
-            "login-button-loader"
-        );
-
+        document.getElementById("login-button-loader");
 
     if (!loginButton) {
         return;
     }
 
+    loginButton.disabled = loading;
 
-    loginButton.disabled =
-        loading;
+    if (loading) {
 
+        if (loginButtonText) {
+            loginButtonText.textContent =
+                "Signing in...";
+        }
 
-    if (loginButtonText) {
+        if (loginButtonLoader) {
+            loginButtonLoader.classList.remove("hidden");
+        }
 
-        loginButtonText.textContent =
-            loading
-                ? "Signing in..."
-                : "Login";
+    } else {
 
-    }
+        if (loginButtonText) {
+            loginButtonText.textContent =
+                "Login";
+        }
 
-
-    if (loginButtonLoader) {
-
-        if (loading) {
-
-            loginButtonLoader.classList.remove(
-                "hidden"
-            );
-
-        } else {
-
-            loginButtonLoader.classList.add(
-                "hidden"
-            );
-
+        if (loginButtonLoader) {
+            loginButtonLoader.classList.add("hidden");
         }
 
     }
 
 }
-
 
 // =========================================================
 // FIREBASE ERROR MESSAGE
