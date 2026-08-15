@@ -4,21 +4,17 @@
    APPLICATION CONTROLLER
    File: /js/app.js
 
-   RESPONSIBILITIES
+   PURPOSE
    ---------------------------------------------------------
-   - Load Firebase core
-   - Load UI core
-   - Load Authentication
-   - Load module HTML
-   - Load module JS
-   - Load module CSS
-   - Handle navigation
-   - Update page title
-   - Initialize modules
-   - Keep application state
-   ========================================================= */
+   1. Start the ERP application
+   2. Handle sidebar navigation
+   3. Handle mobile sidebar
+   4. Update page title
+   5. Provide global ERP object
+   6. Keep startup simple and stable
 
-"use strict";
+   Firebase authentication is handled separately by auth.js.
+   ========================================================= */
 
 
 // =========================================================
@@ -28,11 +24,12 @@
 window.MyTourMitraERP =
     window.MyTourMitraERP || {};
 
-window.MyTourMitraERP.version =
-    "1.0.0";
 
-window.MyTourMitraERP.modules =
-    window.MyTourMitraERP.modules || {};
+// =========================================================
+// APPLICATION VERSION
+// =========================================================
+
+window.MyTourMitraERP.version = "1.0.0";
 
 
 // =========================================================
@@ -41,168 +38,21 @@ window.MyTourMitraERP.modules =
 
 window.MyTourMitraERP.state = {
 
-    currentModule: "dashboard",
-
-    currentUser: null,
-
     initialized: false,
 
-    moduleLoading: false
+    currentModule: "dashboard",
+
+    currentUser: null
 
 };
 
 
 // =========================================================
-// MODULE CONFIGURATION
+// MODULE REGISTRY
 // =========================================================
 
-const MODULE_CONFIG = {
-
-    dashboard: {
-        folder: "dashboard",
-        html: "dashboard.html",
-        js: "dashboard.js",
-        css: "dashboard.css",
-        title: "Dashboard",
-        subtitle: "Travel agency overview"
-    },
-
-    customers: {
-        folder: "customers",
-        html: "customers.html",
-        js: "customers.js",
-        css: "customers.css",
-        title: "Customers",
-        subtitle: "Manage customer information"
-    },
-
-    enquiries: {
-        folder: "enquiries",
-        html: "enquiries.html",
-        js: "enquiries.js",
-        css: "enquiries.css",
-        title: "Enquiries",
-        subtitle: "Manage travel enquiries"
-    },
-
-    followups: {
-        folder: "followups",
-        html: "followups.html",
-        js: "followups.js",
-        css: "followups.css",
-        title: "Follow-ups",
-        subtitle: "Track customer follow-ups"
-    },
-
-    packages: {
-        folder: "packages",
-        html: "packages.html",
-        js: "packages.js",
-        css: "packages.css",
-        title: "Packages",
-        subtitle: "Manage travel packages"
-    },
-
-    quotations: {
-        folder: "quotations",
-        html: "quotation.html",
-        js: "quotation.js",
-        css: "quotations.css",
-        title: "Quotations",
-        subtitle: "Create and manage quotations"
-    },
-
-    bookings: {
-        folder: "bookings",
-        html: "bookings.html",
-        js: "bookings.js",
-        css: "bookings.css",
-        title: "Bookings",
-        subtitle: "Manage tour bookings"
-    },
-
-    invoices: {
-        folder: "invoices",
-        html: "invoices.html",
-        js: "invoices.js",
-        css: "invoices.css",
-        title: "Invoices",
-        subtitle: "Manage customer invoices"
-    },
-
-    vouchers: {
-        folder: "vouchers",
-        html: "vouchers.html",
-        js: "vouchers.js",
-        css: "vouchers.css",
-        title: "Vouchers",
-        subtitle: "Manage tour vouchers"
-    },
-
-    payments: {
-        folder: "payments",
-        html: "payments.html",
-        js: "payments.js",
-        css: "payments.css",
-        title: "Payments",
-        subtitle: "Track received payments and balances"
-    },
-
-    expenses: {
-        folder: "expenses",
-        html: "expenses.html",
-        js: "expenses.js",
-        css: "expenses.css",
-        title: "Expenses",
-        subtitle: "Manage business expenses"
-    },
-
-    "profit-loss": {
-        folder: "profit-loss",
-        html: "profit-loss.html",
-        js: "profit-loss.js",
-        css: "profit-loss.css",
-        title: "Profit & Loss",
-        subtitle: "Monitor business profitability"
-    },
-
-    team: {
-        folder: "team",
-        html: "team.html",
-        js: "team.js",
-        css: "team.css",
-        title: "Team / Users",
-        subtitle: "Manage team members and access"
-    },
-
-    settings: {
-        folder: "settings",
-        html: "settings.html",
-        js: "settings.js",
-        css: "settings.css",
-        title: "Settings",
-        subtitle: "Manage ERP settings"
-    }
-
-};
-
-
-// =========================================================
-// PATH HELPERS
-// =========================================================
-
-function getModuleBasePath(moduleName) {
-
-    const config =
-        MODULE_CONFIG[moduleName];
-
-    if (!config) {
-        return null;
-    }
-
-    return `./modules/${config.folder}/`;
-
-}
+window.MyTourMitraERP.modules =
+    window.MyTourMitraERP.modules || {};
 
 
 // =========================================================
@@ -210,21 +60,19 @@ function getModuleBasePath(moduleName) {
 // =========================================================
 
 window.MyTourMitraERP.registerModule =
-    function (
-        moduleName,
-        moduleObject
-    ) {
+    function (moduleName, moduleObject) {
 
-        if (
-            !moduleName ||
-            !moduleObject
-        ) {
+        if (!moduleName || !moduleObject) {
             return;
         }
 
-        window.MyTourMitraERP.modules[
+        window.MyTourMitraERP.modules[moduleName] =
+            moduleObject;
+
+        console.log(
+            "[ERP] Module registered:",
             moduleName
-        ] = moduleObject;
+        );
 
     };
 
@@ -234,294 +82,132 @@ window.MyTourMitraERP.registerModule =
 // =========================================================
 
 window.MyTourMitraERP.getModule =
-    function (
-        moduleName
-    ) {
+    function (moduleName) {
 
         return (
-            window.MyTourMitraERP.modules[
-                moduleName
-            ] || null
+            window.MyTourMitraERP.modules[moduleName]
+            || null
         );
 
     };
 
 
 // =========================================================
-// LOAD CSS
+// PAGE TITLE DATA
 // =========================================================
 
-function loadModuleCSS(
-    moduleName
-) {
+const ERP_PAGE_INFO = {
 
-    const config =
-        MODULE_CONFIG[moduleName];
+    dashboard: {
+        title: "Dashboard",
+        subtitle: "Travel agency overview"
+    },
 
-    if (!config || !config.css) {
-        return;
+    customers: {
+        title: "Customers",
+        subtitle: "Manage customer information"
+    },
+
+    enquiries: {
+        title: "Enquiries",
+        subtitle: "Manage travel enquiries"
+    },
+
+    packages: {
+        title: "Packages",
+        subtitle: "Manage tour packages and itineraries"
+    },
+
+    quotations: {
+        title: "Quotations",
+        subtitle: "Create and manage quotations"
+    },
+
+    followups: {
+        title: "Follow-ups",
+        subtitle: "Manage customer follow-ups"
+    },
+
+    bookings: {
+        title: "Bookings",
+        subtitle: "Manage confirmed bookings"
+    },
+
+    invoices: {
+        title: "Invoices",
+        subtitle: "Manage customer invoices"
+    },
+
+    vouchers: {
+        title: "Vouchers",
+        subtitle: "Manage tour and service vouchers"
+    },
+
+    payments: {
+        title: "Payments",
+        subtitle: "Monitor received payments and balances"
+    },
+
+    expenses: {
+        title: "Expenses",
+        subtitle: "Manage business expenses"
+    },
+
+    "profit-loss": {
+        title: "Profit & Loss",
+        subtitle: "Monitor business profitability"
+    },
+
+    team: {
+        title: "Team / Users",
+        subtitle: "Manage team members and access"
+    },
+
+    settings: {
+        title: "Settings",
+        subtitle: "Manage ERP settings"
     }
 
-
-    const existing =
-        document.querySelector(
-            `link[data-module-css="${moduleName}"]`
-        );
-
-
-    if (existing) {
-        return;
-    }
-
-
-    const link =
-        document.createElement("link");
-
-    link.rel = "stylesheet";
-
-    link.href =
-        `${getModuleBasePath(moduleName)}${config.css}`;
-
-    link.dataset.moduleCss =
-        moduleName;
-
-
-    document.head.appendChild(link);
-
-}
+};
 
 
 // =========================================================
-// REMOVE MODULE CSS
+// UPDATE PAGE HEADING
 // =========================================================
 
-function removeModuleCSS(
-    exceptModule
-) {
+function updatePageHeading(moduleName) {
 
-    document
-        .querySelectorAll(
-            "link[data-module-css]"
-        )
-        .forEach(
-            link => {
-
-                if (
-                    link.dataset.moduleCss !==
-                    exceptModule
-                ) {
-
-                    link.remove();
-
-                }
-
-            }
-        );
-
-}
-
-
-// =========================================================
-// LOAD MODULE HTML
-// =========================================================
-
-async function loadModuleHTML(
-    moduleName
-) {
-
-    const config =
-        MODULE_CONFIG[moduleName];
-
-    if (!config) {
-
-        throw new Error(
-            `Module configuration not found: ${moduleName}`
-        );
-
-    }
-
-
-    const container =
-        document.getElementById(
-            "module-container"
-        );
-
-
-    if (!container) {
-
-        throw new Error(
-            "Module container not found."
-        );
-
-    }
-
-
-    const path =
-        `${getModuleBasePath(moduleName)}${config.html}`;
-
-
-    const response =
-        await fetch(path, {
-            cache: "no-cache"
-        });
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            `Unable to load ${path} (${response.status})`
-        );
-
-    }
-
-
-    const html =
-        await response.text();
-
-
-    container.innerHTML =
-        html;
-
-
-    return true;
-
-}
-
-
-// =========================================================
-// LOAD MODULE JAVASCRIPT
-// =========================================================
-
-async function loadModuleJS(
-    moduleName
-) {
-
-    const config =
-        MODULE_CONFIG[moduleName];
-
-    if (!config || !config.js) {
-        return;
-    }
-
-
-    const path =
-        `${getModuleBasePath(moduleName)}${config.js}`;
-
-
-    /*
-       Import with a cache-busting query.
-
-       This helps during development so that
-       updated module files are loaded after
-       deployment without forcing a hard-coded
-       script element for every module.
-    */
-
-    await import(
-        `${path}?v=${Date.now()}`
-    );
-
-}
-
-
-// =========================================================
-// INITIALIZE MODULE
-// =========================================================
-
-function initializeLoadedModule(
-    moduleName
-) {
-
-    const module =
-        window.MyTourMitraERP.getModule(
-            moduleName
-        );
-
-
-    if (
-        module &&
-        typeof module.init === "function"
-    ) {
-
-        try {
-
-            module.init();
-
-        } catch (error) {
-
-            console.error(
-                `[ERP] Failed to initialize ${moduleName}:`,
-                error
-            );
-
-        }
-
-    }
-
-
-    /*
-       Some existing module files may initialize
-       themselves when loaded.
-
-       Therefore we do not treat absence of
-       module.init() as an error.
-    */
-
-}
-
-
-// =========================================================
-// SET PAGE HEADER
-// =========================================================
-
-function updatePageHeader(
-    moduleName
-) {
-
-    const config =
-        MODULE_CONFIG[moduleName];
-
-    if (!config) {
-        return;
-    }
-
-
-    const title =
+    const pageTitle =
         document.getElementById(
             "page-title"
         );
 
-    const subtitle =
+    const pageSubtitle =
         document.getElementById(
             "page-subtitle"
         );
 
 
-    if (title) {
+    const info =
+        ERP_PAGE_INFO[moduleName]
+        || {
+            title: moduleName,
+            subtitle: ""
+        };
 
-        title.textContent =
-            config.title;
+
+    if (pageTitle) {
+
+        pageTitle.textContent =
+            info.title;
 
     }
 
 
-    if (subtitle) {
+    if (pageSubtitle) {
 
-        subtitle.textContent =
-            config.subtitle;
-
-    }
-
-
-    if (
-        typeof window.mtmSetPageTitle ===
-        "function"
-    ) {
-
-        window.mtmSetPageTitle(
-            config.title,
-            config.subtitle
-        );
+        pageSubtitle.textContent =
+            info.subtitle;
 
     }
 
@@ -529,571 +215,520 @@ function updatePageHeader(
 
 
 // =========================================================
-// SET ACTIVE NAVIGATION
+// UPDATE ACTIVE NAVIGATION
 // =========================================================
 
-function updateActiveNavigation(
-    moduleName
-) {
+function updateActiveNavigation(moduleName) {
 
-    document
-        .querySelectorAll(
+    const navItems =
+        document.querySelectorAll(
             ".nav-item[data-module]"
-        )
-        .forEach(
-            item => {
+        );
 
-                item.classList.toggle(
-                    "active",
-                    item.dataset.module ===
-                    moduleName
+
+    navItems.forEach(
+        function (item) {
+
+            const itemModule =
+                item.dataset.module;
+
+
+            if (itemModule === moduleName) {
+
+                item.classList.add(
+                    "active"
+                );
+
+            } else {
+
+                item.classList.remove(
+                    "active"
                 );
 
             }
-        );
 
-
-    if (
-        typeof window.mtmSetActiveNavigation ===
-        "function"
-    ) {
-
-        window.mtmSetActiveNavigation(
-            moduleName
-        );
-
-    }
+        }
+    );
 
 }
 
 
 // =========================================================
-// MODULE LOADING MESSAGE
+// CLOSE MOBILE SIDEBAR
 // =========================================================
 
-function showModuleLoading() {
+function closeMobileSidebar() {
 
-    const container =
+    const appScreen =
         document.getElementById(
-            "module-container"
+            "main-app"
         );
 
-    if (!container) {
+
+    if (!appScreen) {
         return;
     }
 
 
-    container.innerHTML = `
-
-        <div class="initial-loader">
-
-            <div class="loader-spinner"></div>
-
-            <p>
-                Loading module...
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-// =========================================================
-// MODULE ERROR MESSAGE
-// =========================================================
-
-function showModuleError(
-    moduleName,
-    error
-) {
-
-    const container =
-        document.getElementById(
-            "module-container"
-        );
-
-    if (!container) {
-        return;
-    }
-
-
-    console.error(
-        `[ERP] Module loading failed: ${moduleName}`,
-        error
+    appScreen.classList.remove(
+        "sidebar-open"
     );
 
 
-    container.innerHTML = `
-
-        <div class="module-error">
-
-            <div class="module-error-icon">
-                !
-            </div>
-
-            <h2>
-                Unable to load module
-            </h2>
-
-            <p>
-                ${escapeHTML(
-                    error?.message ||
-                    "An unexpected error occurred."
-                )}
-            </p>
-
-            <button
-                type="button"
-                class="btn btn-primary"
-                id="module-retry-button"
-            >
-                Retry
-            </button>
-
-        </div>
-
-    `;
+    const overlay =
+        document.querySelector(
+            ".sidebar-overlay"
+        );
 
 
-    document
-        .getElementById(
-            "module-retry-button"
-        )
-        ?.addEventListener(
+    if (overlay) {
+
+        overlay.remove();
+
+    }
+
+}
+
+
+// =========================================================
+// OPEN MOBILE SIDEBAR
+// =========================================================
+
+function openMobileSidebar() {
+
+    const appScreen =
+        document.getElementById(
+            "main-app"
+        );
+
+
+    if (!appScreen) {
+        return;
+    }
+
+
+    appScreen.classList.add(
+        "sidebar-open"
+    );
+
+
+    let overlay =
+        document.querySelector(
+            ".sidebar-overlay"
+        );
+
+
+    if (!overlay) {
+
+        overlay =
+            document.createElement(
+                "div"
+            );
+
+        overlay.className =
+            "sidebar-overlay";
+
+        overlay.addEventListener(
             "click",
-            () => {
+            function () {
 
-                window.loadModule(
-                    moduleName
-                );
+                closeMobileSidebar();
 
             }
         );
 
-}
 
-
-// =========================================================
-// HTML ESCAPE
-// =========================================================
-
-function escapeHTML(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
+        appScreen.appendChild(
+            overlay
         );
 
+    }
+
 }
 
 
 // =========================================================
-// MAIN MODULE LOADER
+// SIDEBAR TOGGLE
 // =========================================================
 
-window.loadModule =
-    async function (
-        moduleName
+function toggleSidebar() {
+
+    const appScreen =
+        document.getElementById(
+            "main-app"
+        );
+
+
+    if (!appScreen) {
+        return;
+    }
+
+
+    if (
+        window.innerWidth <= 768
     ) {
 
         if (
-            !MODULE_CONFIG[moduleName]
+            appScreen.classList.contains(
+                "sidebar-open"
+            )
         ) {
 
-            console.error(
-                `[ERP] Unknown module: ${moduleName}`
-            );
+            closeMobileSidebar();
 
-            return false;
+        } else {
 
-        }
-
-
-        if (
-            window.MyTourMitraERP.state.moduleLoading
-        ) {
-
-            return false;
+            openMobileSidebar();
 
         }
 
+        return;
 
-        window.MyTourMitraERP.state.moduleLoading =
-            true;
-
-
-        window.MyTourMitraERP.state.currentModule =
-            moduleName;
+    }
 
 
-        try {
+    appScreen.classList.toggle(
+        "sidebar-collapsed"
+    );
 
-            showModuleLoading();
-
-
-            updateActiveNavigation(
-                moduleName
-            );
-
-
-            updatePageHeader(
-                moduleName
-            );
-
-
-            removeModuleCSS(
-                moduleName
-            );
-
-
-            loadModuleCSS(
-                moduleName
-            );
-
-
-            await loadModuleHTML(
-                moduleName
-            );
-
-
-            await loadModuleJS(
-                moduleName
-            );
-
-
-            initializeLoadedModule(
-                moduleName
-            );
-
-
-            window.dispatchEvent(
-                new CustomEvent(
-                    "mytourmitra:module-ready",
-                    {
-                        detail: {
-                            module:
-                                moduleName
-                        }
-                    }
-                )
-            );
-
-
-            return true;
-
-        } catch (error) {
-
-            showModuleError(
-                moduleName,
-                error
-            );
-
-            return false;
-
-        } finally {
-
-            window.MyTourMitraERP.state.moduleLoading =
-                false;
-
-        }
-
-    };
+}
 
 
 // =========================================================
-// COMPATIBILITY ALIAS
-// =========================================================
-
-window.mtmLoadModule =
-    window.loadModule;
-
-
-// =========================================================
-// OPEN MODULE
+// NAVIGATION
 // =========================================================
 
 window.MyTourMitraERP.openModule =
-    function (
-        moduleName
-    ) {
-
-        if (
-            !MODULE_CONFIG[moduleName]
-        ) {
-            return;
-        }
-
-
-        window.MyTourMitraERP.state.currentModule =
-            moduleName;
-
-
-        window.loadModule(
-            moduleName
-        );
-
-    };
-
-
-// =========================================================
-// NAVIGATION EVENT
-// =========================================================
-
-window.addEventListener(
-    "mytourmitra:navigate",
-    function (
-        event
-    ) {
-
-        const moduleName =
-            event.detail?.module;
-
+    function (moduleName) {
 
         if (!moduleName) {
             return;
         }
 
 
-        window.loadModule(
+        const moduleExists =
+            ERP_PAGE_INFO[moduleName];
+
+
+        if (!moduleExists) {
+
+            console.warn(
+                "[ERP] Unknown module:",
+                moduleName
+            );
+
+            return;
+
+        }
+
+
+        window.MyTourMitraERP.state.currentModule =
+            moduleName;
+
+
+        updateActiveNavigation(
             moduleName
         );
 
-    }
-);
 
-
-// =========================================================
-// AUTH READY
-// =========================================================
-
-window.addEventListener(
-    "mytourmitra:auth-ready",
-    function (
-        event
-    ) {
-
-        const user =
-            event.detail?.user ||
-            event.detail ||
-            null;
-
-
-        window.MyTourMitraERP.state.currentUser =
-            user;
-
-
-        /*
-           Load Dashboard after successful login.
-        */
-
-        window.loadModule(
-            "dashboard"
+        updatePageHeading(
+            moduleName
         );
 
-    }
-);
 
+        closeMobileSidebar();
 
-// =========================================================
-// FIREBASE / CORE LOADER
-// =========================================================
-
-async function loadCoreSystems() {
-
-    /*
-       Firebase must load first because Auth
-       depends on Firebase.
-    */
-
-    try {
-
-        await import(
-            "./firebase.js"
-        );
 
         console.log(
-            "[ERP] Firebase core loaded."
+            "[ERP] Opening module:",
+            moduleName
         );
 
-    } catch (error) {
 
-        console.error(
-            "[ERP] Firebase failed to load:",
-            error
+        window.dispatchEvent(
+            new CustomEvent(
+                "mytourmitra:navigate",
+                {
+                    detail: {
+                        module: moduleName
+                    }
+                }
+            )
         );
 
-    }
-
-
-    /*
-       UI system.
-    */
-
-    try {
-
-        await import(
-            "./ui.js"
-        );
-
-        console.log(
-            "[ERP] UI core loaded."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "[ERP] UI failed to load:",
-            error
-        );
-
-    }
-
-
-    /*
-       Authentication system.
-
-       auth.js uses global window objects,
-       so importing it executes the file.
-    */
-
-    try {
-
-        await import(
-            "./auth.js"
-        );
-
-        console.log(
-            "[ERP] Authentication core loaded."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "[ERP] Authentication failed to load:",
-            error
-        );
-
-    }
-
-}
+    };
 
 
 // =========================================================
-// INITIALIZE APPLICATION
+// NAVIGATION CLICK HANDLER
 // =========================================================
 
-async function initializeApplication() {
+function initializeNavigation() {
 
-    if (
-        window.MyTourMitraERP.state.initialized
-    ) {
+    const navItems =
+        document.querySelectorAll(
+            ".nav-item[data-module]"
+        );
+
+
+    if (!navItems.length) {
+
+        console.warn(
+            "[ERP] Navigation items not found."
+        );
 
         return;
 
     }
 
 
-    console.log(
-        "[ERP] Application starting..."
-    );
+    navItems.forEach(
+        function (item) {
+
+            item.addEventListener(
+                "click",
+                function () {
+
+                    const moduleName =
+                        item.dataset.module;
 
 
-    await loadCoreSystems();
+                    window.MyTourMitraERP.openModule(
+                        moduleName
+                    );
 
+                }
+            );
 
-    /*
-       UI.js normally initializes itself on
-       DOMContentLoaded.
-
-       Because app.js is also a module loaded
-       after the HTML has already been parsed,
-       initialize it manually if necessary.
-    */
-
-    if (
-        typeof window.mtmInitializeUI ===
-        "function"
-    ) {
-
-        window.mtmInitializeUI();
-
-    }
-
-
-    /*
-       Auth.js also initializes itself on
-       DOMContentLoaded.
-
-       If the event has already happened,
-       initialize it manually.
-    */
-
-    if (
-        typeof window.initAuth ===
-        "function"
-    ) {
-
-        window.initAuth();
-
-    }
-
-
-    window.MyTourMitraERP.state.initialized =
-        true;
-
-
-    window.dispatchEvent(
-        new CustomEvent(
-            "mytourmitra:ready"
-        )
+        }
     );
 
 
     console.log(
-        "========================================"
-    );
-
-    console.log(
-        "MY TOUR MITRA ERP"
-    );
-
-    console.log(
-        "ERP Application Ready"
-    );
-
-    console.log(
-        "Version:",
-        window.MyTourMitraERP.version
-    );
-
-    console.log(
-        "========================================"
+        "[ERP] Navigation initialized."
     );
 
 }
+
+
+// =========================================================
+// SIDEBAR CONTROLS
+// =========================================================
+
+function initializeSidebar() {
+
+    const toggleButton =
+        document.getElementById(
+            "sidebar-toggle"
+        );
+
+
+    const closeButton =
+        document.getElementById(
+            "sidebar-close"
+        );
+
+
+    if (toggleButton) {
+
+        toggleButton.addEventListener(
+            "click",
+            function () {
+
+                toggleSidebar();
+
+            }
+        );
+
+    }
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            function () {
+
+                closeMobileSidebar();
+
+            }
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// INITIAL DASHBOARD STATE
+// =========================================================
+
+function initializeDefaultPage() {
+
+    const currentModule =
+        window.MyTourMitraERP.state.currentModule
+        || "dashboard";
+
+
+    updateActiveNavigation(
+        currentModule
+    );
+
+
+    updatePageHeading(
+        currentModule
+    );
+
+}
+
+
+// =========================================================
+// AUTH EVENT
+// =========================================================
+
+function initializeAuthEvents() {
+
+    window.addEventListener(
+        "mytourmitra:auth-ready",
+        function (event) {
+
+            if (
+                event &&
+                event.detail
+            ) {
+
+                window.MyTourMitraERP.state.currentUser =
+                    event.detail.user
+                    || null;
+
+            }
+
+
+            console.log(
+                "[ERP] Authentication ready."
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "mytourmitra:auth-logout",
+        function () {
+
+            window.MyTourMitraERP.state.currentUser =
+                null;
+
+
+            console.log(
+                "[ERP] Authentication cleared."
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// WINDOW RESIZE
+// =========================================================
+
+function initializeResizeHandler() {
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            const appScreen =
+                document.getElementById(
+                    "main-app"
+                );
+
+
+            if (!appScreen) {
+                return;
+            }
+
+
+            if (
+                window.innerWidth > 768
+            ) {
+
+                appScreen.classList.remove(
+                    "sidebar-open"
+                );
+
+
+                const overlay =
+                    document.querySelector(
+                        ".sidebar-overlay"
+                    );
+
+
+                if (overlay) {
+
+                    overlay.remove();
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// APPLICATION READY
+// =========================================================
+
+window.MyTourMitraERP.ready =
+    function () {
+
+        if (
+            window.MyTourMitraERP.state.initialized
+        ) {
+
+            return;
+
+        }
+
+
+        window.MyTourMitraERP.state.initialized =
+            true;
+
+
+        console.log(
+            "========================================"
+        );
+
+        console.log(
+            "MY TOUR MITRA ERP"
+        );
+
+        console.log(
+            "Application Ready"
+        );
+
+        console.log(
+            "Version:",
+            window.MyTourMitraERP.version
+        );
+
+        console.log(
+            "========================================"
+        );
+
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "mytourmitra:ready"
+            )
+        );
+
+    };
 
 
 // =========================================================
@@ -1102,14 +737,11 @@ async function initializeApplication() {
 
 window.addEventListener(
     "error",
-    function (
-        event
-    ) {
+    function (event) {
 
         console.error(
             "[ERP ERROR]",
-            event.error ||
-            event.message
+            event.error || event.message
         );
 
     }
@@ -1122,9 +754,7 @@ window.addEventListener(
 
 window.addEventListener(
     "unhandledrejection",
-    function (
-        event
-    ) {
+    function (event) {
 
         console.error(
             "[ERP PROMISE ERROR]",
@@ -1136,31 +766,37 @@ window.addEventListener(
 
 
 // =========================================================
-// START
+// DOM READY
 // =========================================================
 
-if (
-    document.readyState ===
-    "loading"
-) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        initializeApplication,
-        {
-            once: true
-        }
-    );
+        console.log(
+            "[ERP] DOM loaded."
+        );
 
-} else {
 
-    initializeApplication();
+        initializeNavigation();
 
-}
+        initializeSidebar();
+
+        initializeDefaultPage();
+
+        initializeAuthEvents();
+
+        initializeResizeHandler();
+
+
+        window.MyTourMitraERP.ready();
+
+    }
+);
 
 
 // =========================================================
-// CONSOLE
+// FINAL LOAD MESSAGE
 // =========================================================
 
 console.log(
