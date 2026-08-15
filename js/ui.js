@@ -1,438 +1,461 @@
+```javascript
 /* =========================================================
    MY TOUR MITRA ERP
-   UI / NAVIGATION CORE
+   USER INTERFACE CONTROLLER
    File: /js/ui.js
+
+   Handles:
+   - Sidebar
+   - Navigation
+   - Module loading
+   - Page title/subtitle
+   - Mobile navigation
+   - Modal
+   - Toast
+   - Confirmation dialog
+   - User interface updates
    ========================================================= */
 
-"use strict";
+
+// =========================================================
+// GLOBAL UI OBJECT
+// =========================================================
+
+window.MyTourMitraUI =
+    window.MyTourMitraUI || {};
 
 
-/* =========================================================
-   1. GLOBAL UI STATE
-   ========================================================= */
+// =========================================================
+// UI STATE
+// =========================================================
 
-window.MTM_UI = {
+window.MyTourMitraUI.state = {
 
-    currentModule: "dashboard",
+    initialized: false,
 
     sidebarOpen: false,
 
-    loading: false,
+    currentModule: null,
 
-    initialized: false
-
-};
-
-
-/* =========================================================
-   2. DOM HELPERS
-   ========================================================= */
-
-window.mtmGet = function (selector) {
-
-    return document.querySelector(selector);
+    loadingModule: false
 
 };
 
 
-window.mtmGetAll = function (selector) {
+// =========================================================
+// MODULE INFORMATION
+// =========================================================
 
-    return document.querySelectorAll(selector);
+const MODULE_CONFIG = {
+
+    dashboard: {
+        title: "Dashboard",
+        subtitle: "Travel agency overview",
+        path: "./modules/dashboard/dashboard.html",
+        js: "./modules/dashboard/dashboard.js"
+    },
+
+    customers: {
+        title: "Customers",
+        subtitle: "Manage your customers",
+        path: "./modules/customers/customers.html",
+        js: "./modules/customers/customers.js"
+    },
+
+    enquiries: {
+        title: "Enquiries",
+        subtitle: "Manage customer enquiries",
+        path: "./modules/enquiries/enquiries.html",
+        js: "./modules/enquiries/enquiries.js"
+    },
+
+    followups: {
+        title: "Follow-ups",
+        subtitle: "Track customer follow-ups",
+        path: "./modules/followups/followups.html",
+        js: "./modules/followups/followups.js"
+    },
+
+    packages: {
+        title: "Packages",
+        subtitle: "Manage tour packages and itineraries",
+        path: "./modules/packages/packages.html",
+        js: "./modules/packages/packages.js"
+    },
+
+    quotations: {
+        title: "Quotations",
+        subtitle: "Create and manage customer quotations",
+        path: "./modules/quotations/quotation.html",
+        js: "./modules/quotations/quotation.js"
+    },
+
+    bookings: {
+        title: "Bookings",
+        subtitle: "Manage confirmed tour bookings",
+        path: "./modules/bookings/bookings.html",
+        js: "./modules/bookings/bookings.js"
+    },
+
+    invoices: {
+        title: "Invoices",
+        subtitle: "Manage customer invoices and balances",
+        path: "./modules/invoices/invoices.html",
+        js: "./modules/invoices/invoices.js"
+    },
+
+    vouchers: {
+        title: "Vouchers",
+        subtitle: "Create and manage travel vouchers",
+        path: "./modules/vouchers/vouchers.html",
+        js: "./modules/vouchers/vouchers.js"
+    },
+
+    payments: {
+        title: "Payments",
+        subtitle: "Monitor received payments and balances",
+        path: "./modules/payments/payments.html",
+        js: "./modules/payments/payments.js"
+    },
+
+    expenses: {
+        title: "Expenses",
+        subtitle: "Track business expenses",
+        path: "./modules/expenses/expenses.html",
+        js: "./modules/expenses/expenses.js"
+    },
+
+    "profit-loss": {
+        title: "Profit & Loss",
+        subtitle: "Monitor business profitability",
+        path: "./modules/profit-loss/profit-loss.html",
+        js: "./modules/profit-loss/profit-loss.js"
+    },
+
+    team: {
+        title: "Team / Users",
+        subtitle: "Manage team members and access",
+        path: "./modules/team/team.html",
+        js: "./modules/team/team.js"
+    },
+
+    settings: {
+        title: "Settings",
+        subtitle: "Manage ERP settings",
+        path: "./modules/settings/settings.html",
+        js: "./modules/settings/settings.js"
+    }
 
 };
 
 
-window.mtmShow = function (element) {
+// =========================================================
+// DOM HELPERS
+// =========================================================
 
-    if (!element) return;
+function getElement(id) {
 
-    element.classList.remove("hidden");
+    return document.getElementById(id);
 
-};
-
-
-window.mtmHide = function (element) {
-
-    if (!element) return;
-
-    element.classList.add("hidden");
-
-};
+}
 
 
-/* =========================================================
-   3. SIDEBAR
-   ========================================================= */
+// =========================================================
+// SIDEBAR
+// =========================================================
 
-window.mtmOpenSidebar = function () {
+function openSidebar() {
 
     const sidebar =
-        document.querySelector(".sidebar");
+        getElement("sidebar");
 
-    const overlay =
-        document.querySelector(".sidebar-overlay");
 
-    if (sidebar) {
-
-        sidebar.classList.add(
-            "mobile-open"
-        );
-
+    if (!sidebar) {
+        return;
     }
 
-    if (overlay) {
 
-        overlay.classList.add(
-            "active"
-        );
-
-    }
-
-    MTM_UI.sidebarOpen = true;
-
-};
+    sidebar.classList.add(
+        "sidebar-open"
+    );
 
 
-window.mtmCloseSidebar = function () {
+    window.MyTourMitraUI.state.sidebarOpen =
+        true;
+
+
+    document.body.classList.add(
+        "sidebar-is-open"
+    );
+
+}
+
+
+function closeSidebar() {
 
     const sidebar =
-        document.querySelector(".sidebar");
+        getElement("sidebar");
 
-    const overlay =
-        document.querySelector(".sidebar-overlay");
 
-    if (sidebar) {
-
-        sidebar.classList.remove(
-            "mobile-open"
-        );
-
+    if (!sidebar) {
+        return;
     }
 
-    if (overlay) {
 
-        overlay.classList.remove(
-            "active"
-        );
-
-    }
-
-    MTM_UI.sidebarOpen = false;
-
-};
+    sidebar.classList.remove(
+        "sidebar-open"
+    );
 
 
-window.mtmToggleSidebar = function () {
+    window.MyTourMitraUI.state.sidebarOpen =
+        false;
 
-    if (MTM_UI.sidebarOpen) {
 
-        mtmCloseSidebar();
+    document.body.classList.remove(
+        "sidebar-is-open"
+    );
+
+}
+
+
+function toggleSidebar() {
+
+    if (
+        window.MyTourMitraUI.state.sidebarOpen
+    ) {
+
+        closeSidebar();
 
     } else {
 
-        mtmOpenSidebar();
+        openSidebar();
 
     }
 
-};
+}
 
 
-/* =========================================================
-   4. PAGE TITLE
-   ========================================================= */
+// =========================================================
+// PAGE TITLE
+// =========================================================
 
-window.mtmSetPageTitle = function (
-    title,
-    description = ""
+function updatePageHeading(
+    moduleName
 ) {
 
-    const heading =
-        document.querySelector(
-            ".page-heading h1"
-        );
+    const config =
+        MODULE_CONFIG[moduleName];
 
-    const subheading =
-        document.querySelector(
-            ".page-heading p"
-        );
 
-    if (heading) {
+    if (!config) {
+        return;
+    }
 
-        heading.textContent =
-            title || "Dashboard";
+
+    const title =
+        getElement("page-title");
+
+
+    const subtitle =
+        getElement("page-subtitle");
+
+
+    if (title) {
+
+        title.textContent =
+            config.title;
 
     }
 
-    if (subheading) {
 
-        subheading.textContent =
-            description || "";
+    if (subtitle) {
+
+        subtitle.textContent =
+            config.subtitle;
 
     }
 
-};
+}
 
 
-/* =========================================================
-   5. ACTIVE NAVIGATION
-   ========================================================= */
+// =========================================================
+// ACTIVE NAVIGATION
+// =========================================================
 
-window.mtmSetActiveNavigation =
-    function (moduleName) {
+function updateActiveNavigation(
+    moduleName
+) {
 
-        const navItems =
-            document.querySelectorAll(
-                ".nav-item"
-            );
+    const navItems =
+        document.querySelectorAll(
+            ".nav-item"
+        );
 
-        navItems.forEach(
-            item => {
 
-                const target =
-                    item.dataset.module ||
-                    item.dataset.navigation ||
-                    item.dataset.page;
+    navItems.forEach(
+        function (item) {
 
-                item.classList.toggle(
-                    "active",
-                    target === moduleName
+            const itemModule =
+                item.dataset.module;
+
+
+            if (
+                itemModule === moduleName
+            ) {
+
+                item.classList.add(
+                    "active"
+                );
+
+                item.setAttribute(
+                    "aria-current",
+                    "page"
+                );
+
+            } else {
+
+                item.classList.remove(
+                    "active"
+                );
+
+                item.removeAttribute(
+                    "aria-current"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// MODULE LOADING MESSAGE
+// =========================================================
+
+function showModuleLoader() {
+
+    const container =
+        getElement(
+            "module-container"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <div class="module-loader">
+
+            <div class="loader-spinner"></div>
+
+            <p>
+                Loading module...
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+// =========================================================
+// MODULE ERROR
+// =========================================================
+
+function showModuleError(
+    moduleName,
+    message
+) {
+
+    const container =
+        getElement(
+            "module-container"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const config =
+        MODULE_CONFIG[moduleName];
+
+
+    const title =
+        config
+            ? config.title
+            : moduleName;
+
+
+    container.innerHTML = `
+
+        <div class="module-error">
+
+            <div class="module-error-icon">
+                !
+            </div>
+
+            <h2>
+                Unable to load ${escapeHTML(title)}
+            </h2>
+
+            <p>
+                ${escapeHTML(message)}
+            </p>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-retry-module="${escapeHTML(moduleName)}"
+            >
+                Try Again
+            </button>
+
+        </div>
+
+    `;
+
+
+    const retryButton =
+        container.querySelector(
+            "[data-retry-module]"
+        );
+
+
+    if (retryButton) {
+
+        retryButton.addEventListener(
+            "click",
+            function () {
+
+                loadModule(
+                    moduleName
                 );
 
             }
         );
 
-    };
-
-
-/* =========================================================
-   6. MODULE CONTAINER
-   ========================================================= */
-
-window.mtmGetModuleContainer =
-    function () {
-
-        return document.querySelector(
-            "#module-container"
-        ) || document.querySelector(
-            ".module-container"
-        );
-
-    };
-
-
-/* =========================================================
-   7. LOADING STATE
-   ========================================================= */
-
-window.mtmSetLoading = function (
-    isLoading
-) {
-
-    MTM_UI.loading =
-        Boolean(isLoading);
-
-    const loader =
-        document.querySelector(
-            "#global-loading"
-        );
-
-    if (loader) {
-
-        loader.classList.toggle(
-            "hidden",
-            !MTM_UI.loading
-        );
-
     }
 
-};
+}
 
 
-/* =========================================================
-   8. TOAST CONTAINER
-   ========================================================= */
+// =========================================================
+// HTML ESCAPE
+// =========================================================
 
-window.mtmGetToastContainer =
-    function () {
-
-        let container =
-            document.querySelector(
-                "#mtm-toast-container"
-            );
-
-        if (!container) {
-
-            container =
-                document.createElement(
-                    "div"
-                );
-
-            container.id =
-                "mtm-toast-container";
-
-            container.className =
-                "mtm-toast-container";
-
-            document.body.appendChild(
-                container
-            );
-
-        }
-
-        return container;
-
-    };
-
-
-/* =========================================================
-   9. TOAST MESSAGE
-   ========================================================= */
-
-window.mtmToast = function (
-    message,
-    type = "info",
-    duration = 3000
-) {
-
-    const container =
-        mtmGetToastContainer();
-
-    const toast =
-        document.createElement(
-            "div"
-        );
-
-    toast.className =
-        `mtm-toast mtm-toast-${type}`;
-
-    toast.setAttribute(
-        "role",
-        "status"
-    );
-
-    toast.innerHTML = `
-
-        <span class="mtm-toast-message">
-            ${mtmEscapeHTML(message)}
-        </span>
-
-        <button
-            type="button"
-            class="mtm-toast-close"
-            aria-label="Close"
-        >
-            ×
-        </button>
-
-    `;
-
-    container.appendChild(
-        toast
-    );
-
-    const close =
-        () => {
-
-            toast.classList.add(
-                "closing"
-            );
-
-            setTimeout(
-                () => toast.remove(),
-                200
-            );
-
-        };
-
-    toast
-        .querySelector(
-            ".mtm-toast-close"
-        )
-        ?.addEventListener(
-            "click",
-            close
-        );
-
-    setTimeout(
-        close,
-        duration
-    );
-
-};
-
-
-/* =========================================================
-   10. SUCCESS / ERROR / WARNING / INFO
-   ========================================================= */
-
-window.mtmSuccess = function (
-    message
-) {
-
-    mtmToast(
-        message,
-        "success"
-    );
-
-};
-
-
-window.mtmError = function (
-    message
-) {
-
-    mtmToast(
-        message,
-        "error",
-        4500
-    );
-
-};
-
-
-window.mtmWarning = function (
-    message
-) {
-
-    mtmToast(
-        message,
-        "warning",
-        4000
-    );
-
-};
-
-
-window.mtmInfo = function (
-    message
-) {
-
-    mtmToast(
-        message,
-        "info"
-    );
-
-};
-
-
-/* =========================================================
-   11. HTML ESCAPE
-   ========================================================= */
-
-window.mtmEscapeHTML = function (
+function escapeHTML(
     value
 ) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-    return String(value)
+    return String(value || "")
         .replace(
             /&/g,
             "&amp;"
@@ -454,415 +477,900 @@ window.mtmEscapeHTML = function (
             "&#039;"
         );
 
-};
+}
 
 
-/* =========================================================
-   12. CONFIRM DIALOG
-   ========================================================= */
+// =========================================================
+// LOAD MODULE JAVASCRIPT
+// =========================================================
 
-window.mtmConfirm = function (
-    message,
-    title = "Confirm Action"
+function loadModuleScript(
+    src,
+    moduleName
 ) {
 
     return new Promise(
-        resolve => {
+        function (resolve) {
 
-            const existing =
-                document.querySelector(
-                    "#mtm-confirm-modal"
+            if (!src) {
+
+                resolve(
+                    true
                 );
 
-            if (existing) {
-
-                existing.remove();
+                return;
 
             }
 
-            const modal =
-                document.createElement(
-                    "div"
+
+            /*
+               Prevent duplicate loading of the
+               same module JavaScript.
+            */
+
+            const existing =
+                document.querySelector(
+                    `script[data-module-script="${moduleName}"]`
                 );
 
-            modal.id =
-                "mtm-confirm-modal";
 
-            modal.className =
-                "mtm-confirm-modal";
+            if (existing) {
 
-            modal.innerHTML = `
+                resolve(
+                    true
+                );
 
-                <div
-                    class="mtm-confirm-backdrop"
-                ></div>
+                return;
 
-                <div
-                    class="mtm-confirm-dialog"
-                    role="dialog"
-                    aria-modal="true"
-                >
-
-                    <div
-                        class="mtm-confirm-header"
-                    >
-
-                        <h3>
-                            ${mtmEscapeHTML(title)}
-                        </h3>
-
-                    </div>
-
-                    <div
-                        class="mtm-confirm-body"
-                    >
-
-                        <p>
-                            ${mtmEscapeHTML(message)}
-                        </p>
-
-                    </div>
-
-                    <div
-                        class="mtm-confirm-actions"
-                    >
-
-                        <button
-                            type="button"
-                            class="mtm-confirm-cancel"
-                        >
-                            Cancel
-                        </button>
-
-                        <button
-                            type="button"
-                            class="mtm-confirm-ok"
-                        >
-                            Confirm
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            document.body.appendChild(
-                modal
-            );
+            }
 
 
-            const finish =
-                result => {
+            const script =
+                document.createElement(
+                    "script"
+                );
 
-                    modal.remove();
 
-                    resolve(result);
+            script.src =
+                src;
+
+
+            script.dataset.moduleScript =
+                moduleName;
+
+
+            script.async =
+                false;
+
+
+            script.onload =
+                function () {
+
+                    console.log(
+                        `[UI] Module JS loaded: ${moduleName}`
+                    );
+
+
+                    resolve(
+                        true
+                    );
 
                 };
 
 
-            modal
-                .querySelector(
-                    ".mtm-confirm-cancel"
-                )
-                ?.addEventListener(
-                    "click",
-                    () => finish(false)
-                );
+            script.onerror =
+                function () {
+
+                    console.warn(
+                        `[UI] Module JS not found: ${src}`
+                    );
 
 
-            modal
-                .querySelector(
-                    ".mtm-confirm-ok"
-                )
-                ?.addEventListener(
-                    "click",
-                    () => finish(true)
-                );
+                    /*
+                       HTML module can still work
+                       without its JS.
+
+                       Therefore do not block
+                       the complete module.
+                    */
+
+                    resolve(
+                        false
+                    );
+
+                };
 
 
-            modal
-                .querySelector(
-                    ".mtm-confirm-backdrop"
-                )
-                ?.addEventListener(
-                    "click",
-                    () => finish(false)
-                );
+            document.body.appendChild(
+                script
+            );
 
         }
     );
 
-};
+}
 
 
-/* =========================================================
-   13. EMPTY STATE
-   ========================================================= */
+// =========================================================
+// LOAD MODULE HTML
+// =========================================================
 
-window.mtmRenderEmptyState =
-    function (
-        container,
-        message = "No records found."
-    ) {
-
-        if (!container) return;
-
-        container.innerHTML = `
-
-            <div class="mtm-empty-state">
-
-                <div class="mtm-empty-icon">
-                    —
-                </div>
-
-                <p>
-                    ${mtmEscapeHTML(message)}
-                </p>
-
-            </div>
-
-        `;
-
-    };
-
-
-/* =========================================================
-   14. BUTTON LOADING
-   ========================================================= */
-
-window.mtmButtonLoading =
-    function (
-        button,
-        loading = true,
-        loadingText = "Please wait..."
-    ) {
-
-        if (!button) return;
-
-        if (loading) {
-
-            if (
-                !button.dataset.originalText
-            ) {
-
-                button.dataset.originalText =
-                    button.innerHTML;
-
-            }
-
-            button.disabled = true;
-
-            button.classList.add(
-                "is-loading"
-            );
-
-            button.innerHTML = `
-                <span class="mtm-button-spinner"></span>
-                <span>
-                    ${mtmEscapeHTML(
-                        loadingText
-                    )}
-                </span>
-            `;
-
-        } else {
-
-            button.disabled = false;
-
-            button.classList.remove(
-                "is-loading"
-            );
-
-            if (
-                button.dataset.originalText
-            ) {
-
-                button.innerHTML =
-                    button.dataset.originalText;
-
-            }
-
-        }
-
-    };
-
-
-/* =========================================================
-   15. FORM RESET
-   ========================================================= */
-
-window.mtmResetForm = function (
-    form
+async function loadModule(
+    moduleName
 ) {
 
-    if (!form) return;
+    const config =
+        MODULE_CONFIG[moduleName];
 
-    if (
-        typeof form.reset ===
-        "function"
-    ) {
 
-        form.reset();
+    if (!config) {
+
+        console.error(
+            `[UI] Unknown module: ${moduleName}`
+        );
+
+
+        showModuleError(
+            moduleName,
+            "This module is not registered in the ERP."
+        );
+
+
+        return false;
 
     }
 
-    form
-        .querySelectorAll(
-            "input[type='hidden']"
-        )
-        .forEach(
-            input => {
 
-                if (
-                    input.dataset.default
-                    !== undefined
-                ) {
-
-                    input.value =
-                        input.dataset.default;
-
-                }
-
-            }
+    const container =
+        getElement(
+            "module-container"
         );
 
-};
+
+    if (!container) {
+
+        console.error(
+            "[UI] Module container not found."
+        );
 
 
-/* =========================================================
-   16. FORM DATA → OBJECT
-   ========================================================= */
+        return false;
 
-window.mtmFormToObject =
-    function (form) {
+    }
 
-        if (!form) {
+
+    window.MyTourMitraUI.state.loadingModule =
+        true;
+
+
+    updatePageHeading(
+        moduleName
+    );
+
+
+    updateActiveNavigation(
+        moduleName
+    );
+
+
+    showModuleLoader();
+
+
+    try {
+
+        console.log(
+            `[UI] Loading module: ${moduleName}`
+        );
+
+
+        const response =
+            await fetch(
+                config.path,
+                {
+                    cache: "no-cache"
+                }
+            );
+
+
+        if (!response.ok) {
 
             throw new Error(
-                "Form is required."
+                `HTTP ${response.status}: ${response.statusText}`
             );
 
         }
 
-        const formData =
-            new FormData(form);
 
-        const data = {};
+        const html =
+            await response.text();
 
-        formData.forEach(
-            (value, key) => {
 
-                if (
-                    data[key] !== undefined
-                ) {
+        if (!html.trim()) {
 
-                    if (
-                        !Array.isArray(
-                            data[key]
-                        )
-                    ) {
+            throw new Error(
+                "Module HTML file is empty."
+            );
 
-                        data[key] = [
-                            data[key]
-                        ];
+        }
 
+
+        /*
+           Insert module HTML.
+        */
+
+        container.innerHTML =
+            html;
+
+
+        /*
+           Load module JavaScript after
+           the HTML has been inserted.
+        */
+
+        await loadModuleScript(
+            config.js,
+            moduleName
+        );
+
+
+        /*
+           Initialize module if it exposes
+           a compatible global controller.
+        */
+
+        initializeLoadedModule(
+            moduleName
+        );
+
+
+        window.MyTourMitraUI.state.currentModule =
+            moduleName;
+
+
+        window.MyTourMitraUI.state.loadingModule =
+            false;
+
+
+        /*
+           Notify application.
+        */
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "mytourmitra:module-loaded",
+                {
+                    detail: {
+                        module: moduleName
                     }
+                }
+            )
+        );
 
-                    data[key].push(
-                        value
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "mytourmitra:module-ready",
+                {
+                    detail: {
+                        module: moduleName
+                    }
+                }
+            )
+        );
+
+
+        /*
+           Close mobile sidebar.
+        */
+
+        if (
+            window.innerWidth <= 900
+        ) {
+
+            closeSidebar();
+
+        }
+
+
+        console.log(
+            `[UI] Module loaded successfully: ${moduleName}`
+        );
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            `[UI] Failed to load module ${moduleName}:`,
+            error
+        );
+
+
+        window.MyTourMitraUI.state.loadingModule =
+            false;
+
+
+        showModuleError(
+            moduleName,
+            error.message
+                || "Unknown loading error."
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+// =========================================================
+// INITIALIZE LOADED MODULE
+// =========================================================
+
+function initializeLoadedModule(
+    moduleName
+) {
+
+    const possibleNames = [
+
+        moduleName,
+
+        moduleName.replace(
+            /-([a-z])/g,
+            function (
+                match,
+                letter
+            ) {
+
+                return letter.toUpperCase();
+
+            }
+        )
+
+    ];
+
+
+    for (
+        const name of possibleNames
+    ) {
+
+        /*
+           Example:
+
+           window.MyTourMitraModules.dashboard
+
+           OR
+
+           window.dashboardModule
+        */
+
+        if (
+            window.MyTourMitraModules &&
+            window.MyTourMitraModules[name]
+        ) {
+
+            const module =
+                window.MyTourMitraModules[name];
+
+
+            if (
+                typeof module.init === "function"
+            ) {
+
+                try {
+
+                    module.init();
+
+                } catch (error) {
+
+                    console.error(
+                        `[UI] ${moduleName} init failed:`,
+                        error
                     );
-
-                } else {
-
-                    data[key] = value;
 
                 }
 
             }
+
+
+            return;
+
+        }
+
+
+        const globalName =
+            `${name}Module`;
+
+
+        if (
+            window[globalName]
+        ) {
+
+            const module =
+                window[globalName];
+
+
+            if (
+                typeof module.init === "function"
+            ) {
+
+                try {
+
+                    module.init();
+
+                } catch (error) {
+
+                    console.error(
+                        `[UI] ${moduleName} init failed:`,
+                        error
+                    );
+
+                }
+
+            }
+
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+// =========================================================
+// NAVIGATION
+// =========================================================
+
+function initializeNavigation() {
+
+    const navItems =
+        document.querySelectorAll(
+            ".nav-item[data-module]"
         );
 
-        return data;
 
-    };
+    navItems.forEach(
+        function (item) {
+
+            item.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
 
 
-/* =========================================================
-   17. MODAL CLOSE
-   ========================================================= */
+                    const moduleName =
+                        item.dataset.module;
 
-window.mtmCloseModal = function (
-    modal
+
+                    if (!moduleName) {
+                        return;
+                    }
+
+
+                    openModule(
+                        moduleName
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    console.log(
+        `[UI] ${navItems.length} navigation items initialized.`
+    );
+
+}
+
+
+// =========================================================
+// OPEN MODULE
+// =========================================================
+
+function openModule(
+    moduleName
 ) {
 
-    if (!modal) return;
+    if (!MODULE_CONFIG[moduleName]) {
+
+        console.warn(
+            `[UI] Unknown module: ${moduleName}`
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Update global application state
+       if app.js is available.
+    */
+
+    if (
+        window.MyTourMitraERP &&
+        window.MyTourMitraERP.state
+    ) {
+
+        window.MyTourMitraERP.state.currentModule =
+            moduleName;
+
+    }
+
+
+    /*
+       Dispatch navigation event.
+    */
+
+    window.dispatchEvent(
+        new CustomEvent(
+            "mytourmitra:navigate",
+            {
+                detail: {
+                    module: moduleName
+                }
+            }
+        )
+    );
+
+
+    loadModule(
+        moduleName
+    );
+
+}
+
+
+// =========================================================
+// SIDEBAR BUTTONS
+// =========================================================
+
+function initializeSidebar() {
+
+    const toggle =
+        getElement(
+            "sidebar-toggle"
+        );
+
+
+    const close =
+        getElement(
+            "sidebar-close"
+        );
+
+
+    if (toggle) {
+
+        toggle.addEventListener(
+            "click",
+            function () {
+
+                toggleSidebar();
+
+            }
+        );
+
+    }
+
+
+    if (close) {
+
+        close.addEventListener(
+            "click",
+            function () {
+
+                closeSidebar();
+
+            }
+        );
+
+    }
+
+
+    /*
+       Close sidebar when clicking outside
+       on smaller screens.
+    */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                window.innerWidth > 900
+            ) {
+
+                return;
+
+            }
+
+
+            const sidebar =
+                getElement(
+                    "sidebar"
+                );
+
+
+            const toggleButton =
+                getElement(
+                    "sidebar-toggle"
+                );
+
+
+            if (
+                !sidebar ||
+                !toggleButton
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !window.MyTourMitraUI.state.sidebarOpen
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                sidebar.contains(
+                    event.target
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                toggleButton.contains(
+                    event.target
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            closeSidebar();
+
+        }
+    );
+
+
+    /*
+       ESC closes sidebar.
+    */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeSidebar();
+
+                closeModal();
+
+                closeConfirm();
+
+            }
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// GLOBAL MODAL
+// =========================================================
+
+function openModal(
+    title,
+    body,
+    footer = ""
+) {
+
+    const modal =
+        getElement(
+            "global-modal"
+        );
+
+
+    const modalTitle =
+        getElement(
+            "global-modal-title"
+        );
+
+
+    const modalBody =
+        getElement(
+            "global-modal-body"
+        );
+
+
+    const modalFooter =
+        getElement(
+            "global-modal-footer"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    if (modalTitle) {
+
+        modalTitle.textContent =
+            title || "Modal";
+
+    }
+
+
+    if (modalBody) {
+
+        if (
+            typeof body === "string"
+        ) {
+
+            modalBody.innerHTML =
+                body;
+
+        }
+
+    }
+
+
+    if (modalFooter) {
+
+        modalFooter.innerHTML =
+            footer || "";
+
+    }
+
 
     modal.classList.remove(
-        "active"
+        "hidden"
     );
 
-    modal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-};
-
-
-/* =========================================================
-   18. MODAL OPEN
-   ========================================================= */
-
-window.mtmOpenModal = function (
-    modal
-) {
-
-    if (!modal) return;
-
-    modal.classList.add(
-        "active"
-    );
 
     modal.setAttribute(
         "aria-hidden",
         "false"
     );
 
-};
+
+    document.body.classList.add(
+        "modal-is-open"
+    );
+
+}
 
 
-/* =========================================================
-   19. GLOBAL NAVIGATION
-   ========================================================= */
+function closeModal() {
 
-window.mtmNavigate = function (
-    moduleName
+    const modal =
+        getElement(
+            "global-modal"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.classList.add(
+        "hidden"
+    );
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    document.body.classList.remove(
+        "modal-is-open"
+    );
+
+}
+
+
+// =========================================================
+// MODAL BUTTON
+// =========================================================
+
+function initializeModal() {
+
+    const closeButton =
+        getElement(
+            "global-modal-close"
+        );
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            function () {
+
+                closeModal();
+
+            }
+        );
+
+    }
+
+
+    const modal =
+        getElement(
+            "global-modal"
+        );
+
+
+    if (modal) {
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === modal
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// TOAST
+// =========================================================
+
+function showToast(
+    message,
+    type = "info",
+    duration = 3500
 ) {
 
-    if (!moduleName) return;
-
-    MTM_UI.currentModule =
-        moduleName;
-
-    mtmSetActiveNavigation(
-        moduleName
-    );
-
-    mtmCloseSidebar();
+    const container =
+        getElement(
+            "toast-container"
+        );
 
 
-    /* -----------------------------------------
-       Let app.js handle actual module loading
-       ----------------------------------------- */
+    if (!container) {
 
-    if (
-        typeof window.loadModule ===
-        "function"
-    ) {
-
-        window.loadModule(
-            moduleName
+        console.log(
+            `[TOAST ${type}]`,
+            message
         );
 
         return;
@@ -870,304 +1378,620 @@ window.mtmNavigate = function (
     }
 
 
-    if (
-        typeof window.mtmLoadModule ===
-        "function"
-    ) {
-
-        window.mtmLoadModule(
-            moduleName
+    const toast =
+        document.createElement(
+            "div"
         );
 
-        return;
+
+    toast.className =
+        `toast toast-${type}`;
+
+
+    toast.innerHTML = `
+
+        <div class="toast-message">
+            ${escapeHTML(message)}
+        </div>
+
+        <button
+            type="button"
+            class="toast-close"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    container.appendChild(
+        toast
+    );
+
+
+    const close =
+        toast.querySelector(
+            ".toast-close"
+        );
+
+
+    if (close) {
+
+        close.addEventListener(
+            "click",
+            function () {
+
+                toast.remove();
+
+            }
+        );
 
     }
 
 
-    /* -----------------------------------------
-       Fallback custom event
-       ----------------------------------------- */
+    setTimeout(
+        function () {
 
-    document.dispatchEvent(
-        new CustomEvent(
-            "mtm:navigate",
-            {
-                detail: {
-                    module:
-                        moduleName
-                }
+            if (
+                toast.parentNode
+            ) {
+
+                toast.remove();
+
             }
-        )
+
+        },
+        duration
     );
 
-};
+}
 
 
-/* =========================================================
-   20. NAVIGATION EVENT HANDLERS
-   ========================================================= */
+// =========================================================
+// CONFIRM DIALOG
+// =========================================================
 
-window.mtmBindNavigation =
-    function () {
+let confirmResolve =
+    null;
 
-        document.addEventListener(
+
+function showConfirm(
+    message,
+    title = "Confirm Action"
+) {
+
+    return new Promise(
+        function (resolve) {
+
+            const dialog =
+                getElement(
+                    "confirm-dialog"
+                );
+
+
+            const titleElement =
+                getElement(
+                    "confirm-title"
+                );
+
+
+            const messageElement =
+                getElement(
+                    "confirm-message"
+                );
+
+
+            if (!dialog) {
+
+                resolve(
+                    window.confirm(
+                        message
+                    )
+                );
+
+                return;
+
+            }
+
+
+            confirmResolve =
+                resolve;
+
+
+            if (titleElement) {
+
+                titleElement.textContent =
+                    title;
+
+            }
+
+
+            if (messageElement) {
+
+                messageElement.textContent =
+                    message;
+
+            }
+
+
+            dialog.classList.remove(
+                "hidden"
+            );
+
+
+            dialog.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+
+            document.body.classList.add(
+                "modal-is-open"
+            );
+
+        }
+    );
+
+}
+
+
+function closeConfirm() {
+
+    const dialog =
+        getElement(
+            "confirm-dialog"
+        );
+
+
+    if (dialog) {
+
+        dialog.classList.add(
+            "hidden"
+        );
+
+
+        dialog.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
+    document.body.classList.remove(
+        "modal-is-open"
+    );
+
+
+    confirmResolve =
+        null;
+
+}
+
+
+// =========================================================
+// CONFIRM BUTTONS
+// =========================================================
+
+function initializeConfirmDialog() {
+
+    const cancel =
+        getElement(
+            "confirm-cancel"
+        );
+
+
+    const ok =
+        getElement(
+            "confirm-ok"
+        );
+
+
+    if (cancel) {
+
+        cancel.addEventListener(
             "click",
-            event => {
+            function () {
 
-                const navItem =
-                    event.target.closest(
-                        "[data-module]"
+                if (
+                    confirmResolve
+                ) {
+
+                    confirmResolve(
+                        false
                     );
 
-                if (!navItem) return;
+                }
 
-                event.preventDefault();
 
-                const moduleName =
-                    navItem.dataset.module;
+                closeConfirm();
 
-                mtmNavigate(
-                    moduleName
+            }
+        );
+
+    }
+
+
+    if (ok) {
+
+        ok.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    confirmResolve
+                ) {
+
+                    confirmResolve(
+                        true
+                    );
+
+                }
+
+
+                closeConfirm();
+
+            }
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// NOTIFICATIONS
+// =========================================================
+
+function initializeNotifications() {
+
+    const button =
+        getElement(
+            "notification-button"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            showToast(
+                "No new notifications.",
+                "info"
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// WINDOW RESIZE
+// =========================================================
+
+function initializeResizeHandler() {
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                window.innerWidth > 900
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// AUTH UI EVENTS
+// =========================================================
+
+function initializeAuthEvents() {
+
+    window.addEventListener(
+        "mytourmitra:auth-ready",
+        function (event) {
+
+            if (
+                event.detail &&
+                event.detail.user
+            ) {
+
+                updateUserInformation(
+                    event.detail.user
                 );
 
             }
-        );
+
+        }
+    );
 
 
-        document.addEventListener(
-            "click",
-            event => {
+    window.addEventListener(
+        "mytourmitra:login-success",
+        function (event) {
 
-                const navigation =
-                    event.target.closest(
-                        "[data-dashboard-navigation]"
-                    );
+            if (
+                event.detail &&
+                event.detail.user
+            ) {
 
-                if (!navigation) return;
-
-                event.preventDefault();
-
-                const moduleName =
-                    navigation.dataset
-                        .dashboardNavigation;
-
-                mtmNavigate(
-                    moduleName
+                updateUserInformation(
+                    event.detail.user
                 );
 
             }
-        );
 
 
-        document.addEventListener(
-            "click",
-            event => {
+            /*
+               Open dashboard after login.
+            */
 
-                const action =
-                    event.target.closest(
-                        "[data-dashboard-action]"
+            setTimeout(
+                function () {
+
+                    openModule(
+                        "dashboard"
                     );
 
-                if (!action) return;
+                },
+                100
+            );
 
-                event.preventDefault();
-
-                const moduleName =
-                    action.dataset
-                        .dashboardAction;
-
-                mtmNavigate(
-                    moduleName
-                );
-
-            }
-        );
-
-    };
+        }
+    );
 
 
-/* =========================================================
-   21. SIDEBAR EVENT HANDLERS
-   ========================================================= */
+    window.addEventListener(
+        "mytourmitra:auth-logout",
+        function () {
 
-window.mtmBindSidebar =
-    function () {
+            closeSidebar();
 
-        document.addEventListener(
-            "click",
-            event => {
+        }
+    );
 
-                if (
-                    event.target.closest(
-                        ".sidebar-toggle"
-                    )
-                ) {
-
-                    mtmToggleSidebar();
-
-                }
-
-            }
-        );
+}
 
 
-        document.addEventListener(
-            "click",
-            event => {
+// =========================================================
+// USER INFORMATION
+// =========================================================
 
-                if (
-                    event.target.closest(
-                        ".sidebar-close"
-                    )
-                ) {
+function updateUserInformation(
+    user
+) {
 
-                    mtmCloseSidebar();
+    if (!user) {
+        return;
+    }
 
-                }
 
-            }
+    const displayName =
+        user.displayName
+        || user.email
+        || "Admin";
+
+
+    const initial =
+        displayName
+            .charAt(0)
+            .toUpperCase();
+
+
+    const sidebarName =
+        getElement(
+            "sidebar-user-name"
         );
 
 
-        document.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target.closest(
-                        ".sidebar-overlay"
-                    )
-                ) {
-
-                    mtmCloseSidebar();
-
-                }
-
-            }
+    const topbarName =
+        getElement(
+            "topbar-user-name"
         );
 
-    };
 
-
-/* =========================================================
-   22. ESC KEY HANDLER
-   ========================================================= */
-
-window.mtmBindEscapeKey =
-    function () {
-
-        document.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key !== "Escape"
-                ) {
-
-                    return;
-
-                }
-
-                mtmCloseSidebar();
-
-
-                const activeModal =
-                    document.querySelector(
-                        ".mtm-confirm-modal"
-                    );
-
-                if (activeModal) {
-
-                    activeModal.remove();
-
-                }
-
-            }
+    const sidebarInitial =
+        getElement(
+            "sidebar-user-initial"
         );
 
-    };
 
-
-/* =========================================================
-   23. WINDOW RESIZE
-   ========================================================= */
-
-window.mtmBindResize =
-    function () {
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                if (
-                    window.innerWidth >
-                    768
-                ) {
-
-                    mtmCloseSidebar();
-
-                }
-
-            }
+    const topbarInitial =
+        getElement(
+            "topbar-user-initial"
         );
 
-    };
+
+    if (sidebarName) {
+
+        sidebarName.textContent =
+            displayName;
+
+    }
 
 
-/* =========================================================
-   24. INITIALIZE UI
-   ========================================================= */
+    if (topbarName) {
 
-window.mtmInitializeUI =
+        topbarName.textContent =
+            displayName;
+
+    }
+
+
+    if (sidebarInitial) {
+
+        sidebarInitial.textContent =
+            initial;
+
+    }
+
+
+    if (topbarInitial) {
+
+        topbarInitial.textContent =
+            initial;
+
+    }
+
+}
+
+
+// =========================================================
+// INITIALIZE UI
+// =========================================================
+
+window.MyTourMitraUI.init =
     function () {
 
         if (
-            MTM_UI.initialized
+            window.MyTourMitraUI.state.initialized
         ) {
 
             return;
 
         }
 
-        mtmBindNavigation();
 
-        mtmBindSidebar();
-
-        mtmBindEscapeKey();
-
-        mtmBindResize();
-
-        MTM_UI.initialized =
+        window.MyTourMitraUI.state.initialized =
             true;
 
+
+        initializeNavigation();
+
+        initializeSidebar();
+
+        initializeModal();
+
+        initializeConfirmDialog();
+
+        initializeNotifications();
+
+        initializeResizeHandler();
+
+        initializeAuthEvents();
+
+
+        /*
+           Tell the rest of the application
+           that UI is ready.
+        */
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "mytourmitra:ui-ready"
+            )
+        );
+
+
         console.log(
-            "MTM ERP UI initialized."
+            "[UI] UI system initialized."
         );
 
     };
 
 
-/* =========================================================
-   25. AUTO INITIALIZE
-   ========================================================= */
+// =========================================================
+// GLOBAL UI HELPERS
+// =========================================================
 
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        mtmInitializeUI
-    );
-
-} else {
-
-    mtmInitializeUI();
-
-}
+window.MyTourMitraUI.openModule =
+    openModule;
 
 
-/* =========================================================
-   END OF UI.JS
-   ========================================================= */
+window.MyTourMitraUI.loadModule =
+    loadModule;
+
+
+window.MyTourMitraUI.openModal =
+    openModal;
+
+
+window.MyTourMitraUI.closeModal =
+    closeModal;
+
+
+window.MyTourMitraUI.showToast =
+    showToast;
+
+
+window.MyTourMitraUI.showConfirm =
+    showConfirm;
+
+
+window.MyTourMitraUI.closeConfirm =
+    closeConfirm;
+
+
+window.MyTourMitraUI.openSidebar =
+    openSidebar;
+
+
+window.MyTourMitraUI.closeSidebar =
+    closeSidebar;
+
+
+window.MyTourMitraUI.toggleSidebar =
+    toggleSidebar;
+
+
+// =========================================================
+// GLOBAL COMPATIBILITY FUNCTIONS
+// =========================================================
+
+window.openModule =
+    openModule;
+
+
+window.showToast =
+    showToast;
+
+
+window.showConfirm =
+    showConfirm;
+
+
+window.openModal =
+    openModal;
+
+
+window.closeModal =
+    closeModal;
+
+
+// =========================================================
+// START UI
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        window.MyTourMitraUI.init();
+
+    }
+);
+
+
+// =========================================================
+// FINAL MESSAGE
+// =========================================================
+
+console.log(
+    "[My Tour Mitra ERP] ui.js loaded successfully."
+);
+```
