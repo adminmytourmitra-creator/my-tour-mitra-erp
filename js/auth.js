@@ -1,33 +1,23 @@
+```javascript
 /* =========================================================
    MY TOUR MITRA ERP
    AUTHENTICATION CONTROLLER
    File: /js/auth.js
-   ========================================================= */
 
-
-/*
-   Firebase Authentication is initialized in:
-
-       /js/firebase.js
-
-   Firebase configuration is stored in:
-
-       /js/config.js
-
-   This file handles:
-
+   Handles:
+   - Firebase Authentication
    - Login
    - Logout
    - Authentication state
-   - Current user
    - Login form
    - Password visibility
+   - User information
    - Auth events
-*/
+   ========================================================= */
 
 
 // =========================================================
-// AUTH STATE
+// GLOBAL AUTH OBJECT
 // =========================================================
 
 window.MyTourMitraAuth =
@@ -35,7 +25,7 @@ window.MyTourMitraAuth =
 
 
 // =========================================================
-// INTERNAL STATE
+// AUTH STATE
 // =========================================================
 
 window.MyTourMitraAuth.state = {
@@ -52,19 +42,17 @@ window.MyTourMitraAuth.state = {
 
 
 // =========================================================
-// FIREBASE AUTH INSTANCE
+// GET FIREBASE AUTH
 // =========================================================
 
 function getFirebaseAuth() {
 
     /*
-       firebase.js should expose the Firebase auth
-       instance globally as:
+       firebase.js should expose:
 
            window.firebaseAuth
 
-       If it is not available yet, try Firebase
-       compat API as fallback.
+       This is the preferred method.
     */
 
     if (window.firebaseAuth) {
@@ -73,6 +61,10 @@ function getFirebaseAuth() {
 
     }
 
+
+    /*
+       Compatibility fallback.
+    */
 
     if (
         window.firebase &&
@@ -150,12 +142,13 @@ function showLoginScreen() {
 
     const loginScreen =
         document.getElementById(
-            "screen-login"
+            "login-screen"
         );
+
 
     const appScreen =
         document.getElementById(
-            "screen-app"
+            "main-app"
         );
 
 
@@ -165,8 +158,7 @@ function showLoginScreen() {
             "hidden"
         );
 
-        loginScreen.style.display =
-            "";
+        loginScreen.style.display = "";
 
     }
 
@@ -177,8 +169,7 @@ function showLoginScreen() {
             "hidden"
         );
 
-        appScreen.style.display =
-            "none";
+        appScreen.style.display = "none";
 
     }
 
@@ -193,12 +184,13 @@ function showApplication() {
 
     const loginScreen =
         document.getElementById(
-            "screen-login"
+            "login-screen"
         );
+
 
     const appScreen =
         document.getElementById(
-            "screen-app"
+            "main-app"
         );
 
 
@@ -208,8 +200,7 @@ function showApplication() {
             "hidden"
         );
 
-        loginScreen.style.display =
-            "none";
+        loginScreen.style.display = "none";
 
     }
 
@@ -220,8 +211,7 @@ function showApplication() {
             "hidden"
         );
 
-        appScreen.style.display =
-            "";
+        appScreen.style.display = "";
 
     }
 
@@ -229,12 +219,10 @@ function showApplication() {
 
 
 // =========================================================
-// AUTH ERROR MESSAGE
+// AUTH ERROR
 // =========================================================
 
-function showAuthError(
-    message
-) {
+function showAuthError(message) {
 
     const errorElement =
         document.getElementById(
@@ -261,10 +249,7 @@ function showAuthError(
         "hidden"
     );
 
-
-    errorElement.style.display =
-        "";
-
+    errorElement.style.display = "";
 
 }
 
@@ -286,8 +271,7 @@ function clearAuthError() {
     }
 
 
-    errorElement.textContent =
-        "";
+    errorElement.textContent = "";
 
     errorElement.classList.add(
         "hidden"
@@ -300,13 +284,23 @@ function clearAuthError() {
 // LOGIN BUTTON STATE
 // =========================================================
 
-function setLoginLoading(
-    loading
-) {
+function setLoginLoading(loading) {
 
     const loginButton =
         document.getElementById(
-            "login-submit"
+            "login-button"
+        );
+
+
+    const loginButtonText =
+        document.getElementById(
+            "login-button-text"
+        );
+
+
+    const loginButtonLoader =
+        document.getElementById(
+            "login-button-loader"
         );
 
 
@@ -319,19 +313,98 @@ function setLoginLoading(
         loading;
 
 
-    if (loading) {
+    if (loginButtonText) {
 
-        loginButton.dataset.originalText =
-            loginButton.textContent;
+        loginButtonText.textContent =
+            loading
+                ? "Signing in..."
+                : "Login";
 
-        loginButton.textContent =
-            "Signing in...";
+    }
 
-    } else {
 
-        loginButton.textContent =
-            loginButton.dataset.originalText
-            || "Sign In";
+    if (loginButtonLoader) {
+
+        if (loading) {
+
+            loginButtonLoader.classList.remove(
+                "hidden"
+            );
+
+        } else {
+
+            loginButtonLoader.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+
+}
+
+
+// =========================================================
+// FIREBASE ERROR MESSAGE
+// =========================================================
+
+function getFriendlyAuthError(error) {
+
+    if (!error) {
+
+        return "Unable to sign in.";
+
+    }
+
+
+    switch (error.code) {
+
+        case "auth/invalid-email":
+
+            return "Please enter a valid email address.";
+
+
+        case "auth/user-disabled":
+
+            return "This account has been disabled.";
+
+
+        case "auth/user-not-found":
+
+            return "No account was found with this email.";
+
+
+        case "auth/wrong-password":
+
+            return "Incorrect password.";
+
+
+        case "auth/invalid-credential":
+
+            return "Invalid email or password.";
+
+
+        case "auth/too-many-requests":
+
+            return "Too many login attempts. Please try again later.";
+
+
+        case "auth/network-request-failed":
+
+            return "Network error. Please check your internet connection.";
+
+
+        case "auth/operation-not-allowed":
+
+            return "Email/password login is not enabled in Firebase.";
+
+
+        default:
+
+            return (
+                error.message
+                || "Unable to sign in."
+            );
 
     }
 
@@ -349,6 +422,14 @@ window.MyTourMitraAuth.login =
     ) {
 
         clearAuthError();
+
+
+        email =
+            String(email || "").trim();
+
+
+        password =
+            String(password || "");
 
 
         if (!email) {
@@ -380,7 +461,7 @@ window.MyTourMitraAuth.login =
         if (!auth) {
 
             showAuthError(
-                "Authentication service is not available."
+                "Firebase Authentication is not available. Please check firebase.js and Firebase configuration."
             );
 
             console.error(
@@ -405,7 +486,7 @@ window.MyTourMitraAuth.login =
 
             const result =
                 await auth.signInWithEmailAndPassword(
-                    email.trim(),
+                    email,
                     password
                 );
 
@@ -417,11 +498,17 @@ window.MyTourMitraAuth.login =
             window.MyTourMitraAuth.state.user =
                 user;
 
+
             window.MyTourMitraAuth.state.authenticated =
                 true;
 
 
             showApplication();
+
+
+            updateUserInterface(
+                user
+            );
 
 
             dispatchAuthEvent(
@@ -444,7 +531,6 @@ window.MyTourMitraAuth.login =
 
             return true;
 
-
         } catch (error) {
 
             console.error(
@@ -453,91 +539,14 @@ window.MyTourMitraAuth.login =
             );
 
 
-            let message =
-                "Unable to sign in.";
-
-
-            switch (
-                error.code
-            ) {
-
-                case "auth/invalid-email":
-
-                    message =
-                        "Please enter a valid email address.";
-
-                    break;
-
-
-                case "auth/user-disabled":
-
-                    message =
-                        "This account has been disabled.";
-
-                    break;
-
-
-                case "auth/user-not-found":
-
-                    message =
-                        "No account was found with this email.";
-
-                    break;
-
-
-                case "auth/wrong-password":
-
-                    message =
-                        "Incorrect password.";
-
-                    break;
-
-
-                case "auth/invalid-credential":
-
-                    message =
-                        "Invalid email or password.";
-
-                    break;
-
-
-                case "auth/too-many-requests":
-
-                    message =
-                        "Too many login attempts. Please try again later.";
-
-                    break;
-
-
-                case "auth/network-request-failed":
-
-                    message =
-                        "Network error. Please check your internet connection.";
-
-                    break;
-
-
-                default:
-
-                    if (
-                        error.message
-                    ) {
-
-                        message =
-                            error.message;
-
-                    }
-
-            }
-
-
             showAuthError(
-                message
+                getFriendlyAuthError(
+                    error
+                )
             );
 
 
             return false;
-
 
         } finally {
 
@@ -571,6 +580,19 @@ window.MyTourMitraAuth.logout =
                 "[AUTH] Firebase Auth instance not found."
             );
 
+            /*
+               Even if Firebase is unavailable,
+               return the UI to login.
+            */
+
+            window.MyTourMitraAuth.state.user =
+                null;
+
+            window.MyTourMitraAuth.state.authenticated =
+                false;
+
+            showLoginScreen();
+
             return false;
 
         }
@@ -584,11 +606,17 @@ window.MyTourMitraAuth.logout =
             window.MyTourMitraAuth.state.user =
                 null;
 
+
             window.MyTourMitraAuth.state.authenticated =
                 false;
 
 
             showLoginScreen();
+
+
+            updateUserInterface(
+                null
+            );
 
 
             dispatchAuthEvent(
@@ -602,7 +630,6 @@ window.MyTourMitraAuth.logout =
 
 
             return true;
-
 
         } catch (error) {
 
@@ -620,7 +647,148 @@ window.MyTourMitraAuth.logout =
 
 
 // =========================================================
-// LOGIN FORM HANDLER
+// UPDATE USER INTERFACE
+// =========================================================
+
+function updateUserInterface(user) {
+
+    const name =
+        user && (
+            user.displayName
+            || user.email
+            || "Admin"
+        );
+
+
+    const email =
+        user
+            ? user.email || ""
+            : "";
+
+
+    const displayName =
+        name || "Admin";
+
+
+    const initial =
+        displayName
+            .charAt(0)
+            .toUpperCase();
+
+
+    const sidebarName =
+        document.getElementById(
+            "sidebar-user-name"
+        );
+
+
+    const sidebarRole =
+        document.getElementById(
+            "sidebar-user-role"
+        );
+
+
+    const sidebarInitial =
+        document.getElementById(
+            "sidebar-user-initial"
+        );
+
+
+    const topbarName =
+        document.getElementById(
+            "topbar-user-name"
+        );
+
+
+    const topbarRole =
+        document.getElementById(
+            "topbar-user-role"
+        );
+
+
+    const topbarInitial =
+        document.getElementById(
+            "topbar-user-initial"
+        );
+
+
+    if (sidebarName) {
+
+        sidebarName.textContent =
+            displayName;
+
+    }
+
+
+    if (sidebarInitial) {
+
+        sidebarInitial.textContent =
+            initial;
+
+    }
+
+
+    if (topbarName) {
+
+        topbarName.textContent =
+            displayName;
+
+    }
+
+
+    if (topbarInitial) {
+
+        topbarInitial.textContent =
+            initial;
+
+    }
+
+
+    /*
+       Role will later come from Firestore
+       /users/{uid}.
+
+       For now, keep a safe default.
+    */
+
+    if (sidebarRole) {
+
+        sidebarRole.textContent =
+            user
+                ? "Administrator"
+                : "Administrator";
+
+    }
+
+
+    if (topbarRole) {
+
+        topbarRole.textContent =
+            user
+                ? "Administrator"
+                : "Administrator";
+
+    }
+
+
+    /*
+       Keep email available for future use.
+    */
+
+    if (user && email) {
+
+        console.log(
+            "[AUTH] Current user:",
+            email
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// LOGIN FORM
 // =========================================================
 
 function initializeLoginForm() {
@@ -681,6 +849,11 @@ function initializeLoginForm() {
         }
     );
 
+
+    console.log(
+        "[AUTH] Login form initialized."
+    );
+
 }
 
 
@@ -716,26 +889,35 @@ function initializePasswordToggle() {
         "click",
         function () {
 
-            if (
-                passwordInput.type
-                === "password"
-            ) {
-
-                passwordInput.type =
-                    "text";
+            const showing =
+                passwordInput.type === "text";
 
 
-                toggle.textContent =
-                    "Hide";
-
-            } else {
+            if (showing) {
 
                 passwordInput.type =
                     "password";
 
-
                 toggle.textContent =
                     "Show";
+
+                toggle.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+            } else {
+
+                passwordInput.type =
+                    "text";
+
+                toggle.textContent =
+                    "Hide";
+
+                toggle.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
 
             }
 
@@ -755,13 +937,27 @@ function initializeAuthStateListener() {
         getFirebaseAuth();
 
 
+    /*
+       Firebase is not available yet.
+
+       Do NOT hide the login screen.
+       This is important during initial setup.
+    */
+
     if (!auth) {
 
-        console.error(
-            "[AUTH] Firebase Auth is not available."
+        console.warn(
+            "[AUTH] Firebase Auth is not available yet."
         );
 
+
         showLoginScreen();
+
+
+        dispatchAuthEvent(
+            "mytourmitra:auth-unavailable"
+        );
+
 
         return;
 
@@ -776,11 +972,17 @@ function initializeAuthStateListener() {
                 window.MyTourMitraAuth.state.user =
                     user;
 
+
                 window.MyTourMitraAuth.state.authenticated =
                     true;
 
 
                 showApplication();
+
+
+                updateUserInterface(
+                    user
+                );
 
 
                 dispatchAuthEvent(
@@ -794,17 +996,22 @@ function initializeAuthStateListener() {
                     user.email
                 );
 
-
             } else {
 
                 window.MyTourMitraAuth.state.user =
                     null;
+
 
                 window.MyTourMitraAuth.state.authenticated =
                     false;
 
 
                 showLoginScreen();
+
+
+                updateUserInterface(
+                    null
+                );
 
 
                 dispatchAuthEvent(
@@ -828,30 +1035,40 @@ function initializeAuthStateListener() {
 // LOGOUT BUTTON
 // =========================================================
 
-function initializeLogoutButtons() {
+function initializeLogoutButton() {
 
-    const logoutButtons =
-        document.querySelectorAll(
-            "[data-action='logout'], #logout-button, .logout-button"
+    const logoutButton =
+        document.getElementById(
+            "sidebar-logout"
         );
 
 
-    logoutButtons.forEach(
-        function (button) {
+    if (!logoutButton) {
 
-            button.addEventListener(
-                "click",
-                async function (event) {
+        console.warn(
+            "[AUTH] Logout button not found."
+        );
 
-                    event.preventDefault();
+        return;
+
+    }
 
 
-                    await window.MyTourMitraAuth.logout();
+    logoutButton.addEventListener(
+        "click",
+        async function (event) {
 
-                }
-            );
+            event.preventDefault();
+
+
+            await window.MyTourMitraAuth.logout();
 
         }
+    );
+
+
+    console.log(
+        "[AUTH] Logout button initialized."
     );
 
 }
@@ -881,7 +1098,7 @@ window.MyTourMitraAuth.init =
 
         initializePasswordToggle();
 
-        initializeLogoutButtons();
+        initializeLogoutButton();
 
         initializeAuthStateListener();
 
@@ -921,9 +1138,10 @@ document.addEventListener(
 
 
 // =========================================================
-// READY MESSAGE
+// FINAL MESSAGE
 // =========================================================
 
 console.log(
     "[My Tour Mitra ERP] auth.js loaded successfully."
 );
+```
